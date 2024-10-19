@@ -1,0 +1,14 @@
+{
+	"config": "air",
+	"compilerOptions": {
+		"source-path": [
+			"src"
+		],
+		"library-path": [
+			"libs"
+		],
+		"output": "bin/Astroflux.swf"
+	},
+	"application": "src/Astroflux-app.xml",
+	"mainClass": "Astroflux"
+}
