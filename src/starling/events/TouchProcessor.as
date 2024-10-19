@@ -1,453 +1,481 @@
+// =================================================================================================
+//
+//	Starling Framework
+//	Copyright Gamua GmbH. All Rights Reserved.
+//
+//	This program is free software. You can redistribute and/or modify it
+//	in accordance with the terms of the accompanying license agreement.
+//
+// =================================================================================================
+
 package starling.events
 {
-   import flash.geom.Point;
-   import flash.utils.getDefinitionByName;
-   import starling.core.Starling;
-   import starling.display.DisplayObject;
-   import starling.display.Stage;
-   
-   public class TouchProcessor
-   {
-      private static var sUpdatedTouches:Vector.<Touch> = new Vector.<Touch>(0);
-      
-      private static var sHoveringTouchData:Vector.<Object> = new Vector.<Object>(0);
-      
-      private static var sHelperPoint:Point = new Point();
-      
-      private var _stage:Stage;
-      
-      private var _root:DisplayObject;
-      
-      private var _elapsedTime:Number;
-      
-      private var _lastTaps:Vector.<Touch>;
-      
-      private var _shiftDown:Boolean = false;
-      
-      private var _ctrlDown:Boolean = false;
-      
-      private var _multitapTime:Number = 0.3;
-      
-      private var _multitapDistance:Number = 25;
-      
-      private var _touchEvent:TouchEvent;
-      
-      private var _touchMarker:TouchMarker;
-      
-      private var _simulateMultitouch:Boolean;
-      
-      protected var _queue:Vector.<Array>;
-      
-      protected var _currentTouches:Vector.<Touch>;
-      
-      public function TouchProcessor(param1:Stage)
-      {
-         super();
-         _root = _stage = param1;
-         _elapsedTime = 0;
-         _currentTouches = new Vector.<Touch>(0);
-         _queue = new Vector.<Array>(0);
-         _lastTaps = new Vector.<Touch>(0);
-         _touchEvent = new TouchEvent("touch");
-         _stage.addEventListener("keyDown",onKey);
-         _stage.addEventListener("keyUp",onKey);
-         monitorInterruptions(true);
-      }
-      
-      public function dispose() : void
-      {
-         monitorInterruptions(false);
-         _stage.removeEventListener("keyDown",onKey);
-         _stage.removeEventListener("keyUp",onKey);
-         if(_touchMarker)
-         {
-            _touchMarker.dispose();
-         }
-      }
-      
-      public function advanceTime(param1:Number) : void
-      {
-         var _loc2_:int = 0;
-         var _loc3_:Touch = null;
-         var _loc4_:Array = null;
-         _elapsedTime += param1;
-         sUpdatedTouches.length = 0;
-         if(_lastTaps.length > 0)
-         {
-            _loc2_ = _lastTaps.length - 1;
-            while(_loc2_ >= 0)
-            {
-               if(_elapsedTime - _lastTaps[_loc2_].timestamp > _multitapTime)
-               {
-                  _lastTaps.removeAt(_loc2_);
-               }
-               _loc2_--;
-            }
-         }
-         while(_queue.length > 0)
-         {
-            for each(_loc3_ in _currentTouches)
-            {
-               if(_loc3_.phase == "began" || _loc3_.phase == "moved")
-               {
-                  _loc3_.phase = "stationary";
-               }
-            }
-            while(_queue.length > 0 && !containsTouchWithID(sUpdatedTouches,_queue[_queue.length - 1][0]))
-            {
-               _loc4_ = _queue.pop();
-               _loc3_ = createOrUpdateTouch(_loc4_[0],_loc4_[1],_loc4_[2],_loc4_[3],_loc4_[4],_loc4_[5],_loc4_[6]);
-               sUpdatedTouches[sUpdatedTouches.length] = _loc3_;
-            }
-            processTouches(sUpdatedTouches,_shiftDown,_ctrlDown);
-            _loc2_ = _currentTouches.length - 1;
-            while(_loc2_ >= 0)
-            {
-               if(_currentTouches[_loc2_].phase == "ended")
-               {
-                  _currentTouches.removeAt(_loc2_);
-               }
-               _loc2_--;
-            }
-            sUpdatedTouches.length = 0;
-         }
-      }
-      
-      protected function processTouches(param1:Vector.<Touch>, param2:Boolean, param3:Boolean) : void
-      {
-         var _loc4_:* = null;
-         sHoveringTouchData.length = 0;
-         _touchEvent.resetTo("touch",_currentTouches,param2,param3);
-         for each(_loc4_ in param1)
-         {
-            if(_loc4_.phase == "hover" && _loc4_.target)
-            {
-               sHoveringTouchData[sHoveringTouchData.length] = {
-                  "touch":_loc4_,
-                  "target":_loc4_.target,
-                  "bubbleChain":_loc4_.bubbleChain
-               };
-            }
-            if(_loc4_.phase == "hover" || _loc4_.phase == "began")
-            {
-               sHelperPoint.setTo(_loc4_.globalX,_loc4_.globalY);
-               _loc4_.target = _root.hitTest(sHelperPoint);
-            }
-         }
-         for each(var _loc5_ in sHoveringTouchData)
-         {
-            if(_loc5_.touch.target != _loc5_.target)
-            {
-               _touchEvent.dispatch(_loc5_.bubbleChain);
-            }
-         }
-         for each(_loc4_ in param1)
-         {
-            _loc4_.dispatchEvent(_touchEvent);
-         }
-         _touchEvent.resetTo("touch");
-      }
-      
-      public function enqueue(param1:int, param2:String, param3:Number, param4:Number, param5:Number = 1, param6:Number = 1, param7:Number = 1) : void
-      {
-         _queue.unshift(arguments);
-         if(_ctrlDown && _touchMarker && param1 == 0)
-         {
-            _touchMarker.moveMarker(param3,param4,_shiftDown);
-            _queue.unshift([1,param2,_touchMarker.mockX,_touchMarker.mockY]);
-         }
-      }
-      
-      public function enqueueMouseLeftStage() : void
-      {
-         var _loc1_:Touch = getCurrentTouch(0);
-         if(_loc1_ == null || _loc1_.phase != "hover")
-         {
-            return;
-         }
-         var _loc2_:int = 1;
-         var _loc8_:Number = _loc1_.globalX;
-         var _loc6_:Number = _loc1_.globalY;
-         var _loc4_:Number = _loc1_.globalX;
-         var _loc7_:Number = _stage.stageWidth - _loc4_;
-         var _loc3_:Number = _loc1_.globalY;
-         var _loc9_:Number = _stage.stageHeight - _loc3_;
-         var _loc5_:Number = Math.min(_loc4_,_loc7_,_loc3_,_loc9_);
-         if(_loc5_ == _loc4_)
-         {
-            _loc8_ = -_loc2_;
-         }
-         else if(_loc5_ == _loc7_)
-         {
-            _loc8_ = _stage.stageWidth + _loc2_;
-         }
-         else if(_loc5_ == _loc3_)
-         {
-            _loc6_ = -_loc2_;
-         }
-         else
-         {
-            _loc6_ = _stage.stageHeight + _loc2_;
-         }
-         enqueue(0,"hover",_loc8_,_loc6_);
-      }
-      
-      public function cancelTouches() : void
-      {
-         if(_currentTouches.length > 0)
-         {
-            for each(var _loc1_ in _currentTouches)
-            {
-               if(_loc1_.phase == "began" || _loc1_.phase == "moved" || _loc1_.phase == "stationary")
-               {
-                  _loc1_.phase = "ended";
-                  _loc1_.cancelled = true;
-               }
-            }
-            processTouches(_currentTouches,_shiftDown,_ctrlDown);
-         }
-         _currentTouches.length = 0;
-         _queue.length = 0;
-      }
-      
-      private function createOrUpdateTouch(param1:int, param2:String, param3:Number, param4:Number, param5:Number = 1, param6:Number = 1, param7:Number = 1) : Touch
-      {
-         var _loc8_:Touch = getCurrentTouch(param1);
-         if(_loc8_ == null)
-         {
-            _loc8_ = new Touch(param1);
-            addCurrentTouch(_loc8_);
-         }
-         _loc8_.globalX = param3;
-         _loc8_.globalY = param4;
-         _loc8_.phase = param2;
-         _loc8_.timestamp = _elapsedTime;
-         _loc8_.pressure = param5;
-         _loc8_.width = param6;
-         _loc8_.height = param7;
-         if(param2 == "began")
-         {
-            updateTapCount(_loc8_);
-         }
-         return _loc8_;
-      }
-      
-      private function updateTapCount(param1:Touch) : void
-      {
-         var _loc4_:Number = NaN;
-         var _loc5_:* = null;
-         var _loc2_:Number = _multitapDistance * _multitapDistance;
-         for each(var _loc3_ in _lastTaps)
-         {
-            _loc4_ = Math.pow(_loc3_.globalX - param1.globalX,2) + Math.pow(_loc3_.globalY - param1.globalY,2);
-            if(_loc4_ <= _loc2_)
-            {
-               _loc5_ = _loc3_;
-               break;
-            }
-         }
-         if(_loc5_)
-         {
-            param1.tapCount = _loc5_.tapCount + 1;
-            _lastTaps.removeAt(_lastTaps.indexOf(_loc5_));
-         }
-         else
-         {
-            param1.tapCount = 1;
-         }
-         _lastTaps[_lastTaps.length] = param1.clone();
-      }
-      
-      private function addCurrentTouch(param1:Touch) : void
-      {
-         var _loc2_:int = 0;
-         _loc2_ = _currentTouches.length - 1;
-         while(_loc2_ >= 0)
-         {
-            if(_currentTouches[_loc2_].id == param1.id)
-            {
-               _currentTouches.removeAt(_loc2_);
-            }
-            _loc2_--;
-         }
-         _currentTouches[_currentTouches.length] = param1;
-      }
-      
-      private function getCurrentTouch(param1:int) : Touch
-      {
-         for each(var _loc2_ in _currentTouches)
-         {
-            if(_loc2_.id == param1)
-            {
-               return _loc2_;
-            }
-         }
-         return null;
-      }
-      
-      private function containsTouchWithID(param1:Vector.<Touch>, param2:int) : Boolean
-      {
-         for each(var _loc3_ in param1)
-         {
-            if(_loc3_.id == param2)
-            {
-               return true;
-            }
-         }
-         return false;
-      }
-      
-      public function get simulateMultitouch() : Boolean
-      {
-         return _simulateMultitouch;
-      }
-      
-      public function set simulateMultitouch(param1:Boolean) : void
-      {
-         var target:Starling;
-         var value:Boolean = param1;
-         var createTouchMarker:* = function():void
-         {
-            target.removeEventListener("context3DCreate",createTouchMarker);
-            if(_touchMarker == null)
-            {
-               _touchMarker = new TouchMarker();
-               _touchMarker.visible = false;
-               _stage.addChild(_touchMarker);
-            }
-         };
-         if(simulateMultitouch == value)
-         {
-            return;
-         }
-         _simulateMultitouch = value;
-         target = Starling.current;
-         if(value && _touchMarker == null)
-         {
-            if(Starling.current.contextValid)
-            {
-               createTouchMarker();
-            }
-            else
-            {
-               target.addEventListener("context3DCreate",createTouchMarker);
-            }
-         }
-         else if(!value && _touchMarker)
-         {
-            _touchMarker.removeFromParent(true);
-            _touchMarker = null;
-         }
-      }
-      
-      public function get multitapTime() : Number
-      {
-         return _multitapTime;
-      }
-      
-      public function set multitapTime(param1:Number) : void
-      {
-         _multitapTime = param1;
-      }
-      
-      public function get multitapDistance() : Number
-      {
-         return _multitapDistance;
-      }
-      
-      public function set multitapDistance(param1:Number) : void
-      {
-         _multitapDistance = param1;
-      }
-      
-      public function get root() : DisplayObject
-      {
-         return _root;
-      }
-      
-      public function set root(param1:DisplayObject) : void
-      {
-         _root = param1;
-      }
-      
-      public function get stage() : Stage
-      {
-         return _stage;
-      }
-      
-      public function get numCurrentTouches() : int
-      {
-         return _currentTouches.length;
-      }
-      
-      private function onKey(param1:KeyboardEvent) : void
-      {
-         var _loc2_:Boolean = false;
-         var _loc4_:Touch = null;
-         var _loc3_:Touch = null;
-         if(param1.keyCode == 17 || param1.keyCode == 15)
-         {
-            _loc2_ = _ctrlDown;
-            _ctrlDown = param1.type == "keyDown";
-            if(_touchMarker && _loc2_ != _ctrlDown)
-            {
-               _touchMarker.visible = _ctrlDown;
-               _touchMarker.moveCenter(_stage.stageWidth / 2,_stage.stageHeight / 2);
-               _loc4_ = getCurrentTouch(0);
-               _loc3_ = getCurrentTouch(1);
-               if(_loc4_)
-               {
-                  _touchMarker.moveMarker(_loc4_.globalX,_loc4_.globalY);
-               }
-               if(_loc2_ && _loc3_ && _loc3_.phase != "ended")
-               {
-                  _queue.unshift([1,"ended",_loc3_.globalX,_loc3_.globalY]);
-               }
-               else if(_ctrlDown && _loc4_)
-               {
-                  if(_loc4_.phase == "hover" || _loc4_.phase == "ended")
-                  {
-                     _queue.unshift([1,"hover",_touchMarker.mockX,_touchMarker.mockY]);
-                  }
-                  else
-                  {
-                     _queue.unshift([1,"began",_touchMarker.mockX,_touchMarker.mockY]);
-                  }
-               }
-            }
-         }
-         else if(param1.keyCode == 16)
-         {
-            _shiftDown = param1.type == "keyDown";
-         }
-      }
-      
-      private function monitorInterruptions(param1:Boolean) : void
-      {
-         var _loc3_:Object = null;
-         var _loc2_:Object = null;
-         try
-         {
-            _loc3_ = getDefinitionByName("flash.desktop::NativeApplication");
-            _loc2_ = _loc3_["nativeApplication"];
-            if(param1)
-            {
-               _loc2_.addEventListener("deactivate",onInterruption,false,0,true);
-            }
-            else
-            {
-               _loc2_.removeEventListener("deactivate",onInterruption);
-            }
-         }
-         catch(e:Error)
-         {
-         }
-      }
-      
-      private function onInterruption(param1:Object) : void
-      {
-         cancelTouches();
-      }
-   }
-}
+    import flash.geom.Point;
+    import flash.utils.getDefinitionByName;
 
+    import starling.core.Starling;
+    import starling.display.DisplayObject;
+    import starling.display.Stage;
+
+    /** The TouchProcessor is used to convert mouse and touch events of the conventional
+     *  Flash stage to Starling's TouchEvents.
+     *  
+     *  <p>The Starling instance listens to mouse and touch events on the native stage. The
+     *  attributes of those events are enqueued (right as they are happening) in the
+     *  TouchProcessor.</p>
+     *  
+     *  <p>Once per frame, the "advanceTime" method is called. It analyzes the touch queue and
+     *  figures out which touches are active at that moment; the properties of all touch objects
+     *  are updated accordingly.</p>
+     *  
+     *  <p>Once the list of touches has been finalized, the "processTouches" method is called
+     *  (that might happen several times in one "advanceTime" execution; no information is
+     *  discarded). It's responsible for dispatching the actual touch events to the Starling
+     *  display tree.</p>
+     *  
+     *  <strong>Subclassing TouchProcessor</strong>
+     *  
+     *  <p>You can extend the TouchProcessor if you need to have more control over touch and
+     *  mouse input. For example, you could filter the touches by overriding the "processTouches"
+     *  method, throwing away any touches you're not interested in and passing the rest to the
+     *  super implementation.</p>
+     *  
+     *  <p>To use your custom TouchProcessor, assign it to the "Starling.touchProcessor"
+     *  property.</p>
+     *  
+     *  <p>Note that you should not dispatch TouchEvents yourself, since they are
+     *  much more complex to handle than conventional events (e.g. it must be made sure that an
+     *  object receives a TouchEvent only once, even if it's manipulated with several fingers).
+     *  Always use the base implementation of "processTouches" to let them be dispatched. That
+     *  said: you can always dispatch your own custom events, of course.</p>
+     */
+    public class TouchProcessor
+    {
+        private var _stage:Stage;
+        private var _root:DisplayObject;
+        private var _elapsedTime:Number;
+        private var _lastTaps:Vector.<Touch>;
+        private var _shiftDown:Boolean = false;
+        private var _ctrlDown:Boolean  = false;
+        private var _multitapTime:Number = 0.3;
+        private var _multitapDistance:Number = 25;
+        private var _touchEvent:TouchEvent;
+
+        private var _touchMarker:TouchMarker;
+        private var _simulateMultitouch:Boolean;
+        
+        /** A vector of arrays with the arguments that were passed to the "enqueue"
+         *  method (the oldest being at the end of the vector). */
+        protected var _queue:Vector.<Array>;
+        
+        /** The list of all currently active touches. */
+        protected var _currentTouches:Vector.<Touch>;
+        
+        /** Helper objects. */
+        private static var sUpdatedTouches:Vector.<Touch> = new <Touch>[];
+        private static var sHoveringTouchData:Vector.<Object> = new <Object>[];
+        private static var sHelperPoint:Point = new Point();
+        
+        /** Creates a new TouchProcessor that will dispatch events to the given stage. */
+        public function TouchProcessor(stage:Stage)
+        {
+            _root = _stage = stage;
+            _elapsedTime = 0.0;
+            _currentTouches = new <Touch>[];
+            _queue = new <Array>[];
+            _lastTaps = new <Touch>[];
+            _touchEvent = new TouchEvent(TouchEvent.TOUCH);
+
+            _stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
+            _stage.addEventListener(KeyboardEvent.KEY_UP,   onKey);
+            monitorInterruptions(true);
+        }
+
+        /** Removes all event handlers on the stage and releases any acquired resources. */
+        public function dispose():void
+        {
+            monitorInterruptions(false);
+            _stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKey);
+            _stage.removeEventListener(KeyboardEvent.KEY_UP,   onKey);
+            if (_touchMarker) _touchMarker.dispose();
+        }
+        
+        /** Analyzes the current touch queue and processes the list of current touches, emptying
+         *  the queue while doing so. This method is called by Starling once per frame. */
+        public function advanceTime(passedTime:Number):void
+        {
+            var i:int;
+            var touch:Touch;
+            
+            _elapsedTime += passedTime;
+            sUpdatedTouches.length = 0;
+            
+            // remove old taps
+            if (_lastTaps.length > 0)
+            {
+                for (i=_lastTaps.length-1; i>=0; --i)
+                    if (_elapsedTime - _lastTaps[i].timestamp > _multitapTime)
+                        _lastTaps.removeAt(i);
+            }
+            
+            while (_queue.length > 0)
+            {
+                // Set touches that were new or moving to phase 'stationary'.
+                for each (touch in _currentTouches)
+                    if (touch.phase == TouchPhase.BEGAN || touch.phase == TouchPhase.MOVED)
+                        touch.phase = TouchPhase.STATIONARY;
+
+                // analyze new touches, but each ID only once
+                while (_queue.length > 0 &&
+                      !containsTouchWithID(sUpdatedTouches, _queue[_queue.length-1][0]))
+                {
+                    var touchArgs:Array = _queue.pop();
+                    touch = createOrUpdateTouch(
+                                touchArgs[0], touchArgs[1], touchArgs[2], touchArgs[3],
+                                touchArgs[4], touchArgs[5], touchArgs[6]);
+                    
+                    sUpdatedTouches[sUpdatedTouches.length] = touch; // avoiding 'push'
+                }
+
+                // process the current set of touches (i.e. dispatch touch events)
+                processTouches(sUpdatedTouches, _shiftDown, _ctrlDown);
+
+                // remove ended touches
+                for (i=_currentTouches.length-1; i>=0; --i)
+                    if (_currentTouches[i].phase == TouchPhase.ENDED)
+                        _currentTouches.removeAt(i);
+
+                sUpdatedTouches.length = 0;
+            }
+        }
+        
+        /** Dispatches TouchEvents to the display objects that are affected by the list of
+         *  given touches. Called internally by "advanceTime". To calculate updated targets,
+         *  the method will call "hitTest" on the "root" object.
+         *  
+         *  @param touches    a list of all touches that have changed just now.
+         *  @param shiftDown  indicates if the shift key was down when the touches occurred.
+         *  @param ctrlDown   indicates if the ctrl or cmd key was down when the touches occurred.
+         */
+        protected function processTouches(touches:Vector.<Touch>,
+                                          shiftDown:Boolean, ctrlDown:Boolean):void
+        {
+            var touch:Touch;
+            sHoveringTouchData.length = 0;
+
+            // the same touch event will be dispatched to all targets;
+            // the 'dispatch' method makes sure each bubble target is visited only once.
+            _touchEvent.resetTo(TouchEvent.TOUCH, _currentTouches, shiftDown, ctrlDown);
+
+            // hit test our updated touches
+            for each (touch in touches)
+            {
+                // hovering touches need special handling (see below)
+                if (touch.phase == TouchPhase.HOVER && touch.target)
+                    sHoveringTouchData[sHoveringTouchData.length] = {
+                        touch: touch,
+                        target: touch.target,
+                        bubbleChain: touch.bubbleChain
+                    }; // avoiding 'push'
+                
+                if (touch.phase == TouchPhase.HOVER || touch.phase == TouchPhase.BEGAN)
+                {
+                    sHelperPoint.setTo(touch.globalX, touch.globalY);
+                    touch.target = _root.hitTest(sHelperPoint);
+                }
+            }
+            
+            // if the target of a hovering touch changed, we dispatch the event to the previous
+            // target to notify it that it's no longer being hovered over.
+            for each (var touchData:Object in sHoveringTouchData)
+                if (touchData.touch.target != touchData.target)
+                    _touchEvent.dispatch(touchData.bubbleChain);
+            
+            // dispatch events for the rest of our updated touches
+            for each (touch in touches)
+                touch.dispatchEvent(_touchEvent);
+
+            // clean up any references
+            _touchEvent.resetTo(TouchEvent.TOUCH);
+        }
+        
+        /** Enqueues a new touch our mouse event with the given properties. */
+        public function enqueue(touchID:int, phase:String, globalX:Number, globalY:Number,
+                                pressure:Number=1.0, width:Number=1.0, height:Number=1.0):void
+        {
+            _queue.unshift(arguments);
+            
+            // multitouch simulation (only with mouse)
+            if (_ctrlDown && _touchMarker && touchID == 0)
+            {
+                _touchMarker.moveMarker(globalX, globalY, _shiftDown);
+                _queue.unshift([1, phase, _touchMarker.mockX, _touchMarker.mockY]);
+            }
+        }
+        
+        /** Enqueues an artificial touch that represents the mouse leaving the stage.
+         *  
+         *  <p>On OS X, we get mouse events from outside the stage; on Windows, we do not.
+         *  This method enqueues an artificial hover point that is just outside the stage.
+         *  That way, objects listening for HOVERs over them will get notified everywhere.</p>
+         */
+        public function enqueueMouseLeftStage():void
+        {
+            var mouse:Touch = getCurrentTouch(0);
+            if (mouse == null || mouse.phase != TouchPhase.HOVER) return;
+            
+            var offset:int = 1;
+            var exitX:Number = mouse.globalX;
+            var exitY:Number = mouse.globalY;
+            var distLeft:Number = mouse.globalX;
+            var distRight:Number = _stage.stageWidth - distLeft;
+            var distTop:Number = mouse.globalY;
+            var distBottom:Number = _stage.stageHeight - distTop;
+            var minDist:Number = Math.min(distLeft, distRight, distTop, distBottom);
+            
+            // the new hover point should be just outside the stage, near the point where
+            // the mouse point was last to be seen.
+            
+            if (minDist == distLeft)       exitX = -offset;
+            else if (minDist == distRight) exitX = _stage.stageWidth + offset;
+            else if (minDist == distTop)   exitY = -offset;
+            else                           exitY = _stage.stageHeight + offset;
+            
+            enqueue(0, TouchPhase.HOVER, exitX, exitY);
+        }
+
+        /** Force-end all current touches. Changes the phase of all touches to 'ENDED' and
+         *  immediately dispatches a new TouchEvent (if touches are present). Called automatically
+         *  when the app receives a 'DEACTIVATE' event. */
+        public function cancelTouches():void
+        {
+            if (_currentTouches.length > 0)
+            {
+                // abort touches
+                for each (var touch:Touch in _currentTouches)
+                {
+                    if (touch.phase == TouchPhase.BEGAN || touch.phase == TouchPhase.MOVED ||
+                        touch.phase == TouchPhase.STATIONARY)
+                    {
+                        touch.phase = TouchPhase.ENDED;
+                        touch.cancelled = true;
+                    }
+                }
+
+                // dispatch events
+                processTouches(_currentTouches, _shiftDown, _ctrlDown);
+            }
+
+            // purge touches
+            _currentTouches.length = 0;
+            _queue.length = 0;
+        }
+        
+        private function createOrUpdateTouch(touchID:int, phase:String,
+                                             globalX:Number, globalY:Number,
+                                             pressure:Number=1.0,
+                                             width:Number=1.0, height:Number=1.0):Touch
+        {
+            var touch:Touch = getCurrentTouch(touchID);
+            
+            if (touch == null)
+            {
+                touch = new Touch(touchID);
+                addCurrentTouch(touch);
+            }
+            
+            touch.globalX = globalX;
+            touch.globalY = globalY;
+            touch.phase = phase;
+            touch.timestamp = _elapsedTime;
+            touch.pressure = pressure;
+            touch.width  = width;
+            touch.height = height;
+
+            if (phase == TouchPhase.BEGAN)
+                updateTapCount(touch);
+
+            return touch;
+        }
+        
+        private function updateTapCount(touch:Touch):void
+        {
+            var nearbyTap:Touch = null;
+            var minSqDist:Number = _multitapDistance * _multitapDistance;
+            
+            for each (var tap:Touch in _lastTaps)
+            {
+                var sqDist:Number = Math.pow(tap.globalX - touch.globalX, 2) +
+                                    Math.pow(tap.globalY - touch.globalY, 2);
+                if (sqDist <= minSqDist)
+                {
+                    nearbyTap = tap;
+                    break;
+                }
+            }
+            
+            if (nearbyTap)
+            {
+                touch.tapCount = nearbyTap.tapCount + 1;
+                _lastTaps.removeAt(_lastTaps.indexOf(nearbyTap));
+            }
+            else
+            {
+                touch.tapCount = 1;
+            }
+            
+            _lastTaps[_lastTaps.length] = touch.clone(); // avoiding 'push'
+        }
+        
+        private function addCurrentTouch(touch:Touch):void
+        {
+            for (var i:int=_currentTouches.length-1; i>=0; --i)
+                if (_currentTouches[i].id == touch.id)
+                    _currentTouches.removeAt(i);
+
+            _currentTouches[_currentTouches.length] = touch; // avoiding 'push'
+        }
+        
+        private function getCurrentTouch(touchID:int):Touch
+        {
+            for each (var touch:Touch in _currentTouches)
+                if (touch.id == touchID) return touch;
+            
+            return null;
+        }
+        
+        private function containsTouchWithID(touches:Vector.<Touch>, touchID:int):Boolean
+        {
+            for each (var touch:Touch in touches)
+                if (touch.id == touchID) return true;
+            
+            return false;
+        }
+        
+        /** Indicates if multitouch simulation should be activated. When the user presses
+         *  ctrl/cmd (and optionally shift), he'll see a second touch cursor that mimics the first.
+         *  That's an easy way to develop and test multitouch when there's only a mouse available.
+         */
+        public function get simulateMultitouch():Boolean { return _simulateMultitouch; }
+        public function set simulateMultitouch(value:Boolean):void
+        {
+            if (simulateMultitouch == value) return; // no change
+
+            _simulateMultitouch = value;
+            var target:Starling = Starling.current;
+
+            if (value && _touchMarker == null)
+            {
+                if (Starling.current.contextValid)
+                    createTouchMarker();
+                else
+                    target.addEventListener(Event.CONTEXT3D_CREATE, createTouchMarker);
+            }
+            else if (!value && _touchMarker)
+            {                
+                _touchMarker.removeFromParent(true);
+                _touchMarker = null;
+            }
+
+            function createTouchMarker():void
+            {
+                target.removeEventListener(Event.CONTEXT3D_CREATE, createTouchMarker);
+
+                if (_touchMarker == null)
+                {
+                    _touchMarker = new TouchMarker();
+                    _touchMarker.visible = false;
+                    _stage.addChild(_touchMarker);
+                }
+            }
+        }
+        
+        /** The time period (in seconds) in which two touches must occur to be recognized as
+         *  a multitap gesture. */
+        public function get multitapTime():Number { return _multitapTime; }
+        public function set multitapTime(value:Number):void { _multitapTime = value; }
+        
+        /** The distance (in points) describing how close two touches must be to each other to
+         *  be recognized as a multitap gesture. */
+        public function get multitapDistance():Number { return _multitapDistance; }
+        public function set multitapDistance(value:Number):void { _multitapDistance = value; }
+
+        /** The base object that will be used for hit testing. Per default, this reference points
+         *  to the stage; however, you can limit touch processing to certain parts of your game
+         *  by assigning a different object. */
+        public function get root():DisplayObject { return _root; }
+        public function set root(value:DisplayObject):void { _root = value; }
+        
+        /** The stage object to which the touch events are (per default) dispatched. */
+        public function get stage():Stage { return _stage; }
+        
+        /** Returns the number of fingers / touch points that are currently on the stage. */
+        public function get numCurrentTouches():int { return _currentTouches.length; }
+
+        // keyboard handling
+        
+        private function onKey(event:KeyboardEvent):void
+        {
+            if (event.keyCode == 17 || event.keyCode == 15) // ctrl or cmd key
+            {
+                var wasCtrlDown:Boolean = _ctrlDown;
+                _ctrlDown = event.type == KeyboardEvent.KEY_DOWN;
+                
+                if (_touchMarker && wasCtrlDown != _ctrlDown)
+                {
+                    _touchMarker.visible = _ctrlDown;
+                    _touchMarker.moveCenter(_stage.stageWidth/2, _stage.stageHeight/2);
+                    
+                    var mouseTouch:Touch = getCurrentTouch(0);
+                    var mockedTouch:Touch = getCurrentTouch(1);
+                    
+                    if (mouseTouch)
+                        _touchMarker.moveMarker(mouseTouch.globalX, mouseTouch.globalY);
+                    
+                    if (wasCtrlDown && mockedTouch && mockedTouch.phase != TouchPhase.ENDED)
+                    {
+                        // end active touch ...
+                        _queue.unshift([1, TouchPhase.ENDED, mockedTouch.globalX, mockedTouch.globalY]);
+                    }
+                    else if (_ctrlDown && mouseTouch)
+                    {
+                        // ... or start new one
+                        if (mouseTouch.phase == TouchPhase.HOVER || mouseTouch.phase == TouchPhase.ENDED)
+                            _queue.unshift([1, TouchPhase.HOVER, _touchMarker.mockX, _touchMarker.mockY]);
+                        else
+                            _queue.unshift([1, TouchPhase.BEGAN, _touchMarker.mockX, _touchMarker.mockY]);
+                    }
+                }
+            }
+            else if (event.keyCode == 16) // shift key
+            {
+                _shiftDown = event.type == KeyboardEvent.KEY_DOWN;
+            }
+        }
+
+        // interruption handling
+        
+        private function monitorInterruptions(enable:Boolean):void
+        {
+            // if the application moves into the background or is interrupted (e.g. through
+            // an incoming phone call), we need to abort all touches.
+            
+            try
+            {
+                var nativeAppClass:Object = getDefinitionByName("flash.desktop::NativeApplication");
+                var nativeApp:Object = nativeAppClass["nativeApplication"];
+                
+                if (enable)
+                    nativeApp.addEventListener("deactivate", onInterruption, false, 0, true);
+                else
+                    nativeApp.removeEventListener("deactivate", onInterruption);
+            }
+            catch (e:Error) {} // we're not running in AIR
+        }
+        
+        private function onInterruption(event:Object):void
+        {
+            cancelTouches();
+        }
+    }
+}

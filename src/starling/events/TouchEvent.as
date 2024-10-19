@@ -1,187 +1,218 @@
+// =================================================================================================
+//
+//	Starling Framework
+//	Copyright Gamua GmbH. All Rights Reserved.
+//
+//	This program is free software. You can redistribute and/or modify it
+//	in accordance with the terms of the accompanying license agreement.
+//
+// =================================================================================================
+
 package starling.events
 {
-   import starling.core.starling_internal;
-   import starling.display.DisplayObject;
-   
-   use namespace starling_internal;
-   
-   public class TouchEvent extends Event
-   {
-      public static const TOUCH:String = "touch";
-      
-      private static var sTouches:Vector.<Touch> = new Vector.<Touch>(0);
-      
-      private var _shiftKey:Boolean;
-      
-      private var _ctrlKey:Boolean;
-      
-      private var _timestamp:Number;
-      
-      private var _visitedObjects:Vector.<EventDispatcher>;
-      
-      public function TouchEvent(param1:String, param2:Vector.<Touch> = null, param3:Boolean = false, param4:Boolean = false, param5:Boolean = true)
-      {
-         super(param1,param5,param2);
-         _shiftKey = param3;
-         _ctrlKey = param4;
-         _visitedObjects = new Vector.<EventDispatcher>(0);
-         updateTimestamp(param2);
-      }
-      
-      internal function resetTo(param1:String, param2:Vector.<Touch> = null, param3:Boolean = false, param4:Boolean = false, param5:Boolean = true) : TouchEvent
-      {
-         super.starling_internal::reset(param1,param5,param2);
-         _shiftKey = param3;
-         _ctrlKey = param4;
-         _visitedObjects.length = 0;
-         updateTimestamp(param2);
-         return this;
-      }
-      
-      private function updateTimestamp(param1:Vector.<Touch>) : void
-      {
-         var _loc2_:int = 0;
-         _timestamp = -1;
-         var _loc3_:int = int(!!param1 ? param1.length : 0);
-         _loc2_ = 0;
-         while(_loc2_ < _loc3_)
-         {
-            if(param1[_loc2_].timestamp > _timestamp)
-            {
-               _timestamp = param1[_loc2_].timestamp;
-            }
-            _loc2_++;
-         }
-      }
-      
-      public function getTouches(param1:DisplayObject, param2:String = null, param3:Vector.<Touch> = null) : Vector.<Touch>
-      {
-         var _loc6_:int = 0;
-         var _loc7_:Touch = null;
-         var _loc4_:Boolean = false;
-         var _loc5_:Boolean = false;
-         if(param3 == null)
-         {
-            param3 = new Vector.<Touch>(0);
-         }
-         var _loc8_:Vector.<Touch> = data as Vector.<Touch>;
-         var _loc9_:int = int(_loc8_.length);
-         _loc6_ = 0;
-         while(_loc6_ < _loc9_)
-         {
-            _loc7_ = _loc8_[_loc6_];
-            _loc4_ = _loc7_.isTouching(param1);
-            _loc5_ = param2 == null || param2 == _loc7_.phase;
-            if(_loc4_ && _loc5_)
-            {
-               param3[param3.length] = _loc7_;
-            }
-            _loc6_++;
-         }
-         return param3;
-      }
-      
-      public function getTouch(param1:DisplayObject, param2:String = null, param3:int = -1) : Touch
-      {
-         var _loc4_:Touch = null;
-         var _loc5_:int = 0;
-         getTouches(param1,param2,sTouches);
-         var _loc6_:int = int(sTouches.length);
-         if(_loc6_ > 0)
-         {
-            _loc4_ = null;
-            if(param3 < 0)
-            {
-               _loc4_ = sTouches[0];
-            }
-            else
-            {
-               _loc5_ = 0;
-               while(_loc5_ < _loc6_)
-               {
-                  if(sTouches[_loc5_].id == param3)
-                  {
-                     _loc4_ = sTouches[_loc5_];
-                     break;
-                  }
-                  _loc5_++;
-               }
-            }
-            sTouches.length = 0;
-            return _loc4_;
-         }
-         return null;
-      }
-      
-      public function interactsWith(param1:DisplayObject) : Boolean
-      {
-         var _loc3_:int = 0;
-         var _loc2_:Boolean = false;
-         getTouches(param1,null,sTouches);
-         _loc3_ = sTouches.length - 1;
-         while(_loc3_ >= 0)
-         {
-            if(sTouches[_loc3_].phase != "ended")
-            {
-               _loc2_ = true;
-               break;
-            }
-            _loc3_--;
-         }
-         sTouches.length = 0;
-         return _loc2_;
-      }
-      
-      internal function dispatch(param1:Vector.<EventDispatcher>) : void
-      {
-         var _loc2_:int = 0;
-         var _loc6_:EventDispatcher = null;
-         var _loc4_:int = 0;
-         var _loc3_:EventDispatcher = null;
-         var _loc5_:Boolean = false;
-         if(param1 && param1.length)
-         {
-            _loc2_ = int(bubbles ? param1.length : 1);
-            _loc6_ = target;
-            setTarget(param1[0] as EventDispatcher);
-            _loc4_ = 0;
-            while(_loc4_ < _loc2_)
-            {
-               _loc3_ = param1[_loc4_] as EventDispatcher;
-               if(_visitedObjects.indexOf(_loc3_) == -1)
-               {
-                  _loc5_ = _loc3_.invokeEvent(this);
-                  _visitedObjects[_visitedObjects.length] = _loc3_;
-                  if(_loc5_)
-                  {
-                     break;
-                  }
-               }
-               _loc4_++;
-            }
-            setTarget(_loc6_);
-         }
-      }
-      
-      public function get timestamp() : Number
-      {
-         return _timestamp;
-      }
-      
-      public function get touches() : Vector.<Touch>
-      {
-         return (data as Vector.<Touch>).concat();
-      }
-      
-      public function get shiftKey() : Boolean
-      {
-         return _shiftKey;
-      }
-      
-      public function get ctrlKey() : Boolean
-      {
-         return _ctrlKey;
-      }
-   }
-}
+    import starling.core.starling_internal;
+    import starling.display.DisplayObject;
 
+    use namespace starling_internal;
+    
+    /** A TouchEvent is triggered either by touch or mouse input.  
+     *  
+     *  <p>In Starling, both touch events and mouse events are handled through the same class: 
+     *  TouchEvent. To process user input from a touch screen or the mouse, you have to register
+     *  an event listener for events of the type <code>TouchEvent.TOUCH</code>. This is the only
+     *  event type you need to handle; the long list of mouse event types as they are used in
+     *  conventional Flash are mapped to so-called "TouchPhases" instead.</p> 
+     * 
+     *  <p>The difference between mouse input and touch input is that</p>
+     *  
+     *  <ul>
+     *    <li>only one mouse cursor can be present at a given moment and</li>
+     *    <li>only the mouse can "hover" over an object without a pressed button.</li>
+     *  </ul> 
+     *  
+     *  <strong>Which objects receive touch events?</strong>
+     * 
+     *  <p>In Starling, any display object receives touch events, as long as the  
+     *  <code>touchable</code> property of the object and its parents is enabled. There 
+     *  is no "InteractiveObject" class in Starling.</p>
+     *  
+     *  <strong>How to work with individual touches</strong>
+     *  
+     *  <p>The event contains a list of all touches that are currently present. Each individual
+     *  touch is stored in an object of type "Touch". Since you are normally only interested in 
+     *  the touches that occurred on top of certain objects, you can query the event for touches
+     *  with a specific target:</p>
+     * 
+     *  <code>var touches:Vector.&lt;Touch&gt; = touchEvent.getTouches(this);</code>
+     *  
+     *  <p>This will return all touches of "this" or one of its children. When you are not using 
+     *  multitouch, you can also access the touch object directly, like this:</p>
+     * 
+     *  <code>var touch:Touch = touchEvent.getTouch(this);</code>
+     *  
+     *  @see Touch
+     *  @see TouchPhase
+     */ 
+    public class TouchEvent extends Event
+    {
+        /** Event type for touch or mouse input. */
+        public static const TOUCH:String = "touch";
+
+        private var _shiftKey:Boolean;
+        private var _ctrlKey:Boolean;
+        private var _timestamp:Number;
+        private var _visitedObjects:Vector.<EventDispatcher>;
+        
+        /** Helper object. */
+        private static var sTouches:Vector.<Touch> = new <Touch>[];
+        
+        /** Creates a new TouchEvent instance. */
+        public function TouchEvent(type:String, touches:Vector.<Touch>=null, shiftKey:Boolean=false,
+                                   ctrlKey:Boolean=false, bubbles:Boolean=true)
+        {
+            super(type, bubbles, touches);
+
+            _shiftKey = shiftKey;
+            _ctrlKey = ctrlKey;
+            _visitedObjects = new <EventDispatcher>[];
+            
+            updateTimestamp(touches);
+        }
+
+        /** @private */
+        internal function resetTo(type:String, touches:Vector.<Touch>=null, shiftKey:Boolean=false,
+                                  ctrlKey:Boolean=false, bubbles:Boolean=true):TouchEvent
+        {
+            super.reset(type, bubbles, touches);
+
+            _shiftKey = shiftKey;
+            _ctrlKey = ctrlKey;
+            _visitedObjects.length = 0;
+            updateTimestamp(touches);
+
+            return this;
+        }
+
+        private function updateTimestamp(touches:Vector.<Touch>):void
+        {
+            _timestamp = -1.0;
+            var numTouches:int = touches ? touches.length : 0;
+
+            for (var i:int=0; i<numTouches; ++i)
+                if (touches[i].timestamp > _timestamp)
+                    _timestamp = touches[i].timestamp;
+        }
+
+        /** Returns a list of touches that originated over a certain target. If you pass an
+         *  <code>out</code>-vector, the touches will be added to this vector instead of creating
+         *  a new object. */
+        public function getTouches(target:DisplayObject, phase:String=null,
+                                   out:Vector.<Touch>=null):Vector.<Touch>
+        {
+            if (out == null) out = new <Touch>[];
+            var allTouches:Vector.<Touch> = data as Vector.<Touch>;
+            var numTouches:int = allTouches.length;
+            
+            for (var i:int=0; i<numTouches; ++i)
+            {
+                var touch:Touch = allTouches[i];
+                var correctTarget:Boolean = touch.isTouching(target);
+                var correctPhase:Boolean = (phase == null || phase == touch.phase);
+                    
+                if (correctTarget && correctPhase)
+                    out[out.length] = touch; // avoiding 'push'
+            }
+            return out;
+        }
+        
+        /** Returns a touch that originated over a certain target. 
+         * 
+         *  @param target   The object that was touched; may also be a parent of the actual
+         *                  touch-target.
+         *  @param phase    The phase the touch must be in, or null if you don't care.
+         *  @param id       The ID of the requested touch, or -1 if you don't care.
+         */
+        public function getTouch(target:DisplayObject, phase:String=null, id:int=-1):Touch
+        {
+            getTouches(target, phase, sTouches);
+            var numTouches:int = sTouches.length;
+            
+            if (numTouches > 0) 
+            {
+                var touch:Touch = null;
+                
+                if (id < 0) touch = sTouches[0];
+                else
+                {
+                    for (var i:int=0; i<numTouches; ++i)
+                        if (sTouches[i].id == id) { touch = sTouches[i]; break; }
+                }
+                
+                sTouches.length = 0;
+                return touch;
+            }
+            else return null;
+        }
+        
+        /** Indicates if a target is currently being touched or hovered over. */
+        public function interactsWith(target:DisplayObject):Boolean
+        {
+            var result:Boolean = false;
+            getTouches(target, null, sTouches);
+            
+            for (var i:int=sTouches.length-1; i>=0; --i)
+            {
+                if (sTouches[i].phase != TouchPhase.ENDED)
+                {
+                    result = true;
+                    break;
+                }
+            }
+            
+            sTouches.length = 0;
+            return result;
+        }
+        
+        // custom dispatching
+        
+        /** @private
+         *  Dispatches the event along a custom bubble chain. During the lifetime of the event,
+         *  each object is visited only once. */
+        internal function dispatch(chain:Vector.<EventDispatcher>):void
+        {
+            if (chain && chain.length)
+            {
+                var chainLength:int = bubbles ? chain.length : 1;
+                var previousTarget:EventDispatcher = target;
+                setTarget(chain[0] as EventDispatcher);
+                
+                for (var i:int=0; i<chainLength; ++i)
+                {
+                    var chainElement:EventDispatcher = chain[i] as EventDispatcher;
+                    if (_visitedObjects.indexOf(chainElement) == -1)
+                    {
+                        var stopPropagation:Boolean = chainElement.invokeEvent(this);
+                        _visitedObjects[_visitedObjects.length] = chainElement;
+                        if (stopPropagation) break;
+                    }
+                }
+                
+                setTarget(previousTarget);
+            }
+        }
+        
+        // properties
+        
+        /** The time the event occurred (in seconds since application launch). */
+        public function get timestamp():Number { return _timestamp; }
+        
+        /** All touches that are currently available. */
+        public function get touches():Vector.<Touch> { return (data as Vector.<Touch>).concat(); }
+        
+        /** Indicates if the shift key was pressed when the event occurred. */
+        public function get shiftKey():Boolean { return _shiftKey; }
+        
+        /** Indicates if the ctrl key was pressed when the event occurred. (Mac OS: Cmd or Ctrl) */
+        public function get ctrlKey():Boolean { return _ctrlKey; }
+    }
+}

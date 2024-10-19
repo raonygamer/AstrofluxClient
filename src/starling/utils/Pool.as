@@ -1,135 +1,143 @@
+// =================================================================================================
+//
+//	Starling Framework
+//	Copyright Gamua GmbH. All Rights Reserved.
+//
+//	This program is free software. You can redistribute and/or modify it
+//	in accordance with the terms of the accompanying license agreement.
+//
+// =================================================================================================
+
 package starling.utils
 {
-   import flash.geom.Matrix;
-   import flash.geom.Matrix3D;
-   import flash.geom.Point;
-   import flash.geom.Rectangle;
-   import flash.geom.Vector3D;
-   import starling.errors.AbstractClassError;
-   
-   public class Pool
-   {
-      private static var sPoints:Vector.<Point> = new Vector.<Point>(0);
-      
-      private static var sPoints3D:Vector.<Vector3D> = new Vector.<Vector3D>(0);
-      
-      private static var sMatrices:Vector.<Matrix> = new Vector.<Matrix>(0);
-      
-      private static var sMatrices3D:Vector.<Matrix3D> = new Vector.<Matrix3D>(0);
-      
-      private static var sRectangles:Vector.<Rectangle> = new Vector.<Rectangle>(0);
-      
-      public function Pool()
-      {
-         super();
-         throw new AbstractClassError();
-      }
-      
-      public static function getPoint(param1:Number = 0, param2:Number = 0) : Point
-      {
-         var _loc3_:Point = null;
-         if(sPoints.length == 0)
-         {
-            return new Point(param1,param2);
-         }
-         _loc3_ = sPoints.pop();
-         _loc3_.x = param1;
-         _loc3_.y = param2;
-         return _loc3_;
-      }
-      
-      public static function putPoint(param1:Point) : void
-      {
-         if(param1)
-         {
-            sPoints[sPoints.length] = param1;
-         }
-      }
-      
-      public static function getPoint3D(param1:Number = 0, param2:Number = 0, param3:Number = 0) : Vector3D
-      {
-         var _loc4_:Vector3D = null;
-         if(sPoints3D.length == 0)
-         {
-            return new Vector3D(param1,param2,param3);
-         }
-         _loc4_ = sPoints3D.pop();
-         _loc4_.x = param1;
-         _loc4_.y = param2;
-         _loc4_.z = param3;
-         return _loc4_;
-      }
-      
-      public static function putPoint3D(param1:Vector3D) : void
-      {
-         if(param1)
-         {
-            sPoints3D[sPoints3D.length] = param1;
-         }
-      }
-      
-      public static function getMatrix(param1:Number = 1, param2:Number = 0, param3:Number = 0, param4:Number = 1, param5:Number = 0, param6:Number = 0) : Matrix
-      {
-         var _loc7_:Matrix = null;
-         if(sMatrices.length == 0)
-         {
-            return new Matrix(param1,param2,param3,param4,param5,param6);
-         }
-         _loc7_ = sMatrices.pop();
-         _loc7_.setTo(param1,param2,param3,param4,param5,param6);
-         return _loc7_;
-      }
-      
-      public static function putMatrix(param1:Matrix) : void
-      {
-         if(param1)
-         {
-            sMatrices[sMatrices.length] = param1;
-         }
-      }
-      
-      public static function getMatrix3D(param1:Boolean = true) : Matrix3D
-      {
-         var _loc2_:Matrix3D = null;
-         if(sMatrices3D.length == 0)
-         {
-            return new Matrix3D();
-         }
-         _loc2_ = sMatrices3D.pop();
-         if(param1)
-         {
-            _loc2_.identity();
-         }
-         return _loc2_;
-      }
-      
-      public static function putMatrix3D(param1:Matrix3D) : void
-      {
-         if(param1)
-         {
-            sMatrices3D[sMatrices3D.length] = param1;
-         }
-      }
-      
-      public static function getRectangle(param1:Number = 0, param2:Number = 0, param3:Number = 0, param4:Number = 0) : Rectangle
-      {
-         var _loc5_:Rectangle = null;
-         if(sRectangles.length == 0)
-         {
-            return new Rectangle(param1,param2,param3,param4);
-         }
-         _loc5_ = sRectangles.pop();
-         _loc5_.setTo(param1,param2,param3,param4);
-         return _loc5_;
-      }
-      
-      public static function putRectangle(param1:Rectangle) : void
-      {
-         if(param1)
-         {
-            sRectangles[sRectangles.length] = param1;
-         }
-      }
-   }
-}
+    import flash.geom.Matrix;
+    import flash.geom.Matrix3D;
+    import flash.geom.Point;
+    import flash.geom.Rectangle;
+    import flash.geom.Vector3D;
 
+    import starling.errors.AbstractClassError;
+
+    /** A simple object pool supporting the most basic utility objects.
+     *
+     *  <p>If you want to retrieve an object, but the pool does not contain any more instances,
+     *  it will silently create a new one.</p>
+     *
+     *  <p>It's important that you use the pool in a balanced way, i.e. don't just "get" or "put"
+     *  alone! Always make the calls in pairs; whenever you get an object, be sure to put it back
+     *  later, and the other way round. Otherwise, the pool will empty or (even worse) grow
+     *  in size uncontrolled.</p>
+     */
+    public class Pool
+    {
+        private static var sPoints:Vector.<Point> = new <Point>[];
+        private static var sPoints3D:Vector.<Vector3D> = new <Vector3D>[];
+        private static var sMatrices:Vector.<Matrix> = new <Matrix>[];
+        private static var sMatrices3D:Vector.<Matrix3D> = new <Matrix3D>[];
+        private static var sRectangles:Vector.<Rectangle> = new <Rectangle>[];
+
+        /** @private */
+        public function Pool() { throw new AbstractClassError(); }
+
+        /** Retrieves a Point instance from the pool. */
+        public static function getPoint(x:Number = 0, y:Number = 0):Point
+        {
+            if (sPoints.length == 0) return new Point(x, y);
+            else
+            {
+                var point:Point = sPoints.pop();
+                point.x = x; point.y = y;
+                return point;
+            }
+        }
+
+        /** Stores a Point instance in the pool.
+         *  Don't keep any references to the object after moving it to the pool! */
+        public static function putPoint(point:Point):void
+        {
+            if (point) sPoints[sPoints.length] = point;
+        }
+
+        /** Retrieves a Vector3D instance from the pool. */
+        public static function getPoint3D(x:Number = 0, y:Number = 0, z:Number = 0):Vector3D
+        {
+            if (sPoints.length == 0) return new Vector3D(x, y, z);
+            else
+            {
+                var point:Vector3D = sPoints3D.pop();
+                point.x = x; point.y = y; point.z = z;
+                return point;
+            }
+        }
+
+        /** Stores a Vector3D instance in the pool.
+         *  Don't keep any references to the object after moving it to the pool! */
+        public static function putPoint3D(point:Vector3D):void
+        {
+            if (point) sPoints3D[sPoints3D.length] = point;
+        }
+
+        /** Retrieves a Matrix instance from the pool. */
+        public static function getMatrix(a:Number = 1, b:Number = 0, c:Number = 0, d:Number = 1,
+                                         tx:Number = 0, ty:Number = 0):Matrix
+        {
+            if (sMatrices.length == 0) return new Matrix(a, b, c, d, tx, ty);
+            else
+            {
+                var matrix:Matrix = sMatrices.pop();
+                matrix.setTo(a, b, c, d, tx, ty);
+                return matrix;
+            }
+        }
+
+        /** Stores a Matrix instance in the pool.
+         *  Don't keep any references to the object after moving it to the pool! */
+        public static function putMatrix(matrix:Matrix):void
+        {
+            if (matrix) sMatrices[sMatrices.length] = matrix;
+        }
+
+        /** Retrieves a Matrix3D instance from the pool.
+         *
+         *  @param identity   If enabled, the matrix will be reset to the identity.
+         *                    Otherwise, its contents is undefined.
+         */
+        public static function getMatrix3D(identity:Boolean = true):Matrix3D
+        {
+            if (sMatrices3D.length == 0) return new Matrix3D();
+            else
+            {
+                var matrix:Matrix3D = sMatrices3D.pop();
+                if (identity) matrix.identity();
+                return matrix;
+            }
+        }
+
+        /** Stores a Matrix3D instance in the pool.
+         *  Don't keep any references to the object after moving it to the pool! */
+        public static function putMatrix3D(matrix:Matrix3D):void
+        {
+            if (matrix) sMatrices3D[sMatrices3D.length] = matrix;
+        }
+
+        /** Retrieves a Rectangle instance from the pool. */
+        public static function getRectangle(x:Number = 0, y:Number = 0,
+                                            width:Number = 0, height:Number = 0):Rectangle
+        {
+            if (sRectangles.length == 0) return new Rectangle(x, y, width, height);
+            else
+            {
+                var rectangle:Rectangle = sRectangles.pop();
+                rectangle.setTo(x, y, width, height);
+                return rectangle;
+            }
+        }
+
+        /** Stores a Rectangle instance in the pool.
+         *  Don't keep any references to the object after moving it to the pool! */
+        public static function putRectangle(rectangle:Rectangle):void
+        {
+            if (rectangle) sRectangles[sRectangles.length] = rectangle;
+        }
+    }
+}

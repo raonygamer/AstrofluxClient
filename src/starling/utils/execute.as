@@ -1,48 +1,42 @@
+// =================================================================================================
+//
+//	Starling Framework
+//	Copyright Gamua GmbH. All Rights Reserved.
+//
+//	This program is free software. You can redistribute and/or modify it
+//	in accordance with the terms of the accompanying license agreement.
+//
+// =================================================================================================
+
 package starling.utils
 {
-   public function execute(param1:Function, ... rest) : void
-   {
-      var _loc4_:int = 0;
-      var _loc3_:int = 0;
-      if(param1 != null)
-      {
-         _loc3_ = param1.length;
-         _loc4_ = int(rest.length);
-         while(_loc4_ < _loc3_)
-         {
-            rest[_loc4_] = null;
-            _loc4_++;
-         }
-         switch(_loc3_)
-         {
-            case 0:
-               param1();
-               break;
-            case 1:
-               param1(rest[0]);
-               break;
-            case 2:
-               param1(rest[0],rest[1]);
-               break;
-            case 3:
-               param1(rest[0],rest[1],rest[2]);
-               break;
-            case 4:
-               param1(rest[0],rest[1],rest[2],rest[3]);
-               break;
-            case 5:
-               param1(rest[0],rest[1],rest[2],rest[3],rest[4]);
-               break;
-            case 6:
-               param1(rest[0],rest[1],rest[2],rest[3],rest[4],rest[5]);
-               break;
-            case 7:
-               param1(rest[0],rest[1],rest[2],rest[3],rest[4],rest[5],rest[6]);
-               break;
-            default:
-               param1.apply(null,rest.slice(0,_loc3_));
-         }
-      }
-   }
-}
+    /** Executes a function with the specified arguments. If the argument count does not match
+     *  the function, the argument list is cropped / filled up with <code>null</code> values. */
+    public function execute(func:Function, ...args):void
+    {
+        if (func != null)
+        {
+            var i:int;
+            var maxNumArgs:int = func.length;
 
+            for (i=args.length; i<maxNumArgs; ++i)
+                args[i] = null;
+
+            // In theory, the 'default' case would always work,
+            // but we want to avoid the 'slice' allocations.
+
+            switch (maxNumArgs)
+            {
+                case 0:  func(); break;
+                case 1:  func(args[0]); break;
+                case 2:  func(args[0], args[1]); break;
+                case 3:  func(args[0], args[1], args[2]); break;
+                case 4:  func(args[0], args[1], args[2], args[3]); break;
+                case 5:  func(args[0], args[1], args[2], args[3], args[4]); break;
+                case 6:  func(args[0], args[1], args[2], args[3], args[4], args[5]); break;
+                case 7:  func(args[0], args[1], args[2], args[3], args[4], args[5], args[6]); break;
+                default: func.apply(null, args.slice(0, maxNumArgs)); break;
+            }
+        }
+    }
+}

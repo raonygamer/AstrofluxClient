@@ -1,88 +1,95 @@
+// =================================================================================================
+//
+//	Starling Framework
+//	Copyright Gamua GmbH. All Rights Reserved.
+//
+//	This program is free software. You can redistribute and/or modify it
+//	in accordance with the terms of the accompanying license agreement.
+//
+// =================================================================================================
+
 package starling.utils
 {
-   import starling.errors.AbstractClassError;
-   
-   public class StringUtil
-   {
-      public function StringUtil()
-      {
-         super();
-         throw new AbstractClassError();
-      }
-      
-      public static function format(param1:String, ... rest) : String
-      {
-         var _loc3_:int = 0;
-         _loc3_ = 0;
-         while(_loc3_ < rest.length)
-         {
-            param1 = param1.replace(new RegExp("\\{" + _loc3_ + "\\}","g"),rest[_loc3_]);
-            _loc3_++;
-         }
-         return param1;
-      }
-      
-      public static function clean(param1:String) : String
-      {
-         return ("_" + param1).substr(1);
-      }
-      
-      public static function trimStart(param1:String) : String
-      {
-         var _loc2_:int = 0;
-         var _loc3_:int = param1.length;
-         _loc2_ = 0;
-         while(_loc2_ < _loc3_)
-         {
-            if(param1.charCodeAt(_loc2_) > 32)
-            {
-               break;
-            }
-            _loc2_++;
-         }
-         return param1.substring(_loc2_,_loc3_);
-      }
-      
-      public static function trimEnd(param1:String) : String
-      {
-         var _loc2_:int = 0;
-         _loc2_ = param1.length - 1;
-         while(_loc2_ >= 0)
-         {
-            if(param1.charCodeAt(_loc2_) > 32)
-            {
-               break;
-            }
-            _loc2_--;
-         }
-         return param1.substring(0,_loc2_ + 1);
-      }
-      
-      public static function trim(param1:String) : String
-      {
-         var _loc4_:int = 0;
-         var _loc3_:int = 0;
-         var _loc2_:int = param1.length;
-         _loc3_ = 0;
-         while(_loc3_ < _loc2_)
-         {
-            if(param1.charCodeAt(_loc3_) > 32)
-            {
-               break;
-            }
-            _loc3_++;
-         }
-         _loc4_ = param1.length - 1;
-         while(_loc4_ >= _loc3_)
-         {
-            if(param1.charCodeAt(_loc4_) > 32)
-            {
-               break;
-            }
-            _loc4_--;
-         }
-         return param1.substring(_loc3_,_loc4_ + 1);
-      }
-   }
-}
+    import starling.errors.AbstractClassError;
 
+    /** A utility class with methods related to the String class. */
+    public class StringUtil
+    {
+        /** @private */
+        public function StringUtil() { throw new AbstractClassError(); }
+
+        /** Formats a String in .Net-style, with curly braces ("{0}"). Does not support any
+         *  number formatting options yet. */
+        public static function format(format:String, ...args):String
+        {
+            // TODO: add number formatting options
+
+            for (var i:int=0; i<args.length; ++i)
+                format = format.replace(new RegExp("\\{"+i+"\\}", "g"), args[i]);
+
+            return format;
+        }
+
+        /** Replaces a string's "master string" — the string it was built from —
+         *  with a single character to save memory. Find more information about this AS3 oddity
+         *  <a href="http://jacksondunstan.com/articles/2260">here</a>.
+         *
+         *  @param  string The String to clean
+         *  @return The input string, but with a master string only one character larger than it.
+         *  @author Jackson Dunstan, JacksonDunstan.com
+         */
+        public static function clean(string:String):String
+        {
+            return ("_" + string).substr(1);
+        }
+
+        /** Removes all leading white-space and control characters from the given String.
+         *
+         *  <p>Beware: this method does not make a proper Unicode white-space check,
+         *  but simply trims all character codes of '0x20' or below.</p>
+         */
+        public static function trimStart(string:String):String
+        {
+            var pos:int;
+            var length:int = string.length;
+
+            for (pos = 0; pos < length; ++pos)
+                if (string.charCodeAt(pos) > 0x20) break;
+
+            return string.substring(pos, length);
+        }
+
+        /** Removes all trailing white-space and control characters from the given String.
+         *
+         *  <p>Beware: this method does not make a proper Unicode white-space check,
+         *  but simply trims all character codes of '0x20' or below.</p>
+         */
+        public static function trimEnd(string:String):String
+        {
+            for (var pos:int = string.length - 1; pos >= 0; --pos)
+                if (string.charCodeAt(pos) > 0x20) break;
+
+            return string.substring(0, pos + 1);
+        }
+
+        /** Removes all leading and trailing white-space and control characters from the given
+         *  String.
+         *
+         *  <p>Beware: this method does not make a proper Unicode white-space check,
+         *  but simply trims all character codes of '0x20' or below.</p>
+         */
+        public static function trim(string:String):String
+        {
+            var startPos:int, endPos:int;
+            var length:int = string.length;
+
+            for (startPos = 0; startPos < length; ++startPos)
+                if (string.charCodeAt(startPos) > 0x20) break;
+
+            for (endPos = string.length - 1; endPos >= startPos; --endPos)
+                if (string.charCodeAt(endPos) > 0x20) break;
+
+            return string.substring(startPos, endPos + 1);
+        }
+    }
+}

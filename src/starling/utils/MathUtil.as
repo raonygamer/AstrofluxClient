@@ -1,102 +1,124 @@
+// =================================================================================================
+//
+//	Starling Framework
+//	Copyright Gamua GmbH. All Rights Reserved.
+//
+//	This program is free software. You can redistribute and/or modify it
+//	in accordance with the terms of the accompanying license agreement.
+//
+// =================================================================================================
+
 package starling.utils
 {
-   import flash.geom.Point;
-   import flash.geom.Vector3D;
-   import starling.errors.AbstractClassError;
-   
-   public class MathUtil
-   {
-      private static const TWO_PI:Number = 6.283185307179586;
-      
-      public function MathUtil()
-      {
-         super();
-         throw new AbstractClassError();
-      }
-      
-      public static function intersectLineWithXYPlane(param1:Vector3D, param2:Vector3D, param3:Point = null) : Point
-      {
-         if(param3 == null)
-         {
-            param3 = new Point();
-         }
-         var _loc7_:Number = param2.x - param1.x;
-         var _loc5_:Number = param2.y - param1.y;
-         var _loc6_:Number = param2.z - param1.z;
-         var _loc4_:Number = -param1.z / _loc6_;
-         param3.x = param1.x + _loc4_ * _loc7_;
-         param3.y = param1.y + _loc4_ * _loc5_;
-         return param3;
-      }
-      
-      public static function isPointInTriangle(param1:Point, param2:Point, param3:Point, param4:Point) : Boolean
-      {
-         var _loc15_:Number = param4.x - param2.x;
-         var _loc13_:Number = param4.y - param2.y;
-         var _loc8_:Number = param3.x - param2.x;
-         var _loc16_:Number = param3.y - param2.y;
-         var _loc12_:Number = param1.x - param2.x;
-         var _loc9_:Number = param1.y - param2.y;
-         var _loc10_:Number = _loc15_ * _loc15_ + _loc13_ * _loc13_;
-         var _loc17_:Number = _loc15_ * _loc8_ + _loc13_ * _loc16_;
-         var _loc14_:Number = _loc15_ * _loc12_ + _loc13_ * _loc9_;
-         var _loc11_:Number = _loc8_ * _loc8_ + _loc16_ * _loc16_;
-         var _loc18_:Number = _loc8_ * _loc12_ + _loc16_ * _loc9_;
-         var _loc5_:Number = 1 / (_loc10_ * _loc11_ - _loc17_ * _loc17_);
-         var _loc6_:Number = (_loc11_ * _loc14_ - _loc17_ * _loc18_) * _loc5_;
-         var _loc7_:Number = (_loc10_ * _loc18_ - _loc17_ * _loc14_) * _loc5_;
-         return _loc6_ >= 0 && _loc7_ >= 0 && _loc6_ + _loc7_ < 1;
-      }
-      
-      public static function normalizeAngle(param1:Number) : Number
-      {
-         param1 %= 6.283185307179586;
-         if(param1 < -3.141592653589793)
-         {
-            param1 += 6.283185307179586;
-         }
-         if(param1 > 3.141592653589793)
-         {
-            param1 -= 6.283185307179586;
-         }
-         return param1;
-      }
-      
-      public static function getNextPowerOfTwo(param1:Number) : int
-      {
-         var _loc2_:* = 0;
-         if(param1 is int && param1 > 0 && (param1 & param1 - 1) == 0)
-         {
-            return param1;
-         }
-         _loc2_ = 1;
-         param1 -= 1e-9;
-         while(_loc2_ < param1)
-         {
-            _loc2_ <<= 1;
-         }
-         return _loc2_;
-      }
-      
-      public static function isEquivalent(param1:Number, param2:Number, param3:Number = 0.0001) : Boolean
-      {
-         return param1 - param3 < param2 && param1 + param3 > param2;
-      }
-      
-      public static function max(param1:Number, param2:Number) : Number
-      {
-         return param1 > param2 ? param1 : param2;
-      }
-      
-      public static function min(param1:Number, param2:Number) : Number
-      {
-         return param1 < param2 ? param1 : param2;
-      }
-      
-      public static function clamp(param1:Number, param2:Number, param3:Number) : Number
-      {
-         return param1 < param2 ? param2 : (param1 > param3 ? param3 : param1);
-      }
-   }
-}
+    import flash.geom.Point;
+    import flash.geom.Vector3D;
 
+    import starling.errors.AbstractClassError;
+
+    /** A utility class containing methods you might need for math problems. */
+    public class MathUtil
+    {
+        private static const TWO_PI:Number = Math.PI * 2.0;
+
+        /** @private */
+        public function MathUtil() { throw new AbstractClassError(); }
+
+        /** Calculates the intersection point between the xy-plane and an infinite line
+         *  that is defined by two 3D points in the same coordinate system. */
+        public static function intersectLineWithXYPlane(pointA:Vector3D, pointB:Vector3D,
+                                                        out:Point=null):Point
+        {
+            if (out == null) out = new Point();
+
+            var vectorX:Number = pointB.x - pointA.x;
+            var vectorY:Number = pointB.y - pointA.y;
+            var vectorZ:Number = pointB.z - pointA.z;
+            var lambda:Number = -pointA.z / vectorZ;
+
+            out.x = pointA.x + lambda * vectorX;
+            out.y = pointA.y + lambda * vectorY;
+
+            return out;
+        }
+
+        /** Calculates if the point <code>p</code> is inside the triangle <code>a-b-c</code>. */
+        public static function isPointInTriangle(p:Point, a:Point, b:Point, c:Point):Boolean
+        {
+            // This algorithm is described well in this article:
+            // http://www.blackpawn.com/texts/pointinpoly/default.html
+
+            var v0x:Number = c.x - a.x;
+            var v0y:Number = c.y - a.y;
+            var v1x:Number = b.x - a.x;
+            var v1y:Number = b.y - a.y;
+            var v2x:Number = p.x - a.x;
+            var v2y:Number = p.y - a.y;
+
+            var dot00:Number = v0x * v0x + v0y * v0y;
+            var dot01:Number = v0x * v1x + v0y * v1y;
+            var dot02:Number = v0x * v2x + v0y * v2y;
+            var dot11:Number = v1x * v1x + v1y * v1y;
+            var dot12:Number = v1x * v2x + v1y * v2y;
+
+            var invDen:Number = 1.0 / (dot00 * dot11 - dot01 * dot01);
+            var u:Number = (dot11 * dot02 - dot01 * dot12) * invDen;
+            var v:Number = (dot00 * dot12 - dot01 * dot02) * invDen;
+
+            return (u >= 0) && (v >= 0) && (u + v < 1);
+        }
+
+        /** Moves a radian angle into the range [-PI, +PI], while keeping the direction intact. */
+        public static function normalizeAngle(angle:Number):Number
+        {
+            // move to equivalent value in range [0 deg, 360 deg] without a loop
+            angle = angle % TWO_PI;
+
+            // move to [-180 deg, +180 deg]
+            if (angle < -Math.PI) angle += TWO_PI;
+            if (angle >  Math.PI) angle -= TWO_PI;
+
+            return angle;
+        }
+
+        /** Returns the next power of two that is equal to or bigger than the specified number. */
+        public static function getNextPowerOfTwo(number:Number):int
+        {
+            if (number is int && number > 0 && (number & (number - 1)) == 0) // see: http://goo.gl/D9kPj
+                return number;
+            else
+            {
+                var result:int = 1;
+                number -= 0.000000001; // avoid floating point rounding errors
+
+                while (result < number) result <<= 1;
+                return result;
+            }
+        }
+
+        /** Indicates if two float (Number) values are equal, give or take <code>epsilon</code>. */
+        public static function isEquivalent(a:Number, b:Number, epsilon:Number=0.0001):Boolean
+        {
+            return (a - epsilon < b) && (a + epsilon > b);
+        }
+
+        /** Returns the larger of the two values. Different to the native <code>Math.max</code>,
+         *  this doesn't create any temporary objects when using the AOT compiler. */
+        public static function max(a:Number, b:Number):Number
+        {
+            return a > b ? a : b;
+        }
+
+        /** Returns the smaller of the two values. Different to the native <code>Math.min</code>,
+         *  this doesn't create any temporary objects when using the AOT compiler. */
+        public static function min(a:Number, b:Number):Number
+        {
+            return a < b ? a : b;
+        }
+
+        /** Moves <code>value</code> into the range between <code>min</code> and <code>max</code>. */
+        public static function clamp(value:Number, min:Number, max:Number):Number
+        {
+            return value < min ? min : (value > max ? max : value);
+        }
+    }
+}

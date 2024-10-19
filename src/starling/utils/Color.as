@@ -1,151 +1,117 @@
+// =================================================================================================
+//
+//	Starling Framework
+//	Copyright Gamua GmbH. All Rights Reserved.
+//
+//	This program is free software. You can redistribute and/or modify it
+//	in accordance with the terms of the accompanying license agreement.
+//
+// =================================================================================================
+
 package starling.utils
 {
-   import starling.errors.AbstractClassError;
-   
-   public class Color
-   {
-      public static const WHITE:uint = 16777215;
-      
-      public static const SILVER:uint = 12632256;
-      
-      public static const GRAY:uint = 8421504;
-      
-      public static const BLACK:uint = 0;
-      
-      public static const RED:uint = 16711680;
-      
-      public static const MAROON:uint = 8388608;
-      
-      public static const YELLOW:uint = 16776960;
-      
-      public static const OLIVE:uint = 8421376;
-      
-      public static const LIME:uint = 65280;
-      
-      public static const GREEN:uint = 32768;
-      
-      public static const AQUA:uint = 65535;
-      
-      public static const TEAL:uint = 32896;
-      
-      public static const BLUE:uint = 255;
-      
-      public static const NAVY:uint = 128;
-      
-      public static const FUCHSIA:uint = 16711935;
-      
-      public static const PURPLE:uint = 8388736;
-      
-      public function Color()
-      {
-         super();
-         throw new AbstractClassError();
-      }
-      
-      public static function getAlpha(param1:uint) : int
-      {
-         return param1 >> 24 & 0xFF;
-      }
-      
-      public static function getRed(param1:uint) : int
-      {
-         return param1 >> 16 & 0xFF;
-      }
-      
-      public static function getGreen(param1:uint) : int
-      {
-         return param1 >> 8 & 0xFF;
-      }
-      
-      public static function getBlue(param1:uint) : int
-      {
-         return param1 & 0xFF;
-      }
-      
-      public static function setAlpha(param1:uint, param2:int) : uint
-      {
-         return param1 & 0xFFFFFF | (param2 & 0xFF) << 24;
-      }
-      
-      public static function setRed(param1:uint, param2:int) : uint
-      {
-         return param1 & 4278255615 | (param2 & 0xFF) << 16;
-      }
-      
-      public static function setGreen(param1:uint, param2:int) : uint
-      {
-         return param1 & 4294902015 | (param2 & 0xFF) << 8;
-      }
-      
-      public static function setBlue(param1:uint, param2:int) : uint
-      {
-         return param1 & 4294967040 | param2 & 0xFF;
-      }
-      
-      public static function rgb(param1:int, param2:int, param3:int) : uint
-      {
-         return param1 << 16 | param2 << 8 | param3;
-      }
-      
-      public static function argb(param1:int, param2:int, param3:int, param4:int) : uint
-      {
-         return param1 << 24 | param2 << 16 | param3 << 8 | param4;
-      }
-      
-      public static function toVector(param1:uint, param2:Vector.<Number> = null) : Vector.<Number>
-      {
-         if(param2 == null)
-         {
-            param2 = new Vector.<Number>(4,true);
-         }
-         param2[0] = (param1 >> 16 & 0xFF) / 255;
-         param2[1] = (param1 >> 8 & 0xFF) / 255;
-         param2[2] = (param1 & 0xFF) / 255;
-         param2[3] = (param1 >> 24 & 0xFF) / 255;
-         return param2;
-      }
-      
-      public static function multiply(param1:uint, param2:Number) : uint
-      {
-         var _loc6_:uint = (param1 >> 24 & 0xFF) * param2;
-         var _loc3_:uint = (param1 >> 16 & 0xFF) * param2;
-         var _loc4_:uint = (param1 >> 8 & 0xFF) * param2;
-         var _loc5_:uint = (param1 & 0xFF) * param2;
-         if(_loc6_ > 255)
-         {
-            _loc6_ = 255;
-         }
-         if(_loc3_ > 255)
-         {
-            _loc3_ = 255;
-         }
-         if(_loc4_ > 255)
-         {
-            _loc4_ = 255;
-         }
-         if(_loc5_ > 255)
-         {
-            _loc5_ = 255;
-         }
-         return argb(_loc6_,_loc3_,_loc4_,_loc5_);
-      }
-      
-      public static function interpolate(param1:uint, param2:uint, param3:Number) : uint
-      {
-         var _loc11_:uint = uint(param1 >> 24 & 0xFF);
-         var _loc15_:uint = uint(param1 >> 16 & 0xFF);
-         var _loc6_:uint = uint(param1 >> 8 & 0xFF);
-         var _loc9_:uint = uint(param1 & 0xFF);
-         var _loc8_:uint = uint(param2 >> 24 & 0xFF);
-         var _loc14_:uint = uint(param2 >> 16 & 0xFF);
-         var _loc5_:uint = uint(param2 >> 8 & 0xFF);
-         var _loc7_:uint = uint(param2 & 0xFF);
-         var _loc12_:uint = _loc11_ + (_loc8_ - _loc11_) * param3;
-         var _loc4_:uint = _loc15_ + (_loc14_ - _loc15_) * param3;
-         var _loc13_:uint = _loc6_ + (_loc5_ - _loc6_) * param3;
-         var _loc10_:uint = _loc9_ + (_loc7_ - _loc9_) * param3;
-         return _loc12_ << 24 | _loc4_ << 16 | _loc13_ << 8 | _loc10_;
-      }
-   }
-}
+    import starling.errors.AbstractClassError;
 
+    /** A utility class containing predefined colors and methods converting between different
+     *  color representations. */
+    public class Color
+    {
+        public static const WHITE:uint   = 0xffffff;
+        public static const SILVER:uint  = 0xc0c0c0;
+        public static const GRAY:uint    = 0x808080;
+        public static const BLACK:uint   = 0x000000;
+        public static const RED:uint     = 0xff0000;
+        public static const MAROON:uint  = 0x800000;
+        public static const YELLOW:uint  = 0xffff00;
+        public static const OLIVE:uint   = 0x808000;
+        public static const LIME:uint    = 0x00ff00;
+        public static const GREEN:uint   = 0x008000;
+        public static const AQUA:uint    = 0x00ffff;
+        public static const TEAL:uint    = 0x008080;
+        public static const BLUE:uint    = 0x0000ff;
+        public static const NAVY:uint    = 0x000080;
+        public static const FUCHSIA:uint = 0xff00ff;
+        public static const PURPLE:uint  = 0x800080;
+        
+        /** Returns the alpha part of an ARGB color (0 - 255). */
+        public static function getAlpha(color:uint):int { return (color >> 24) & 0xff; }
+        
+        /** Returns the red part of an (A)RGB color (0 - 255). */
+        public static function getRed(color:uint):int   { return (color >> 16) & 0xff; }
+        
+        /** Returns the green part of an (A)RGB color (0 - 255). */
+        public static function getGreen(color:uint):int { return (color >>  8) & 0xff; }
+        
+        /** Returns the blue part of an (A)RGB color (0 - 255). */
+        public static function getBlue(color:uint):int  { return  color        & 0xff; }
+        
+        /** Creates an RGB color, stored in an unsigned integer. Channels are expected
+         *  in the range 0 - 255. */
+        public static function rgb(red:int, green:int, blue:int):uint
+        {
+            return (red << 16) | (green << 8) | blue;
+        }
+        
+        /** Creates an ARGB color, stored in an unsigned integer. Channels are expected
+         *  in the range 0 - 255. */
+        public static function argb(alpha:int, red:int, green:int, blue:int):uint
+        {
+            return (alpha << 24) | (red << 16) | (green << 8) | blue;
+        }
+
+        /** Converts a color to a vector containing the RGBA components (in this order) scaled
+         *  between 0 and 1. */
+        public static function toVector(color:uint, out:Vector.<Number>=null):Vector.<Number>
+        {
+            if (out == null) out = new Vector.<Number>(4, true);
+
+            out[0] = ((color >> 16) & 0xff) / 255.0;
+            out[1] = ((color >>  8) & 0xff) / 255.0;
+            out[2] = ( color        & 0xff) / 255.0;
+            out[3] = ((color >> 24) & 0xff) / 255.0;
+
+            return out;
+        }
+
+        /** Multiplies all channels of an (A)RGB color with a certain factor. */
+        public static function multiply(color:uint, factor:Number):uint
+        {
+            var alpha:uint = ((color >> 24) & 0xff) * factor;
+            var red:uint   = ((color >> 16) & 0xff) * factor;
+            var green:uint = ((color >>  8) & 0xff) * factor;
+            var blue:uint  = ( color        & 0xff) * factor;
+
+            if (alpha > 255) alpha = 255;
+            if (red   > 255) red   = 255;
+            if (green > 255) green = 255;
+            if (blue  > 255) blue  = 255;
+
+            return argb(alpha, red, green, blue);
+        }
+
+        /** Calculates a smooth transition between one color to the next.
+         *  <code>ratio</code> is expected between 0 and 1. */
+        public static function interpolate(startColor:uint, endColor:uint, ratio:Number):uint
+        {
+            var startA:uint = (startColor >> 24) & 0xff;
+            var startR:uint = (startColor >> 16) & 0xff;
+            var startG:uint = (startColor >>  8) & 0xff;
+            var startB:uint = (startColor      ) & 0xff;
+
+            var endA:uint = (endColor >> 24) & 0xff;
+            var endR:uint = (endColor >> 16) & 0xff;
+            var endG:uint = (endColor >>  8) & 0xff;
+            var endB:uint = (endColor      ) & 0xff;
+
+            var newA:uint = startA + (endA - startA) * ratio;
+            var newR:uint = startR + (endR - startR) * ratio;
+            var newG:uint = startG + (endG - startG) * ratio;
+            var newB:uint = startB + (endB - startB) * ratio;
+
+            return (newA << 24) | (newR << 16) | (newG << 8) | newB;
+        }
+        
+        /** @private */
+        public function Color() { throw new AbstractClassError(); }
+    }
+}
