@@ -64,7 +64,7 @@ package core.hud.components.credits
          aquiredContainer = new starling.display.Sprite();
          waitingContainer = new starling.display.Sprite();
          nativeLayer = new flash.display.Sprite();
-         BuyButtonAsset = §buyButton_png$360ba7d2547d196a47716679804036e1-1565431473§;
+         BuyButtonAsset = BuyButtonBitmap;
          aquiredText = new Text();
          super(param1,param2,param3);
          load();

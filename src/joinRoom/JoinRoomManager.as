@@ -218,7 +218,7 @@ package joinRoom
             {
                if(playerInfo.clan != "")
                {
-                  _desiredRoomId = MD5.hash(playerInfo.currentSolarSystem + playerInfo.clan);
+                  _desiredRoomId = com.adobe.crypto.MD5.hash(playerInfo.currentSolarSystem + playerInfo.clan);
                }
                else
                {

@@ -64,6 +64,7 @@ package
    import startSetup.StartSetupLocator;
    import textures.TextureLocator;
    import textures.TextureManager;
+   import com.hurlant.crypto.hash.MD5;
    
    public class Login extends Sprite
    {
@@ -685,7 +686,7 @@ package
       
       private function getY8Str2(param1:String) : String
       {
-         return MD5.hash(param1);
+         return com.adobe.crypto.MD5.hash(param1);
       }
       
       private function tryCreateNewUserY8(param1:PlayerIOError) : void

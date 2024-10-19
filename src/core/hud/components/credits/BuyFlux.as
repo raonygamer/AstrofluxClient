@@ -85,8 +85,8 @@ package core.hud.components.credits
          textLayer = new starling.display.Sprite();
          buttonLayer = new starling.display.Sprite();
          nativeLayer = new flash.display.Sprite();
-         BuyButtonAsset = §buyButton_png$360ba7d2547d196a47716679804036e1-1565431473§;
-         GetFluxNowButtonAsset = getFluxNowButton_png$552f213e6e2ca80ccf2562039d6be9651543949592;
+         BuyButtonAsset = BuyButtonBitmap;
+         GetFluxNowButtonAsset = GetFluxNowButtonBitmap;
          super();
          this.g = g;
          sale = g.salesManager.isFluxSale();

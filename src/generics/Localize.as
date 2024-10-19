@@ -12,7 +12,7 @@ package generics
       
       public static var activateLanguageSelection:Boolean = false;
       
-      private static var LanguageFile:Class = §lang_json$a96c32d35987e511add5ff79f4dafcea-680055981§;
+      private static var LanguageFile:Class = LangJson;
       
       private static var r:RegExp = new RegExp(/(\W+)/g);
       

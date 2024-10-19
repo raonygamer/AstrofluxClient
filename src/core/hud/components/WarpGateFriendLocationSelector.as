@@ -113,6 +113,9 @@ import core.scene.Game;
 import joinRoom.IJoinRoomManager;
 import joinRoom.JoinRoomLocator;
 import starling.display.Sprite;
+import core.hud.components.Style;
+import core.hud.components.Text;
+import core.hud.components.Button;
 
 class WarpToFriendRow extends Sprite
 {

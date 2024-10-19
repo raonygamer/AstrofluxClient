@@ -9,18 +9,10 @@ package
 
 	public class Astroflux extends Sprite
 	{
-		public function Astroflux()
+		public function Astroflux(info:Object = null)
 		{
 			super();
-
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-
-			var textField:TextField = new TextField();
-			textField.autoSize = TextFieldAutoSize.LEFT;
-			textField.defaultTextFormat = new TextFormat("_sans", 12, 0x0000cc);
-			textField.text = "Hello, Adobe AIR!";
-			addChild(textField);
+			addChild(new RymdenRunt(info));
 		}
 	}
 }

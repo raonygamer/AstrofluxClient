@@ -12,7 +12,7 @@ package core.hud.components
    {
       public static var globalStyleProvider:IStyleProvider;
       
-      private static var TextInputBackground:Class = text_input_png$a3aa02bc4be5076b98887fbc5f3486682078710351;
+      private static var TextInputBackground:Class = TextInputBitmap;
       
       private static var textFormat:TextFormat = new TextFormat("Verdana",12,16777215);
       

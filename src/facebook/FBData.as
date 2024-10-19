@@ -41,16 +41,14 @@ package facebook
             {
                var _loc2_:* = undefined;
                var _loc1_:Boolean = false;
-               var _loc3_:FB = FB;
-               if(facebook.FB.data._getValue(item) != null)
+               if(facebook.FB.Data._getValue(item) != null)
                {
                   count--;
                   _loc1_ = true;
                }
                if(count == 0)
                {
-                  var _loc4_:FB = FB;
-                  _loc2_ = callback(FB.arrayMap(dependencies,facebook.FB.data._getValue));
+                  _loc2_ = callback(FB.arrayMap(dependencies,facebook.FB.Data._getValue));
                   result.value = _loc2_ != null ? _loc2_ : true;
                }
                return _loc1_;

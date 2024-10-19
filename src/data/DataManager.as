@@ -19,7 +19,7 @@ package data
       
       public function DataManager(param1:Client)
       {
-         CacheFile = cache_json$f0170aad834e758c8de1f3455e70ad5c919569007;
+         CacheFile = CacheJson;
          _artifacts = new Vector.<Artifact>();
          super();
          this._client = param1;

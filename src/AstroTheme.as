@@ -28,6 +28,12 @@ package
       protected static var chatTabTextFormat:TextFormat = new TextFormat("DAIDRR",12,16777215);
       
       protected var scrollBarThumbSkinTextures:Texture;
+      protected var inputFormat:TextFormat;
+      protected var toolTipFormat:TextFormat;
+      protected var chatFormat:TextFormat;
+      protected var shopListFormat:TextFormat;
+      protected var artifactSetupDefaultFormat:TextFormat;
+      protected var artifactSetupSelectedFormat:TextFormat;
       
       public function AstroTheme()
       {

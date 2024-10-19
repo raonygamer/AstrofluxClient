@@ -449,8 +449,6 @@ package camerafocus
          {
             return;
          }
-         §§push(_stageContainer.x);
-         §§push(_focusPosition.x);
          if(this.focusTarget is flash.geom.Point)
          {
             var _loc2_:Point = this._stageContainer.localToGlobal(this._focusTracker);
@@ -463,9 +461,7 @@ package camerafocus
          {
             _loc2_ = this._stageContainer.localToGlobal(this._focusTracker);
          }
-         _stageContainer.x = §§pop() + (§§pop() - _loc2_.x);
-         §§push(_stageContainer.y);
-         §§push(_focusPosition.y);
+         _stageContainer.x = _stageContainer.x + (_focusPosition.x - _loc2_.x);
          if(this.focusTarget is flash.geom.Point)
          {
             var _loc3_:Point = this._stageContainer.localToGlobal(this._focusTracker);
@@ -478,7 +474,7 @@ package camerafocus
          {
             _loc3_ = this._stageContainer.localToGlobal(this._focusTracker);
          }
-         _stageContainer.y = §§pop() + (§§pop() - _loc3_.y);
+         _stageContainer.y = _stageContainer.y + (_focusPosition.y - _loc3_.y);
       }
       
       private function positionParallax(param1:Object) : void
