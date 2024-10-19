@@ -152,10 +152,6 @@ package
       
       public static var kongregate:Object = null;
       
-      public var bar2:String;
-      
-      public var ba3:String;
-      
       private var textureManager:TextureManager;
       
       private var soundManager:SoundManager;
@@ -216,8 +212,6 @@ package
       
       public function Login()
       {
-         bar2 = "Verdana_ttf$767177d9989c7323c60db8a483bd906b-639850078";
-         ba3 = "Russo_One_ttf$106c15525f996d3d73a9291202e5dc2e1347241993";
          container = new Sprite();
          logoContainer = new Sprite();
          effectContainer = new Sprite();
