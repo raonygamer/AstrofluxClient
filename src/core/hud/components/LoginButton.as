@@ -18,7 +18,7 @@ package core.hud.components
       {
          super();
          this.callback = param2;
-         var _loc6_:TextFormat = new TextFormat("DAIDRR",12,param3);
+         var _loc6_:TextFormat = new TextFormat("Verdana",12,param3);
          var _loc5_:int = 120;
          var _loc7_:Quad = new Quad(_loc5_,41,param4);
          _loc7_.alpha = 0.7;
