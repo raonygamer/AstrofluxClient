@@ -340,8 +340,11 @@ package
             {
             }
             Security.loadPolicyFile("https://playerio-a.akamaihd.net/rymdenrunt-k9qmg7cvt0ylialudmldvg/crossdomain.xml");
-            Security.allowDomain("*");
-            Security.allowInsecureDomain("*");
+            try {
+               Security.allowDomain("*");
+               Security.allowInsecureDomain("*");
+            }
+            catch (error: Error) {}
          }
          mySharedObject = SharedObject.getLocal("AstrofluxLogin");
          pId = RymdenRunt.parameters.partnerId;
@@ -1116,8 +1119,8 @@ package
          new AstroTheme();
          Button.loadTheme();
          Box.loadTheme();
-         TextField.unregisterBitmapFont("font13");
-         TextField.registerBitmapFont(new BitmapFont(textureManager.getTextureGUIByTextureName("font13"), assets.getXml("font13")), "font13");
+         TextField.unregisterCompositor("font13");
+         TextField.registerCompositor(new BitmapFont(textureManager.getTextureGUIByTextureName("font13"), assets.getXml("font13")), "font13");
          removeEmbeddedAssets();
          removeEffects();
          loginContainer = null;
