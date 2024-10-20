@@ -1,25 +1,25 @@
 package core.solarSystem
 {
    import flash.geom.Point;
-   
+
    public class BodyHeading
    {
       public var time:Number = 0;
-      
+
       public var pos:Point;
-      
+
       public var angle:Number = 0;
-      
+
       public var orbitAngle:Number = 0;
-      
+
       public var orbitRadius:Number = 0;
-      
+
       public var orbitSpeed:Number = 0;
-      
+
       public var rotationSpeed:Number = 0;
-      
+
       private var body:Body;
-      
+
       public function BodyHeading(param1:Body)
       {
          pos = new Point();
@@ -27,14 +27,14 @@ package core.solarSystem
          this.body = param1;
          pos = new Point();
       }
-      
-      public function update(param1:Number, param2:Number) : void
+
+      public function update(param1:Number, param2:Number):void
       {
          var _loc6_:Number = NaN;
          var _loc5_:Number = NaN;
          var _loc3_:Number = NaN;
          var _loc4_:Number = NaN;
-         if(body.parentBody != null)
+         if (body.parentBody != null)
          {
             _loc6_ = body.parentBody.pos.x;
             _loc5_ = body.parentBody.pos.y;
@@ -46,8 +46,8 @@ package core.solarSystem
          angle += rotationSpeed;
          time += 33;
       }
-      
-      public function parseJSON(param1:Object) : void
+
+      public function parseJSON(param1:Object):void
       {
          this.time = param1.time;
          this.pos.x = param1.x;
@@ -58,8 +58,8 @@ package core.solarSystem
          this.orbitSpeed = param1.orbitSpeed;
          this.rotationSpeed = param1.rotationSpeed;
       }
-      
-      public function clone() : BodyHeading
+
+      public function clone():BodyHeading
       {
          var _loc1_:BodyHeading = new BodyHeading(body);
          _loc1_.angle = this.angle;
@@ -72,11 +72,10 @@ package core.solarSystem
          _loc1_.time = this.time;
          return _loc1_;
       }
-      
-      public function toString() : String
+
+      public function toString():String
       {
          return "pos: " + pos.toString() + ", orbitAngle: " + orbitAngle + ", orbitSpeed: " + orbitSpeed + ", orbitRadius: " + orbitRadius + ", rotationSpeed: " + rotationSpeed + ", time:" + time;
       }
    }
 }
-

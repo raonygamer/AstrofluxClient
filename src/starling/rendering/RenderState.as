@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.rendering
@@ -67,12 +67,14 @@ package starling.rendering
     public class RenderState
     {
         /** @private */ internal var _alpha:Number;
+
         /** @private */ internal var _blendMode:String;
+
         /** @private */ internal var _modelviewMatrix:Matrix;
 
         private static const CULLING_VALUES:Vector.<String> = new <String>
             [Context3DTriangleFace.NONE, Context3DTriangleFace.FRONT,
-             Context3DTriangleFace.BACK, Context3DTriangleFace.FRONT_AND_BACK];
+                Context3DTriangleFace.BACK, Context3DTriangleFace.FRONT_AND_BACK];
 
         private var _miscOptions:uint;
         private var _clipRect:Rectangle;
@@ -105,7 +107,7 @@ package starling.rendering
                     !RectangleUtil.compare(_clipRect, renderState._clipRect) : false;
 
                 if (_blendMode != renderState._blendMode ||
-                    currentTarget != nextTarget || clipRectChanges || cullingChanges)
+                        currentTarget != nextTarget || clipRectChanges || cullingChanges)
                 {
                     _onDrawRequired();
                 }
@@ -142,13 +144,18 @@ package starling.rendering
             this.clipRect = null;
             _projectionMatrix3DRev = 0;
 
-            if (_modelviewMatrix) _modelviewMatrix.identity();
-            else _modelviewMatrix = new Matrix();
+            if (_modelviewMatrix)
+                _modelviewMatrix.identity();
+            else
+                _modelviewMatrix = new Matrix();
 
-            if (_projectionMatrix3D) _projectionMatrix3D.identity();
-            else _projectionMatrix3D = new Matrix3D();
+            if (_projectionMatrix3D)
+                _projectionMatrix3D.identity();
+            else
+                _projectionMatrix3D = new Matrix3D();
 
-            if (_mvpMatrix3D == null) _mvpMatrix3D = new Matrix3D();
+            if (_mvpMatrix3D == null)
+                _mvpMatrix3D = new Matrix3D();
         }
 
         // matrix methods / properties
@@ -187,10 +194,10 @@ package starling.rendering
          *  of the stage, with a field of view of 1.0 rad.</p>
          */
         public function setProjectionMatrix(x:Number, y:Number, width:Number, height:Number,
-                                            stageWidth:Number=0, stageHeight:Number=0,
-                                            cameraPos:Vector3D=null):void
+                stageWidth:Number = 0, stageHeight:Number = 0,
+                cameraPos:Vector3D = null):void
         {
-            _projectionMatrix3DRev = ++sProjectionMatrix3DRev;
+            _projectionMatrix3DRev = ++ sProjectionMatrix3DRev;
             MatrixUtil.createPerspectiveProjectionMatrix(
                     x, y, width, height, stageWidth, stageHeight, cameraPos, _projectionMatrix3D);
         }
@@ -200,7 +207,7 @@ package starling.rendering
          */
         public function setProjectionMatrixChanged():void
         {
-            _projectionMatrix3DRev = ++sProjectionMatrix3DRev;
+            _projectionMatrix3DRev = ++ sProjectionMatrix3DRev;
         }
 
         /** Changes the modelview matrices (2D and, if available, 3D) to identity matrices.
@@ -209,24 +216,35 @@ package starling.rendering
         public function setModelviewMatricesToIdentity():void
         {
             _modelviewMatrix.identity();
-            if (_modelviewMatrix3D) _modelviewMatrix3D.identity();
+            if (_modelviewMatrix3D)
+                _modelviewMatrix3D.identity();
         }
 
         /** Returns the current 2D modelview matrix.
          *  CAUTION: Use with care! Each call returns the same instance.
          *  @default identity matrix */
-        public function get modelviewMatrix():Matrix { return _modelviewMatrix; }
-        public function set modelviewMatrix(value:Matrix):void { _modelviewMatrix.copyFrom(value); }
+        public function get modelviewMatrix():Matrix
+        {
+            return _modelviewMatrix;
+        }
+        public function set modelviewMatrix(value:Matrix):void
+        {
+            _modelviewMatrix.copyFrom(value);
+        }
 
         /** Returns the current 3D modelview matrix, if there have been 3D transformations.
          *  CAUTION: Use with care! Each call returns the same instance.
          *  @default null */
-        public function get modelviewMatrix3D():Matrix3D { return _modelviewMatrix3D; }
+        public function get modelviewMatrix3D():Matrix3D
+        {
+            return _modelviewMatrix3D;
+        }
         public function set modelviewMatrix3D(value:Matrix3D):void
         {
             if (value)
             {
-                if (_modelviewMatrix3D == null) _modelviewMatrix3D = Pool.getMatrix3D(false);
+                if (_modelviewMatrix3D == null)
+                    _modelviewMatrix3D = Pool.getMatrix3D(false);
                 _modelviewMatrix3D.copyFrom(value);
             }
             else if (_modelviewMatrix3D)
@@ -241,7 +259,10 @@ package starling.rendering
          *  CAUTION: Use with care! Each call returns the same instance. If you modify the matrix
          *           in place, you have to call <code>setProjectionMatrixChanged</code>.
          *  @default identity matrix */
-        public function get projectionMatrix3D():Matrix3D { return _projectionMatrix3D; }
+        public function get projectionMatrix3D():Matrix3D
+        {
+            return _projectionMatrix3D;
+        }
         public function set projectionMatrix3D(value:Matrix3D):void
         {
             setProjectionMatrixChanged();
@@ -253,7 +274,8 @@ package starling.rendering
         public function get mvpMatrix3D():Matrix3D
         {
             _mvpMatrix3D.copyFrom(_projectionMatrix3D);
-            if (_modelviewMatrix3D) _mvpMatrix3D.prepend(_modelviewMatrix3D);
+            if (_modelviewMatrix3D)
+                _mvpMatrix3D.prepend(_modelviewMatrix3D);
             _mvpMatrix3D.prepend(MatrixUtil.convertTo3D(_modelviewMatrix, sMatrix3D));
             return _mvpMatrix3D;
         }
@@ -269,8 +291,8 @@ package starling.rendering
          *                    This parameter affects only texture targets. Note that at the time
          *                    of this writing, AIR supports anti-aliasing only on Desktop.
          */
-        public function setRenderTarget(target:Texture, enableDepthAndStencil:Boolean=true,
-                                        antiAlias:int=0):void
+        public function setRenderTarget(target:Texture, enableDepthAndStencil:Boolean = true,
+                antiAlias:int = 0):void
         {
             var currentTarget:TextureBase = _renderTarget ? _renderTarget.base : null;
             var newTarget:TextureBase = target ? target.base : null;
@@ -279,7 +301,8 @@ package starling.rendering
 
             if (currentTarget != newTarget || optionsChange)
             {
-                if (_onDrawRequired != null) _onDrawRequired();
+                if (_onDrawRequired != null)
+                    _onDrawRequired();
 
                 _renderTarget = target;
                 _miscOptions = (_miscOptions & 0xffffff00) | newOptions;
@@ -292,8 +315,14 @@ package starling.rendering
          *  this already includes the current object! The value is the product of current object's
          *  alpha value and all its parents. @default 1.0
          */
-        public function get alpha():Number { return _alpha; }
-        public function set alpha(value:Number):void { _alpha = value; }
+        public function get alpha():Number
+        {
+            return _alpha;
+        }
+        public function set alpha(value:Number):void
+        {
+            _alpha = value;
+        }
 
         /** The blend mode to be used on rendering. A value of "auto" is ignored, since it
          *  means that the mode should remain unchanged.
@@ -301,12 +330,16 @@ package starling.rendering
          *  @default BlendMode.NORMAL
          *  @see starling.display.BlendMode
          */
-        public function get blendMode():String { return _blendMode; }
+        public function get blendMode():String
+        {
+            return _blendMode;
+        }
         public function set blendMode(value:String):void
         {
             if (value != BlendMode.AUTO && _blendMode != value)
             {
-                if (_onDrawRequired != null) _onDrawRequired();
+                if (_onDrawRequired != null)
+                    _onDrawRequired();
                 _blendMode = value;
             }
         }
@@ -314,8 +347,14 @@ package starling.rendering
         /** The texture that is currently being rendered into, or <code>null</code>
          *  to render into the back buffer. On assignment, calls <code>setRenderTarget</code>
          *  with its default parameters. */
-        public function get renderTarget():Texture { return _renderTarget; }
-        public function set renderTarget(value:Texture):void { setRenderTarget(value); }
+        public function get renderTarget():Texture
+        {
+            return _renderTarget;
+        }
+        public function set renderTarget(value:Texture):void
+        {
+            setRenderTarget(value);
+        }
 
         /** @private */
         internal function get renderTargetBase():TextureBase
@@ -337,10 +376,12 @@ package starling.rendering
         {
             if (this.culling != value)
             {
-                if (_onDrawRequired != null) _onDrawRequired();
+                if (_onDrawRequired != null)
+                    _onDrawRequired();
 
                 var index:int = CULLING_VALUES.indexOf(value);
-                if (index == -1) throw new ArgumentError("Invalid culling mode");
+                if (index == -1)
+                    throw new ArgumentError("Invalid culling mode");
 
                 _miscOptions = (_miscOptions & 0xfffff0ff) | (index << 8);
             }
@@ -352,15 +393,20 @@ package starling.rendering
          *
          *  @default null
          */
-        public function get clipRect():Rectangle { return _clipRect; }
+        public function get clipRect():Rectangle
+        {
+            return _clipRect;
+        }
         public function set clipRect(value:Rectangle):void
         {
             if (!RectangleUtil.compare(_clipRect, value))
             {
-                if (_onDrawRequired != null) _onDrawRequired();
+                if (_onDrawRequired != null)
+                    _onDrawRequired();
                 if (value)
                 {
-                    if (_clipRect == null) _clipRect = Pool.getRectangle();
+                    if (_clipRect == null)
+                        _clipRect = Pool.getRectangle();
                     _clipRect.copyFrom(value);
                 }
                 else if (_clipRect)
@@ -387,14 +433,23 @@ package starling.rendering
 
         /** Indicates if there have been any 3D transformations.
          *  Returns <code>true</code> if the 3D modelview matrix contains a value. */
-        public function get is3D():Boolean { return _modelviewMatrix3D != null; }
+        public function get is3D():Boolean
+        {
+            return _modelviewMatrix3D != null;
+        }
 
         /** @private
          *
          *  This callback is executed whenever a state change requires a draw operation.
          *  This is the case if blend mode, render target, culling or clipping rectangle
          *  are changing. */
-        internal function get onDrawRequired():Function { return _onDrawRequired; }
-        internal function set onDrawRequired(value:Function):void { _onDrawRequired = value; }
+        internal function get onDrawRequired():Function
+        {
+            return _onDrawRequired;
+        }
+        internal function set onDrawRequired(value:Function):void
+        {
+            _onDrawRequired = value;
+        }
     }
 }

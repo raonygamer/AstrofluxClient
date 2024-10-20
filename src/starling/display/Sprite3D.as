@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.display
@@ -78,9 +78,9 @@ package starling.display
         private var _is2D:Boolean;
 
         /** Helper objects. */
-        private static var sHelperPoint:Vector3D    = new Vector3D();
+        private static var sHelperPoint:Vector3D = new Vector3D();
         private static var sHelperPointAlt:Vector3D = new Vector3D();
-        private static var sHelperMatrix:Matrix3D   = new Matrix3D();
+        private static var sHelperMatrix:Matrix3D = new Matrix3D();
 
         /** Creates an empty Sprite3D. */
         public function Sprite3D()
@@ -89,7 +89,7 @@ package starling.display
             _rotationX = _rotationY = _pivotZ = _z = 0.0;
             _transformationMatrix = new Matrix();
             _transformationMatrix3D = new Matrix3D();
-            _is2D = true;  // meaning: this 3D object contains only 2D content
+            _is2D = true; // meaning: this 3D object contains only 2D content
             setIs3D(true); // meaning: this display object supports 3D transformations
 
             addEventListener(Event.ADDED, onAddedChild);
@@ -99,7 +99,8 @@ package starling.display
         /** @inheritDoc */
         override public function render(painter:Painter):void
         {
-            if (_is2D) super.render(painter);
+            if (_is2D)
+                super.render(painter);
             else
             {
                 painter.finishMeshBatch();
@@ -117,10 +118,12 @@ package starling.display
         /** @inheritDoc */
         override public function hitTest(localPoint:Point):DisplayObject
         {
-            if (_is2D) return super.hitTest(localPoint);
+            if (_is2D)
+                return super.hitTest(localPoint);
             else
             {
-                if (!visible || !touchable) return null;
+                if (!visible || !touchable)
+                    return null;
 
                 // We calculate the interception point between the 3D plane that is spawned up
                 // by this sprite3D and the straight line between the camera and the hit point.
@@ -140,9 +143,9 @@ package starling.display
         override public function setRequiresRedraw():void
         {
             _is2D = _z > -E && _z < E &&
-                    _rotationX > -E && _rotationX < E &&
-                    _rotationY > -E && _rotationY < E &&
-                    _pivotZ > -E && _pivotZ < E;
+                _rotationX > -E && _rotationX < E &&
+                _rotationY > -E && _rotationY < E &&
+                _pivotZ > -E && _pivotZ < E;
 
             super.setRequiresRedraw();
         }
@@ -169,7 +172,7 @@ package starling.display
                 var container:DisplayObjectContainer = object as DisplayObjectContainer;
                 var numChildren:int = container.numChildren;
 
-                for (var i:int=0; i<numChildren; ++i)
+                for (var i:int = 0; i < numChildren; ++i)
                     recursivelySetIs3D(container.getChildAt(i), value);
             }
 
@@ -189,20 +192,22 @@ package starling.display
             _transformationMatrix3D.identity();
 
             if (scaleX != 1.0 || scaleY != 1.0 || _scaleZ != 1.0)
-                _transformationMatrix3D.appendScale(scaleX || E , scaleY || E, _scaleZ || E);
+                _transformationMatrix3D.appendScale(scaleX || E, scaleY || E, _scaleZ || E);
             if (_rotationX != 0.0)
                 _transformationMatrix3D.appendRotation(rad2deg(_rotationX), Vector3D.X_AXIS);
             if (_rotationY != 0.0)
                 _transformationMatrix3D.appendRotation(rad2deg(_rotationY), Vector3D.Y_AXIS);
             if (rotationZ != 0.0)
-                _transformationMatrix3D.appendRotation(rad2deg( rotationZ), Vector3D.Z_AXIS);
+                _transformationMatrix3D.appendRotation(rad2deg(rotationZ), Vector3D.Z_AXIS);
             if (x != 0.0 || y != 0.0 || _z != 0.0)
                 _transformationMatrix3D.appendTranslation(x, y, _z);
             if (pivotX != 0.0 || pivotY != 0.0 || _pivotZ != 0.0)
                 _transformationMatrix3D.prependTranslation(-pivotX, -pivotY, -_pivotZ);
 
-            if (_is2D) MatrixUtil.convertTo2D(_transformationMatrix3D, _transformationMatrix);
-            else       _transformationMatrix.identity();
+            if (_is2D)
+                MatrixUtil.convertTo2D(_transformationMatrix3D, _transformationMatrix);
+            else
+                _transformationMatrix.identity();
         }
 
         // properties
@@ -258,7 +263,10 @@ package starling.display
         /** The z coordinate of the object relative to the local coordinates of the parent.
          *  The z-axis points away from the camera, i.e. positive z-values will move the object further
          *  away from the viewer. */
-        public function get z():Number { return _z; }
+        public function get z():Number
+        {
+            return _z;
+        }
         public function set z(value:Number):void
         {
             _z = value;
@@ -269,19 +277,22 @@ package starling.display
         /** @inheritDoc */
         public override function set pivotX(value:Number):void
         {
-             super.pivotX = value;
-             _transformationChanged = true;
+            super.pivotX = value;
+            _transformationChanged = true;
         }
 
         /** @inheritDoc */
         public override function set pivotY(value:Number):void
         {
-             super.pivotY = value;
-             _transformationChanged = true;
+            super.pivotY = value;
+            _transformationChanged = true;
         }
 
         /** The z coordinate of the object's origin in its own coordinate space (default: 0). */
-        public function get pivotZ():Number { return _pivotZ; }
+        public function get pivotZ():Number
+        {
+            return _pivotZ;
+        }
         public function set pivotZ(value:Number):void
         {
             _pivotZ = value;
@@ -304,7 +315,10 @@ package starling.display
         }
 
         /** The depth scale factor. '1' means no scale, negative values flip the object. */
-        public function get scaleZ():Number { return _scaleZ; }
+        public function get scaleZ():Number
+        {
+            return _scaleZ;
+        }
         public function set scaleZ(value:Number):void
         {
             _scaleZ = value;
@@ -346,7 +360,10 @@ package starling.display
 
         /** The rotation of the object about the x axis, in radians.
          *  (In Starling, all angles are measured in radians.) */
-        public function get rotationX():Number { return _rotationX; }
+        public function get rotationX():Number
+        {
+            return _rotationX;
+        }
         public function set rotationX(value:Number):void
         {
             _rotationX = MathUtil.normalizeAngle(value);
@@ -356,7 +373,10 @@ package starling.display
 
         /** The rotation of the object about the y axis, in radians.
          *  (In Starling, all angles are measured in radians.) */
-        public function get rotationY():Number { return _rotationY; }
+        public function get rotationY():Number
+        {
+            return _rotationY;
+        }
         public function set rotationY(value:Number):void
         {
             _rotationY = MathUtil.normalizeAngle(value);
@@ -366,7 +386,13 @@ package starling.display
 
         /** The rotation of the object about the z axis, in radians.
          *  (In Starling, all angles are measured in radians.) */
-        public function get rotationZ():Number { return rotation; }
-        public function set rotationZ(value:Number):void { rotation = value; }
+        public function get rotationZ():Number
+        {
+            return rotation;
+        }
+        public function set rotationZ(value:Number):void
+        {
+            rotation = value;
+        }
     }
 }

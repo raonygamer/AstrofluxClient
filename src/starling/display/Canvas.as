@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.display
@@ -28,7 +28,7 @@ package starling.display
         /** Creates a new (empty) Canvas. Call one or more of the 'draw' methods to add content. */
         public function Canvas()
         {
-            _polygons  = new <Polygon>[];
+            _polygons = new <Polygon>[];
             _fillColor = 0xffffff;
             _fillAlpha = 1.0;
             touchGroup = true;
@@ -44,13 +44,15 @@ package starling.display
         /** @inheritDoc */
         public override function hitTest(localPoint:Point):DisplayObject
         {
-            if (!visible || !touchable || !hitTestMask(localPoint)) return null;
+            if (!visible || !touchable || !hitTestMask(localPoint))
+                return null;
 
             // we could also use the standard hit test implementation, but the polygon class can
             // do that much more efficiently (it contains custom implementations for circles, etc).
 
             for (var i:int = 0, len:int = _polygons.length; i < len; ++i)
-                if (_polygons[i].containsPoint(localPoint)) return this;
+                if (_polygons[i].containsPoint(localPoint))
+                    return this;
 
             return null;
         }
@@ -64,7 +66,7 @@ package starling.display
         /** Draws an ellipse. */
         public function drawEllipse(x:Number, y:Number, width:Number, height:Number):void
         {
-            var radiusX:Number = width  / 2.0;
+            var radiusX:Number = width / 2.0;
             var radiusY:Number = height / 2.0;
 
             appendPolygon(Polygon.createEllipse(x + radiusX, y + radiusY, radiusX, radiusY));
@@ -84,7 +86,7 @@ package starling.display
 
         /** Specifies a simple one-color fill that subsequent calls to drawing methods
          *  (such as <code>drawCircle()</code>) will use. */
-        public function beginFill(color:uint=0xffffff, alpha:Number=1.0):void
+        public function beginFill(color:uint = 0xffffff, alpha:Number = 1.0):void
         {
             _fillColor = color;
             _fillAlpha = alpha;

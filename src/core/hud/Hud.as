@@ -59,99 +59,99 @@ package core.hud
    import starling.textures.Texture;
    import textures.ITextureManager;
    import textures.TextureLocator;
-   
+
    public class Hud
    {
       private var g:Game;
-      
+
       private var container:Sprite;
-      
+
       private var shipButton:ButtonHud;
-      
+
       private var mapButton:ButtonHud;
-      
+
       public var cargoButton:ButtonCargo;
-      
+
       public var resourceBox:ResourceBox;
-      
+
       private var podButton:PodButton;
-      
+
       private var settingsButton:ButtonHud;
-      
+
       private var shopButton:Button;
-      
+
       public var buyFluxButton:BuyFluxButton;
-      
+
       public var clanButton:ButtonClan;
-      
+
       private var newMissionsButton:ButtonNewMission;
-      
+
       public var missionsButton:ButtonMissions;
-      
+
       public var artifactsButton:ButtonHud;
-      
+
       public var leaderboardButton:ButtonHud;
-      
+
       public var encountersButton:ButtonHud;
-      
+
       public var salesButton:Button;
-      
+
       public var pvpMenuButton:ButtonPvPMenu;
-      
+
       public var pvpQuickMatchButton:ButtonPvPQuickMatch;
-      
+
       public var healthAndShield:HealthAndShield;
-      
+
       public var powerBar:PowerBar;
-      
+
       public var bossHealth:BossHealth;
-      
+
       public var weaponHotkeys:WeaponHotkeys;
-      
+
       public var radar:Radar;
-      
+
       private var shopIcons:ShopIcons;
-      
+
       private var pvpIcon:PvPIcon;
-      
+
       private var textureManager:ITextureManager;
-      
+
       public var abilities:Abilities;
-      
+
       public var compas:Compas;
-      
+
       public var playerListButton:ButtonPlayers;
-      
+
       private var bgr:MeshBatch;
-      
+
       private var experience:Experience;
-      
+
       private var landText:TextBitmap;
-      
+
       private var safeZoneText:TextBitmap;
-      
+
       private var repairText:TextBitmap;
-      
+
       private var hintMapText:TextBitmap;
-      
+
       public var uberStats:UberStats;
-      
+
       private var artifactLimitText:TextBitmap;
-      
+
       private var loadComplete:Boolean = false;
-      
+
       private var fullScreenButton:FullScreenButton;
-      
+
       private var isShowingNewMissionsButton:Boolean = false;
-      
+
       private var hintMapFlashCounter:int = 0;
-      
+
       private var fullScreenHintImage:Image;
-      
+
       private var artifactTween:TweenMax;
-      
+
       private var showUtilityTexts:Boolean = true;
-      
+
       public function Hud(param1:Game)
       {
          container = new Sprite();
@@ -176,8 +176,8 @@ package core.hud
          uberStats = new UberStats(param1);
          textureManager = TextureLocator.getService();
       }
-      
-      public function load() : void
+
+      public function load():void
       {
          var keyBinds:KeyBinds;
          var message:Message;
@@ -204,7 +204,7 @@ package core.hud
          repairText.touchable = false;
          repairText.batchable = true;
          keyBinds = SceneBase.settings.keybinds;
-         landText.text = Localize.t("Press [key] to land on").replace("[key]",keyBinds.getKeyChar(10)) + " ";
+         landText.text = Localize.t("Press [key] to land on").replace("[key]", keyBinds.getKeyChar(10)) + " ";
          landText.size = 16;
          landText.format.color = 11206570;
          landText.x = 380 - landText.width / 2;
@@ -222,93 +222,93 @@ package core.hud
          artifactLimitText.blendMode = "add";
          artifactLimitText.visible = false;
          mapButton = new ButtonHud(function():void
-         {
-            if(g.gameStateMachine.inState(MapState))
             {
-               g.enterState(new RoamingState(g));
-            }
-            else
-            {
-               g.enterState(new MapState(g));
-            }
-         },"button_map.png");
+               if (g.gameStateMachine.inState(MapState))
+               {
+                  g.enterState(new RoamingState(g));
+               }
+               else
+               {
+                  g.enterState(new MapState(g));
+               }
+            }, "button_map.png");
          shipButton = new ButtonHud(function():void
-         {
-            g.enterState(new MenuState(g,HomeState));
-         },"button_ship.png");
-         cargoButton = new ButtonCargo(g,function():void
-         {
-            g.enterState(new MenuState(g,CargoState));
-         });
+            {
+               g.enterState(new MenuState(g, HomeState));
+            }, "button_ship.png");
+         cargoButton = new ButtonCargo(g, function():void
+            {
+               g.enterState(new MenuState(g, CargoState));
+            });
          podButton = new PodButton(function():void
-         {
-            g.enterState(new PodState(g));
-         },"--","highlight",17);
+            {
+               g.enterState(new PodState(g));
+            }, "--", "highlight", 17);
          podButton.autoEnableAfterClick = true;
          podButton.visible = !g.me.guest;
          message = g.createMessage("getPodCount");
-         g.rpcMessage(message,function(param1:Message):void
-         {
-            updatePodCount(param1.getInt(0));
-         });
+         g.rpcMessage(message, function(param1:Message):void
+            {
+               updatePodCount(param1.getInt(0));
+            });
          artifactsButton = new ButtonHud(function():void
-         {
-            g.enterState(new MenuState(g,ArtifactState2));
-         },"button_artifacts.png");
+            {
+               g.enterState(new MenuState(g, ArtifactState2));
+            }, "button_artifacts.png");
          buyFluxButton = new BuyFluxButton(g);
          buyFluxButton.visible = !g.me.guest;
          shopButton = new Button(function():void
-         {
-            g.enterState(new ShopState(g));
-         },Localize.t("Shop"),"buy");
+            {
+               g.enterState(new ShopState(g));
+            }, Localize.t("Shop"), "buy");
          shopButton.autoEnableAfterClick = true;
          shopButton.visible = !g.me.guest;
          clanButton = new ButtonClan(function():void
-         {
-            g.enterState(new ClanState(g));
-         },g);
+            {
+               g.enterState(new ClanState(g));
+            }, g);
          clanButton.visible = !g.me.guest;
          newMissionsButton = new ButtonNewMission(function():void
-         {
-            if(g.me.isDeveloper || g.me.isModerator || g.me.id == "fb100002203869719")
             {
-               g.enterState(new MissionsState(g));
-            }
-            else
-            {
-               g.enterState(new MissionsState(g));
-            }
-         },g);
+               if (g.me.isDeveloper || g.me.isModerator || g.me.id == "fb100002203869719")
+               {
+                  g.enterState(new MissionsState(g));
+               }
+               else
+               {
+                  g.enterState(new MissionsState(g));
+               }
+            }, g);
          missionsButton = new ButtonMissions(function():void
-         {
-            if(g.me.isDeveloper || g.me.isModerator || g.me.id == "fb100002203869719")
             {
-               g.enterState(new MissionsState(g));
-            }
-            else
-            {
-               g.enterState(new MissionsState(g));
-            }
-         });
+               if (g.me.isDeveloper || g.me.isModerator || g.me.id == "fb100002203869719")
+               {
+                  g.enterState(new MissionsState(g));
+               }
+               else
+               {
+                  g.enterState(new MissionsState(g));
+               }
+            });
          abilities.load();
          settingsButton = new ButtonHud(function():void
-         {
-            g.enterState(new SettingsState(g));
-         },"button_settings.png");
+            {
+               g.enterState(new SettingsState(g));
+            }, "button_settings.png");
          encountersButton = new ButtonHud(function():void
-         {
-            g.enterState(new MenuState(g,EncounterState));
-         },"button_encounters.png");
+            {
+               g.enterState(new MenuState(g, EncounterState));
+            }, "button_encounters.png");
          leaderboardButton = new ButtonHud(function():void
-         {
-            g.enterState(new LeaderBoardState2(g));
-         },"button_leaderboard.png");
+            {
+               g.enterState(new LeaderBoardState2(g));
+            }, "button_leaderboard.png");
          salesButton = new Button(function():void
-         {
-            g.tryOpenSaleSpinner();
-            salesButton.enabled = true;
-         },"Sale!","buy");
-         if(g.me.guest == true || !g.me.hasCorrectTOSVersion)
+            {
+               g.tryOpenSaleSpinner();
+               salesButton.enabled = true;
+            }, "Sale!", "buy");
+         if (g.me.guest == true || !g.me.hasCorrectTOSVersion)
          {
             salesButton.visible = false;
          }
@@ -317,35 +317,35 @@ package core.hud
             salesButton.visible = true;
          }
          playerListButton = new ButtonPlayers(function():void
-         {
-            g.enterState(new PlayerListState(g));
-         });
+            {
+               g.enterState(new PlayerListState(g));
+            });
          pvpMenuButton = new ButtonPvPMenu(function():void
-         {
-            g.enterState(new PvpScreenState(g));
-         },Localize.t("PvP"));
-         pvpQuickMatchButton = new ButtonPvPQuickMatch(g,"pvp random",g.queueManager.getQueue("pvp random"),true);
-         new ToolTip(g,mapButton,Localize.t("Solar system map <FONT COLOR=\'#44FF44\'>[key]</FONT>").replace("[key]",keyBinds.getKeyChar(9)));
-         new ToolTip(g,shipButton,Localize.t("Ship <FONT COLOR=\'#44FF44\'>[key]</FONT>").replace("[key]",keyBinds.getKeyChar(2)));
-         new ToolTip(g,cargoButton,Localize.t("Cargo bay <FONT COLOR=\'#44FF44\'>[key]</FONT>").replace("[key]",keyBinds.getKeyChar(7)));
-         new ToolTip(g,artifactsButton,Localize.t("Artifacts <FONT COLOR=\'#44FF44\'>[key]</FONT>").replace("[key]",keyBinds.getKeyChar(3)));
-         new ToolTip(g,settingsButton,Localize.t("Settings <FONT COLOR=\'#44FF44\'>[key]</FONT>").replace("[key]",keyBinds.getKeyChar(8)));
-         new ToolTip(g,buyFluxButton,Localize.t("Flux is necessary to get <FONT COLOR=\'#ffffff\'>new ships</FONT> and is also used to gain <FONT COLOR=\'#ffffff\'>upgrades</FONT> and other <FONT COLOR=\'#ffffff\'>advantages</FONT> in the game."));
-         new ToolTip(g,shopButton,Localize.t("Shop <FONT COLOR=\'#44FF44\'>[key]</FONT>\nHere you can get cool <FONT COLOR=\'#ffffff\'>packages</FONT> and <FONT COLOR=\'#ffffff\'>boosts</FONT> that will make the game more fun!").replace("[key]",keyBinds.getKeyChar(1)));
-         new ToolTip(g,playerListButton,Localize.t("Players <FONT COLOR=\'#44FF44\'>[key]</FONT>").replace("[key]",keyBinds.getKeyChar(25)));
-         new ToolTip(g,leaderboardButton,Localize.t("Leaderboard"));
-         new ToolTip(g,missionsButton,Localize.t("Missions <FONT COLOR=\'#44FF44\'>[key]</FONT>").replace("[key]",keyBinds.getKeyChar(5)));
-         new ToolTip(g,encountersButton,Localize.t("Alien Encounters <FONT COLOR=\'#44FF44\'>[key]</FONT>").replace("[key]",keyBinds.getKeyChar(4)));
-         new ToolTip(g,pvpMenuButton,Localize.t("Queue up for pvp \nmatches and view \npvp statistics <FONT COLOR=\'#44FF44\'>[key]</FONT>").replace("[key]",keyBinds.getKeyChar(6)));
-         new ToolTip(g,pvpQuickMatchButton,"<FONT COLOR=\'#88FF88\'>" + Localize.t("Play a PvP match.") + "</FONT>\n\n" + "<FONT COLOR=\'#FFFFFF\'>" + Localize.t("Domination") + "</FONT>\n" + Localize.t("This gamemode is team based and requires you to capture zones in order to win.") + "\n\n" + "<FONT COLOR=\'#FFFFFF\'>" + Localize.t("Deathmatch") + "</FONT>\n" + Localize.t("This is a free for all gamemode where the player with most kills win.") + "\n\n" + "<FONT COLOR=\'#FFFFFF\'>" + Localize.t("Rewards") + "</FONT>\n" + Localize.t("By participating you will gain resources, experience and artifacts! Rewards are based on your own skill, but also your teams performance in Domination.") + "\n\n" + "<FONT COLOR=\'#FFFFFF\'>" + Localize.t("Match Making") + "</FONT>\n" + Localize.t("The matchmaker tries to find players and teams that have equal rating. There is also a split between levels:") + " 1-9, 10-19, 20-39, 40-79, 80-120\n");
-         new ToolTip(g,podButton,Localize.t("Click here to purchase or open your pods."));
+            {
+               g.enterState(new PvpScreenState(g));
+            }, Localize.t("PvP"));
+         pvpQuickMatchButton = new ButtonPvPQuickMatch(g, "pvp random", g.queueManager.getQueue("pvp random"), true);
+         new ToolTip(g, mapButton, Localize.t("Solar system map <FONT COLOR='#44FF44'>[key]</FONT>").replace("[key]", keyBinds.getKeyChar(9)));
+         new ToolTip(g, shipButton, Localize.t("Ship <FONT COLOR='#44FF44'>[key]</FONT>").replace("[key]", keyBinds.getKeyChar(2)));
+         new ToolTip(g, cargoButton, Localize.t("Cargo bay <FONT COLOR='#44FF44'>[key]</FONT>").replace("[key]", keyBinds.getKeyChar(7)));
+         new ToolTip(g, artifactsButton, Localize.t("Artifacts <FONT COLOR='#44FF44'>[key]</FONT>").replace("[key]", keyBinds.getKeyChar(3)));
+         new ToolTip(g, settingsButton, Localize.t("Settings <FONT COLOR='#44FF44'>[key]</FONT>").replace("[key]", keyBinds.getKeyChar(8)));
+         new ToolTip(g, buyFluxButton, Localize.t("Flux is necessary to get <FONT COLOR='#ffffff'>new ships</FONT> and is also used to gain <FONT COLOR='#ffffff'>upgrades</FONT> and other <FONT COLOR='#ffffff'>advantages</FONT> in the game."));
+         new ToolTip(g, shopButton, Localize.t("Shop <FONT COLOR='#44FF44'>[key]</FONT>\nHere you can get cool <FONT COLOR='#ffffff'>packages</FONT> and <FONT COLOR='#ffffff'>boosts</FONT> that will make the game more fun!").replace("[key]", keyBinds.getKeyChar(1)));
+         new ToolTip(g, playerListButton, Localize.t("Players <FONT COLOR='#44FF44'>[key]</FONT>").replace("[key]", keyBinds.getKeyChar(25)));
+         new ToolTip(g, leaderboardButton, Localize.t("Leaderboard"));
+         new ToolTip(g, missionsButton, Localize.t("Missions <FONT COLOR='#44FF44'>[key]</FONT>").replace("[key]", keyBinds.getKeyChar(5)));
+         new ToolTip(g, encountersButton, Localize.t("Alien Encounters <FONT COLOR='#44FF44'>[key]</FONT>").replace("[key]", keyBinds.getKeyChar(4)));
+         new ToolTip(g, pvpMenuButton, Localize.t("Queue up for pvp \nmatches and view \npvp statistics <FONT COLOR='#44FF44'>[key]</FONT>").replace("[key]", keyBinds.getKeyChar(6)));
+         new ToolTip(g, pvpQuickMatchButton, "<FONT COLOR='#88FF88'>" + Localize.t("Play a PvP match.") + "</FONT>\n\n" + "<FONT COLOR='#FFFFFF'>" + Localize.t("Domination") + "</FONT>\n" + Localize.t("This gamemode is team based and requires you to capture zones in order to win.") + "\n\n" + "<FONT COLOR='#FFFFFF'>" + Localize.t("Deathmatch") + "</FONT>\n" + Localize.t("This is a free for all gamemode where the player with most kills win.") + "\n\n" + "<FONT COLOR='#FFFFFF'>" + Localize.t("Rewards") + "</FONT>\n" + Localize.t("By participating you will gain resources, experience and artifacts! Rewards are based on your own skill, but also your teams performance in Domination.") + "\n\n" + "<FONT COLOR='#FFFFFF'>" + Localize.t("Match Making") + "</FONT>\n" + Localize.t("The matchmaker tries to find players and teams that have equal rating. There is also a split between levels:") + " 1-9, 10-19, 20-39, 40-79, 80-120\n");
+         new ToolTip(g, podButton, Localize.t("Click here to purchase or open your pods."));
          resourceBox = new ResourceBox(g);
          g.myCargo.reloadCargoFromServer(function():void
-         {
-            resourceBox.update();
-            cargoButton.update();
-         });
-         if(g.solarSystem.isPvpSystemInEditor)
+            {
+               resourceBox.update();
+               cargoButton.update();
+            });
+         if (g.solarSystem.isPvpSystemInEditor)
          {
             pvpQuickMatchButton.visible = false;
             radar.visible = false;
@@ -364,7 +364,7 @@ package core.hud
          {
             pvpMenuButton.visible = false;
          }
-         if(g.isSystemTypeSurvival())
+         if (g.isSystemTypeSurvival())
          {
             container.addChild(uberStats);
          }
@@ -377,7 +377,7 @@ package core.hud
          container.addChild(abilities);
          container.addChild(shopIcons);
          container.addChild(podButton);
-         if(g.isSystemPvPEnabled())
+         if (g.isSystemPvPEnabled())
          {
             container.addChild(pvpIcon);
          }
@@ -388,17 +388,17 @@ package core.hud
          container.addChild(settingsButton);
          container.addChild(leaderboardButton);
          container.addChild(cargoButton);
-         if(!g.solarSystem.isPvpSystemInEditor)
+         if (!g.solarSystem.isPvpSystemInEditor)
          {
             container.addChild(missionsButton);
          }
-         if(!g.solarSystem.isPvpSystemInEditor)
+         if (!g.solarSystem.isPvpSystemInEditor)
          {
             container.addChild(newMissionsButton);
          }
          container.addChild(pvpMenuButton);
          container.addChild(pvpQuickMatchButton);
-         if(g.salesManager.isSale())
+         if (g.salesManager.isSale())
          {
             container.addChild(salesButton);
          }
@@ -407,23 +407,23 @@ package core.hud
          container.addChild(shopButton);
          container.addChild(playerListButton);
          container.addChild(resourceBox);
-         if(showUtilityTexts)
+         if (showUtilityTexts)
          {
             container.addChild(safeZoneText);
             container.addChild(repairText);
             container.addChild(landText);
          }
          container.addChild(artifactLimitText);
-         if(g.me.artifactCount >= g.me.artifactLimit)
+         if (g.me.artifactCount >= g.me.artifactLimit)
          {
             showArtifactLimitText();
          }
          g.addChild(container);
          show = false;
-         if(g.me.level <= 2)
+         if (g.me.level <= 2)
          {
             hintMapText = new TextBitmap();
-            hintMapText.text = Localize.t("Press [key] for map").replace("[key]",keyBinds.getKeyChar(9));
+            hintMapText.text = Localize.t("Press [key] for map").replace("[key]", keyBinds.getKeyChar(9));
             hintMapText.format.color = 16777028;
             hintMapText.x = 140;
             hintMapText.y = g.stage.stageHeight - 135;
@@ -436,89 +436,89 @@ package core.hud
          loadComplete = true;
          resize();
       }
-      
-      public function initMissionsButtons() : void
+
+      public function initMissionsButtons():void
       {
          var m:Mission;
          var daily:Daily;
-         if(isShowingNewMissionsButton)
+         if (isShowingNewMissionsButton)
          {
             return;
          }
          hideMissionButtons();
-         for each(m in g.me.missions)
+         for each (m in g.me.missions)
          {
-            if(m.viewed == false)
+            if (m.viewed == false)
             {
-               if(m.missionTypeKey == "s1l0zM-6lkq9l1jlGDBy4w")
+               if (m.missionTypeKey == "s1l0zM-6lkq9l1jlGDBy4w")
                {
-                  TweenMax.delayedCall(10,function():void
-                  {
-                     showNewMissionsButton();
-                  });
+                  TweenMax.delayedCall(10, function():void
+                     {
+                        showNewMissionsButton();
+                     });
                   return;
                }
                showNewMissionsButton();
                return;
             }
          }
-         if(g.me.missions.length > 0)
+         if (g.me.missions.length > 0)
          {
             showMissionsButton();
          }
-         for each(m in g.me.missions)
+         for each (m in g.me.missions)
          {
-            if(m.finished == true)
+            if (m.finished == true)
             {
                missionsButton.hintFinished();
                return;
             }
          }
-         for each(daily in g.me.dailyMissions)
+         for each (daily in g.me.dailyMissions)
          {
-            if(daily.complete)
+            if (daily.complete)
             {
                missionsButton.hintFinished();
             }
          }
       }
-      
-      public function showNewMissionsButton() : void
+
+      public function showNewMissionsButton():void
       {
-         if(newMissionsButton.visible)
+         if (newMissionsButton.visible)
          {
             return;
          }
          isShowingNewMissionsButton = true;
-         TweenMax.delayedCall(1.5,function():void
-         {
-            missionsButton.hide();
-            newMissionsButton.show();
-            g.textManager.createNewMissionArrivedText();
-            isShowingNewMissionsButton = false;
-         });
+         TweenMax.delayedCall(1.5, function():void
+            {
+               missionsButton.hide();
+               newMissionsButton.show();
+               g.textManager.createNewMissionArrivedText();
+               isShowingNewMissionsButton = false;
+            });
       }
-      
-      public function showMissionsButton() : void
+
+      public function showMissionsButton():void
       {
          newMissionsButton.visible = false;
          missionsButton.visible = true;
       }
-      
-      public function hideMissionButtons() : void
+
+      public function hideMissionButtons():void
       {
          newMissionsButton.visible = false;
          missionsButton.visible = false;
          newMissionsButton.hide();
       }
-      
-      public function set show(param1:Boolean) : void
+
+      public function set show(param1:Boolean):void
       {
-         if(!SceneBase.settings.showHud)
+         if (!SceneBase.settings.showHud)
          {
             param1 = false;
          }
-         if(param1)
+         if (param1)
          {
             cargoButton.update();
             resourceBox.update();
@@ -526,30 +526,30 @@ package core.hud
          fullScreenButton.visible = param1;
          container.visible = param1;
       }
-      
-      public function get show() : Boolean
+
+      public function get show():Boolean
       {
          return container.visible;
       }
-      
-      public function hideMapHint() : void
+
+      public function hideMapHint():void
       {
-         if(hintMapText == null)
+         if (hintMapText == null)
          {
             return;
          }
          container.removeChild(hintMapText);
          hintMapText = null;
-         if(mapButton.filter)
+         if (mapButton.filter)
          {
             mapButton.filter.dispose();
             mapButton.filter = null;
          }
       }
-      
-      public function update() : void
+
+      public function update():void
       {
-         if(!g.solarSystem.isPvpSystemInEditor)
+         if (!g.solarSystem.isPvpSystemInEditor)
          {
             radar.update();
          }
@@ -558,10 +558,10 @@ package core.hud
          compas.update();
          experience.update();
          shopIcons.update();
-         if(hintMapText != null)
+         if (hintMapText != null)
          {
             hintMapFlashCounter++;
-            if(hintMapFlashCounter % 100 == 1)
+            if (hintMapFlashCounter % 100 == 1)
             {
                mapButton.flash();
             }
@@ -569,19 +569,19 @@ package core.hud
          pvpQuickMatchButton.update();
          playerListButton.text = g.playerManager.players.length.toString();
          var _loc2_:Player = g.me;
-         if(_loc2_ == null)
+         if (_loc2_ == null)
          {
             return;
          }
          var _loc1_:PlayerShip = _loc2_.ship;
-         if(_loc1_ == null)
+         if (_loc1_ == null)
          {
             return;
          }
-         if(_loc2_.inSafeZone)
+         if (_loc2_.inSafeZone)
          {
             safeZoneText.visible = true;
-            if(_loc1_.hp < _loc1_.hpMax || _loc1_.shieldHp < _loc1_.shieldHpMax)
+            if (_loc1_.hp < _loc1_.hpMax || _loc1_.shieldHp < _loc1_.shieldHpMax)
             {
                repairText.visible = true;
             }
@@ -596,10 +596,10 @@ package core.hud
             safeZoneText.visible = false;
          }
       }
-      
-      public function resize(param1:Event = null) : void
+
+      public function resize(param1:Event = null):void
       {
-         if(!loadComplete)
+         if (!loadComplete)
          {
             return;
          }
@@ -610,7 +610,7 @@ package core.hud
          var _loc17_:Image = new Image(_loc11_);
          _loc17_.y = g.stage.stageHeight - _loc11_.height;
          var _loc13_:int = 0;
-         if(g.stage.stageWidth < 1000)
+         if (g.stage.stageWidth < 1000)
          {
             _loc13_ = 35;
          }
@@ -642,7 +642,7 @@ package core.hud
          _loc12_.height = _loc5_.height;
          bgr.clear();
          bgr.addMesh(_loc15_);
-         if(!g.solarSystem.isPvpSystemInEditor)
+         if (!g.solarSystem.isPvpSystemInEditor)
          {
             bgr.addMesh(_loc17_);
          }
@@ -650,7 +650,7 @@ package core.hud
          bgr.addMesh(_loc2_);
          bgr.addMesh(_loc12_);
          bgr.addMesh(_loc10_);
-         if(!g.solarSystem.isPvpSystemInEditor)
+         if (!g.solarSystem.isPvpSystemInEditor)
          {
             bgr.addMesh(_loc3_);
          }
@@ -669,7 +669,7 @@ package core.hud
          cargoButton.y = encountersButton.y;
          clanButton.x = 272;
          clanButton.y = encountersButton.y;
-         if(g.solarSystem.isPvpSystemInEditor)
+         if (g.solarSystem.isPvpSystemInEditor)
          {
             shipButton.x += 18;
             artifactsButton.x += 18;
@@ -688,7 +688,7 @@ package core.hud
          abilities.y = 66;
          experience.x = 0;
          experience.y = 0;
-         if(g.stage.stageWidth < 1000)
+         if (g.stage.stageWidth < 1000)
          {
             powerBar.scaleX = 0.9;
             powerBar.x = g.stage.stageWidth / 2 - 147 + _loc13_ + 20;
@@ -734,119 +734,119 @@ package core.hud
          landText.y = g.stage.stageHeight - g.stage.stageHeight / 3;
          radar.x = 16.5;
          radar.y = g.stage.stageHeight - 20.5 - radar.radius * 2;
-         if(fullScreenHintImage != null)
+         if (fullScreenHintImage != null)
          {
             fullScreenHintImage.x = g.stage.stageWidth - 2 - fullScreenHintImage.width;
             fullScreenHintImage.y = g.stage.stageHeight - 36 - fullScreenHintImage.height;
          }
-         if(hintMapText)
+         if (hintMapText)
          {
             hintMapText.y = g.stage.stageHeight - 135;
          }
       }
-      
-      public function removeFullScreenHint() : void
+
+      public function removeFullScreenHint():void
       {
-         if(fullScreenHintImage != null)
+         if (fullScreenHintImage != null)
          {
             g.removeChildFromOverlay(fullScreenHintImage);
             fullScreenHintImage = null;
          }
       }
-      
-      public function showArtifactLimitText() : void
+
+      public function showArtifactLimitText():void
       {
          artifactLimitText.visible = true;
          artifactsButton.hintNew();
          artifactsButton.flash();
-         if(artifactTween != null)
+         if (artifactTween != null)
          {
             artifactTween.kill();
          }
-         artifactTween = TweenMax.fromTo(artifactLimitText,1,{"alpha":1},{
-            "alpha":0,
-            "repeat":-1
-         });
+         artifactTween = TweenMax.fromTo(artifactLimitText, 1, {"alpha": 1}, {
+                  "alpha": 0,
+                  "repeat": -1
+               });
       }
-      
-      public function hideArtifactLimitText() : void
+
+      public function hideArtifactLimitText():void
       {
-         if(artifactTween != null)
+         if (artifactTween != null)
          {
             artifactTween.kill();
             artifactTween = null;
          }
          artifactLimitText.visible = false;
       }
-      
-      public function hideFullScreenHint() : void
+
+      public function hideFullScreenHint():void
       {
-         if(fullScreenHintImage == null)
+         if (fullScreenHintImage == null)
          {
             return;
          }
          fullScreenHintImage.visible = false;
       }
-      
-      public function showFullScreenHint() : void
+
+      public function showFullScreenHint():void
       {
-         if(fullScreenHintImage == null)
+         if (fullScreenHintImage == null)
          {
             return;
          }
          fullScreenHintImage.visible = true;
-         TweenMax.delayedCall(60,removeFullScreenHint);
+         TweenMax.delayedCall(60, removeFullScreenHint);
       }
-      
-      public function updateCredits() : void
+
+      public function updateCredits():void
       {
          buyFluxButton.updateCredits();
       }
-      
-      private function clean(param1:Event = null) : void
+
+      private function clean(param1:Event = null):void
       {
          g.removeResizeListener(resize);
       }
-      
-      public function get isLoaded() : Boolean
+
+      public function get isLoaded():Boolean
       {
          return loadComplete;
       }
-      
-      public function removeUtilityTexts() : void
+
+      public function removeUtilityTexts():void
       {
          showUtilityTexts = false;
          container.removeChild(landText);
          container.removeChild(repairText);
          container.removeChild(safeZoneText);
       }
-      
-      public function hideLandText() : void
+
+      public function hideLandText():void
       {
          landText.visible = false;
       }
-      
-      public function showLandText(param1:String = "") : void
+
+      public function showLandText(param1:String = ""):void
       {
-         if(landText.visible)
+         if (landText.visible)
          {
             return;
          }
          var _loc2_:KeyBinds = SceneBase.settings.keybinds;
-         landText.text = Localize.t("Press [key] to land on").replace("[key]",_loc2_.getKeyChar(10)) + " " + param1;
+         landText.text = Localize.t("Press [key] to land on").replace("[key]", _loc2_.getKeyChar(10)) + " " + param1;
          landText.visible = true;
       }
-      
-      public function updatePodCount(param1:int) : void
+
+      public function updatePodCount(param1:int):void
       {
          podButton.text = param1.toString();
          resize();
       }
-      
-      public function dispose() : void
+
+      public function dispose():void
       {
          clean();
-         g.removeChild(container,true);
+         g.removeChild(container, true);
          radar.dispose();
          shipButton = null;
          mapButton = null;
@@ -881,4 +881,3 @@ package core.hud
       }
    }
 }
-

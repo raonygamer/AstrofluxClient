@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.rendering
@@ -69,7 +69,7 @@ package starling.rendering
      *  override the following methods:</p>
      *
      *  <ul>
-     *    <li><code>createProgram():Program</code> — must create the actual program containing 
+     *    <li><code>createProgram():Program</code> — must create the actual program containing
      *        vertex- and fragment-shaders. A program will be created only once for each render
      *        context; this is taken care of by the base class.</li>
      *    <li><code>get programVariantName():uint</code> (optional) — override this if your
@@ -105,7 +105,7 @@ package starling.rendering
         private var _vertexBuffer:VertexBuffer3D;
         private var _vertexBufferSize:int; // in bytes
         private var _indexBuffer:IndexBuffer3D;
-        private var _indexBufferSize:int;  // in number of indices
+        private var _indexBufferSize:int; // in number of indices
         private var _indexBufferUsesQuadLayout:Boolean;
 
         private var _mvpMatrix3D:Matrix3D;
@@ -123,7 +123,7 @@ package starling.rendering
 
             // Handle lost context (using conventional Flash event for weak listener support)
             Starling.current.stage3D.addEventListener(Event.CONTEXT3D_CREATE,
-                onContextCreated, false, 20, true);
+                    onContextCreated, false, 20, true);
         }
 
         /** Purges the index- and vertex-buffers. */
@@ -140,20 +140,32 @@ package starling.rendering
         }
 
         /** Purges one or both of the vertex- and index-buffers. */
-        public function purgeBuffers(vertexBuffer:Boolean=true, indexBuffer:Boolean=true):void
+        public function purgeBuffers(vertexBuffer:Boolean = true, indexBuffer:Boolean = true):void
         {
             // We wrap the dispose calls in a try/catch block to work around a stage3D problem.
             // Since they are not re-used later, that shouldn't have any evil side effects.
 
             if (_vertexBuffer && vertexBuffer)
             {
-                try { _vertexBuffer.dispose(); } catch (e:Error) {}
+                try
+                {
+                    _vertexBuffer.dispose();
+                }
+                catch (e:Error)
+                {
+                }
                 _vertexBuffer = null;
             }
 
             if (_indexBuffer && indexBuffer)
             {
-                try { _indexBuffer.dispose(); } catch (e:Error) {}
+                try
+                {
+                    _indexBuffer.dispose();
+                }
+                catch (e:Error)
+                {
+                }
                 _indexBuffer = null;
             }
         }
@@ -167,7 +179,7 @@ package starling.rendering
          *                     causes the creation of a new index buffer.
          */
         public function uploadIndexData(indexData:IndexData,
-                                        bufferUsage:String="staticDraw"):void
+                bufferUsage:String = "staticDraw"):void
         {
             var numIndices:int = indexData.numIndices;
             var isQuadLayout:Boolean = indexData.useQuadLayout;
@@ -203,7 +215,7 @@ package starling.rendering
          *                     causes the creation of a new vertex buffer.
          */
         public function uploadVertexData(vertexData:VertexData,
-                                         bufferUsage:String="staticDraw"):void
+                bufferUsage:String = "staticDraw"):void
         {
             if (_vertexBuffer)
             {
@@ -224,13 +236,16 @@ package starling.rendering
         /** Draws the triangles described by the index- and vertex-buffers, or a range of them.
          *  This calls <code>beforeDraw</code>, <code>context.drawTriangles</code>, and
          *  <code>afterDraw</code>, in this order. */
-        public function render(firstIndex:int=0, numTriangles:int=-1):void
+        public function render(firstIndex:int = 0, numTriangles:int = -1):void
         {
-            if (numTriangles < 0) numTriangles = _indexBufferSize / 3;
-            if (numTriangles == 0) return;
+            if (numTriangles < 0)
+                numTriangles = _indexBufferSize / 3;
+            if (numTriangles == 0)
+                return;
 
             var context:Context3D = Starling.context;
-            if (context == null) throw new MissingContextError();
+            if (context == null)
+                throw new MissingContextError();
 
             beforeDraw(context);
             context.drawTriangles(indexBuffer, firstIndex, numTriangles);
@@ -273,12 +288,12 @@ package starling.rendering
         protected function createProgram():Program
         {
             var vertexShader:String = [
-                "m44 op, va0, vc0", // 4x4 matrix transform to output clipspace
-                "seq v0, va0, va0"  // this is a hack that always produces "1"
-            ].join("\n");
+                    "m44 op, va0, vc0", // 4x4 matrix transform to output clipspace
+                    "seq v0, va0, va0" // this is a hack that always produces "1"
+                ].join("\n");
 
             var fragmentShader:String =
-                "mov oc, v0";       // output color: white
+                "mov oc, v0"; // output color: white
 
             return Program.fromSource(vertexShader, fragmentShader);
         }
@@ -297,8 +312,14 @@ package starling.rendering
         /** Returns the base name for the program.
          *  @default the fully qualified class name
          */
-        protected function get programBaseName():String { return _programBaseName; }
-        protected function set programBaseName(value:String):void { _programBaseName = value; }
+        protected function get programBaseName():String
+        {
+            return _programBaseName;
+        }
+        protected function set programBaseName(value:String):void
+        {
+            _programBaseName = value;
+        }
 
         /** Returns the full name of the program, which is used to register it at the current
          *  <code>Painter</code>.
@@ -309,7 +330,7 @@ package starling.rendering
          */
         protected function get programName():String
         {
-            var baseName:String  = this.programBaseName;
+            var baseName:String = this.programBaseName;
             var variantName:uint = this.programVariantName;
             var nameCache:Dictionary = sProgramNameCache[baseName];
 
@@ -323,8 +344,10 @@ package starling.rendering
 
             if (name == null)
             {
-                if (variantName) name = baseName + "#" + variantName.toString(16);
-                else             name = baseName;
+                if (variantName)
+                    name = baseName + "#" + variantName.toString(16);
+                else
+                    name = baseName;
 
                 nameCache[variantName] = name;
             }
@@ -355,27 +378,54 @@ package starling.rendering
         /** The function that you provide here will be called after a context loss.
          *  Call both "upload..." methods from within the callback to restore any vertex or
          *  index buffers. The callback will be executed with the effect as its sole parameter. */
-        public function get onRestore():Function { return _onRestore; }
-        public function set onRestore(value:Function):void { _onRestore = value; }
+        public function get onRestore():Function
+        {
+            return _onRestore;
+        }
+        public function set onRestore(value:Function):void
+        {
+            _onRestore = value;
+        }
 
         /** The data format that this effect requires from the VertexData that it renders:
          *  <code>"position:float2"</code> */
-        public function get vertexFormat():VertexDataFormat { return VERTEX_FORMAT; }
+        public function get vertexFormat():VertexDataFormat
+        {
+            return VERTEX_FORMAT;
+        }
 
         /** The MVP (modelview-projection) matrix transforms vertices into clipspace. */
-        public function get mvpMatrix3D():Matrix3D { return _mvpMatrix3D; }
-        public function set mvpMatrix3D(value:Matrix3D):void { _mvpMatrix3D.copyFrom(value); }
+        public function get mvpMatrix3D():Matrix3D
+        {
+            return _mvpMatrix3D;
+        }
+        public function set mvpMatrix3D(value:Matrix3D):void
+        {
+            _mvpMatrix3D.copyFrom(value);
+        }
 
         /** The internally used index buffer used on rendering. */
-        protected function get indexBuffer():IndexBuffer3D { return _indexBuffer; }
+        protected function get indexBuffer():IndexBuffer3D
+        {
+            return _indexBuffer;
+        }
 
         /** The current size of the index buffer (in number of indices). */
-        protected function get indexBufferSize():int { return _indexBufferSize; }
+        protected function get indexBufferSize():int
+        {
+            return _indexBufferSize;
+        }
 
         /** The internally used vertex buffer used on rendering. */
-        protected function get vertexBuffer():VertexBuffer3D { return _vertexBuffer; }
-        
+        protected function get vertexBuffer():VertexBuffer3D
+        {
+            return _vertexBuffer;
+        }
+
         /** The current size of the vertex buffer (in blocks of 32 bits). */
-        protected function get vertexBufferSize():int { return _vertexBufferSize; }
+        protected function get vertexBufferSize():int
+        {
+            return _vertexBufferSize;
+        }
     }
 }

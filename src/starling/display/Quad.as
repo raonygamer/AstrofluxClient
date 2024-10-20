@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.display
@@ -59,7 +59,7 @@ package starling.display
         private static var sMatrix3D:Matrix3D = new Matrix3D();
 
         /** Creates a quad with a certain size and color. */
-        public function Quad(width:Number, height:Number, color:uint=0xffffff)
+        public function Quad(width:Number, height:Number, color:uint = 0xffffff)
         {
             _bounds = new Rectangle(0, 0, width, height);
 
@@ -100,9 +100,9 @@ package starling.display
             }
             else
             {
-                vertexData.setPoint(0, posAttr, _bounds.left,  _bounds.top);
+                vertexData.setPoint(0, posAttr, _bounds.left, _bounds.top);
                 vertexData.setPoint(1, posAttr, _bounds.right, _bounds.top);
-                vertexData.setPoint(2, posAttr, _bounds.left,  _bounds.bottom);
+                vertexData.setPoint(2, posAttr, _bounds.left, _bounds.bottom);
                 vertexData.setPoint(3, posAttr, _bounds.right, _bounds.bottom);
 
                 vertexData.setPoint(0, texAttr, 0.0, 0.0);
@@ -115,9 +115,10 @@ package starling.display
         }
 
         /** @inheritDoc */
-        public override function getBounds(targetSpace:DisplayObject, out:Rectangle=null):Rectangle
+        public override function getBounds(targetSpace:DisplayObject, out:Rectangle = null):Rectangle
         {
-            if (out == null) out = new Rectangle();
+            if (out == null)
+                out = new Rectangle();
 
             if (targetSpace == this) // optimization
             {
@@ -128,11 +129,19 @@ package starling.display
                 var scaleX:Number = this.scaleX;
                 var scaleY:Number = this.scaleY;
 
-                out.setTo(   x - pivotX * scaleX,     y - pivotY * scaleY,
-                          _bounds.width * scaleX, _bounds.height * scaleY);
+                out.setTo(x - pivotX * scaleX, y - pivotY * scaleY,
+                        _bounds.width * scaleX, _bounds.height * scaleY);
 
-                if (scaleX < 0) { out.width  *= -1; out.x -= out.width;  }
-                if (scaleY < 0) { out.height *= -1; out.y -= out.height; }
+                if (scaleX < 0)
+                {
+                    out.width *= -1;
+                    out.x -= out.width;
+                }
+                if (scaleY < 0)
+                {
+                    out.height *= -1;
+                    out.y -= out.height;
+                }
             }
             else if (is3D && stage)
             {
@@ -152,19 +161,24 @@ package starling.display
         /** @inheritDoc */
         override public function hitTest(localPoint:Point):DisplayObject
         {
-            if (!visible || !touchable || !hitTestMask(localPoint)) return null;
-            else if (_bounds.containsPoint(localPoint)) return this;
-            else return null;
+            if (!visible || !touchable || !hitTestMask(localPoint))
+                return null;
+            else if (_bounds.containsPoint(localPoint))
+                return this;
+            else
+                return null;
         }
 
         /** Readjusts the dimensions of the quad. Use this method without any arguments to
          *  synchronize quad and texture size after assigning a texture with a different size.
          *  You can also force a certain width and height by passing positive, non-zero
          *  values for width and height. */
-        public function readjustSize(width:Number=-1, height:Number=-1):void
+        public function readjustSize(width:Number = -1, height:Number = -1):void
         {
-            if (width  <= 0) width  = texture ? texture.frameWidth  : _bounds.width;
-            if (height <= 0) height = texture ? texture.frameHeight : _bounds.height;
+            if (width <= 0)
+                width = texture ? texture.frameWidth : _bounds.width;
+            if (height <= 0)
+                height = texture ? texture.frameHeight : _bounds.height;
 
             if (width != _bounds.width || height != _bounds.height)
             {

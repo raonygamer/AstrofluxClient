@@ -7,29 +7,29 @@ package core.weapon
    import core.unit.Unit;
    import flash.geom.Point;
    import movement.Heading;
-   
+
    public class ProjectileGun extends Weapon
    {
       public function ProjectileGun(param1:Game)
       {
          super(param1);
       }
-      
-      override protected function shoot() : void
+
+      override protected function shoot():void
       {
          var _loc1_:PlayerShip = null;
-         if(unit is PlayerShip)
+         if (unit is PlayerShip)
          {
-            if(hasChargeUp && (projectiles.length < maxProjectiles || maxProjectiles == 0))
+            if (hasChargeUp && (projectiles.length < maxProjectiles || maxProjectiles == 0))
             {
-               if(unit != null && unit is PlayerShip)
+               if (unit != null && unit is PlayerShip)
                {
                   _loc1_ = unit as PlayerShip;
-                  if(fireNextTime < g.time)
+                  if (fireNextTime < g.time)
                   {
-                     if(chargeUpTime == 0)
+                     if (chargeUpTime == 0)
                      {
-                        if(fireEffect != "")
+                        if (fireEffect != "")
                         {
                            _loc1_.startChargeUpEffect(fireEffect);
                         }
@@ -39,9 +39,9 @@ package core.weapon
                         }
                      }
                      chargeUpTime += 33;
-                     if(_loc1_.player.isMe)
+                     if (_loc1_.player.isMe)
                      {
-                        if(chargeUpTime < chargeUpTimeMax)
+                        if (chargeUpTime < chargeUpTimeMax)
                         {
                            g.hud.powerBar.updateLoadBar(chargeUpTime / chargeUpTimeMax);
                         }
@@ -50,12 +50,12 @@ package core.weapon
                            g.hud.powerBar.updateLoadBar(1);
                         }
                      }
-                     if(triggerMeleeAnimation)
+                     if (triggerMeleeAnimation)
                      {
                         (unit as PlayerShip).triggerMeleeTextures(reloadTime / 1000);
                      }
                   }
-                  else if(_loc1_.player.isMe)
+                  else if (_loc1_.player.isMe)
                   {
                      g.hud.powerBar.updateLoadBar(0);
                      chargeUpTime = 0;
@@ -65,58 +65,58 @@ package core.weapon
             }
          }
       }
-      
-      public function shootSyncedProjectile(param1:int, param2:Unit, param3:Heading, param4:int = -1, param5:Number = 0, param6:Number = 0, param7:Number = 0, param8:Number = 0) : void
+
+      public function shootSyncedProjectile(param1:int, param2:Unit, param3:Heading, param4:int = -1, param5:Number = 0, param6:Number = 0, param7:Number = 0, param8:Number = 0):void
       {
          var _loc14_:PlayerShip = null;
          var _loc19_:Number = NaN;
          var _loc10_:Number = NaN;
          var _loc18_:Number = NaN;
-         if(unit == null)
+         if (unit == null)
          {
             return;
          }
-         if(fireCallback != null && this.hasChargeUp == true && (projectiles.length + 1 < maxProjectiles || maxProjectiles == 0))
+         if (fireCallback != null && this.hasChargeUp == true && (projectiles.length + 1 < maxProjectiles || maxProjectiles == 0))
          {
             lastFire = g.time;
             fireNextTime = g.time + reloadTime;
             fireCallback();
          }
-         if(unit is PlayerShip)
+         if (unit is PlayerShip)
          {
             _loc14_ = unit as PlayerShip;
             _loc14_.weaponHeat.setHeat(param5);
-            if(hasChargeUp && !_loc14_.player.isMe)
+            if (hasChargeUp && !_loc14_.player.isMe)
             {
                fire = false;
             }
-            else if(triggerMeleeAnimation)
+            else if (triggerMeleeAnimation)
             {
                (unit as PlayerShip).triggerMeleeTextures(reloadTime / 1000);
             }
          }
          var _loc13_:Weapon = this;
-         var _loc15_:Projectile = ProjectileFactory.create(projectileFunction,g,unit,this);
-         if(_loc15_ == null)
+         var _loc15_:Projectile = ProjectileFactory.create(projectileFunction, g, unit, this);
+         if (_loc15_ == null)
          {
             return;
          }
-         if(param2 != null)
+         if (param2 != null)
          {
             _loc15_.target = param2;
          }
-         if(name == "Snow Cannon" || name == "Poison Arrow" || name == "Nexar Projector" || name == "Shadow Projector")
+         if (name == "Snow Cannon" || name == "Poison Arrow" || name == "Nexar Projector" || name == "Shadow Projector")
          {
             _loc15_.speedMax = param8;
-            if(name == "Snow Cannon")
+            if (name == "Snow Cannon")
             {
                _loc15_.scaleX = 0.2 + 0.5 * _loc15_.speedMax / 1500;
                _loc15_.scaleY = 0.2 + 0.5 * _loc15_.speedMax / 1500;
             }
          }
-         if(param8 != 0)
+         if (param8 != 0)
          {
-            if(_loc15_.stateMachine.inState("Instant"))
+            if (_loc15_.stateMachine.inState("Instant"))
             {
                _loc15_.range = param8;
                _loc15_.speedMax = 10000;
@@ -126,7 +126,7 @@ package core.weapon
                _loc15_.speedMax = param8;
             }
          }
-         if(param2 != null)
+         if (param2 != null)
          {
             _loc13_.target = param2;
             _loc19_ = aim();
@@ -136,11 +136,11 @@ package core.weapon
             _loc19_ = 0;
          }
          var _loc12_:Number = multiNrOfP;
-         if(multiNrOfP > 1 && param4 > -1)
+         if (multiNrOfP > 1 && param4 > -1)
          {
             _loc10_ = unit.weaponPos.y + multiOffset * (param4 - 0.5 * (_loc12_ - 1)) / _loc12_;
          }
-         else if(param4 > -1)
+         else if (param4 > -1)
          {
             _loc10_ = unit.weaponPos.y + 0.25 * multiOffset * (2 * (param4 % 2) - 1);
          }
@@ -149,29 +149,29 @@ package core.weapon
             _loc10_ = unit.weaponPos.y;
          }
          var _loc9_:Number = unit.weaponPos.x + positionOffsetX;
-         var _loc17_:Number = new Point(_loc9_,_loc10_).length;
-         var _loc11_:Number = Math.atan2(_loc10_,_loc9_);
+         var _loc17_:Number = new Point(_loc9_, _loc10_).length;
+         var _loc11_:Number = Math.atan2(_loc10_, _loc9_);
          var _loc16_:Number = multiAngleOffset * (param4 - 0.5 * (_loc12_ - 1)) / _loc12_;
          _loc15_.course.pos.x = unit.pos.x + Math.cos(unit.rotation + _loc16_ + _loc11_ + _loc19_) * _loc17_;
          _loc15_.course.pos.y = unit.pos.y + Math.sin(unit.rotation + _loc16_ + _loc11_ + _loc19_) * _loc17_;
          _loc15_.course.pos.x += param6;
          _loc15_.course.pos.y += param7;
          _loc15_.course.rotation = unit.rotation + _loc16_ + _loc19_ + (angleVariance - Math.random() * angleVariance * 2);
-         if(fireBackwards)
+         if (fireBackwards)
          {
             _loc15_.course.rotation -= 3.141592653589793;
          }
-         if(acceleration == 0)
+         if (acceleration == 0)
          {
             _loc15_.course.speed.x = Math.cos(_loc15_.course.rotation) * _loc15_.speedMax;
             _loc15_.course.speed.y = Math.sin(_loc15_.course.rotation) * _loc15_.speedMax;
          }
-         else if(multiSpreadStart)
+         else if (multiSpreadStart)
          {
             _loc15_.course.speed.x = _loc15_.unit.speed.x * 0.5;
             _loc15_.course.speed.y = _loc15_.unit.speed.y * 0.5;
             _loc18_ = 10 * (param4 - 0.5 * (_loc12_ - 1)) / _loc12_;
-            if(_loc18_ > 0)
+            if (_loc18_ > 0)
             {
                _loc18_ += 10;
             }
@@ -188,7 +188,7 @@ package core.weapon
             _loc15_.course.speed.y = unit.speed.y * 0.5;
          }
          _loc15_.target = param2;
-         _loc15_.error = new Point(_loc15_.course.pos.x - param3.pos.x,_loc15_.course.pos.y - param3.pos.y);
+         _loc15_.error = new Point(_loc15_.course.pos.x - param3.pos.x, _loc15_.course.pos.y - param3.pos.y);
          _loc15_.convergenceCounter = 0;
          _loc15_.course = param3;
          _loc15_.convergenceTime = 1000 / 33;
@@ -199,4 +199,3 @@ package core.weapon
       }
    }
 }
-

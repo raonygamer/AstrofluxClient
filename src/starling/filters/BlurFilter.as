@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.filters
@@ -31,7 +31,7 @@ package starling.filters
          *      <li>etc.</li>
          *  </ul>
          */
-        public function BlurFilter(blurX:Number=1.0, blurY:Number=1.0, resolution:Number=1.0)
+        public function BlurFilter(blurX:Number = 1.0, blurY:Number = 1.0, resolution:Number = 1.0)
         {
             _blurX = blurX;
             _blurY = blurY;
@@ -40,8 +40,8 @@ package starling.filters
 
         /** @private */
         override public function process(painter:Painter, helper:IFilterHelper,
-                                         input0:Texture = null, input1:Texture = null,
-                                         input2:Texture = null, input3:Texture = null):Texture
+                input0:Texture = null, input1:Texture = null,
+                input2:Texture = null, input3:Texture = null):Texture
         {
             var effect:BlurEffect = this.effect as BlurEffect;
 
@@ -66,7 +66,8 @@ package starling.filters
                 inTexture = outTexture;
                 outTexture = super.process(painter, helper, inTexture);
 
-                if (inTexture != input0) helper.putTexture(inTexture);
+                if (inTexture != input0)
+                    helper.putTexture(inTexture);
             }
 
             effect.direction = BlurEffect.VERTICAL;
@@ -79,7 +80,8 @@ package starling.filters
                 inTexture = outTexture;
                 outTexture = super.process(painter, helper, inTexture);
 
-                if (inTexture != input0) helper.putTexture(inTexture);
+                if (inTexture != input0)
+                    helper.putTexture(inTexture);
             }
 
             return outTexture;
@@ -114,7 +116,10 @@ package starling.filters
 
         /** The blur factor in x-direction.
          *  The number of required passes will be <code>Math.ceil(value)</code>. */
-        public function get blurX():Number { return _blurX; }
+        public function get blurX():Number
+        {
+            return _blurX;
+        }
         public function set blurX(value:Number):void
         {
             _blurX = value;
@@ -123,7 +128,10 @@ package starling.filters
 
         /** The blur factor in y-direction.
          *  The number of required passes will be <code>Math.ceil(value)</code>. */
-        public function get blurY():Number { return _blurY; }
+        public function get blurY():Number
+        {
+            return _blurY;
+        }
         public function set blurY(value:Number):void
         {
             _blurY = value;
@@ -160,24 +168,25 @@ class BlurEffect extends FilterEffect
      *  @param direction     horizontal or vertical
      *  @param strength      range 0-1
      */
-    public function BlurEffect(direction:String="horizontal", strength:Number=1):void
+    public function BlurEffect(direction:String = "horizontal", strength:Number = 1):void
     {
-        this.strength  = strength;
+        this.strength = strength;
         this.direction = direction;
     }
 
     override protected function createProgram():Program
     {
-        if (_strength == 0) return super.createProgram();
+        if (_strength == 0)
+            return super.createProgram();
 
         var vertexShader:String = [
-            "m44 op, va0, vc0     ", // 4x4 matrix transform to output space
-            "mov v0, va1          ", // pos:  0 |
-            "sub v1, va1, vc4.zwxx", // pos: -2 |
-            "sub v2, va1, vc4.xyxx", // pos: -1 | --> kernel positions
-            "add v3, va1, vc4.xyxx", // pos: +1 |     (only 1st two values are relevant)
-            "add v4, va1, vc4.zwxx"  // pos: +2 |
-        ].join("\n");
+                "m44 op, va0, vc0     ", // 4x4 matrix transform to output space
+                "mov v0, va1          ", // pos:  0 |
+                "sub v1, va1, vc4.zwxx", // pos: -2 |
+                "sub v2, va1, vc4.xyxx", // pos: -1 | --> kernel positions
+                "add v3, va1, vc4.xyxx", // pos: +1 |     (only 1st two values are relevant)
+                "add v4, va1, vc4.zwxx" // pos: +2 |
+            ].join("\n");
 
         // v0-v4 - kernel position
         // fs0   - input texture
@@ -186,25 +195,25 @@ class BlurEffect extends FilterEffect
         // ft5   - output color
 
         var fragmentShader:String = [
-            tex("ft0", "v0", 0, texture),    // read center pixel
-            "mul ft5, ft0, fc0.xxxx       ", // multiply with center weight
+                tex("ft0", "v0", 0, texture), // read center pixel
+                "mul ft5, ft0, fc0.xxxx       ", // multiply with center weight
 
-            tex("ft1", "v1", 0, texture),    // read pixel -2
-            "mul ft1, ft1, fc0.zzzz       ", // multiply with weight
-            "add ft5, ft5, ft1            ", // add to output color
+                tex("ft1", "v1", 0, texture), // read pixel -2
+                "mul ft1, ft1, fc0.zzzz       ", // multiply with weight
+                "add ft5, ft5, ft1            ", // add to output color
 
-            tex("ft2", "v2", 0, texture),    // read pixel -1
-            "mul ft2, ft2, fc0.yyyy       ", // multiply with weight
-            "add ft5, ft5, ft2            ", // add to output color
+                tex("ft2", "v2", 0, texture), // read pixel -1
+                "mul ft2, ft2, fc0.yyyy       ", // multiply with weight
+                "add ft5, ft5, ft2            ", // add to output color
 
-            tex("ft3", "v3", 0, texture),    // read pixel +1
-            "mul ft3, ft3, fc0.yyyy       ", // multiply with weight
-            "add ft5, ft5, ft3            ", // add to output color
+                tex("ft3", "v3", 0, texture), // read pixel +1
+                "mul ft3, ft3, fc0.yyyy       ", // multiply with weight
+                "add ft5, ft5, ft3            ", // add to output color
 
-            tex("ft4", "v4", 0, texture),    // read pixel +2
-            "mul ft4, ft4, fc0.zzzz       ", // multiply with weight
-            "add  oc, ft5, ft4            "  // add to output color
-        ].join("\n");
+                tex("ft4", "v4", 0, texture), // read pixel +2
+                "mul ft4, ft4, fc0.zzzz       ", // multiply with weight
+                "add  oc, ft5, ft4            " // add to output color
+            ].join("\n");
 
         return Program.fromSource(vertexShader, fragmentShader);
     }
@@ -217,7 +226,7 @@ class BlurEffect extends FilterEffect
         {
             updateParameters();
 
-            context.setProgramConstantsFromVector(Context3DProgramType.VERTEX,   4, _offsets);
+            context.setProgramConstantsFromVector(Context3DProgramType.VERTEX, 4, _offsets);
             context.setProgramConstantsFromVector(Context3DProgramType.FRAGMENT, 0, _weights);
         }
     }
@@ -231,7 +240,7 @@ class BlurEffect extends FilterEffect
     {
         // algorithm described here:
         // http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
-        //
+        // 
         // To run in constrained mode, we can only make 5 texture look-ups in the fragment
         // shader. By making use of linear texture sampling, we can produce similar output
         // to what would be 9 look-ups.
@@ -255,8 +264,8 @@ class BlurEffect extends FilterEffect
 
         // get weights on the exact pixels (sTmpWeights) and calculate sums (_weights)
 
-        for (var i:int=0; i<5; ++i)
-            sTmpWeights[i] = multiplier * Math.exp(-i*i / twoSigmaSq);
+        for (var i:int = 0; i < 5; ++i)
+            sTmpWeights[i] = multiplier * Math.exp(-i * i / twoSigmaSq);
 
         _weights[0] = sTmpWeights[0];
         _weights[1] = sTmpWeights[1] + sTmpWeights[2];
@@ -264,7 +273,7 @@ class BlurEffect extends FilterEffect
 
         // normalize weights so that sum equals "1.0"
 
-        var weightSum:Number = _weights[0] + 2*_weights[1] + 2*_weights[2];
+        var weightSum:Number = _weights[0] + 2 * _weights[1] + 2 * _weights[2];
         var invWeightSum:Number = 1.0 / weightSum;
 
         _weights[0] *= invWeightSum;
@@ -273,8 +282,8 @@ class BlurEffect extends FilterEffect
 
         // calculate intermediate offsets
 
-        var offset1:Number = (  pixelSize * sTmpWeights[1] + 2*pixelSize * sTmpWeights[2]) / _weights[1];
-        var offset2:Number = (3*pixelSize * sTmpWeights[3] + 4*pixelSize * sTmpWeights[4]) / _weights[2];
+        var offset1:Number = (pixelSize * sTmpWeights[1] + 2 * pixelSize * sTmpWeights[2]) / _weights[1];
+        var offset2:Number = (3 * pixelSize * sTmpWeights[3] + 4 * pixelSize * sTmpWeights[4]) / _weights[2];
 
         // depending on pass, we move in x- or y-direction
 
@@ -294,10 +303,19 @@ class BlurEffect extends FilterEffect
         }
     }
 
-    public function get direction():String { return _direction; }
-    public function set direction(value:String):void { _direction = value; }
+    public function get direction():String
+    {
+        return _direction;
+    }
+    public function set direction(value:String):void
+    {
+        _direction = value;
+    }
 
-    public function get strength():Number { return _strength; }
+    public function get strength():Number
+    {
+        return _strength;
+    }
     public function set strength(value:Number):void
     {
         _strength = MathUtil.clamp(value, 0, 1);

@@ -32,7 +32,7 @@
 
 package com.adobe.serialization.json
 {
-	
+
 	/**
 	 * This class provides encoding and decoding of the JSON format.
 	 *
@@ -56,11 +56,11 @@ package com.adobe.serialization.json
 		 * @playerversion Flash 9.0
 		 * @tiptext
 		 */
-		public static function encode( o:Object ):String
+		public static function encode(o:Object):String
 		{
-			return new JSONEncoder( o ).getString();
+			return new JSONEncoder(o).getString();
 		}
-		
+
 		/**
 		 * Decodes a JSON string into a native object.
 		 *
@@ -76,11 +76,11 @@ package com.adobe.serialization.json
 		 * @playerversion Flash 9.0
 		 * @tiptext
 		 */
-		public static function decode( s:String, strict:Boolean = true ):*
+		public static function decode(s:String, strict:Boolean = true):*
 		{
-			return new JSONDecoder( s, strict ).getValue();
+			return new JSONDecoder(s, strict).getValue();
 		}
-	
+
 	}
 
 }

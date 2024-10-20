@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.textures
@@ -26,19 +26,19 @@ package starling.textures
     import starling.utils.execute;
 
     /** A RenderTexture is a dynamic texture onto which you can draw any display object.
-     * 
-     *  <p>After creating a render texture, just call the <code>drawObject</code> method to render 
+     *
+     *  <p>After creating a render texture, just call the <code>drawObject</code> method to render
      *  an object directly onto the texture. The object will be drawn onto the texture at its current
-     *  position, adhering its current rotation, scale and alpha properties.</p> 
-     *  
-     *  <p>Drawing is done very efficiently, as it is happening directly in graphics memory. After 
-     *  you have drawn objects onto the texture, the performance will be just like that of a normal 
+     *  position, adhering its current rotation, scale and alpha properties.</p>
+     *
+     *  <p>Drawing is done very efficiently, as it is happening directly in graphics memory. After
+     *  you have drawn objects onto the texture, the performance will be just like that of a normal
      *  texture — no matter how many objects you have drawn.</p>
-     *  
-     *  <p>If you draw lots of objects at once, it is recommended to bundle the drawing calls in 
-     *  a block via the <code>drawBundled</code> method, like shown below. That will speed it up 
+     *
+     *  <p>If you draw lots of objects at once, it is recommended to bundle the drawing calls in
+     *  a block via the <code>drawBundled</code> method, like shown below. That will speed it up
      *  immensely, allowing you to draw hundreds of objects very quickly.</p>
-     *  
+     *
      * 	<pre>
      *  renderTexture.drawBundled(function():void
      *  {
@@ -46,14 +46,14 @@ package starling.textures
      *     {
      *         image.rotation = (2 &#42; Math.PI / numDrawings) &#42; i;
      *         renderTexture.draw(image);
-     *     }   
+     *     }
      *  });
      *  </pre>
-     *  
+     *
      *  <p>To erase parts of a render texture, you can use any display object like a "rubber" by
      *  setting its blending mode to <code>BlendMode.ERASE</code>. To wipe it completely clean,
      *  use the <code>clear</code> method.</p>
-     * 
+     *
      *  <strong>Persistence</strong>
      *
      *  <p>Older devices may require double buffering to support persistent render textures. Thus,
@@ -110,7 +110,7 @@ package starling.textures
 
         // helper object
         private static var sClipRect:Rectangle = new Rectangle();
-        
+
         /** Creates a new RenderTexture with a certain size (in points). If the texture is
          *  persistent, its contents remains intact after each draw call, allowing you to use the
          *  texture just like a canvas. If it is not, it will be cleared before each draw call.
@@ -119,8 +119,8 @@ package starling.textures
          *  hardware, it does not make a difference. For more information, have a look at the
          *  documentation of the <code>useDoubleBuffering</code> property.</p>
          */
-        public function RenderTexture(width:int, height:int, persistent:Boolean=true,
-                                      scale:Number=-1, format:String="bgra")
+        public function RenderTexture(width:int, height:int, persistent:Boolean = true,
+                scale:Number = -1, format:String = "bgra")
         {
             _isPersistent = persistent;
             _activeTexture = Texture.empty(width, height, true, false, true, scale, format);
@@ -136,26 +136,26 @@ package starling.textures
                 _helperImage.textureSmoothing = TextureSmoothing.NONE; // solves some aliasing-issues
             }
         }
-        
+
         /** @inheritDoc */
         public override function dispose():void
         {
             _activeTexture.dispose();
-            
+
             if (isDoubleBuffered)
             {
                 _bufferTexture.dispose();
                 _helperImage.dispose();
             }
-            
+
             super.dispose();
         }
-        
+
         /** Draws an object into the texture. Note that any filters on the object will currently
          *  be ignored.
-         * 
+         *
          *  @param object       The object to draw.
-         *  @param matrix       If 'matrix' is null, the object will be drawn adhering its 
+         *  @param matrix       If 'matrix' is null, the object will be drawn adhering its
          *                      properties for position, scale, and rotation. If it is not null,
          *                      the object will be drawn in the orientation depicted by the matrix.
          *  @param alpha        The object's alpha value will be multiplied with this value.
@@ -163,33 +163,34 @@ package starling.textures
          *                      Beginning with AIR 22, this feature is supported on all platforms
          *                      (except for software rendering mode).
          */
-        public function draw(object:DisplayObject, matrix:Matrix=null, alpha:Number=1.0,
-                             antiAliasing:int=0):void
+        public function draw(object:DisplayObject, matrix:Matrix = null, alpha:Number = 1.0,
+                antiAliasing:int = 0):void
         {
-            if (object == null) return;
-            
+            if (object == null)
+                return;
+
             if (_drawing)
                 render(object, matrix, alpha);
             else
                 renderBundled(render, object, matrix, alpha, antiAliasing);
         }
-        
-        /** Bundles several calls to <code>draw</code> together in a block. This avoids buffer 
+
+        /** Bundles several calls to <code>draw</code> together in a block. This avoids buffer
          *  switches and allows you to draw multiple objects into a non-persistent texture.
          *  Note that the 'antiAliasing' setting provided here overrides those provided in
          *  individual 'draw' calls.
-         *  
+         *
          *  @param drawingBlock  a callback with the form: <pre>function():void;</pre>
          *  @param antiAliasing  Values range from 0 (no antialiasing) to 4 (best quality).
          *                       Beginning with AIR 22, this feature is supported on all platforms
          *                       (except for software rendering mode).
          */
-        public function drawBundled(drawingBlock:Function, antiAliasing:int=0):void
+        public function drawBundled(drawingBlock:Function, antiAliasing:int = 0):void
         {
             renderBundled(drawingBlock, null, null, 1.0, antiAliasing);
         }
-        
-        private function render(object:DisplayObject, matrix:Matrix=null, alpha:Number=1.0):void
+
+        private function render(object:DisplayObject, matrix:Matrix = null, alpha:Number = 1.0):void
         {
             var painter:Painter = Starling.painter;
             var state:RenderState = painter.state;
@@ -205,28 +206,35 @@ package starling.textures
             state.blendMode = object.blendMode == BlendMode.AUTO ?
                 BlendMode.NORMAL : object.blendMode;
 
-            if (matrix) state.transformModelviewMatrix(matrix);
-            else        state.transformModelviewMatrix(object.transformationMatrix);
+            if (matrix)
+                state.transformModelviewMatrix(matrix);
+            else
+                state.transformModelviewMatrix(object.transformationMatrix);
 
-            if (mask)   painter.drawMask(mask);
+            if (mask)
+                painter.drawMask(mask);
 
-            if (filter) filter.render(painter);
-            else        object.render(painter);
+            if (filter)
+                filter.render(painter);
+            else
+                object.render(painter);
 
-            if (mask)   painter.eraseMask(mask);
+            if (mask)
+                painter.eraseMask(mask);
 
             painter.popState();
             painter.cacheEnabled = wasCacheEnabled;
         }
-        
-        private function renderBundled(renderBlock:Function, object:DisplayObject=null,
-                                       matrix:Matrix=null, alpha:Number=1.0,
-                                       antiAliasing:int=0):void
+
+        private function renderBundled(renderBlock:Function, object:DisplayObject = null,
+                matrix:Matrix = null, alpha:Number = 1.0,
+                antiAliasing:int = 0):void
         {
             var painter:Painter = Starling.painter;
             var state:RenderState = painter.state;
 
-            if (!Starling.current.contextValid) return;
+            if (!Starling.current.contextValid)
+                return;
 
             // switch buffers
             if (isDoubleBuffered)
@@ -248,7 +256,7 @@ package starling.textures
             state.clipRect = sClipRect;
             state.setRenderTarget(_activeTexture, true, antiAliasing);
             painter.prepareToDraw();
-            
+
             if (isDoubleBuffered || !isPersistent || !_bufferReady)
                 painter.clear();
 
@@ -257,7 +265,7 @@ package starling.textures
                 _helperImage.render(painter);
             else
                 _bufferReady = true;
-            
+
             try
             {
                 _drawing = true;
@@ -269,10 +277,10 @@ package starling.textures
                 painter.popState();
             }
         }
-        
+
         /** Clears the render texture with a certain color and alpha value. Call without any
          *  arguments to restore full transparency. */
-        public function clear(color:uint=0, alpha:Number=0.0):void
+        public function clear(color:uint = 0, alpha:Number = 0.0):void
         {
             _activeTexture.root.clear(color, alpha);
             _bufferReady = true;
@@ -283,16 +291,28 @@ package starling.textures
         /** Indicates if the render texture is using double buffering. This might be necessary for
          *  persistent textures, depending on the runtime version and the value of
          *  'forceDoubleBuffering'. */
-        private function get isDoubleBuffered():Boolean { return _bufferTexture != null; }
+        private function get isDoubleBuffered():Boolean
+        {
+            return _bufferTexture != null;
+        }
 
         /** Indicates if the texture is persistent over multiple draw calls. */
-        public function get isPersistent():Boolean { return _isPersistent; }
-        
+        public function get isPersistent():Boolean
+        {
+            return _isPersistent;
+        }
+
         /** @inheritDoc */
-        public override function get base():TextureBase { return _activeTexture.base; }
-        
+        public override function get base():TextureBase
+        {
+            return _activeTexture.base;
+        }
+
         /** @inheritDoc */
-        public override function get root():ConcreteTexture { return _activeTexture.root; }
+        public override function get root():ConcreteTexture
+        {
+            return _activeTexture.root;
+        }
 
         /** Indicates if new persistent textures should use double buffering. Single buffering
          *  is faster and requires less memory, but is not supported on all hardware.
@@ -322,7 +342,8 @@ package starling.textures
                     return value;
                 }
             }
-            else return false;
+            else
+                return false;
         }
 
         public static function set useDoubleBuffering(value:Boolean):void

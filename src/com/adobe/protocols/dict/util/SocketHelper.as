@@ -70,12 +70,12 @@ package com.adobe.protocols.dict.util
 				throwResponseEvent(chunk);
 			}
 		}
-		
+
 		private function throwResponseEvent(response:String):void
 		{
 			var responseEvent:CompleteResponseEvent = new CompleteResponseEvent(CompleteResponseEvent.COMPLETE_RESPONSE);
 			responseEvent.response = response;
-			dispatchEvent(responseEvent);			
+			dispatchEvent(responseEvent);
 		}
 	}
 }

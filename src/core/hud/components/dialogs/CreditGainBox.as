@@ -7,21 +7,21 @@ package core.hud.components.dialogs
    import starling.textures.Texture;
    import textures.ITextureManager;
    import textures.TextureLocator;
-   
+
    public class CreditGainBox extends PopupMessage
    {
       private var g:Game;
-      
+
       private var targetName:String;
-      
+
       private var countText:Text;
-      
+
       private var countText2:Text;
-      
+
       private var creditBmp:Image;
-      
+
       private var podsBmp:Image;
-      
+
       public function CreditGainBox(param1:Game, param2:int, param3:int, param4:String, param5:String = "")
       {
          var _loc8_:Texture = null;
@@ -33,7 +33,7 @@ package core.hud.components.dialogs
          this.targetName = param5;
          var _loc6_:ITextureManager = TextureLocator.getService();
          var _loc7_:String = getCaption(param4);
-         if(param2 < 10)
+         if (param2 < 10)
          {
             countText.x = 40;
          }
@@ -53,7 +53,7 @@ package core.hud.components.dialogs
          textField.center();
          textField.touchable = false;
          box.addChild(textField);
-         if(param2 > 0)
+         if (param2 > 0)
          {
             countText.text = param2.toString();
             _loc8_ = _loc6_.getTextureGUIByTextureName("credit_medium.png");
@@ -61,13 +61,13 @@ package core.hud.components.dialogs
             creditBmp.x = countText.x + countText.width + 20;
             creditBmp.y = 10;
             box.addChild(creditBmp);
-            if(param3 > 0)
+            if (param3 > 0)
             {
                countText.y += 40;
                creditBmp.y += 38;
             }
          }
-         if(param3 > 0)
+         if (param3 > 0)
          {
             countText2 = new Text();
             countText2.size = 50;
@@ -79,7 +79,7 @@ package core.hud.components.dialogs
             podsBmp = new Image(_loc6_.getTextureGUIByTextureName("pod_small"));
             podsBmp.x = 70;
             podsBmp.y = countText.y + 16;
-            if(param2 > 0)
+            if (param2 > 0)
             {
                countText2.y -= 48;
                podsBmp.y -= 48;
@@ -94,8 +94,8 @@ package core.hud.components.dialogs
          }
          redraw();
       }
-      
-      override protected function redraw(param1:Event = null) : void
+
+      override protected function redraw(param1:Event = null):void
       {
          super.redraw();
          closeButton.x = Math.round(100 - closeButton.width / 2);
@@ -104,10 +104,10 @@ package core.hud.components.dialogs
          box.width = 200;
          box.height = _loc2_;
       }
-      
-      private function getCaption(param1:String) : String
+
+      private function getCaption(param1:String):String
       {
-         switch(param1)
+         switch (param1)
          {
             case "InviteRewardFlux1":
                return targetName + " accepted your invite!";
@@ -133,4 +133,3 @@ package core.hud.components.dialogs
       }
    }
 }
-

@@ -6,8 +6,8 @@ package facebook
       {
          super();
       }
-      
-      public static function deserialize(param1:String) : *
+
+      public static function deserialize(param1:String):*
       {
          var source:String = param1;
          source = new String(source);
@@ -23,7 +23,7 @@ package facebook
          };
          var _error:Function = function(param1:String):void
          {
-            throw new Error(param1,at - 1);
+            throw new Error(param1, at - 1);
          };
          var _next:Function = function():*
          {
@@ -33,34 +33,34 @@ package facebook
          };
          var _white:Function = function():void
          {
-            while(ch)
+            while (ch)
             {
-               if(ch <= " ")
+               if (ch <= " ")
                {
                   _next();
                }
                else
                {
-                  if(ch != "/")
+                  if (ch != "/")
                   {
                      break;
                   }
-                  switch(_next())
+                  switch (_next())
                   {
                      case "/":
-                        while(_next() && ch != "\n" && ch != "\r")
+                        while (_next() && ch != "\n" && ch != "\r")
                         {
                         }
                         break;
                      case "*":
                         _next();
-                        while(true)
+                        while (true)
                         {
-                           if(ch)
+                           if (ch)
                            {
-                              if(ch == "*")
+                              if (ch == "*")
                               {
-                                 if(_next() == "/")
+                                 if (_next() == "/")
                                  {
                                     break;
                                  }
@@ -90,18 +90,18 @@ package facebook
             var _loc5_:* = "";
             var _loc4_:* = "";
             var _loc3_:Boolean = false;
-            if(ch == "\"")
+            if (ch == "\"")
             {
-               while(Boolean(_next()))
+               while (Boolean(_next()))
                {
-                  if(ch == "\"")
+                  if (ch == "\"")
                   {
                      _next();
                      return _loc4_;
                   }
-                  if(ch == "\\")
+                  if (ch == "\\")
                   {
-                     switch(_next())
+                     switch (_next())
                      {
                         case "b":
                            _loc4_ += "\b";
@@ -121,10 +121,10 @@ package facebook
                         case "u":
                            _loc1_ = 0;
                            _loc5_ = 0;
-                           while(_loc5_ < 4)
+                           while (_loc5_ < 4)
                            {
-                              _loc2_ = parseInt(_next(),16);
-                              if(!isFinite(_loc2_))
+                              _loc2_ = parseInt(_next(), 16);
+                              if (!isFinite(_loc2_))
                               {
                                  _loc3_ = true;
                                  break;
@@ -132,7 +132,7 @@ package facebook
                               _loc1_ = _loc1_ * 16 + _loc2_;
                               _loc5_ += 1;
                            }
-                           if(_loc3_)
+                           if (_loc3_)
                            {
                               _loc3_ = false;
                               break;
@@ -155,25 +155,25 @@ package facebook
          var _array:Function = function():*
          {
             var _loc1_:Array = [];
-            if(ch == "[")
+            if (ch == "[")
             {
                _next();
                _white();
-               if(ch == "]")
+               if (ch == "]")
                {
                   _next();
                   return _loc1_;
                }
-               while(ch)
+               while (ch)
                {
                   _loc1_.push(_value());
                   _white();
-                  if(ch == "]")
+                  if (ch == "]")
                   {
                      _next();
                      return _loc1_;
                   }
-                  if(ch != ",")
+                  if (ch != ",")
                   {
                      break;
                   }
@@ -188,32 +188,32 @@ package facebook
          {
             var _loc2_:* = {};
             var _loc1_:* = {};
-            if(ch == "{")
+            if (ch == "{")
             {
                _next();
                _white();
-               if(ch == "}")
+               if (ch == "}")
                {
                   _next();
                   return _loc1_;
                }
-               while(ch)
+               while (ch)
                {
                   _loc2_ = _string();
                   _white();
-                  if(ch != ":")
+                  if (ch != ":")
                   {
                      break;
                   }
                   _next();
                   _loc1_[_loc2_] = _value();
                   _white();
-                  if(ch == "}")
+                  if (ch == "}")
                   {
                      _next();
                      return _loc1_;
                   }
-                  if(ch != ",")
+                  if (ch != ",")
                   {
                      break;
                   }
@@ -229,23 +229,23 @@ package facebook
             var _loc4_:* = "";
             var _loc3_:String = "";
             var _loc1_:String = "";
-            if(ch == "-")
+            if (ch == "-")
             {
                _loc1_ = _loc4_ = "-";
                _next();
             }
-            if(ch == "0")
+            if (ch == "0")
             {
                _next();
-               if(ch == "x" || ch == "X")
+               if (ch == "x" || ch == "X")
                {
                   _next();
-                  while(Boolean(_isHexDigit(ch)))
+                  while (Boolean(_isHexDigit(ch)))
                   {
                      _loc3_ += ch;
                      _next();
                   }
-                  if(_loc3_ != "")
+                  if (_loc3_ != "")
                   {
                      return Number(_loc1_ + "0x" + _loc3_);
                   }
@@ -256,21 +256,21 @@ package facebook
                   _loc4_ += "0";
                }
             }
-            while(Boolean(_isDigit(ch)))
+            while (Boolean(_isDigit(ch)))
             {
                _loc4_ += ch;
                _next();
             }
-            if(ch == ".")
+            if (ch == ".")
             {
                _loc4_ += ".";
-               while(_next() && ch >= "0" && ch <= "9")
+               while (_next() && ch >= "0" && ch <= "9")
                {
                   _loc4_ += ch;
                }
             }
             _loc2_ = 1 * _loc4_;
-            if(!isFinite(_loc2_))
+            if (!isFinite(_loc2_))
             {
                _error("Bad Number");
                return NaN;
@@ -279,24 +279,24 @@ package facebook
          };
          var _word:Function = function():*
          {
-            switch(ch)
+            switch (ch)
             {
                case "t":
-                  if(_next() == "r" && _next() == "u" && _next() == "e")
+                  if (_next() == "r" && _next() == "u" && _next() == "e")
                   {
                      _next();
                      return true;
                   }
                   break;
                case "f":
-                  if(_next() == "a" && _next() == "l" && _next() == "s" && _next() == "e")
+                  if (_next() == "a" && _next() == "l" && _next() == "s" && _next() == "e")
                   {
                      _next();
                      return false;
                   }
                   break;
                case "n":
-                  if(_next() == "u" && _next() == "l" && _next() == "l")
+                  if (_next() == "u" && _next() == "l" && _next() == "l")
                   {
                      _next();
                      return null;
@@ -309,7 +309,7 @@ package facebook
          var _value:Function = function():*
          {
             _white();
-            switch(ch)
+            switch (ch)
             {
                case "{":
                   return _object();
@@ -325,8 +325,8 @@ package facebook
          };
          return _value();
       }
-      
-      public static function serialize(param1:*) : String
+
+      public static function serialize(param1:*):String
       {
          var _loc4_:String = null;
          var _loc8_:Number = NaN;
@@ -334,19 +334,19 @@ package facebook
          var _loc2_:* = undefined;
          var _loc7_:Number = NaN;
          var _loc3_:String = "";
-         switch(typeof param1)
+         switch (typeof param1)
          {
             case "object":
-               if(param1)
+               if (param1)
                {
-                  if(param1 is Array)
+                  if (param1 is Array)
                   {
                      _loc6_ = Number(param1.length);
                      _loc8_ = 0;
-                     while(_loc8_ < _loc6_)
+                     while (_loc8_ < _loc6_)
                      {
                         _loc2_ = serialize(param1[_loc8_]);
-                        if(_loc3_)
+                        if (_loc3_)
                         {
                            _loc3_ += ",";
                         }
@@ -355,15 +355,15 @@ package facebook
                      }
                      return "[" + _loc3_ + "]";
                   }
-                  if(typeof param1.toString != "undefined")
+                  if (typeof param1.toString != "undefined")
                   {
-                     for(var _loc5_ in param1)
+                     for (var _loc5_:* in param1)
                      {
                         _loc2_ = param1[_loc5_];
-                        if(typeof _loc2_ != "undefined" && typeof _loc2_ != "function")
+                        if (typeof _loc2_ != "undefined" && typeof _loc2_ != "function")
                         {
                            _loc2_ = serialize(_loc2_);
-                           if(_loc3_)
+                           if (_loc3_)
                            {
                               _loc3_ += ",";
                            }
@@ -380,12 +380,12 @@ package facebook
                _loc6_ = Number(param1.length);
                _loc3_ = "\"";
                _loc8_ = 0;
-               while(_loc8_ < _loc6_)
+               while (_loc8_ < _loc6_)
                {
                   _loc4_ = param1.charAt(_loc8_);
-                  if(_loc4_ >= " ")
+                  if (_loc4_ >= " ")
                   {
-                     if(_loc4_ == "\\" || _loc4_ == "\"")
+                     if (_loc4_ == "\\" || _loc4_ == "\"")
                      {
                         _loc3_ += "\\";
                      }
@@ -393,7 +393,7 @@ package facebook
                   }
                   else
                   {
-                     switch(_loc4_)
+                     switch (_loc4_)
                      {
                         case "\b":
                            _loc3_ += "\\b";
@@ -426,4 +426,3 @@ package facebook
       }
    }
 }
-

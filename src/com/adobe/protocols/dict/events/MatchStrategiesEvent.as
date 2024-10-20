@@ -38,32 +38,32 @@ package com.adobe.protocols.dict.events
 		extends Event
 	{
 		private var _strategies:Array;
-		
+
 		public static const MATCH_STRATEGIES:String = "matchStrategies";
-		
+
 		public function MatchStrategiesEvent(type:String, bubbles:Boolean = false,
-													cancelable:Boolean = false)
+				cancelable:Boolean = false)
 		{
 			super(type, bubbles, cancelable);
 		}
-		
+
 		public function set strategies(strategies:Array):void
 		{
 			this._strategies = strategies;
 		}
-		
+
 		public function get strategies():Array
 		{
 			return this._strategies;
 		}
-		
+
 		public override function clone():Event
 		{
-			var out:MatchStrategiesEvent = new MatchStrategiesEvent(type, 
-															bubbles, cancelable);
-															
+			var out:MatchStrategiesEvent = new MatchStrategiesEvent(type,
+					bubbles, cancelable);
+
 			out.strategies = _strategies;
-			
+
 			return out;
 		}
 	}

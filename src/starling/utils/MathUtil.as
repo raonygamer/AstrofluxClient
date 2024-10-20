@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.utils
@@ -21,14 +21,18 @@ package starling.utils
         private static const TWO_PI:Number = Math.PI * 2.0;
 
         /** @private */
-        public function MathUtil() { throw new AbstractClassError(); }
+        public function MathUtil()
+        {
+            throw new AbstractClassError();
+        }
 
         /** Calculates the intersection point between the xy-plane and an infinite line
          *  that is defined by two 3D points in the same coordinate system. */
         public static function intersectLineWithXYPlane(pointA:Vector3D, pointB:Vector3D,
-                                                        out:Point=null):Point
+                out:Point = null):Point
         {
-            if (out == null) out = new Point();
+            if (out == null)
+                out = new Point();
 
             var vectorX:Number = pointB.x - pointA.x;
             var vectorY:Number = pointB.y - pointA.y;
@@ -74,8 +78,10 @@ package starling.utils
             angle = angle % TWO_PI;
 
             // move to [-180 deg, +180 deg]
-            if (angle < -Math.PI) angle += TWO_PI;
-            if (angle >  Math.PI) angle -= TWO_PI;
+            if (angle < -Math.PI)
+                angle += TWO_PI;
+            if (angle > Math.PI)
+                angle -= TWO_PI;
 
             return angle;
         }
@@ -84,41 +90,42 @@ package starling.utils
         public static function getNextPowerOfTwo(number:Number):int
         {
             if (number is int && number > 0 && (number & (number - 1)) == 0) // see: http://goo.gl/D9kPj
-                return number;
-            else
-            {
-                var result:int = 1;
-                number -= 0.000000001; // avoid floating point rounding errors
-
-                while (result < number) result <<= 1;
-                return result;
-            }
-        }
-
-        /** Indicates if two float (Number) values are equal, give or take <code>epsilon</code>. */
-        public static function isEquivalent(a:Number, b:Number, epsilon:Number=0.0001):Boolean
+            return number;
+        else
         {
-            return (a - epsilon < b) && (a + epsilon > b);
-        }
+            var result:int = 1;
+            number -= 0.000000001; // avoid floating point rounding errors
 
-        /** Returns the larger of the two values. Different to the native <code>Math.max</code>,
-         *  this doesn't create any temporary objects when using the AOT compiler. */
-        public static function max(a:Number, b:Number):Number
-        {
-            return a > b ? a : b;
-        }
-
-        /** Returns the smaller of the two values. Different to the native <code>Math.min</code>,
-         *  this doesn't create any temporary objects when using the AOT compiler. */
-        public static function min(a:Number, b:Number):Number
-        {
-            return a < b ? a : b;
-        }
-
-        /** Moves <code>value</code> into the range between <code>min</code> and <code>max</code>. */
-        public static function clamp(value:Number, min:Number, max:Number):Number
-        {
-            return value < min ? min : (value > max ? max : value);
+            while (result < number)
+                result <<= 1;
+            return result;
         }
     }
+
+    /** Indicates if two float (Number) values are equal, give or take <code>epsilon</code>. */
+    public static function isEquivalent(a:Number, b:Number, epsilon:Number = 0.0001):Boolean
+    {
+        return (a - epsilon < b) && (a + epsilon > b);
+    }
+
+    /** Returns the larger of the two values. Different to the native <code>Math.max</code>,
+     *  this doesn't create any temporary objects when using the AOT compiler. */
+    public static function max(a:Number, b:Number):Number
+    {
+        return a > b ? a : b;
+    }
+
+    /** Returns the smaller of the two values. Different to the native <code>Math.min</code>,
+     *  this doesn't create any temporary objects when using the AOT compiler. */
+    public static function min(a:Number, b:Number):Number
+    {
+        return a < b ? a : b;
+    }
+
+    /** Moves <code>value</code> into the range between <code>min</code> and <code>max</code>. */
+    public static function clamp(value:Number, min:Number, max:Number):Number
+    {
+        return value < min ? min : (value > max ? max : value);
+    }
+}
 }

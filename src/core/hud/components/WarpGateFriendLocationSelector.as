@@ -7,66 +7,66 @@ package core.hud.components
    import starling.display.Sprite;
    import starling.events.Event;
    import starling.events.TouchEvent;
-   
+
    public class WarpGateFriendLocationSelector extends Sprite
    {
       protected var box:Box;
-      
+
       protected var closeButton:Button;
-      
+
       protected var bgr:Quad;
-      
+
       private var callback:Function;
-      
+
       public function WarpGateFriendLocationSelector(param1:Function)
       {
-         box = new Box(300,200,"highlight",18);
-         bgr = new Quad(100,100,570425344);
+         box = new Box(300, 200, "highlight", 18);
+         bgr = new Quad(100, 100, 570425344);
          super();
          this.callback = param1;
-         closeButton = new Button(close,"Back");
+         closeButton = new Button(close, "Back");
          bgr.alpha = 0.5;
          addChild(bgr);
          addChild(box);
          box.addChild(closeButton);
-         addEventListener("addedToStage",stageAddHandler);
+         addEventListener("addedToStage", stageAddHandler);
       }
-      
-      private function stageAddHandler(param1:Event) : void
+
+      private function stageAddHandler(param1:Event):void
       {
-         addEventListener("removedFromStage",clean);
-         stage.addEventListener("resize",resize);
+         addEventListener("removedFromStage", clean);
+         stage.addEventListener("resize", resize);
          bgr.width = stage.stageWidth;
          bgr.height = stage.stageHeight;
          draw();
       }
-      
-      protected function close(param1:TouchEvent = null) : void
+
+      protected function close(param1:TouchEvent = null):void
       {
          closeAndWarp(false);
       }
-      
-      protected function draw(param1:Event = null) : void
+
+      protected function draw(param1:Event = null):void
       {
-         if(stage == null)
+         if (stage == null)
          {
             return;
          }
          closeButton.x = Math.round(115);
          var _loc2_:int = 0;
          var _loc4_:int = 47;
-         var _loc5_:WarpToFriendRow = new WarpToFriendRow("friendly",null,closeAndWarp);
+         var _loc5_:WarpToFriendRow = new WarpToFriendRow("friendly", null, closeAndWarp);
          _loc5_.y = 3 + _loc4_ * _loc2_++;
          box.addChild(_loc5_);
-         _loc5_ = new WarpToFriendRow("hostile",null,closeAndWarp);
+         _loc5_ = new WarpToFriendRow("hostile", null, closeAndWarp);
          _loc5_.y = 3 + _loc4_ * _loc2_++;
          box.addChild(_loc5_);
-         _loc5_ = new WarpToFriendRow("clan",null,closeAndWarp);
+         _loc5_ = new WarpToFriendRow("clan", null, closeAndWarp);
          _loc5_.y = 3 + _loc4_ * _loc2_++;
          box.addChild(_loc5_);
-         for each(var _loc3_ in StarMap.friendsInSelectedSystem)
+         for each (var _loc3_:* in StarMap.friendsInSelectedSystem)
          {
-            _loc5_ = new WarpToFriendRow("",_loc3_,closeAndWarp);
+            _loc5_ = new WarpToFriendRow("", _loc3_, closeAndWarp);
             _loc5_.y = 3 + _loc4_ * _loc2_++;
             box.addChild(_loc5_);
          }
@@ -77,31 +77,31 @@ package core.hud.components
          bgr.width = stage.stageWidth;
          bgr.height = stage.stageHeight;
       }
-      
-      private function closeAndWarp(param1:Boolean = true) : void
+
+      private function closeAndWarp(param1:Boolean = true):void
       {
          var doit:Boolean = param1;
-         TweenMax.to(this,0.3,{
-            "height":0,
-            "alpha":0,
-            "onComplete":function():void
-            {
-               callback(doit);
-            }
-         });
+         TweenMax.to(this, 0.3, {
+                  "height": 0,
+                  "alpha": 0,
+                  "onComplete": function():void
+                  {
+                     callback(doit);
+                  }
+               });
       }
-      
-      private function resize(param1:Event) : void
+
+      private function resize(param1:Event):void
       {
          box.x = Math.round(stage.stageWidth / 2 - box.width / 2);
          box.y = Math.round(stage.stageHeight / 2 - box.height / 2);
       }
-      
-      protected function clean(param1:Event) : void
+
+      protected function clean(param1:Event):void
       {
-         stage.removeEventListener("resize",resize);
-         removeEventListener("removedFromStage",clean);
-         removeEventListener("addedToStage",stageAddHandler);
+         stage.removeEventListener("resize", resize);
+         removeEventListener("removedFromStage", clean);
+         removeEventListener("addedToStage", stageAddHandler);
       }
    }
 }
@@ -132,7 +132,7 @@ class WarpToFriendRow extends Sprite
       playerInSystem = new Text();
       description = new Text();
       playerInSystem.color = Style.COLOR_H2;
-      if(friend == null)
+      if (friend == null)
       {
          playerInSystem.color = 11184810;
       }
@@ -142,20 +142,20 @@ class WarpToFriendRow extends Sprite
       description.y = playerInSystem.y + 19;
       description.color = 16777215;
       buttonText = "Warp";
-      if(type == "friendly")
+      if (type == "friendly")
       {
          playerInSystem.text = "Friendly";
          playerInSystem.color = Style.COLOR_FRIENDLY;
          description.text = "Other players are friendly";
       }
-      else if(type == "hostile")
+      else if (type == "hostile")
       {
          playerInSystem.size = 13;
          playerInSystem.text = "Hostile (+5 artifact levels)";
          playerInSystem.color = Style.COLOR_HOSTILE;
          description.text = "Other players may attack";
       }
-      else if(type == "clan")
+      else if (type == "clan")
       {
          playerInSystem.size = 13;
          playerInSystem.text = "Clan Instance (-20% loot)";
@@ -168,11 +168,11 @@ class WarpToFriendRow extends Sprite
          buttonText = "Warp";
       }
       warpToFriendButton = new Button(function():void
-      {
-         setDesiredRoom(type,friend);
-         callback();
-      },buttonText,"positive");
-      if(type == "clan" && !Game.instance.me.clanId)
+         {
+            setDesiredRoom(type, friend);
+            callback();
+         }, buttonText, "positive");
+      if (type == "clan" && !Game.instance.me.clanId)
       {
          warpToFriendButton.enabled = false;
       }
@@ -182,24 +182,24 @@ class WarpToFriendRow extends Sprite
       addChild(description);
       addChild(warpToFriendButton);
    }
-   
-   private function setDesiredRoom(param1:String, param2:Friend) : void
+
+   private function setDesiredRoom(param1:String, param2:Friend):void
    {
       var _loc3_:String = null;
       var _loc4_:IJoinRoomManager = JoinRoomLocator.getService();
       _loc4_.desiredRoomId = null;
       _loc4_.desiredSystemType = "friendly";
-      if(param1 == "friendly")
+      if (param1 == "friendly")
       {
          _loc4_.desiredSystemType = "friendly";
       }
-      else if(param1 == "hostile")
+      else if (param1 == "hostile")
       {
          _loc4_.desiredSystemType = "hostile";
       }
-      else if(param1 == "clan")
+      else if (param1 == "clan")
       {
-         if(Game.instance.me.clanId)
+         if (Game.instance.me.clanId)
          {
             _loc3_ = MD5.hash(StarMap.selectedSolarSystem.key + Game.instance.me.clanId);
             _loc4_.desiredRoomId = _loc3_;

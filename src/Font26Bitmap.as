@@ -1,7 +1,7 @@
 package
 {
    import flash.display.Bitmap;
-   
+
    [Embed(source="../images/font26.png")]
    public class Font26Bitmap extends Bitmap
    {
@@ -11,4 +11,3 @@ package
       }
    }
 }
-

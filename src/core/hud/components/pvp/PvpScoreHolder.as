@@ -3,91 +3,91 @@ package core.hud.components.pvp
    import core.hud.components.Box;
    import core.hud.components.Text;
    import starling.display.Sprite;
-   
+
    public class PvpScoreHolder
    {
       public var img:Sprite;
-      
+
       public var playerKey:String;
-      
+
       public var playerName:String;
-      
+
       public var isMe:Boolean;
-      
+
       public var type:String;
-      
+
       public var rank:int;
-      
+
       public var score:int;
-      
+
       public var kills:int;
-      
+
       public var deaths:int;
-      
+
       public var xpSum:int;
-      
+
       public var steelSum:int;
-      
+
       public var plasmaSum:int;
-      
+
       public var iridiumSum:int;
-      
+
       public var hydrogenSum:int;
-      
+
       public var damageSum:int;
-      
+
       public var healingSum:int;
-      
+
       public var bonusPercent:int;
-      
+
       private var nameText:Text;
-      
+
       private var rankText:Text;
-      
+
       private var scoreText:Text;
-      
+
       private var killsText:Text;
-      
+
       private var deathText:Text;
-      
+
       private var damageText:Text;
-      
+
       private var bonusText:Text;
-      
+
       private var ratingText:Text;
-      
+
       public var first:int;
-      
+
       public var second:int;
-      
+
       public var third:int;
-      
+
       public var hotStreak3:int;
-      
+
       public var hotStreak10:int;
-      
+
       public var defZone:int;
-      
+
       public var capZone:int;
-      
+
       public var noDeaths:int;
-      
+
       public var brokeKillingSpree:int;
-      
+
       public var pickups:int;
-      
+
       public var dailyBonus:int;
-      
+
       public var rating:Number;
-      
+
       public var ratingChange:Number;
-      
+
       public var afk:Boolean;
-      
+
       public var team:int;
-      
+
       private var bg:Box;
-      
+
       public function PvpScoreHolder(param1:String, param2:String, param3:Boolean, param4:String)
       {
          super();
@@ -122,17 +122,17 @@ package core.hud.components.pvp
          capZone = 0;
          defZone = 0;
       }
-      
-      public function load() : void
+
+      public function load():void
       {
          img = new Sprite();
-         if(isMe)
+         if (isMe)
          {
-            bg = new Box(610,30,"highlight",0.5,10);
+            bg = new Box(610, 30, "highlight", 0.5, 10);
          }
          else
          {
-            bg = new Box(610,30,"light",0.5,10);
+            bg = new Box(610, 30, "light", 0.5, 10);
          }
          img.addChild(bg);
          var _loc1_:int = 10;
@@ -149,7 +149,7 @@ package core.hud.components.pvp
          nameText.color = 5635925;
          nameText.size = 12;
          bg.addChild(nameText);
-         if(type == "pvp dom")
+         if (type == "pvp dom")
          {
             _loc1_ += 150;
          }
@@ -163,7 +163,7 @@ package core.hud.components.pvp
          scoreText.color = 5635925;
          scoreText.size = 12;
          bg.addChild(scoreText);
-         if(type == "pvp dom")
+         if (type == "pvp dom")
          {
             _loc1_ += 50;
          }
@@ -171,7 +171,7 @@ package core.hud.components.pvp
          {
             _loc1_ += 70;
          }
-         if(type == "pvp dom")
+         if (type == "pvp dom")
          {
             killsText = new Text();
             killsText.x = _loc1_;
@@ -187,7 +187,7 @@ package core.hud.components.pvp
          deathText.color = 5635925;
          deathText.size = 12;
          bg.addChild(deathText);
-         if(type == "pvp dom")
+         if (type == "pvp dom")
          {
             _loc1_ += 50;
          }
@@ -201,7 +201,7 @@ package core.hud.components.pvp
          damageText.color = 5635925;
          damageText.size = 12;
          bg.addChild(damageText);
-         if(type == "pvp dom")
+         if (type == "pvp dom")
          {
             _loc1_ += 100;
          }
@@ -223,27 +223,27 @@ package core.hud.components.pvp
          ratingText.size = 12;
          bg.addChild(ratingText);
       }
-      
-      public function addDamage(param1:int) : void
+
+      public function addDamage(param1:int):void
       {
          damageSum += param1;
-         if(damageText != null)
+         if (damageText != null)
          {
             damageText.text = damageSum.toString();
          }
       }
-      
-      public function addHealing(param1:int) : void
+
+      public function addHealing(param1:int):void
       {
          healingSum += param1;
       }
-      
-      public function update(param1:Boolean = false, param2:Boolean = false) : void
+
+      public function update(param1:Boolean = false, param2:Boolean = false):void
       {
          var _loc3_:* = 5635925;
-         if(param1 == true)
+         if (param1 == true)
          {
-            if(param2 == true)
+            if (param2 == true)
             {
                _loc3_ = 5592575;
                rankText.text = "Blue";
@@ -263,7 +263,7 @@ package core.hud.components.pvp
          nameText.text = playerName;
          scoreText.color = _loc3_;
          scoreText.text = score.toString();
-         if(type == "pvp dom")
+         if (type == "pvp dom")
          {
             killsText.color = _loc3_;
             killsText.text = kills.toString();
@@ -274,12 +274,12 @@ package core.hud.components.pvp
          damageText.text = damageSum.toString();
          bonusText.color = _loc3_;
          bonusText.text = bonusPercent - 100 + "%";
-         if(ratingChange > 0)
+         if (ratingChange > 0)
          {
             ratingText.color = 5635925;
             ratingText.text = Math.floor(rating).toString() + " (+" + Math.floor(ratingChange).toString() + ")";
          }
-         else if(ratingChange < 0)
+         else if (ratingChange < 0)
          {
             ratingText.color = 16733525;
             ratingText.text = Math.floor(rating).toString() + " (" + Math.floor(ratingChange).toString() + ")";
@@ -292,4 +292,3 @@ package core.hud.components.pvp
       }
    }
 }
-

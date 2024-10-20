@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.animation
@@ -17,34 +17,34 @@ package starling.animation
     import starling.events.EventDispatcher;
 
     /** The Juggler takes objects that implement IAnimatable (like Tweens) and executes them.
-     * 
-     *  <p>A juggler is a simple object. It does no more than saving a list of objects implementing 
-     *  "IAnimatable" and advancing their time if it is told to do so (by calling its own 
+     *
+     *  <p>A juggler is a simple object. It does no more than saving a list of objects implementing
+     *  "IAnimatable" and advancing their time if it is told to do so (by calling its own
      *  "advanceTime"-method). When an animation is completed, it throws it away.</p>
-     *  
+     *
      *  <p>There is a default juggler available at the Starling class:</p>
-     *  
+     *
      *  <pre>
      *  var juggler:Juggler = Starling.juggler;
      *  </pre>
-     *  
-     *  <p>You can create juggler objects yourself, just as well. That way, you can group 
+     *
+     *  <p>You can create juggler objects yourself, just as well. That way, you can group
      *  your game into logical components that handle their animations independently. All you have
      *  to do is call the "advanceTime" method on your custom juggler once per frame.</p>
-     *  
-     *  <p>Another handy feature of the juggler is the "delayCall"-method. Use it to 
+     *
+     *  <p>Another handy feature of the juggler is the "delayCall"-method. Use it to
      *  execute a function at a later time. Different to conventional approaches, the method
-     *  will only be called when the juggler is advanced, giving you perfect control over the 
+     *  will only be called when the juggler is advanced, giving you perfect control over the
      *  call.</p>
-     *  
+     *
      *  <pre>
      *  juggler.delayCall(object.removeFromParent, 1.0);
      *  juggler.delayCall(object.addChild, 2.0, theChild);
      *  juggler.delayCall(function():void { rotation += 0.1; }, 3.0);
      *  </pre>
-     * 
+     *
      *  @see Tween
-     *  @see DelayedCall 
+     *  @see DelayedCall
      */
     public class Juggler implements IAnimatable
     {
@@ -54,7 +54,7 @@ package starling.animation
         private var _timeScale:Number;
 
         private static var sCurrentObjectID:uint;
-        
+
         /** Create an empty juggler. */
         public function Juggler()
         {
@@ -79,22 +79,24 @@ package starling.animation
             if (object && !(object in _objectIDs))
             {
                 var dispatcher:EventDispatcher = object as EventDispatcher;
-                if (dispatcher) dispatcher.addEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
+                if (dispatcher)
+                    dispatcher.addEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 
                 _objects[_objects.length] = object;
                 _objectIDs[object] = objectID;
 
                 return objectID;
             }
-            else return 0;
+            else
+                return 0;
         }
-        
+
         /** Determines if an object has been added to the juggler. */
         public function contains(object:IAnimatable):Boolean
         {
             return object in _objectIDs;
         }
-        
+
         /** Removes an object from the juggler.
          *
          *  @return The (now meaningless) unique numeric identifier for the animation, or zero
@@ -107,7 +109,8 @@ package starling.animation
             if (object && object in _objectIDs)
             {
                 var dispatcher:EventDispatcher = object as EventDispatcher;
-                if (dispatcher) dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
+                if (dispatcher)
+                    dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
 
                 var index:int = _objects.indexOf(object);
                 _objects[index] = null;
@@ -132,7 +135,7 @@ package starling.animation
          */
         public function removeByID(objectID:uint):uint
         {
-            for (var i:int=_objects.length-1; i>=0; --i)
+            for (var i:int = _objects.length - 1; i >= 0; --i)
             {
                 var object:IAnimatable = _objects[i];
 
@@ -145,13 +148,14 @@ package starling.animation
 
             return 0;
         }
-        
+
         /** Removes all tweens with a certain target. */
         public function removeTweens(target:Object):void
         {
-            if (target == null) return;
-            
-            for (var i:int=_objects.length-1; i>=0; --i)
+            if (target == null)
+                return;
+
+            for (var i:int = _objects.length - 1; i >= 0; --i)
             {
                 var tween:Tween = _objects[i] as Tween;
                 if (tween && tween.target == target)
@@ -166,9 +170,10 @@ package starling.animation
         /** Removes all delayed and repeated calls with a certain callback. */
         public function removeDelayedCalls(callback:Function):void
         {
-            if (callback == null) return;
+            if (callback == null)
+                return;
 
-            for (var i:int=_objects.length-1; i>=0; --i)
+            for (var i:int = _objects.length - 1; i >= 0; --i)
             {
                 var delayedCall:DelayedCall = _objects[i] as DelayedCall;
                 if (delayedCall && delayedCall.callback == callback)
@@ -179,16 +184,17 @@ package starling.animation
                 }
             }
         }
-        
+
         /** Figures out if the juggler contains one or more tweens with a certain target. */
         public function containsTweens(target:Object):Boolean
         {
             if (target)
             {
-                for (var i:int=_objects.length-1; i>=0; --i)
+                for (var i:int = _objects.length - 1; i >= 0; --i)
                 {
                     var tween:Tween = _objects[i] as Tween;
-                    if (tween && tween.target == target) return true;
+                    if (tween && tween.target == target)
+                        return true;
                 }
             }
 
@@ -200,10 +206,11 @@ package starling.animation
         {
             if (callback != null)
             {
-                for (var i:int=_objects.length-1; i>=0; --i)
+                for (var i:int = _objects.length - 1; i >= 0; --i)
                 {
                     var delayedCall:DelayedCall = _objects[i] as DelayedCall;
-                    if (delayedCall && delayedCall.callback == callback) return true;
+                    if (delayedCall && delayedCall.callback == callback)
+                        return true;
                 }
             }
 
@@ -213,21 +220,22 @@ package starling.animation
         /** Removes all objects at once. */
         public function purge():void
         {
-            // the object vector is not purged right away, because if this method is called 
+            // the object vector is not purged right away, because if this method is called
             // from an 'advanceTime' call, this would make the loop crash. Instead, the
             // vector is filled with 'null' values. They will be cleaned up on the next call
             // to 'advanceTime'.
-            
-            for (var i:int=_objects.length-1; i>=0; --i)
+
+            for (var i:int = _objects.length - 1; i >= 0; --i)
             {
                 var object:IAnimatable = _objects[i];
                 var dispatcher:EventDispatcher = object as EventDispatcher;
-                if (dispatcher) dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
+                if (dispatcher)
+                    dispatcher.removeEventListener(Event.REMOVE_FROM_JUGGLER, onRemove);
                 _objects[i] = null;
                 delete _objectIDs[object];
             }
         }
-        
+
         /** Delays the execution of a function until <code>delay</code> seconds have passed.
          *  This method provides a convenient alternative for creating and adding a DelayedCall
          *  manually.
@@ -237,8 +245,9 @@ package starling.animation
          */
         public function delayCall(call:Function, delay:Number, ...args):uint
         {
-            if (call == null) throw new ArgumentError("call must not be null");
-            
+            if (call == null)
+                throw new ArgumentError("call must not be null");
+
             var delayedCall:DelayedCall = DelayedCall.starling_internal::fromPool(call, delay, args);
             delayedCall.addEventListener(Event.REMOVE_FROM_JUGGLER, onPooledDelayedCallComplete);
             return add(delayedCall);
@@ -250,36 +259,37 @@ package starling.animation
          *  @return Unique numeric identifier for the delayed call. This identifier may be used
          *          to remove the object via <code>removeByID()</code>.
          */
-        public function repeatCall(call:Function, interval:Number, repeatCount:int=0, ...args):uint
+        public function repeatCall(call:Function, interval:Number, repeatCount:int = 0, ...args):uint
         {
-            if (call == null) throw new ArgumentError("call must not be null");
-            
+            if (call == null)
+                throw new ArgumentError("call must not be null");
+
             var delayedCall:DelayedCall = DelayedCall.starling_internal::fromPool(call, interval, args);
             delayedCall.repeatCount = repeatCount;
             delayedCall.addEventListener(Event.REMOVE_FROM_JUGGLER, onPooledDelayedCallComplete);
             return add(delayedCall);
         }
-        
+
         private function onPooledDelayedCallComplete(event:Event):void
         {
             DelayedCall.starling_internal::toPool(event.target as DelayedCall);
         }
-        
+
         /** Utilizes a tween to animate the target object over <code>time</code> seconds. Internally,
          *  this method uses a tween instance (taken from an object pool) that is added to the
-         *  juggler right away. This method provides a convenient alternative for creating 
+         *  juggler right away. This method provides a convenient alternative for creating
          *  and adding a tween manually.
-         *  
-         *  <p>Fill 'properties' with key-value pairs that describe both the 
+         *
+         *  <p>Fill 'properties' with key-value pairs that describe both the
          *  tween and the animation target. Here is an example:</p>
-         *  
+         *
          *  <pre>
          *  juggler.tween(object, 2.0, {
          *      transition: Transitions.EASE_IN_OUT,
          *      delay: 20, // -> tween.delay = 20
          *      x: 50      // -> tween.animate("x", 50)
          *  });
-         *  </pre> 
+         *  </pre>
          *
          *  <p>To cancel the tween, call 'Juggler.removeTweens' with the same target, or pass
          *  the returned 'IAnimatable' instance to 'Juggler.remove()'. Do not use the returned
@@ -299,14 +309,15 @@ package starling.animation
          */
         public function tween(target:Object, time:Number, properties:Object):uint
         {
-            if (target == null) throw new ArgumentError("target must not be null");
+            if (target == null)
+                throw new ArgumentError("target must not be null");
 
             var tween:Tween = Tween.starling_internal::fromPool(target, time);
-            
+
             for (var property:String in properties)
             {
                 var value:Object = properties[property];
-                
+
                 if (tween.hasOwnProperty(property))
                     tween[property] = value;
                 else if (target.hasOwnProperty(Tween.getPropertyName(property)))
@@ -314,16 +325,16 @@ package starling.animation
                 else
                     throw new ArgumentError("Invalid property: " + property);
             }
-            
+
             tween.addEventListener(Event.REMOVE_FROM_JUGGLER, onPooledTweenComplete);
             return add(tween);
         }
-        
+
         private function onPooledTweenComplete(event:Event):void
         {
             Tween.starling_internal::toPool(event.target as Tween);
         }
-        
+
         /** Advances all objects by a certain time (in seconds). */
         public function advanceTime(time:Number):void
         {
@@ -332,41 +343,42 @@ package starling.animation
             var i:int;
 
             time *= _timeScale;
-            if (numObjects == 0 || time == 0) return;
+            if (numObjects == 0 || time == 0)
+                return;
             _elapsedTime += time;
-            
-            // there is a high probability that the "advanceTime" function modifies the list 
+
+            // there is a high probability that the "advanceTime" function modifies the list
             // of animatables. we must not process new objects right now (they will be processed
             // in the next frame), and we need to clean up any empty slots in the list.
-            
-            for (i=0; i<numObjects; ++i)
+
+            for (i = 0; i < numObjects; ++i)
             {
                 var object:IAnimatable = _objects[i];
                 if (object)
                 {
                     // shift objects into empty slots along the way
-                    if (currentIndex != i) 
+                    if (currentIndex != i)
                     {
                         _objects[currentIndex] = object;
                         _objects[i] = null;
                     }
-                    
+
                     object.advanceTime(time);
                     ++currentIndex;
                 }
             }
-            
+
             if (currentIndex != i)
             {
                 numObjects = _objects.length; // count might have changed!
-                
+
                 while (i < numObjects)
-                    _objects[int(currentIndex++)] = _objects[int(i++)];
-                
+                    _objects[int(currentIndex++ )] = _objects[int(i++ )];
+
                 _objects.length = currentIndex;
             }
         }
-        
+
         private function onRemove(event:Event):void
         {
             var objectID:uint = remove(event.target as IAnimatable);
@@ -379,18 +391,33 @@ package starling.animation
             }
         }
 
-        private static function getNextID():uint { return ++sCurrentObjectID; }
-        
+        private static function getNextID():uint
+        {
+            return ++ sCurrentObjectID;
+        }
+
         /** The total life time of the juggler (in seconds). */
-        public function get elapsedTime():Number { return _elapsedTime; }
+        public function get elapsedTime():Number
+        {
+            return _elapsedTime;
+        }
 
         /** The scale at which the time is passing. This can be used for slow motion or time laps
          *  effects. Values below '1' will make all animations run slower, values above '1' faster.
          *  @default 1.0 */
-        public function get timeScale():Number { return _timeScale; }
-        public function set timeScale(value:Number):void { _timeScale = value; }
- 
+        public function get timeScale():Number
+        {
+            return _timeScale;
+        }
+        public function set timeScale(value:Number):void
+        {
+            _timeScale = value;
+        }
+
         /** The actual vector that contains all objects that are currently being animated. */
-        protected function get objects():Vector.<IAnimatable> { return _objects; }
+        protected function get objects():Vector.<IAnimatable>
+        {
+            return _objects;
+        }
     }
 }

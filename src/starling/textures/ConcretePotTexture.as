@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.textures
@@ -36,12 +36,12 @@ package starling.textures
 
         /** Creates a new instance with the given parameters. */
         public function ConcretePotTexture(base:flash.display3D.textures.Texture, format:String,
-                                           width:int, height:int, mipMapping:Boolean,
-                                           premultipliedAlpha:Boolean,
-                                           optimizedForRenderTexture:Boolean=false, scale:Number=1)
+                width:int, height:int, mipMapping:Boolean,
+                premultipliedAlpha:Boolean,
+                optimizedForRenderTexture:Boolean = false, scale:Number = 1)
         {
             super(base, format, width, height, mipMapping, premultipliedAlpha,
-                  optimizedForRenderTexture, scale);
+                    optimizedForRenderTexture, scale);
 
             if (width != MathUtil.getNextPowerOfTwo(width))
                 throw new ArgumentError("width must be a power of two");
@@ -80,7 +80,7 @@ package starling.textures
 
             if (mipMapping && data.width > 1 && data.height > 1)
             {
-                var currentWidth:int  = data.width  >> 1;
+                var currentWidth:int = data.width >> 1;
                 var currentHeight:int = data.height >> 1;
                 var level:int = 1;
                 var canvas:BitmapData = new BitmapData(currentWidth, currentHeight, true, 0);
@@ -93,22 +93,26 @@ package starling.textures
                     bounds.setTo(0, 0, currentWidth, currentHeight);
                     canvas.fillRect(bounds, 0);
                     canvas.draw(data, matrix, null, null, null, true);
-                    potBase.uploadFromBitmapData(canvas, level++);
+                    potBase.uploadFromBitmapData(canvas, level++ );
                     matrix.scale(0.5, 0.5);
-                    currentWidth  = currentWidth  >> 1;
+                    currentWidth = currentWidth >> 1;
                     currentHeight = currentHeight >> 1;
                 }
 
                 canvas.dispose();
             }
 
-            if (buffer) buffer.dispose();
+            if (buffer)
+                buffer.dispose();
 
             setDataUploaded();
         }
 
         /** @inheritDoc */
-        override public function get isPotTexture():Boolean { return true; }
+        override public function get isPotTexture():Boolean
+        {
+            return true;
+        }
 
         /** @inheritDoc */
         override public function uploadAtfData(data:ByteArray, offset:int = 0, async:* = null):void

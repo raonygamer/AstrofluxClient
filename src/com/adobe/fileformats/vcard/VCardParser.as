@@ -33,7 +33,7 @@ package com.adobe.fileformats.vcard
 {
 	import mx.utils.Base64Decoder;
 	import mx.utils.StringUtil;
-	
+
 	public class VCardParser
 	{
 		public static function parse(vcardStr:String):Array
@@ -59,7 +59,7 @@ package com.adobe.fileformats.vcard
 						vcards.push(vcard);
 					}
 				}
-				else if(line.search(/^ORG/i) != -1)
+				else if (line.search(/^ORG/i) != -1)
 				{
 					var org:String = line.substring(4, line.length);
 					var orgArray:Array = org.split(";");
@@ -71,7 +71,7 @@ package com.adobe.fileformats.vcard
 						}
 					}
 				}
-				else if(line.search(/^TITLE/i) != -1)
+				else if (line.search(/^TITLE/i) != -1)
 				{
 					var title:String = line.substring(6, line.length);
 					vcard.title = title;
@@ -95,10 +95,10 @@ package com.adobe.fileformats.vcard
 							if (phoneToken.indexOf(":") != -1)
 							{
 								typeTmp = phoneToken.substring(5, phoneToken.indexOf(":"));
-								number = phoneToken.substring(phoneToken.indexOf(":")+1, phoneToken.length);
+								number = phoneToken.substring(phoneToken.indexOf(":") + 1, phoneToken.length);
 							}
 							else
-							{									
+							{
 								typeTmp = phoneToken.substring(5, phoneToken.length);
 							}
 
@@ -136,10 +136,10 @@ package com.adobe.fileformats.vcard
 							if (emailToken.indexOf(":") != -1)
 							{
 								typeTmp = emailToken.substring(5, emailToken.indexOf(":"));
-								emailAddress = emailToken.substring(emailToken.indexOf(":")+1, emailToken.length);
+								emailAddress = emailToken.substring(emailToken.indexOf(":") + 1, emailToken.length);
 							}
 							else
-							{									
+							{
 								typeTmp = emailToken.substring(5, emailToken.length);
 							}
 
@@ -178,10 +178,10 @@ package com.adobe.fileformats.vcard
 						{
 							address.type = "work";
 						}
-						if (addressToken.search(/^type=/i) != -1)  // The "type" parameter is the standard way (which Address Book uses)
+						if (addressToken.search(/^type=/i) != -1) // The "type" parameter is the standard way (which Address Book uses)
 						{
 							// First, remove the optional ":" character.
-							addressToken = addressToken.replace(/:/,"");
+							addressToken = addressToken.replace(/:/, "");
 							var addressType:String = addressToken.substring(5, addressToken.length).toLowerCase();
 							if (addressType == "pref") // Not interested in which one is preferred.
 							{
@@ -212,9 +212,9 @@ package com.adobe.fileformats.vcard
 						else if (addressToken.search(/^\d/) != -1 && address.street == null)
 						{
 							address.street = addressToken.replace(/\\n/, "");
-							address.city = addressTokens[j+1];
-							address.state = addressTokens[j+2];
-							address.postalCode = addressTokens[j+3];
+							address.city = addressTokens[j + 1];
+							address.state = addressTokens[j + 2];
+							address.postalCode = addressTokens[j + 3];
 						}
 					}
 					if (address.type != null && address.street != null)
@@ -226,10 +226,10 @@ package com.adobe.fileformats.vcard
 				else if (line.search(/^PHOTO;BASE64/i) != -1)
 				{
 					var imageStr:String = new String();
-					for (var k:uint = i+1; k < lines.length; ++k)
+					for (var k:uint = i + 1; k < lines.length; ++k)
 					{
 						imageStr += lines[k];
-						//if (lines[k].search(/.+\=$/) != -1) // Very slow in Mac due to RegEx bug
+						// if (lines[k].search(/.+\=$/) != -1) // Very slow in Mac due to RegEx bug
 						if (lines[k].indexOf('=') != -1)
 						{
 							var decoder:Base64Decoder = new Base64Decoder();

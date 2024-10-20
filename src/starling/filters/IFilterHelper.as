@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.filters
@@ -34,7 +34,7 @@ package starling.filters
          *  <code>null</code> too soon, the filter class probably didn't correctly override
          *  <code>numPasses</code>.</p>
          */
-        function getTexture(resolution:Number=1.0):Texture;
+        function getTexture(resolution:Number = 1.0):Texture;
 
         /** Puts a texture back into the pool to be reused later (or to be disposed
          *  with the pool). */

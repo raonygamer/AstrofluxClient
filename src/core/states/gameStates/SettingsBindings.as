@@ -9,21 +9,21 @@ package core.states.gameStates
    import generics.Localize;
    import starling.display.Sprite;
    import starling.events.Event;
-   
+
    public class SettingsBindings extends Sprite
    {
       private var g:Game;
-      
+
       private var keybinds:KeyBinds;
-      
+
       private var currentHeight:Number = 0;
-      
+
       private var currentWidth:Number = 50;
-      
+
       private var scrollArea:ScrollContainer;
-      
+
       private var keybindList:Vector.<SettingsKeybind>;
-      
+
       public function SettingsBindings(param1:Game)
       {
          keybindList = new Vector.<SettingsKeybind>();
@@ -37,10 +37,10 @@ package core.states.gameStates
          scrollArea.height = 500;
          initComponents();
          addChild(scrollArea);
-         param1.stage.addEventListener("updateButtons",updateButtons);
+         param1.stage.addEventListener("updateButtons", updateButtons);
       }
-      
-      private function initComponents() : void
+
+      private function initComponents():void
       {
          var _loc1_:Text = new Text();
          _loc1_.htmlText = Localize.t("Movements:");
@@ -98,22 +98,21 @@ package core.states.gameStates
          addKeybind(8);
          addKeybind(0);
       }
-      
-      private function addKeybind(param1:int) : void
+
+      private function addKeybind(param1:int):void
       {
-         var _loc2_:SettingsKeybind = new SettingsKeybind(keybinds,param1,currentWidth,currentHeight);
+         var _loc2_:SettingsKeybind = new SettingsKeybind(keybinds, param1, currentWidth, currentHeight);
          keybindList.push(_loc2_);
          scrollArea.addChild(_loc2_);
          currentHeight += 62;
       }
-      
-      public function updateButtons(param1:Event) : void
+
+      public function updateButtons(param1:Event):void
       {
-         for each(var _loc2_ in keybindList)
+         for each (var _loc2_:* in keybindList)
          {
             _loc2_.update();
          }
       }
    }
 }
-

@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.rendering
@@ -38,8 +38,8 @@ package starling.rendering
          *  It simply transforms the vertex coordinates to clip-space and passes the texture
          *  coordinates to the fragment program (as 'v0'). */
         public static const STD_VERTEX_SHADER:String =
-            "m44 op, va0, vc0 \n"+  // 4x4 matrix transform to output clip-space
-            "mov v0, va1";          // pass texture coordinates to fragment program
+            "m44 op, va0, vc0 \n" + // 4x4 matrix transform to output clip-space
+            "mov v0, va1"; // pass texture coordinates to fragment program
 
         private var _texture:Texture;
         private var _textureSmoothing:String;
@@ -121,27 +121,48 @@ package starling.rendering
          *  @see starling.utils.RenderUtil#createAGALTexOperation()
          */
         protected static function tex(resultReg:String, uvReg:String, sampler:int, texture:Texture,
-                                      convertToPmaIfRequired:Boolean=true):String
+                convertToPmaIfRequired:Boolean = true):String
         {
             return RenderUtil.createAGALTexOperation(resultReg, uvReg, sampler, texture,
-                convertToPmaIfRequired);
+                    convertToPmaIfRequired);
         }
 
         /** The data format that this effect requires from the VertexData that it renders:
          *  <code>"position:float2, texCoords:float2"</code> */
-        override public function get vertexFormat():VertexDataFormat { return VERTEX_FORMAT; }
+        override public function get vertexFormat():VertexDataFormat
+        {
+            return VERTEX_FORMAT;
+        }
 
         /** The texture to be mapped onto the vertices. */
-        public function get texture():Texture { return _texture; }
-        public function set texture(value:Texture):void { _texture = value; }
+        public function get texture():Texture
+        {
+            return _texture;
+        }
+        public function set texture(value:Texture):void
+        {
+            _texture = value;
+        }
 
         /** The smoothing filter that is used for the texture. @default bilinear */
-        public function get textureSmoothing():String { return _textureSmoothing; }
-        public function set textureSmoothing(value:String):void { _textureSmoothing = value; }
+        public function get textureSmoothing():String
+        {
+            return _textureSmoothing;
+        }
+        public function set textureSmoothing(value:String):void
+        {
+            _textureSmoothing = value;
+        }
 
         /** Indicates if pixels at the edges will be repeated or clamped.
          *  Only works for power-of-two textures. @default false */
-        public function get textureRepeat():Boolean { return _textureRepeat; }
-        public function set textureRepeat(value:Boolean):void { _textureRepeat = value; }
+        public function get textureRepeat():Boolean
+        {
+            return _textureRepeat;
+        }
+        public function set textureRepeat(value:Boolean):void
+        {
+            _textureRepeat = value;
+        }
     }
 }

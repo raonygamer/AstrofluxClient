@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.rendering
@@ -49,7 +49,7 @@ package starling.rendering
 
             // Handle lost context (using conventional Flash event for weak listener support)
             Starling.current.stage3D.addEventListener(Event.CONTEXT3D_CREATE,
-                onContextCreated, false, 30, true);
+                    onContextCreated, false, 30, true);
         }
 
         /** Disposes the internal Program3D instance. */
@@ -61,21 +61,22 @@ package starling.rendering
 
         /** Creates a new Program instance from AGAL assembly language. */
         public static function fromSource(vertexShader:String, fragmentShader:String,
-                                          agalVersion:uint=1):Program
+                agalVersion:uint = 1):Program
         {
             return new Program(
-                sAssembler.assemble(Context3DProgramType.VERTEX, vertexShader, agalVersion),
-                sAssembler.assemble(Context3DProgramType.FRAGMENT, fragmentShader, agalVersion));
+                    sAssembler.assemble(Context3DProgramType.VERTEX, vertexShader, agalVersion),
+                    sAssembler.assemble(Context3DProgramType.FRAGMENT, fragmentShader, agalVersion));
         }
 
         /** Activates the program on the given context. If you don't pass a context, the current
          *  Starling context will be used. */
-        public function activate(context:Context3D=null):void
+        public function activate(context:Context3D = null):void
         {
             if (context == null)
             {
                 context = Starling.context;
-                if (context == null) throw new MissingContextError();
+                if (context == null)
+                    throw new MissingContextError();
             }
 
             if (_program3D == null)

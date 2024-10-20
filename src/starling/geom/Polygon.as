@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.geom
@@ -37,7 +37,7 @@ package starling.geom
          *  @param vertices an array that contains either 'Point' instances or
          *                  alternating 'x' and 'y' coordinates.
          */
-        public function Polygon(vertices:Array=null)
+        public function Polygon(vertices:Array = null)
         {
             _coords = new <Number>[];
             addVertices.apply(this, vertices);
@@ -49,7 +49,7 @@ package starling.geom
             var clone:Polygon = new Polygon();
             var numCoords:int = _coords.length;
 
-            for (var i:int=0; i<numCoords; ++i)
+            for (var i:int = 0; i < numCoords; ++i)
                 clone._coords[i] = _coords[i];
 
             return clone;
@@ -63,7 +63,7 @@ package starling.geom
             var numVertices:int = numCoords / 2;
             var tmp:Number;
 
-            for (var i:int=0; i<numVertices; i += 2)
+            for (var i:int = 0; i < numVertices; i += 2)
             {
                 tmp = _coords[i];
                 _coords[i] = _coords[numCoords - i - 2];
@@ -87,18 +87,19 @@ package starling.geom
             {
                 if (args[0] is Point)
                 {
-                    for (i=0; i<numArgs; i++)
+                    for (i = 0; i < numArgs; i++)
                     {
-                        _coords[numCoords + i * 2    ] = (args[i] as Point).x;
+                        _coords[numCoords + i * 2] = (args[i] as Point).x;
                         _coords[numCoords + i * 2 + 1] = (args[i] as Point).y;
                     }
                 }
                 else if (args[0] is Number)
                 {
-                    for (i=0; i<numArgs; ++i)
+                    for (i = 0; i < numArgs; ++i)
                         _coords[numCoords + i] = args[i];
                 }
-                else throw new ArgumentError("Invalid type: " + getQualifiedClassName(args[0]));
+                else
+                    throw new ArgumentError("Invalid type: " + getQualifiedClassName(args[0]));
             }
         }
 
@@ -107,14 +108,15 @@ package starling.geom
         {
             if (index >= 0 && index <= numVertices)
             {
-                _coords[index * 2    ] = x;
+                _coords[index * 2] = x;
                 _coords[index * 2 + 1] = y;
             }
-            else throw new RangeError("Invalid index: " + index);
+            else
+                throw new RangeError("Invalid index: " + index);
         }
 
         /** Returns the coordinates of a certain vertex. */
-        public function getVertex(index:int, out:Point=null):Point
+        public function getVertex(index:int, out:Point = null):Point
         {
             if (index >= 0 && index < numVertices)
             {
@@ -122,7 +124,8 @@ package starling.geom
                 out.setTo(_coords[index * 2], _coords[index * 2 + 1]);
                 return out;
             }
-            else throw new RangeError("Invalid index: " + index);
+            else
+                throw new RangeError("Invalid index: " + index);
         }
 
         /** Figures out if the given coordinates lie within the polygon. */
@@ -134,7 +137,7 @@ package starling.geom
             var i:int, j:int = numVertices - 1;
             var oddNodes:uint = 0;
 
-            for (i=0; i<numVertices; ++i)
+            for (i = 0; i < numVertices; ++i)
             {
                 var ix:Number = _coords[i * 2];
                 var iy:Number = _coords[i * 2 + 1];
@@ -162,11 +165,11 @@ package starling.geom
          *
          *  <p>If you pass an indexData object, the new indices will be appended to it.
          *  Otherwise, a new instance will be created.</p> */
-        public function triangulate(indexData:IndexData=null, offset:int=0):IndexData
+        public function triangulate(indexData:IndexData = null, offset:int = 0):IndexData
         {
             // Algorithm "Ear clipping method" described here:
             // -> https://en.wikipedia.org/wiki/Polygon_triangulation
-            //
+            // 
             // Implementation inspired by:
             // -> http://polyk.ivank.net
 
@@ -174,11 +177,14 @@ package starling.geom
             var numTriangles:int = this.numTriangles;
             var i:int, restIndexPos:int, numRestIndices:int;
 
-            if (indexData == null) indexData = new IndexData(numTriangles * 3);
-            if (numTriangles == 0) return indexData;
+            if (indexData == null)
+                indexData = new IndexData(numTriangles * 3);
+            if (numTriangles == 0)
+                return indexData;
 
             sRestIndices.length = numVertices;
-            for (i=0; i<numVertices; ++i) sRestIndices[i] = i;
+            for (i = 0; i < numVertices; ++i)
+                sRestIndices[i] = i;
 
             restIndexPos = 0;
             numRestIndices = numVertices;
@@ -197,7 +203,7 @@ package starling.geom
 
                 var otherIndex:uint;
                 var earFound:Boolean = false;
-                var i0:uint = sRestIndices[ restIndexPos      % numRestIndices];
+                var i0:uint = sRestIndices[restIndexPos % numRestIndices];
                 var i1:uint = sRestIndices[(restIndexPos + 1) % numRestIndices];
                 var i2:uint = sRestIndices[(restIndexPos + 2) % numRestIndices];
 
@@ -232,7 +238,8 @@ package starling.geom
                 else
                 {
                     restIndexPos++;
-                    if (restIndexPos == numRestIndices) break; // no more ears
+                    if (restIndexPos == numRestIndices)
+                        break; // no more ears
                 }
             }
 
@@ -242,14 +249,14 @@ package starling.geom
             Pool.putPoint(p);
 
             indexData.addTriangle(sRestIndices[0] + offset,
-                                     sRestIndices[1] + offset,
-                                     sRestIndices[2] + offset);
+                    sRestIndices[1] + offset,
+                    sRestIndices[2] + offset);
             return indexData;
         }
 
         /** Copies all vertices to a 'VertexData' instance, beginning at a certain target index. */
-        public function copyToVertexData(target:VertexData=null, targetVertexID:int=0,
-                                         attrName:String="position"):void
+        public function copyToVertexData(target:VertexData = null, targetVertexID:int = 0,
+                attrName:String = "position"):void
         {
             var numVertices:int = this.numVertices;
             var requiredTargetLength:int = targetVertexID + numVertices;
@@ -257,7 +264,7 @@ package starling.geom
             if (target.numVertices < requiredTargetLength)
                 target.numVertices = requiredTargetLength;
 
-            for (var i:int=0; i<numVertices; ++i)
+            for (var i:int = 0; i < numVertices; ++i)
                 target.setPoint(targetVertexID + i, attrName, _coords[i * 2], _coords[i * 2 + 1]);
         }
 
@@ -267,13 +274,14 @@ package starling.geom
             var result:String = "[Polygon";
             var numPoints:int = this.numVertices;
 
-            if (numPoints > 0) result += "\n";
+            if (numPoints > 0)
+                result += "\n";
 
-            for (var i:int=0; i<numPoints; ++i)
+            for (var i:int = 0; i < numPoints; ++i)
             {
                 result += "  [Vertex " + i + ": " +
-                    "x=" + _coords[i * 2    ].toFixed(1) + ", " +
-                    "y=" + _coords[i * 2 + 1].toFixed(1) + "]"  +
+                    "x=" + _coords[i * 2].toFixed(1) + ", " +
+                    "y=" + _coords[i * 2 + 1].toFixed(1) + "]" +
                     (i == numPoints - 1 ? "\n" : ",\n");
             }
 
@@ -296,7 +304,7 @@ package starling.geom
 
         /** Creates a rectangle with optimized implementations of triangulation, hitTest, etc. */
         public static function createRectangle(x:Number, y:Number,
-                                               width:Number, height:Number):Polygon
+                width:Number, height:Number):Polygon
         {
             return new Rectangle(x, y, width, height);
         }
@@ -306,8 +314,8 @@ package starling.geom
         /** Calculates if the area of the triangle a->b->c is to on the right-hand side of a->b. */
         [Inline]
         private static function isConvexTriangle(ax:Number, ay:Number,
-                                                 bx:Number, by:Number,
-                                                 cx:Number, cy:Number):Boolean
+                bx:Number, by:Number,
+                cx:Number, cy:Number):Boolean
         {
             // dot product of [the normal of (a->b)] and (b->c) must be positive
             return (ay - by) * (cx - bx) + (bx - ax) * (cy - by) >= 0;
@@ -315,9 +323,10 @@ package starling.geom
 
         /** Finds out if the vector a->b intersects c->d. */
         private static function areVectorsIntersecting(ax:Number, ay:Number, bx:Number, by:Number,
-                                                       cx:Number, cy:Number, dx:Number, dy:Number):Boolean
+                cx:Number, cy:Number, dx:Number, dy:Number):Boolean
         {
-            if ((ax == bx && ay == by) || (cx == dx && cy == dy)) return false; // length = 0
+            if ((ax == bx && ay == by) || (cx == dx && cy == dy))
+                return false; // length = 0
 
             var abx:Number = bx - ax;
             var aby:Number = by - ay;
@@ -325,14 +334,16 @@ package starling.geom
             var cdy:Number = dy - cy;
             var tDen:Number = cdy * abx - cdx * aby;
 
-            if (tDen == 0.0) return false; // parallel or identical
+            if (tDen == 0.0)
+                return false; // parallel or identical
 
             var t:Number = (aby * (cx - ax) - abx * (cy - ay)) / tDen;
 
-            if (t < 0 || t > 1) return false; // outside c->d
+            if (t < 0 || t > 1)
+                return false; // outside c->d
 
             var s:Number = aby ? (cy - ay + t * cdy) / aby :
-                                 (cx - ax + t * cdx) / abx;
+                (cx - ax + t * cdx) / abx;
 
             return s >= 0.0 && s <= 1.0; // inside a->b
         }
@@ -344,19 +355,20 @@ package starling.geom
         public function get isSimple():Boolean
         {
             var numCoords:int = _coords.length;
-            if (numCoords <= 6) return true;
+            if (numCoords <= 6)
+                return true;
 
-            for (var i:int=0; i<numCoords; i += 2)
+            for (var i:int = 0; i < numCoords; i += 2)
             {
-                var ax:Number = _coords[ i ];
-                var ay:Number = _coords[ i + 1 ];
+                var ax:Number = _coords[i];
+                var ay:Number = _coords[i + 1];
                 var bx:Number = _coords[(i + 2) % numCoords];
                 var by:Number = _coords[(i + 3) % numCoords];
                 var endJ:Number = i + numCoords - 2;
 
-                for (var j:int = i + 4; j<endJ; j += 2)
+                for (var j:int = i + 4; j < endJ; j += 2)
                 {
-                    var cx:Number = _coords[ j      % numCoords];
+                    var cx:Number = _coords[j % numCoords];
                     var cy:Number = _coords[(j + 1) % numCoords];
                     var dx:Number = _coords[(j + 2) % numCoords];
                     var dy:Number = _coords[(j + 3) % numCoords];
@@ -375,14 +387,15 @@ package starling.geom
         {
             var numCoords:int = _coords.length;
 
-            if (numCoords < 6) return true;
+            if (numCoords < 6)
+                return true;
             else
             {
                 for (var i:int = 0; i < numCoords; i += 2)
                 {
-                    if (!isConvexTriangle(_coords[i], _coords[i+1],
-                                          _coords[(i+2) % numCoords], _coords[(i+3) % numCoords],
-                                          _coords[(i+4) % numCoords], _coords[(i+5) % numCoords]))
+                    if (!isConvexTriangle(_coords[i], _coords[i + 1],
+                                _coords[(i + 2) % numCoords], _coords[(i + 3) % numCoords],
+                                _coords[(i + 4) % numCoords], _coords[(i + 5) % numCoords]))
                     {
                         return false;
                     }
@@ -402,8 +415,8 @@ package starling.geom
             {
                 for (var i:int = 0; i < numCoords; i += 2)
                 {
-                    area += _coords[i  ] * _coords[(i+3) % numCoords];
-                    area -= _coords[i+1] * _coords[(i+2) % numCoords];
+                    area += _coords[i] * _coords[(i + 3) % numCoords];
+                    area -= _coords[i + 1] * _coords[(i + 2) % numCoords];
                 }
             }
 
@@ -425,7 +438,7 @@ package starling.geom
 
             if (oldLength < value)
             {
-                for (var i:int=oldLength; i < value; ++i)
+                for (var i:int = oldLength; i < value; ++i)
                     _coords[i * 2] = _coords[i * 2 + 1] = 0.0;
             }
         }
@@ -457,26 +470,34 @@ class ImmutablePolygon extends Polygon
 
     override public function addVertices(...args):void
     {
-        if (_frozen) throw getImmutableError();
-        else super.addVertices.apply(this, args);
+        if (_frozen)
+            throw getImmutableError();
+        else
+            super.addVertices.apply(this, args);
     }
 
     override public function setVertex(index:int, x:Number, y:Number):void
     {
-        if (_frozen) throw getImmutableError();
-        else super.setVertex(index, x, y);
+        if (_frozen)
+            throw getImmutableError();
+        else
+            super.setVertex(index, x, y);
     }
 
     override public function reverse():void
     {
-        if (_frozen) throw getImmutableError();
-        else super.reverse();
+        if (_frozen)
+            throw getImmutableError();
+        else
+            super.reverse();
     }
 
     override public function set numVertices(value:int):void
     {
-        if (_frozen) throw getImmutableError();
-        else super.reverse();
+        if (_frozen)
+            throw getImmutableError();
+        else
+            super.reverse();
     }
 
     private function getImmutableError():Error
@@ -506,16 +527,18 @@ class Ellipse extends ImmutablePolygon
 
     private function getVertices(numSides:int):Array
     {
-        if (numSides < 0) numSides = Math.PI * (_radiusX + _radiusY) / 4.0;
-        if (numSides < 6) numSides = 6;
+        if (numSides < 0)
+            numSides = Math.PI * (_radiusX + _radiusY) / 4.0;
+        if (numSides < 6)
+            numSides = 6;
 
         var vertices:Array = [];
         var angleDelta:Number = 2 * Math.PI / numSides;
         var angle:Number = 0;
 
-        for (var i:int=0; i<numSides; ++i)
+        for (var i:int = 0; i < numSides; ++i)
         {
-            vertices[i * 2    ] = Math.cos(angle) * _radiusX + _x;
+            vertices[i * 2] = Math.cos(angle) * _radiusX + _x;
             vertices[i * 2 + 1] = Math.sin(angle) * _radiusY + _y;
             angle += angleDelta;
         }
@@ -523,14 +546,15 @@ class Ellipse extends ImmutablePolygon
         return vertices;
     }
 
-    override public function triangulate(indexData:IndexData=null, offset:int=0):IndexData
+    override public function triangulate(indexData:IndexData = null, offset:int = 0):IndexData
     {
-        if (indexData == null) indexData = new IndexData((numVertices - 2) * 3);
+        if (indexData == null)
+            indexData = new IndexData((numVertices - 2) * 3);
 
         var from:uint = 1;
         var to:uint = numVertices - 1;
 
-        for (var i:int=from; i<to; ++i)
+        for (var i:int = from; i < to; ++i)
             indexData.addTriangle(offset, offset + i, offset + i + 1);
 
         return indexData;
@@ -580,11 +604,12 @@ class Rectangle extends ImmutablePolygon
         super([x, y, x + width, y, x + width, y + height, x, y + height]);
     }
 
-    override public function triangulate(indexData:IndexData=null, offset:int=0):IndexData
+    override public function triangulate(indexData:IndexData = null, offset:int = 0):IndexData
     {
-        if (indexData == null) indexData = new IndexData(6);
+        if (indexData == null)
+            indexData = new IndexData(6);
 
-        indexData.addTriangle(offset,     offset + 1, offset + 3);
+        indexData.addTriangle(offset, offset + 1, offset + 3);
         indexData.addTriangle(offset + 1, offset + 2, offset + 3);
 
         return indexData;
@@ -593,7 +618,7 @@ class Rectangle extends ImmutablePolygon
     override public function contains(x:Number, y:Number):Boolean
     {
         return x >= _x && x <= _x + _width &&
-               y >= _y && y <= _y + _height;
+            y >= _y && y <= _y + _height;
     }
 
     override public function get area():Number

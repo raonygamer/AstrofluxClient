@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.utils
@@ -36,20 +36,20 @@ package starling.utils
         }
 
         /** Clears the render context with a certain color and alpha value. */
-        public static function clear(rgb:uint=0, alpha:Number=0.0):void
+        public static function clear(rgb:uint = 0, alpha:Number = 0.0):void
         {
             Starling.context.clear(
-                    Color.getRed(rgb)   / 255.0,
+                    Color.getRed(rgb) / 255.0,
                     Color.getGreen(rgb) / 255.0,
-                    Color.getBlue(rgb)  / 255.0,
+                    Color.getBlue(rgb) / 255.0,
                     alpha);
         }
 
         /** Returns the flags that are required for AGAL texture lookup,
          *  including the '&lt;' and '&gt;' delimiters. */
         public static function getTextureLookupFlags(format:String, mipMapping:Boolean,
-                                                     repeat:Boolean=false,
-                                                     smoothing:String="bilinear"):String
+                repeat:Boolean = false,
+                smoothing:String = "bilinear"):String
         {
             // TODO this method can probably be removed
 
@@ -79,7 +79,8 @@ package starling.utils
          */
         public static function getTextureVariantBits(texture:Texture):uint
         {
-            if (texture == null) return 0;
+            if (texture == null)
+                return 0;
 
             var bitField:uint = 0;
             var formatBits:uint = 0;
@@ -87,9 +88,11 @@ package starling.utils
             switch (texture.format)
             {
                 case Context3DTextureFormat.COMPRESSED_ALPHA:
-                    formatBits = 3; break;
+                    formatBits = 3;
+                    break;
                 case Context3DTextureFormat.COMPRESSED:
-                    formatBits = 2; break;
+                    formatBits = 2;
+                    break;
                 default:
                     formatBits = 1;
             }
@@ -105,8 +108,8 @@ package starling.utils
         /** Calls <code>setSamplerStateAt</code> at the current context,
          *  converting the given parameters to their low level counterparts. */
         public static function setSamplerStateAt(sampler:int, mipMapping:Boolean,
-                                                 smoothing:String="bilinear",
-                                                 repeat:Boolean=false):void
+                smoothing:String = "bilinear",
+                repeat:Boolean = false):void
         {
             var wrap:String = repeat ? Context3DWrapMode.REPEAT : Context3DWrapMode.CLAMP;
             var filter:String;
@@ -155,7 +158,7 @@ package starling.utils
          */
         public static function createAGALTexOperation(
                 resultReg:String, uvReg:String, sampler:int, texture:Texture,
-                convertToPmaIfRequired:Boolean=true, tempReg:String="ft0"):String
+                convertToPmaIfRequired:Boolean = true, tempReg:String = "ft0"):String
         {
             var format:String = texture.format;
             var formatFlag:String;
@@ -163,9 +166,11 @@ package starling.utils
             switch (format)
             {
                 case Context3DTextureFormat.COMPRESSED:
-                    formatFlag = "dxt1"; break;
+                    formatFlag = "dxt1";
+                    break;
                 case Context3DTextureFormat.COMPRESSED_ALPHA:
-                    formatFlag = "dxt5"; break;
+                    formatFlag = "dxt5";
+                    break;
                 default:
                     formatFlag = "rgba";
             }
@@ -173,7 +178,7 @@ package starling.utils
             var needsConversion:Boolean = convertToPmaIfRequired && !texture.premultipliedAlpha;
             var texReg:String = needsConversion && resultReg == "oc" ? tempReg : resultReg;
             var operation:String = "tex " + texReg + ", " + uvReg + ", fs" + sampler +
-                            " <2d, " + formatFlag + ">\n";
+                " <2d, " + formatFlag + ">\n";
 
             if (needsConversion)
             {
@@ -215,7 +220,7 @@ package starling.utils
 
             if (profile == "auto")
                 profiles = ["standardExtended", "standard", "standardConstrained",
-                            "baselineExtended", "baseline", "baselineConstrained"];
+                        "baselineExtended", "baseline", "baselineConstrained"];
             else if (profile is String)
                 profiles = [profile as String];
             else if (profile is Array)
@@ -232,11 +237,16 @@ package starling.utils
             {
                 currentProfile = profiles.shift();
 
-                try { execute(stage3D.requestContext3D, renderMode, currentProfile); }
+                try
+                {
+                    execute(stage3D.requestContext3D, renderMode, currentProfile);
+                }
                 catch (error:Error)
                 {
-                    if (profiles.length != 0) setTimeout(requestNextProfile, 1);
-                    else throw error;
+                    if (profiles.length != 0)
+                        setTimeout(requestNextProfile, 1);
+                    else
+                        throw error;
                 }
             }
 
@@ -262,7 +272,8 @@ package starling.utils
                     event.stopImmediatePropagation();
                     setTimeout(requestNextProfile, 1);
                 }
-                else onFinished();
+                else
+                    onFinished();
             }
 
             function onFinished():void

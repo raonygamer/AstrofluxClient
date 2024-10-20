@@ -5,32 +5,32 @@ package core.hud.components.pvp
    import core.hud.components.Text;
    import core.scene.Game;
    import generics.Localize;
-   
+
    public class PvpQueueScreen extends PvpScreen
    {
       private var buttons:Vector.<ButtonQueue>;
-      
+
       public function PvpQueueScreen(param1:Game)
       {
          buttons = new Vector.<ButtonQueue>();
          super(param1);
       }
-      
-      override public function load() : void
+
+      override public function load():void
       {
          var _loc3_:Number = NaN;
          var _loc2_:ButtonQueue = null;
          super.load();
          var _loc5_:int = -70;
-         var _loc4_:Box = new Box(620,80,"light",0.75,20);
+         var _loc4_:Box = new Box(620, 80, "light", 0.75, 20);
          _loc4_.x = 65;
          _loc4_.y = 92;
          addChild(_loc4_);
-         _loc4_ = new Box(620,148,"light",0.75,20);
+         _loc4_ = new Box(620, 148, "light", 0.75, 20);
          _loc4_.x = 65;
          _loc4_.y = _loc5_ + 305;
          addChild(_loc4_);
-         _loc4_ = new Box(620,88,"light",0.75,20);
+         _loc4_ = new Box(620, 88, "light", 0.75, 20);
          _loc4_.x = 65;
          _loc4_.y = _loc5_ + 516;
          addChild(_loc4_);
@@ -64,7 +64,7 @@ package core.hud.components.pvp
          _loc1_.htmlText = Localize.t("PvP kills: \nPvP deaths: \nK/D Ratio:");
          _loc1_.height = 150;
          addChild(_loc1_);
-         if(g.me.playerDeaths == 0)
+         if (g.me.playerDeaths == 0)
          {
             _loc3_ = 0;
          }
@@ -124,35 +124,34 @@ package core.hud.components.pvp
          _loc1_.y = _loc5_ + 435;
          _loc1_.htmlText = Localize.t("Arena");
          addChild(_loc1_);
-         _loc2_ = new ButtonQueue(g,"pvp random",g.queueManager.getQueue("pvp random"),false);
+         _loc2_ = new ButtonQueue(g, "pvp random", g.queueManager.getQueue("pvp random"), false);
          _loc2_.x = 60;
          _loc2_.y = _loc5_ + 328;
          addChild(_loc2_);
          buttons.push(_loc2_);
-         _loc2_ = new ButtonQueue(g,"pvp dom",g.queueManager.getQueue("pvp dom"));
+         _loc2_ = new ButtonQueue(g, "pvp dom", g.queueManager.getQueue("pvp dom"));
          _loc2_.x = 60;
          _loc2_.y = _loc5_ + 363;
          addChild(_loc2_);
          buttons.push(_loc2_);
-         _loc2_ = new ButtonQueue(g,"pvp dm",g.queueManager.getQueue("pvp dm"));
+         _loc2_ = new ButtonQueue(g, "pvp dm", g.queueManager.getQueue("pvp dm"));
          _loc2_.x = 60;
          _loc2_.y = _loc5_ + 398;
          addChild(_loc2_);
          buttons.push(_loc2_);
-         _loc2_ = new ButtonQueue(g,"pvp arena",g.queueManager.getQueue("pvp arena"),false);
+         _loc2_ = new ButtonQueue(g, "pvp arena", g.queueManager.getQueue("pvp arena"), false);
          _loc2_.x = 60;
          _loc2_.y = _loc5_ + 433;
          addChild(_loc2_);
          buttons.push(_loc2_);
       }
-      
-      override public function update() : void
+
+      override public function update():void
       {
-         for each(var _loc1_ in buttons)
+         for each (var _loc1_:* in buttons)
          {
             _loc1_.update();
          }
       }
    }
 }
-

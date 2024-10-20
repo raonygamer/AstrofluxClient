@@ -13,25 +13,25 @@ package core.hud.components.map
    import starling.display.Sprite;
    import starling.textures.Texture;
    import textures.TextureLocator;
-   
+
    public class MapPlayer
    {
       private var player:Player;
-      
+
       private var scale:Number = 0.35;
-      
+
       private var layer:Image;
-      
+
       private var text:TextBitmap;
-      
+
       private var g:Game;
-      
+
       private var supporterImage:Image;
-      
+
       private var lastTeam:int;
-      
+
       private var isDomination:Boolean;
-      
+
       public function MapPlayer(param1:Sprite, param2:Player, param3:Game, param4:Boolean)
       {
          var ship:PlayerShip;
@@ -46,7 +46,7 @@ package core.hud.components.map
          this.isDomination = isDomination;
          this.lastTeam = player.team;
          ship = player.ship;
-         if(player.ship != null)
+         if (player.ship != null)
          {
             fleetObj = player.getActiveFleetObj();
             layer = new Image(player.ship.texture);
@@ -60,10 +60,10 @@ package core.hud.components.map
          }
          else
          {
-            layer = new Image(Texture.empty(1,1));
+            layer = new Image(Texture.empty(1, 1));
          }
          layer.touchable = false;
-         if(player.hasSupporter())
+         if (player.hasSupporter())
          {
             supporterImage = new Image(TextureLocator.getService().getTextureGUIByTextureName("icon_supporter.png"));
             supporterImage.scaleX = supporterImage.scaleY = 0.5;
@@ -72,37 +72,37 @@ package core.hud.components.map
          text = new TextBitmap();
          text.size = 10;
          text.batchable = true;
-         if(player.isMe)
+         if (player.isMe)
          {
             text.format.color = 16777215;
             text.visible = false;
-            if(supporterImage != null)
+            if (supporterImage != null)
             {
                supporterImage.visible = false;
             }
-            TweenMax.to(layer,0.5,{
-               "startAt":{
-                  "scaleX":1.5,
-                  "scaleY":1.5
-               },
-               "scaleX":scale,
-               "scaleY":scale,
-               "ease":Circ.easeIn,
-               "onComplete":function():void
-               {
-                  text.visible = true;
-                  if(supporterImage != null)
-                  {
-                     supporterImage.visible = true;
-                  }
-               }
-            });
+            TweenMax.to(layer, 0.5, {
+                     "startAt": {
+                        "scaleX": 1.5,
+                        "scaleY": 1.5
+                     },
+                     "scaleX": scale,
+                     "scaleY": scale,
+                     "ease": Circ.easeIn,
+                     "onComplete": function():void
+                     {
+                        text.visible = true;
+                        if (supporterImage != null)
+                        {
+                           supporterImage.visible = true;
+                        }
+                     }
+                  });
          }
-         else if(isDomination == false && player.group != null && g.me.group != null && player.group.id == g.me.group.id)
+         else if (isDomination == false && player.group != null && g.me.group != null && player.group.id == g.me.group.id)
          {
             text.format.color = Style.COLOR_GROUP;
          }
-         else if(player.isHostile && (player.team == -1 || player.team != g.me.team))
+         else if (player.isHostile && (player.team == -1 || player.team != g.me.team))
          {
             text.format.color = Style.COLOR_HOSTILE;
          }
@@ -116,33 +116,33 @@ package core.hud.components.map
          container.addChild(text);
          this.player = player;
       }
-      
-      public function get isMe() : Boolean
+
+      public function get isMe():Boolean
       {
-         if(player != null)
+         if (player != null)
          {
             return player.isMe;
          }
          return false;
       }
-      
-      public function update() : void
+
+      public function update():void
       {
-         if(player == null || player.ship == null || player.ship.landed || player.ship.hp <= 0)
+         if (player == null || player.ship == null || player.ship.landed || player.ship.hp <= 0)
          {
             layer.visible = false;
             text.visible = false;
             return;
          }
-         if(!layer.visible)
+         if (!layer.visible)
          {
             layer.visible = true;
             text.visible = true;
          }
          draw();
       }
-      
-      private function draw() : void
+
+      private function draw():void
       {
          layer.visible = true;
          layer.x = player.ship.x * Map.SCALE;
@@ -150,9 +150,9 @@ package core.hud.components.map
          layer.rotation = player.ship.rotation;
          text.x = layer.x - text.width / 2;
          text.y = layer.y + layer.pivotY * layer.scaleY - layer.pivotY / 5 + 5;
-         if(isDomination == true && lastTeam != player.team)
+         if (isDomination == true && lastTeam != player.team)
          {
-            if(player.isHostile && player.team != g.me.team)
+            if (player.isHostile && player.team != g.me.team)
             {
                text.format.color = Style.COLOR_HOSTILE;
             }
@@ -162,36 +162,36 @@ package core.hud.components.map
             }
             lastTeam = player.team;
          }
-         if(supporterImage != null)
+         if (supporterImage != null)
          {
             supporterImage.x = text.x - 5;
             supporterImage.y = text.y + 3;
          }
       }
-      
-      public function get width() : Number
+
+      public function get width():Number
       {
          return layer.width * scale;
       }
-      
-      public function get height() : Number
+
+      public function get height():Number
       {
          return layer.height * scale;
       }
-      
-      public function get x() : Number
+
+      public function get x():Number
       {
          return layer.x;
       }
-      
-      public function get y() : Number
+
+      public function get y():Number
       {
          return layer.y;
       }
-      
-      public function dispose() : void
+
+      public function dispose():void
       {
-         if(layer && layer.filter)
+         if (layer && layer.filter)
          {
             layer.filter.dispose();
             layer.filter = null;
@@ -199,4 +199,3 @@ package core.hud.components.map
       }
    }
 }
-

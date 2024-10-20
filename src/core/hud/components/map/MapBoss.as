@@ -5,17 +5,17 @@ package core.hud.components.map
    import starling.display.Sprite;
    import textures.ITextureManager;
    import textures.TextureLocator;
-   
+
    public class MapBoss
    {
       private var boss:Boss;
-      
+
       private var scale:Number = 0.4;
-      
+
       private var layer:Sprite;
-      
+
       private var scull:Image;
-      
+
       public function MapBoss(param1:Sprite, param2:Boss)
       {
          layer = new Sprite();
@@ -28,8 +28,8 @@ package core.hud.components.map
          scull.color = 16729156;
          layer.addChild(scull);
       }
-      
-      public function update() : void
+
+      public function update():void
       {
          scull.visible = boss.alive;
          layer.x = boss.pos.x * Map.SCALE - layer.width / 2;
@@ -37,4 +37,3 @@ package core.hud.components.map
       }
    }
 }
-

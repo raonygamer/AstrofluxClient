@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.utils
@@ -37,16 +37,21 @@ package starling.utils
         private static var sRectangles:Vector.<Rectangle> = new <Rectangle>[];
 
         /** @private */
-        public function Pool() { throw new AbstractClassError(); }
+        public function Pool()
+        {
+            throw new AbstractClassError();
+        }
 
         /** Retrieves a Point instance from the pool. */
         public static function getPoint(x:Number = 0, y:Number = 0):Point
         {
-            if (sPoints.length == 0) return new Point(x, y);
+            if (sPoints.length == 0)
+                return new Point(x, y);
             else
             {
                 var point:Point = sPoints.pop();
-                point.x = x; point.y = y;
+                point.x = x;
+                point.y = y;
                 return point;
             }
         }
@@ -55,17 +60,21 @@ package starling.utils
          *  Don't keep any references to the object after moving it to the pool! */
         public static function putPoint(point:Point):void
         {
-            if (point) sPoints[sPoints.length] = point;
+            if (point)
+                sPoints[sPoints.length] = point;
         }
 
         /** Retrieves a Vector3D instance from the pool. */
         public static function getPoint3D(x:Number = 0, y:Number = 0, z:Number = 0):Vector3D
         {
-            if (sPoints.length == 0) return new Vector3D(x, y, z);
+            if (sPoints.length == 0)
+                return new Vector3D(x, y, z);
             else
             {
                 var point:Vector3D = sPoints3D.pop();
-                point.x = x; point.y = y; point.z = z;
+                point.x = x;
+                point.y = y;
+                point.z = z;
                 return point;
             }
         }
@@ -74,14 +83,16 @@ package starling.utils
          *  Don't keep any references to the object after moving it to the pool! */
         public static function putPoint3D(point:Vector3D):void
         {
-            if (point) sPoints3D[sPoints3D.length] = point;
+            if (point)
+                sPoints3D[sPoints3D.length] = point;
         }
 
         /** Retrieves a Matrix instance from the pool. */
         public static function getMatrix(a:Number = 1, b:Number = 0, c:Number = 0, d:Number = 1,
-                                         tx:Number = 0, ty:Number = 0):Matrix
+                tx:Number = 0, ty:Number = 0):Matrix
         {
-            if (sMatrices.length == 0) return new Matrix(a, b, c, d, tx, ty);
+            if (sMatrices.length == 0)
+                return new Matrix(a, b, c, d, tx, ty);
             else
             {
                 var matrix:Matrix = sMatrices.pop();
@@ -94,7 +105,8 @@ package starling.utils
          *  Don't keep any references to the object after moving it to the pool! */
         public static function putMatrix(matrix:Matrix):void
         {
-            if (matrix) sMatrices[sMatrices.length] = matrix;
+            if (matrix)
+                sMatrices[sMatrices.length] = matrix;
         }
 
         /** Retrieves a Matrix3D instance from the pool.
@@ -104,11 +116,13 @@ package starling.utils
          */
         public static function getMatrix3D(identity:Boolean = true):Matrix3D
         {
-            if (sMatrices3D.length == 0) return new Matrix3D();
+            if (sMatrices3D.length == 0)
+                return new Matrix3D();
             else
             {
                 var matrix:Matrix3D = sMatrices3D.pop();
-                if (identity) matrix.identity();
+                if (identity)
+                    matrix.identity();
                 return matrix;
             }
         }
@@ -117,14 +131,16 @@ package starling.utils
          *  Don't keep any references to the object after moving it to the pool! */
         public static function putMatrix3D(matrix:Matrix3D):void
         {
-            if (matrix) sMatrices3D[sMatrices3D.length] = matrix;
+            if (matrix)
+                sMatrices3D[sMatrices3D.length] = matrix;
         }
 
         /** Retrieves a Rectangle instance from the pool. */
         public static function getRectangle(x:Number = 0, y:Number = 0,
-                                            width:Number = 0, height:Number = 0):Rectangle
+                width:Number = 0, height:Number = 0):Rectangle
         {
-            if (sRectangles.length == 0) return new Rectangle(x, y, width, height);
+            if (sRectangles.length == 0)
+                return new Rectangle(x, y, width, height);
             else
             {
                 var rectangle:Rectangle = sRectangles.pop();
@@ -137,7 +153,8 @@ package starling.utils
          *  Don't keep any references to the object after moving it to the pool! */
         public static function putRectangle(rectangle:Rectangle):void
         {
-            if (rectangle) sRectangles[sRectangles.length] = rectangle;
+            if (rectangle)
+                sRectangles[sRectangles.length] = rectangle;
         }
     }
 }

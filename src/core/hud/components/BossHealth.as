@@ -6,35 +6,35 @@ package core.hud.components
    import starling.display.Sprite;
    import textures.ITextureManager;
    import textures.TextureLocator;
-   
+
    public class BossHealth extends Sprite
    {
       private static const HP_WIDTH:Number = 600;
-      
+
       private static const BOSS_DISPLAY_RANGE:Number = 1440000;
-      
+
       private static const BOSS_HIDE_RANGE:Number = 5760000;
-      
+
       private var bossHPBarBgr:ScaleImage;
-      
+
       private var bossHPBar:ScaleImage;
-      
+
       private var bossHPText:TextBitmap;
-      
+
       private var bossNameText:TextBitmap;
-      
+
       private var textureManager:ITextureManager;
-      
+
       private var g:Game;
-      
+
       public function BossHealth(param1:Game)
       {
          super();
          this.g = param1;
          textureManager = TextureLocator.getService();
       }
-      
-      public function load() : void
+
+      public function load():void
       {
          bossHPBar = new ScaleImage();
          bossHPBar.width = 600;
@@ -68,41 +68,41 @@ package core.hud.components
          bossHPText.alpha = 1;
          bossNameText.alpha = 1;
       }
-      
-      public function update() : void
+
+      public function update():void
       {
          var _loc5_:Point = null;
          var _loc1_:Number = NaN;
          var _loc4_:Number = NaN;
-         if(g.me == null || g.me.ship == null || g.solarSystem != null && g.solarSystem.key == "DrMy6JjyO0OI0ui7c80bNw")
+         if (g.me == null || g.me.ship == null || g.solarSystem != null && g.solarSystem.key == "DrMy6JjyO0OI0ui7c80bNw")
          {
             return;
          }
          var _loc3_:* = null;
-         for each(var _loc2_ in g.bossManager.bosses)
+         for each (var _loc2_:* in g.bossManager.bosses)
          {
             _loc5_ = g.me.ship.pos;
             _loc1_ = (_loc5_.x - _loc2_.pos.x) * (_loc5_.x - _loc2_.pos.x) + (_loc5_.y - _loc2_.pos.y) * (_loc5_.y - _loc2_.pos.y);
-            if(_loc3_ == null && _loc1_ < 1440000)
+            if (_loc3_ == null && _loc1_ < 1440000)
             {
                _loc3_ = _loc2_;
                break;
             }
-            if(_loc3_ != null && _loc1_ > 5760000)
+            if (_loc3_ != null && _loc1_ > 5760000)
             {
                _loc3_ = null;
             }
          }
-         if((_loc3_ == null || _loc3_.hp == 0 || _loc3_.awaitingActivation) && contains(bossHPBar))
+         if ((_loc3_ == null || _loc3_.hp == 0 || _loc3_.awaitingActivation) && contains(bossHPBar))
          {
             removeChild(bossHPBarBgr);
             removeChild(bossHPBar);
             removeChild(bossHPText);
             removeChild(bossNameText);
          }
-         else if(_loc3_ != null && _loc3_.hp > 0 && !_loc3_.awaitingActivation)
+         else if (_loc3_ != null && _loc3_.hp > 0 && !_loc3_.awaitingActivation)
          {
-            if(!contains(bossHPBar))
+            if (!contains(bossHPBar))
             {
                addChild(bossHPBarBgr);
                addChild(bossHPBar);
@@ -121,4 +121,3 @@ package core.hud.components
       }
    }
 }
-

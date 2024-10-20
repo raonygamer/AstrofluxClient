@@ -34,7 +34,7 @@ package com.adobe.protocols.dict
 {
 	import com.adobe.protocols.dict.events.*;
 	import com.adobe.protocols.dict.util.*;
-	
+
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -51,23 +51,23 @@ package com.adobe.protocols.dict
 		extends EventDispatcher
 	{
 		// Event type names.
-		//public static var CONNECTED:String = "connected";
-		//public static var DISCONNECTED:String = "disconnected";
+		// public static var CONNECTED:String = "connected";
+		// public static var DISCONNECTED:String = "disconnected";
 		public static var IO_ERROR:String = IOErrorEvent.IO_ERROR;
-		//public static var ERROR:String = "error";
-		//public static var SERVERS:String = "servers";
-		//public static var DATABASES:String = "databases";
-		//public static var MATCH_STRATEGIES:String = "matchStrategies";
-		//public static var DEFINITION:String = "definition";
-		//public static var DEFINITION_HEADER:String = "definitionHeader";
-		//public static var MATCH:String = "match";
-		//public static var NO_MATCH:String = "noMatch";
+		// public static var ERROR:String = "error";
+		// public static var SERVERS:String = "servers";
+		// public static var DATABASES:String = "databases";
+		// public static var MATCH_STRATEGIES:String = "matchStrategies";
+		// public static var DEFINITION:String = "definition";
+		// public static var DEFINITION_HEADER:String = "definitionHeader";
+		// public static var MATCH:String = "match";
+		// public static var NO_MATCH:String = "noMatch";
 
 		public static var FIRST_MATCH:uint = 0;
 		public static var ALL_DATABASES:uint = 1;
 
 		private var socket:SocketHelper;
-		
+
 		private var dbShortList:Boolean;
 
 		public function Dict()
@@ -90,9 +90,9 @@ package com.adobe.protocols.dict
 		}
 
 		public function connectThroughProxy(proxyServer:String,
-											proxyPort:int,
-											server:String,
-											port:uint = 2628):void
+				proxyPort:int,
+				server:String,
+				port:uint = 2628):void
 		{
 			if (this.socket.connected)
 			{
@@ -118,7 +118,7 @@ package com.adobe.protocols.dict
 			http.send();
 		}
 
-		public function getDatabases(shortList:Boolean=true):void
+		public function getDatabases(shortList:Boolean = true):void
 		{
 			this.dbShortList = shortList;
 			this.socket.writeUTFBytes("show db\r\n");
@@ -131,7 +131,7 @@ package com.adobe.protocols.dict
 			this.socket.flush();
 		}
 
-		public function match(database:String, term:String, scope:String="prefix"):void
+		public function match(database:String, term:String, scope:String = "prefix"):void
 		{
 			this.socket.writeUTFBytes("match " + database + " " + scope + " \"" + term + "\"\r\n");
 			this.socket.flush();
@@ -158,17 +158,17 @@ package com.adobe.protocols.dict
 			this.socket.flush();
 		}
 
-		//// Private functions ////
+		// // Private functions ////
 
 		private function connected(event:Event):void
 		{
-        	// Wait to dispatch an event until we get the 220 response.
-    	}
+			// Wait to dispatch an event until we get the 220 response.
+		}
 
 		private function disconnected(event:Event):void
 		{
-        	dispatchEvent(new DisconnectedEvent(DisconnectedEvent.DISCONNECTED));
-    	}
+			dispatchEvent(new DisconnectedEvent(DisconnectedEvent.DISCONNECTED));
+		}
 
 		private function incomingServerXML(event:ResultEvent):void
 		{
@@ -181,7 +181,7 @@ package com.adobe.protocols.dict
 				server = serverNode.dictd::dictdurl;
 				description = serverNode.dictd::description;
 				if (StringUtil.trim(server).length != 0 &&
-					StringUtil.trim(description).length != 0)
+						StringUtil.trim(description).length != 0)
 				{
 					var dServer:DictionaryServer = new DictionaryServer();
 					dServer.server = server.replace("dict://", "");
@@ -195,7 +195,7 @@ package com.adobe.protocols.dict
 		}
 
 		private function incomingData(event:CompleteResponseEvent):void
-		{			
+		{
 			var rawResponse:String = event.response;
 			var response:Response = this.parseRawResponse(rawResponse);
 			var responseCode:uint = response.code;
@@ -213,7 +213,7 @@ package com.adobe.protocols.dict
 			}
 			else if (responseCode == 110) // databases are being returned
 			{
-				throwDatabasesEvent(response);				
+				throwDatabasesEvent(response);
 			}
 			else if (responseCode == 111) // matches strategies
 			{
@@ -231,130 +231,130 @@ package com.adobe.protocols.dict
 			{
 				throwDefinitionEvent(response);
 			}
-    	}
+		}
 
-    	private function ioError(event:IOErrorEvent):void
-    	{
+		private function ioError(event:IOErrorEvent):void
+		{
 			dispatchEvent(event);
-    	}
+		}
 
-    	private function httpError(event:FaultEvent):void
-    	{
-    		trace("httpError!");
-    	}
+		private function httpError(event:FaultEvent):void
+		{
+			trace("httpError!");
+		}
 
-    	private function securityError(event:SecurityErrorEvent):void
-    	{
-    		trace("security error!");
-    		trace(event.text);
-    	}
+		private function securityError(event:SecurityErrorEvent):void
+		{
+			trace("security error!");
+			trace(event.text);
+		}
 
-    	// Dispatch new events.
+		// Dispatch new events.
 
-    	private function throwDatabasesEvent(response:Response):void
-    	{
+		private function throwDatabasesEvent(response:Response):void
+		{
 			var databases:Array = new Array();
 			var responseArray:Array = response.body.split("\r\n");
-    		for each (var line:String in responseArray)
-    		{
-    			var name:String = line.substring(0, line.indexOf(" "));
-    			if (name == "--exit--")
-    			{
-    				if (this.dbShortList)
-    				{
-    					break;
-    				}
-    				continue;
-    			}
-    			var description:String = line.substring(line.indexOf(" ")+1, line.length).replace(/\"/g,"");
-    			databases.push(new Database(name, description));
-    		}
-    		var event:DatabaseEvent = new DatabaseEvent(DatabaseEvent.DATABASES);
-    		event.databases = databases;
-    		dispatchEvent(event);
-    	}
+			for each (var line:String in responseArray)
+			{
+				var name:String = line.substring(0, line.indexOf(" "));
+				if (name == "--exit--")
+				{
+					if (this.dbShortList)
+					{
+						break;
+					}
+					continue;
+				}
+				var description:String = line.substring(line.indexOf(" ") + 1, line.length).replace(/\"/g, "");
+				databases.push(new Database(name, description));
+			}
+			var event:DatabaseEvent = new DatabaseEvent(DatabaseEvent.DATABASES);
+			event.databases = databases;
+			dispatchEvent(event);
+		}
 
-    	private function throwMatchStrategiesEvent(response:Response):void
-    	{
+		private function throwMatchStrategiesEvent(response:Response):void
+		{
 			var strategies:Array = new Array();
 			var responseArray:Array = response.body.split("\r\n");
-    		for each (var line:String in responseArray)
-    		{
-    			var name:String = line.substring(0, line.indexOf(" "));
-    			var description:String = line.substring(line.indexOf(" ")+1, line.length).replace(/\"/g,"");
-    			strategies.push(new MatchStrategy(name, description));
-    		}
-    		var event:MatchStrategiesEvent = new MatchStrategiesEvent(MatchStrategiesEvent.MATCH_STRATEGIES);
-    		event.strategies = strategies;
-    		dispatchEvent(event);
-    	}
+			for each (var line:String in responseArray)
+			{
+				var name:String = line.substring(0, line.indexOf(" "));
+				var description:String = line.substring(line.indexOf(" ") + 1, line.length).replace(/\"/g, "");
+				strategies.push(new MatchStrategy(name, description));
+			}
+			var event:MatchStrategiesEvent = new MatchStrategiesEvent(MatchStrategiesEvent.MATCH_STRATEGIES);
+			event.strategies = strategies;
+			dispatchEvent(event);
+		}
 
-    	private function throwMatchEvent(response:Response):void
-    	{
+		private function throwMatchEvent(response:Response):void
+		{
 			var matches:Array = new Array();
 			var responseArray:Array = response.body.split("\r\n");
-    		for each (var line:String in responseArray)
-    		{
-    			var match:String = line.substring(line.indexOf(" ")+1, line.length).replace(/\"/g,"");
-    			matches.push(match);
-    		}
-    		var event:MatchEvent = new MatchEvent(MatchEvent.MATCH);
-    		event.matches = matches;
-    		dispatchEvent(event);
-    	}
-
-    	private function throwErrorEvent(response:Response):void
-    	{
-    		var event:ErrorEvent = new ErrorEvent(ErrorEvent.ERROR);
-    		event.code = response.code;
-    		event.message = response.headerText;
+			for each (var line:String in responseArray)
+			{
+				var match:String = line.substring(line.indexOf(" ") + 1, line.length).replace(/\"/g, "");
+				matches.push(match);
+			}
+			var event:MatchEvent = new MatchEvent(MatchEvent.MATCH);
+			event.matches = matches;
 			dispatchEvent(event);
-    	}
+		}
 
-    	private function throwNoMatchEvent(response:Response):void
-    	{
+		private function throwErrorEvent(response:Response):void
+		{
+			var event:ErrorEvent = new ErrorEvent(ErrorEvent.ERROR);
+			event.code = response.code;
+			event.message = response.headerText;
+			dispatchEvent(event);
+		}
+
+		private function throwNoMatchEvent(response:Response):void
+		{
 			dispatchEvent(new NoMatchEvent(NoMatchEvent.NO_MATCH));
-    	}
+		}
 
-    	private function throwDefinitionHeaderEvent(response:Response):void
-    	{
+		private function throwDefinitionHeaderEvent(response:Response):void
+		{
 			var event:DefinitionHeaderEvent = new DefinitionHeaderEvent(DefinitionHeaderEvent.DEFINITION_HEADER);
 			event.definitionCount = uint(response.headerText.substring(0, response.headerText.indexOf(" ")));
 			dispatchEvent(event);
-    	}
+		}
 
-    	private function throwDefinitionEvent(response:Response):void
-    	{
-    		var event:DefinitionEvent = new DefinitionEvent(DefinitionEvent.DEFINITION);
-    		var def:Definition = new Definition();
-    		var headerText:String = response.headerText;
-    		var tokens:Array = headerText.match(/"[^"]+"/g);
-    		def.term = String(tokens[0]).replace(/"/g, "");
-    		def.database = String(tokens[1]).replace(/"/g, "");
-    		def.definition = response.body;
-    		event.definition = def;
+		private function throwDefinitionEvent(response:Response):void
+		{
+			var event:DefinitionEvent = new DefinitionEvent(DefinitionEvent.DEFINITION);
+			var def:Definition = new Definition();
+			var headerText:String = response.headerText;
+			var tokens:Array = headerText.match(/"[^"]+"/g);
+			def.term = String(tokens[0]).replace(/"/g, "");
+			def.database = String(tokens[1]).replace(/"/g, "");
+			def.definition = response.body;
+			event.definition = def;
 			dispatchEvent(event);
-    	}
+		}
 
-    	private function parseRawResponse(rawResponse:String):Response
-    	{
-    		var response:Response = new Response();
-    		var fullHeader:String;
-    		if (rawResponse.indexOf("\r\n") != -1)
-    		{
-	    		fullHeader = rawResponse.substring(0, rawResponse.indexOf("\r\n"));
-    		}
-    		else
-    		{
-    			fullHeader = rawResponse;
-    		}
-      		var responseCodeMatch:Array = fullHeader.match(/^\d{3}/);
-    		response.code = uint(responseCodeMatch[0]);
-    		response.headerText = fullHeader.substring(fullHeader.indexOf(" ")+1, fullHeader.length);
-			var body:String = rawResponse.substring(rawResponse.indexOf("\r\n")+2, rawResponse.length);
+		private function parseRawResponse(rawResponse:String):Response
+		{
+			var response:Response = new Response();
+			var fullHeader:String;
+			if (rawResponse.indexOf("\r\n") != -1)
+			{
+				fullHeader = rawResponse.substring(0, rawResponse.indexOf("\r\n"));
+			}
+			else
+			{
+				fullHeader = rawResponse;
+			}
+			var responseCodeMatch:Array = fullHeader.match(/^\d{3}/);
+			response.code = uint(responseCodeMatch[0]);
+			response.headerText = fullHeader.substring(fullHeader.indexOf(" ") + 1, fullHeader.length);
+			var body:String = rawResponse.substring(rawResponse.indexOf("\r\n") + 2, rawResponse.length);
 			body = body.replace(/\r\n\.\./, "\r\n.");
 			response.body = body;
-    		return response;
-    	}
+			return response;
+		}
 	}
 }

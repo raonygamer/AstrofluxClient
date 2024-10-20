@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//  Starling Framework
-//  Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.rendering
@@ -94,7 +94,7 @@ package starling.rendering
          *  <p>Thus, be sure to always make a generous educated guess, depending on the planned
          *  usage of your IndexData instances.</p>
          */
-        public function IndexData(initialCapacity:int=48)
+        public function IndexData(initialCapacity:int = 48)
         {
             _numIndices = 0;
             _initialCapacity = initialCapacity;
@@ -134,8 +134,8 @@ package starling.rendering
          *  <p>By passing a non-zero <code>offset</code>, you can raise all copied indices
          *  by that value in the target object.</p>
          */
-        public function copyTo(target:IndexData, targetIndexID:int=0, offset:int=0,
-                               indexID:int=0, numIndices:int=-1):void
+        public function copyTo(target:IndexData, targetIndexID:int = 0, offset:int = 0,
+                indexID:int = 0, numIndices:int = -1):void
         {
             if (numIndices < 0 || indexID + numIndices > _numIndices)
                 numIndices = _numIndices - indexID;
@@ -147,7 +147,7 @@ package starling.rendering
             {
                 target._numIndices = newNumIndices;
 
-                if (sQuadDataNumIndices  < newNumIndices)
+                if (sQuadDataNumIndices < newNumIndices)
                     ensureQuadDataCapacity(newNumIndices);
             }
 
@@ -162,14 +162,14 @@ package starling.rendering
 
                     // This code is executed very often. If it turns out that both IndexData
                     // instances use a quad layout, we don't need to do anything here.
-                    //
+                    // 
                     // When "distance / 6 == offset / 4 && distance % 6 == 0 && offset % 4 == 0",
                     // the copy operation preserves the quad layout. In that case, we can exit
                     // right away. The code below is a little more complex, though, to avoid the
                     // (surprisingly costly) mod-operations.
 
                     if (distanceInQuads == offsetInQuads && (offset & 3) == 0 &&
-                        distanceInQuads * 6 == distance)
+                            distanceInQuads * 6 == distance)
                     {
                         keepsQuadLayout = true;
                     }
@@ -179,14 +179,16 @@ package starling.rendering
                     }
                     else
                     {
-                        for (var i:int=0; i<numIndices; ++i)
+                        for (var i:int = 0; i < numIndices; ++i)
                             keepsQuadLayout &&=
                                 getBasicQuadIndexAt(indexID + i) + offset ==
                                 getBasicQuadIndexAt(targetIndexID + i);
                     }
 
-                    if (keepsQuadLayout) return;
-                    else target.switchToGenericData();
+                    if (keepsQuadLayout)
+                        return;
+                    else
+                        target.switchToGenericData();
                 }
 
                 sourceData = sQuadData;
@@ -220,8 +222,8 @@ package starling.rendering
                 while (numIndices > 1)
                 {
                     var indexAB:uint = sourceData.readUnsignedInt();
-                    var indexA:uint  = ((indexAB & 0xffff0000) >> 16) + offset;
-                    var indexB:uint  = ((indexAB & 0x0000ffff)      ) + offset;
+                    var indexA:uint = ((indexAB & 0xffff0000) >> 16) + offset;
+                    var indexB:uint = ((indexAB & 0x0000ffff)) + offset;
                     targetData.writeUnsignedInt(indexA << 16 | indexB);
                     numIndices -= 2;
                 }
@@ -235,12 +237,14 @@ package starling.rendering
         public function setIndex(indexID:int, index:uint):void
         {
             if (_numIndices < indexID + 1)
-                 numIndices = indexID + 1;
+                numIndices = indexID + 1;
 
             if (_useQuadLayout)
             {
-                if (getBasicQuadIndexAt(indexID) == index) return;
-                else switchToGenericData();
+                if (getBasicQuadIndexAt(indexID) == index)
+                    return;
+                else
+                    switchToGenericData();
             }
 
             _rawData.position = indexID * INDEX_SIZE;
@@ -265,14 +269,14 @@ package starling.rendering
         }
 
         /** Adds an offset to all indices in the specified range. */
-        public function offsetIndices(offset:int, indexID:int=0, numIndices:int=-1):void
+        public function offsetIndices(offset:int, indexID:int = 0, numIndices:int = -1):void
         {
             if (numIndices < 0 || indexID + numIndices > _numIndices)
                 numIndices = _numIndices - indexID;
 
             var endIndex:int = indexID + numIndices;
 
-            for (var i:int=indexID; i<endIndex; ++i)
+            for (var i:int = indexID; i < endIndex; ++i)
                 setIndex(i, getIndex(i) + offset);
         }
 
@@ -288,7 +292,7 @@ package starling.rendering
                     var evenTriangleID:Boolean = !oddTriangleID;
 
                     if ((evenTriangleID && b == a + 1 && c == b + 1) ||
-                         (oddTriangleID && c == a + 1 && b == c + 1))
+                            (oddTriangleID && c == a + 1 && b == c + 1))
                     {
                         _numIndices += 3;
                         ensureQuadDataCapacity(_numIndices);
@@ -323,13 +327,14 @@ package starling.rendering
             if (_useQuadLayout)
             {
                 if (a == getBasicQuadIndexAt(_numIndices) &&
-                    b == a + 1 && c == b + 1 && d == c + 1)
+                        b == a + 1 && c == b + 1 && d == c + 1)
                 {
                     _numIndices += 6;
                     ensureQuadDataCapacity(_numIndices);
                     return;
                 }
-                else switchToGenericData();
+                else
+                    switchToGenericData();
             }
 
             _rawData.position = _numIndices * INDEX_SIZE;
@@ -344,15 +349,17 @@ package starling.rendering
 
         /** Creates a vector containing all indices. If you pass an existing vector to the method,
          *  its contents will be overwritten. */
-        public function toVector(out:Vector.<uint>=null):Vector.<uint>
+        public function toVector(out:Vector.<uint> = null):Vector.<uint>
         {
-            if (out == null) out = new Vector.<uint>(_numIndices);
-            else out.length = _numIndices;
+            if (out == null)
+                out = new Vector.<uint>(_numIndices);
+            else
+                out.length = _numIndices;
 
             var rawData:ByteArray = _useQuadLayout ? sQuadData : _rawData;
             rawData.position = 0;
 
-            for (var i:int=0; i<_numIndices; ++i)
+            for (var i:int = 0; i < _numIndices; ++i)
                 out[i] = rawData.readUnsignedShort();
 
             return out;
@@ -363,7 +370,7 @@ package starling.rendering
         public function toString():String
         {
             var string:String = StringUtil.format("[IndexData numIndices={0} indices=\"{1}\"]",
-                _numIndices, toVector(sVector).join());
+                    _numIndices, toVector(sVector).join());
 
             sVector.length = 0;
             return string;
@@ -382,7 +389,7 @@ package starling.rendering
                     _rawData = new ByteArray();
                     _rawData.endian = Endian.LITTLE_ENDIAN;
                     _rawData.length = _initialCapacity * INDEX_SIZE; // -> allocated memory
-                    _rawData.length = _numIndices * INDEX_SIZE;      // -> actual length
+                    _rawData.length = _numIndices * INDEX_SIZE; // -> actual length
                 }
 
                 if (_numIndices)
@@ -395,7 +402,8 @@ package starling.rendering
          *  made smaller. */
         private function ensureQuadDataCapacity(numIndices:int):void
         {
-            if (sQuadDataNumIndices >= numIndices) return;
+            if (sQuadDataNumIndices >= numIndices)
+                return;
 
             var i:int;
             var oldNumQuads:int = sQuadDataNumIndices / 6;
@@ -423,10 +431,14 @@ package starling.rendering
             var posInQuad:int = indexID - quadID * 6; // => indexID % 6
             var offset:int;
 
-            if (posInQuad == 0) offset = 0;
-            else if (posInQuad == 1 || posInQuad == 3) offset = 1;
-            else if (posInQuad == 2 || posInQuad == 5) offset = 2;
-            else offset = 3;
+            if (posInQuad == 0)
+                offset = 0;
+            else if (posInQuad == 1 || posInQuad == 3)
+                offset = 1;
+            else if (posInQuad == 2 || posInQuad == 5)
+                offset = 2;
+            else
+                offset = 3;
 
             return quadID * 4 + offset;
         }
@@ -435,21 +447,24 @@ package starling.rendering
 
         /** Creates an index buffer object with the right size to fit the complete data.
          *  Optionally, the current data is uploaded right away. */
-        public function createIndexBuffer(upload:Boolean=false,
-                                          bufferUsage:String="staticDraw"):IndexBuffer3D
+        public function createIndexBuffer(upload:Boolean = false,
+                bufferUsage:String = "staticDraw"):IndexBuffer3D
         {
             var context:Context3D = Starling.context;
-            if (context == null) throw new MissingContextError();
-            if (_numIndices == 0) return null;
+            if (context == null)
+                throw new MissingContextError();
+            if (_numIndices == 0)
+                return null;
 
             var buffer:IndexBuffer3D = context.createIndexBuffer(_numIndices, bufferUsage);
 
-            if (upload) uploadToIndexBuffer(buffer);
+            if (upload)
+                uploadToIndexBuffer(buffer);
             return buffer;
         }
 
         /** Uploads the complete data (or a section of it) to the given index buffer. */
-        public function uploadToIndexBuffer(buffer:IndexBuffer3D, indexID:int=0, numIndices:int=-1):void
+        public function uploadToIndexBuffer(buffer:IndexBuffer3D, indexID:int = 0, numIndices:int = -1):void
         {
             if (numIndices < 0 || indexID + numIndices > _numIndices)
                 numIndices = _numIndices - indexID;
@@ -463,7 +478,8 @@ package starling.rendering
          *  you passed to the constructor, call this method to avoid the 4k memory problem. */
         public function trim():void
         {
-            if (_useQuadLayout) return;
+            if (_useQuadLayout)
+                return;
 
             sTrimData.length = _rawData.length;
             sTrimData.position = 0;
@@ -485,14 +501,20 @@ package starling.rendering
          *  up with zeroes.</p>
          *
          *  <p>If you set the number of indices to zero, quad layout will be restored.</p> */
-        public function get numIndices():int { return _numIndices; }
+        public function get numIndices():int
+        {
+            return _numIndices;
+        }
         public function set numIndices(value:int):void
         {
             if (value != _numIndices)
             {
-                if (_useQuadLayout) ensureQuadDataCapacity(value);
-                else _rawData.length = value * INDEX_SIZE;
-                if (value == 0) _useQuadLayout = true;
+                if (_useQuadLayout)
+                    ensureQuadDataCapacity(value);
+                else
+                    _rawData.length = value * INDEX_SIZE;
+                if (value == 0)
+                    _useQuadLayout = true;
 
                 _numIndices = value;
             }
@@ -500,16 +522,31 @@ package starling.rendering
 
         /** The number of triangles that can be spawned up with the contained indices.
          *  (In other words: the number of indices divided by three.) */
-        public function get numTriangles():int { return _numIndices / 3; }
-        public function set numTriangles(value:int):void { numIndices = value * 3; }
+        public function get numTriangles():int
+        {
+            return _numIndices / 3;
+        }
+        public function set numTriangles(value:int):void
+        {
+            numIndices = value * 3;
+        }
 
         /** The number of quads that can be spawned up with the contained indices.
          *  (In other words: the number of triangles divided by two.) */
-        public function get numQuads():int { return _numIndices / 6; }
-        public function set numQuads(value:int):void { numIndices = value * 6; }
+        public function get numQuads():int
+        {
+            return _numIndices / 6;
+        }
+        public function set numQuads(value:int):void
+        {
+            numIndices = value * 6;
+        }
 
         /** The number of bytes required for each index value. */
-        public function get indexSizeInBytes():int { return INDEX_SIZE; }
+        public function get indexSizeInBytes():int
+        {
+            return INDEX_SIZE;
+        }
 
         /** Indicates if all indices are following the basic quad layout.
          *
@@ -526,7 +563,10 @@ package starling.rendering
          *
          *  @default true
          */
-        public function get useQuadLayout():Boolean { return _useQuadLayout; }
+        public function get useQuadLayout():Boolean
+        {
+            return _useQuadLayout;
+        }
         public function set useQuadLayout(value:Boolean):void
         {
             if (value != _useQuadLayout)
@@ -537,7 +577,8 @@ package starling.rendering
                     _rawData.length = 0;
                     _useQuadLayout = true;
                 }
-                else switchToGenericData();
+                else
+                    switchToGenericData();
             }
         }
 
@@ -545,8 +586,10 @@ package starling.rendering
          *  Never store a reference to it, and never modify its contents manually. */
         public function get rawData():ByteArray
         {
-            if (_useQuadLayout) return sQuadData;
-            else return _rawData;
+            if (_useQuadLayout)
+                return sQuadData;
+            else
+                return _rawData;
         }
     }
 }

@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.utils
@@ -16,7 +16,10 @@ package starling.utils
     public class StringUtil
     {
         /** @private */
-        public function StringUtil() { throw new AbstractClassError(); }
+        public function StringUtil()
+        {
+            throw new AbstractClassError();
+        }
 
         /** Formats a String in .Net-style, with curly braces ("{0}"). Does not support any
          *  number formatting options yet. */
@@ -24,8 +27,8 @@ package starling.utils
         {
             // TODO: add number formatting options
 
-            for (var i:int=0; i<args.length; ++i)
-                format = format.replace(new RegExp("\\{"+i+"\\}", "g"), args[i]);
+            for (var i:int = 0; i < args.length; ++i)
+                format = format.replace(new RegExp("\\{" + i + "\\}", "g"), args[i]);
 
             return format;
         }
@@ -54,7 +57,8 @@ package starling.utils
             var length:int = string.length;
 
             for (pos = 0; pos < length; ++pos)
-                if (string.charCodeAt(pos) > 0x20) break;
+                if (string.charCodeAt(pos) > 0x20)
+                    break;
 
             return string.substring(pos, length);
         }
@@ -67,7 +71,8 @@ package starling.utils
         public static function trimEnd(string:String):String
         {
             for (var pos:int = string.length - 1; pos >= 0; --pos)
-                if (string.charCodeAt(pos) > 0x20) break;
+                if (string.charCodeAt(pos) > 0x20)
+                    break;
 
             return string.substring(0, pos + 1);
         }
@@ -84,10 +89,12 @@ package starling.utils
             var length:int = string.length;
 
             for (startPos = 0; startPos < length; ++startPos)
-                if (string.charCodeAt(startPos) > 0x20) break;
+                if (string.charCodeAt(startPos) > 0x20)
+                    break;
 
             for (endPos = string.length - 1; endPos >= startPos; --endPos)
-                if (string.charCodeAt(endPos) > 0x20) break;
+                if (string.charCodeAt(endPos) > 0x20)
+                    break;
 
             return string.substring(startPos, endPos + 1);
         }

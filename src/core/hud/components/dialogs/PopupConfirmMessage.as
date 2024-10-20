@@ -4,34 +4,34 @@ package core.hud.components.dialogs
    import starling.events.Event;
    import starling.events.KeyboardEvent;
    import starling.events.TouchEvent;
-   
+
    public class PopupConfirmMessage extends PopupMessage
    {
       public var confirmButton:Button;
-      
+
       public function PopupConfirmMessage(param1:String = "Confirm", param2:String = "Cancel", param3:String = "positive")
       {
          super(param2);
-         confirmButton = new Button(confirm,param1,param3);
+         confirmButton = new Button(confirm, param1, param3);
          box.addChild(confirmButton);
       }
-      
-      override protected function keyDown(param1:KeyboardEvent) : void
+
+      override protected function keyDown(param1:KeyboardEvent):void
       {
-         if(param1.keyCode == 13)
+         if (param1.keyCode == 13)
          {
             param1.stopImmediatePropagation();
             confirm();
          }
       }
-      
-      protected function confirm(param1:TouchEvent = null) : void
+
+      protected function confirm(param1:TouchEvent = null):void
       {
          dispatchEventWith("accept");
          removeEventListeners();
       }
-      
-      override protected function redraw(param1:Event = null) : void
+
+      override protected function redraw(param1:Event = null):void
       {
          super.redraw();
          confirmButton.y = Math.round(textField.height + 15);
@@ -44,4 +44,3 @@ package core.hud.components.dialogs
       }
    }
 }
-

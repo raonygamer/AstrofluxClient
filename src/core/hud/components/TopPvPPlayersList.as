@@ -7,26 +7,26 @@ package core.hud.components
    import starling.display.Sprite;
    import textures.ITextureManager;
    import textures.TextureLocator;
-   
+
    public class TopPvPPlayersList extends Sprite
    {
       private static var topPvpPlayersList:Array;
-      
+
       private var textureManager:ITextureManager;
-      
+
       public function TopPvPPlayersList()
       {
          super();
          textureManager = TextureLocator.getService();
       }
-      
-      public function showHighscore(param1:Message) : void
+
+      public function showHighscore(param1:Message):void
       {
          var _loc3_:int = 0;
          var _loc2_:Object = null;
          topPvpPlayersList = [];
          _loc3_ = 0;
-         while(_loc3_ < param1.length)
+         while (_loc3_ < param1.length)
          {
             _loc2_ = {};
             _loc2_.rank = param1.getInt(_loc3_);
@@ -40,32 +40,32 @@ package core.hud.components
          }
          drawTopPvpPlayers();
       }
-      
-      private function drawTopPvpPlayers() : void
+
+      private function drawTopPvpPlayers():void
       {
          var _loc2_:int = 0;
          var _loc1_:int = 0;
          _loc2_ = 0;
-         while(_loc2_ < topPvpPlayersList.length)
+         while (_loc2_ < topPvpPlayersList.length)
          {
-            drawPlayerObject(topPvpPlayersList[_loc2_],_loc2_,this);
+            drawPlayerObject(topPvpPlayersList[_loc2_], _loc2_, this);
             _loc1_ = int(topPvpPlayersList[_loc2_].rank);
             _loc2_++;
          }
       }
-      
-      private function drawPlayerObject(param1:Object, param2:int, param3:Sprite) : void
+
+      private function drawPlayerObject(param1:Object, param2:int, param3:Sprite):void
       {
          var _loc6_:Quad = null;
          var _loc8_:Image = null;
          var _loc10_:int = param2 * 45;
-         if(Login.client.connectUserId == param1.key)
+         if (Login.client.connectUserId == param1.key)
          {
-            _loc6_ = new Quad(670,40,4342338);
+            _loc6_ = new Quad(670, 40, 4342338);
          }
          else
          {
-            _loc6_ = new Quad(670,40,2171169);
+            _loc6_ = new Quad(670, 40, 2171169);
          }
          _loc6_.y = _loc10_;
          _loc10_ += 10;
@@ -107,4 +107,3 @@ package core.hud.components
       }
    }
 }
-

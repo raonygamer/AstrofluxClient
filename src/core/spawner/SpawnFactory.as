@@ -2,24 +2,24 @@ package core.spawner
 {
    import core.boss.Boss;
    import core.scene.Game;
-   
+
    public class SpawnFactory
    {
       public function SpawnFactory()
       {
          super();
       }
-      
-      public static function createSpawner(param1:Object, param2:String, param3:Game, param4:Boss = null) : Spawner
+
+      public static function createSpawner(param1:Object, param2:String, param3:Game, param4:Boss = null):Spawner
       {
          var _loc5_:Spawner = param3.spawnManager.getSpawner(param1.type);
          _loc5_.obj = param1;
          _loc5_.isHostile = true;
-         if(param1.hasOwnProperty("AIFaction1") && param1.AIFaction1 != "")
+         if (param1.hasOwnProperty("AIFaction1") && param1.AIFaction1 != "")
          {
             _loc5_.factions.push(param1.AIFaction1);
          }
-         if(param1.hasOwnProperty("AIFaction2") && param1.AIFaction2 != "")
+         if (param1.hasOwnProperty("AIFaction2") && param1.AIFaction2 != "")
          {
             _loc5_.factions.push(param1.AIFaction2);
          }
@@ -31,7 +31,7 @@ package core.spawner
          _loc5_.collisionRadius = param1.collisionRadius;
          _loc5_.orbitRadius = param1.orbitRadius;
          _loc5_.spawnerType = param1.type;
-         if(_loc5_.orbitRadius == 0)
+         if (_loc5_.orbitRadius == 0)
          {
             _loc5_.angleVelocity = 0;
          }
@@ -50,16 +50,16 @@ package core.spawner
          _loc5_.initialHardenedShield = param4 == null ? true : false;
          _loc5_.explosionSound = param1.explosionSound;
          _loc5_.explosionEffect = param1.explosionEffect;
-         if(_loc5_.isMech() && param1.explosionEffect == null)
+         if (_loc5_.isMech() && param1.explosionEffect == null)
          {
             _loc5_.explosionEffect = "Vk5Hgk-n2UqelveFMqdCfw";
          }
-         else if(_loc5_.spawnerType == "organic" && param1.explosionEffect == null)
+         else if (_loc5_.spawnerType == "organic" && param1.explosionEffect == null)
          {
             _loc5_.explosionEffect = "QZPBVWcMEUqxnySWvkwTAw";
          }
          _loc5_.switchTexturesByObj(param1);
-         if(param1.turrets != null)
+         if (param1.turrets != null)
          {
             _loc5_.addTurrets(param1);
          }
@@ -68,4 +68,3 @@ package core.spawner
       }
    }
 }
-

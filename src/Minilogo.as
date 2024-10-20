@@ -12,17 +12,17 @@ package
    import flash.net.navigateToURL;
    import flash.utils.setTimeout;
    import playerio.utils.SWFReader;
-   
+
    public class Minilogo extends MovieClip
    {
       public static var showLogo:Boolean = true;
-      
+
       private var align:String;
-      
+
       private var t:Tween;
-      
+
       private var rect:Rectangle;
-      
+
       public function Minilogo(param1:String = "BC")
       {
          var _loc2_:* = null;
@@ -30,36 +30,36 @@ package
          this.align = param1;
          this.alpha = 0;
          this.buttonMode = true;
-         addEventListener("addedToStage",handleAttach);
-         this.addEventListener("mouseDown",handleClick);
+         addEventListener("addedToStage", handleAttach);
+         this.addEventListener("mouseDown", handleClick);
          Minilogo.showLogo = false;
       }
-      
-      private function handleClick(param1:MouseEvent) : void
+
+      private function handleClick(param1:MouseEvent):void
       {
          param1.preventDefault();
          param1.stopImmediatePropagation();
          try
          {
-            navigateToURL(new URLRequest("http://playerio.com/?ref=gamelogo"),"_new");
+            navigateToURL(new URLRequest("http://playerio.com/?ref=gamelogo"), "_new");
          }
-         catch(e:Error)
+         catch (e:Error)
          {
             trace("Error occurred!");
          }
       }
-      
-      private function handleResize(param1:Event = null) : void
+
+      private function handleResize(param1:Event = null):void
       {
          var _loc2_:Number = NaN;
          var _loc3_:Number = NaN;
-         if(this.parent)
+         if (this.parent)
          {
             _loc2_ = 0;
             _loc3_ = 0;
-            if(stage.scaleMode == "noScale")
+            if (stage.scaleMode == "noScale")
             {
-               switch(stage.align)
+               switch (stage.align)
                {
                   case "":
                      _loc2_ = -(stage.stageWidth - rect.width) / 2;
@@ -69,7 +69,7 @@ package
                      _loc2_ = -(stage.stageWidth - rect.width) / 2;
                }
             }
-            switch(align)
+            switch (align)
             {
                case "TL":
                   this.x = _loc2_ + 140;
@@ -109,59 +109,58 @@ package
             }
          }
       }
-      
-      private function handleEnterFrame(param1:Event) : void
+
+      private function handleEnterFrame(param1:Event):void
       {
-         if(stage.getChildAt(stage.numChildren - 1) != this)
+         if (stage.getChildAt(stage.numChildren - 1) != this)
          {
             stage.addChild(this);
          }
       }
-      
-      private function handleAttach(param1:Event) : void
+
+      private function handleAttach(param1:Event):void
       {
-         if((stage.loaderInfo as Object).hasOwnProperty("bytes"))
+         if ((stage.loaderInfo as Object).hasOwnProperty("bytes"))
          {
             rect = new SWFReader((stage.loaderInfo as Object).bytes).dimensions;
          }
          else
          {
-            rect = new Rectangle(0,0,stage.stageWidth,stage.stageHeight);
+            rect = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
          }
-         stage.addEventListener("resize",handleResize);
+         stage.addEventListener("resize", handleResize);
          handleResize();
-         t = new Tween(this,"alpha",Strong.easeIn,0,1,0.5,true);
-         t.addEventListener("motionFinish",handleCreated);
-         t.addEventListener("motionChange",handleTick);
-         addEventListener("enterFrame",handleEnterFrame);
+         t = new Tween(this, "alpha", Strong.easeIn, 0, 1, 0.5, true);
+         t.addEventListener("motionFinish", handleCreated);
+         t.addEventListener("motionChange", handleTick);
+         addEventListener("enterFrame", handleEnterFrame);
       }
-      
-      private function handleCreated(param1:TweenEvent) : void
+
+      private function handleCreated(param1:TweenEvent):void
       {
-         setTimeout(doRemove,3000);
+         setTimeout(doRemove, 3000);
       }
-      
-      private function handleTick(param1:Event) : void
+
+      private function handleTick(param1:Event):void
       {
-         this.filters = [new BlurFilter((1 - this.alpha) * 100,(1 - this.alpha) * 10)];
+         this.filters = [new BlurFilter((1 - this.alpha) * 100, (1 - this.alpha) * 10)];
       }
-      
-      private function doRemove() : void
+
+      private function doRemove():void
       {
-         t = new Tween(this,"alpha",Strong.easeIn,1,0,0.5,true);
-         t.addEventListener("motionChange",handleTick);
-         t.addEventListener("motionFinish",kill);
-         removeEventListener("enterFrame",handleEnterFrame);
-         stage.removeEventListener("resize",handleResize);
+         t = new Tween(this, "alpha", Strong.easeIn, 1, 0, 0.5, true);
+         t.addEventListener("motionChange", handleTick);
+         t.addEventListener("motionFinish", kill);
+         removeEventListener("enterFrame", handleEnterFrame);
+         stage.removeEventListener("resize", handleResize);
       }
-      
-      private function kill(param1:Event) : void
+
+      private function kill(param1:Event):void
       {
-         if(this.parent)
+         if (this.parent)
          {
             this.parent.removeChild(this);
          }
       }
    }
 }
-

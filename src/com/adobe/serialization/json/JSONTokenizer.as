@@ -32,10 +32,10 @@
 
 package com.adobe.serialization.json
 {
-	
+
 	public class JSONTokenizer
 	{
-		
+
 		/**
 		 * Flag indicating if the tokenizer should only recognize
 		 * standard JSON tokens.  Setting to <code>false</code> allows
@@ -43,25 +43,25 @@ package com.adobe.serialization.json
 		 * hex, etc.
 		 */
 		private var strict:Boolean;
-		
+
 		/** The object that will get parsed from the JSON string */
 		private var obj:Object;
-		
+
 		/** The JSON string to be parsed */
 		private var jsonString:String;
-		
+
 		/** The current parsing location in the JSON string */
 		private var loc:int;
-		
+
 		/** The current character in the JSON string during parsing */
 		private var ch:String;
-		
+
 		/**
 		 * The regular expression used to make sure the string does not
 		 * contain invalid control characters.
 		 */
 		private const controlCharsRegExp:RegExp = /[\x00-\x1F]/;
-		
+
 		/**
 		 * Constructs a new JSONDecoder to parse a JSON string
 		 * into a native object.
@@ -69,16 +69,16 @@ package com.adobe.serialization.json
 		 * @param s The JSON string to be converted
 		 *		into a native object
 		 */
-		public function JSONTokenizer( s:String, strict:Boolean )
+		public function JSONTokenizer(s:String, strict:Boolean)
 		{
 			jsonString = s;
 			this.strict = strict;
 			loc = 0;
-			
+
 			// prime the pump by getting the first character
 			nextChar();
 		}
-		
+
 		/**
 		 * Gets the next token in the input sting and advances
 		 * the character to the next character after the token
@@ -86,115 +86,115 @@ package com.adobe.serialization.json
 		public function getNextToken():JSONToken
 		{
 			var token:JSONToken = null;
-			
-			// skip any whitespace / comments since the last 
+
+			// skip any whitespace / comments since the last
 			// token was read
 			skipIgnored();
-			
+
 			// examine the new character and see what we have...
-			switch ( ch )
+			switch (ch)
 			{
 				case '{':
-					token = JSONToken.create( JSONTokenType.LEFT_BRACE, ch );
-					nextChar();
-					break
-				
-				case '}':
-					token = JSONToken.create( JSONTokenType.RIGHT_BRACE, ch );
-					nextChar();
-					break
-				
-				case '[':
-					token = JSONToken.create( JSONTokenType.LEFT_BRACKET, ch );
-					nextChar();
-					break
-				
-				case ']':
-					token = JSONToken.create( JSONTokenType.RIGHT_BRACKET, ch );
-					nextChar();
-					break
-				
-				case ',':
-					token = JSONToken.create( JSONTokenType.COMMA, ch );
-					nextChar();
-					break
-				
-				case ':':
-					token = JSONToken.create( JSONTokenType.COLON, ch );
+					token = JSONToken.create(JSONTokenType.LEFT_BRACE, ch);
 					nextChar();
 					break;
-				
+
+				case '}':
+					token = JSONToken.create(JSONTokenType.RIGHT_BRACE, ch);
+					nextChar();
+					break;
+
+				case '[':
+					token = JSONToken.create(JSONTokenType.LEFT_BRACKET, ch);
+					nextChar();
+					break;
+
+				case ']':
+					token = JSONToken.create(JSONTokenType.RIGHT_BRACKET, ch);
+					nextChar();
+					break;
+
+				case ',':
+					token = JSONToken.create(JSONTokenType.COMMA, ch);
+					nextChar();
+					break;
+
+				case ':':
+					token = JSONToken.create(JSONTokenType.COLON, ch);
+					nextChar();
+					break;
+
 				case 't': // attempt to read true
 					var possibleTrue:String = "t" + nextChar() + nextChar() + nextChar();
-					
-					if ( possibleTrue == "true" )
+
+					if (possibleTrue == "true")
 					{
-						token = JSONToken.create( JSONTokenType.TRUE, true );
+						token = JSONToken.create(JSONTokenType.TRUE, true);
 						nextChar();
 					}
 					else
 					{
-						parseError( "Expecting 'true' but found " + possibleTrue );
+						parseError("Expecting 'true' but found " + possibleTrue);
 					}
-					
+
 					break;
-				
+
 				case 'f': // attempt to read false
 					var possibleFalse:String = "f" + nextChar() + nextChar() + nextChar() + nextChar();
-					
-					if ( possibleFalse == "false" )
+
+					if (possibleFalse == "false")
 					{
-						token = JSONToken.create( JSONTokenType.FALSE, false );
+						token = JSONToken.create(JSONTokenType.FALSE, false);
 						nextChar();
 					}
 					else
 					{
-						parseError( "Expecting 'false' but found " + possibleFalse );
+						parseError("Expecting 'false' but found " + possibleFalse);
 					}
-					
+
 					break;
-				
+
 				case 'n': // attempt to read null
 					var possibleNull:String = "n" + nextChar() + nextChar() + nextChar();
-					
-					if ( possibleNull == "null" )
+
+					if (possibleNull == "null")
 					{
-						token = JSONToken.create( JSONTokenType.NULL, null );
+						token = JSONToken.create(JSONTokenType.NULL, null);
 						nextChar();
 					}
 					else
 					{
-						parseError( "Expecting 'null' but found " + possibleNull );
+						parseError("Expecting 'null' but found " + possibleNull);
 					}
-					
+
 					break;
-				
+
 				case 'N': // attempt to read NaN
 					var possibleNaN:String = "N" + nextChar() + nextChar();
-					
-					if ( possibleNaN == "NaN" )
+
+					if (possibleNaN == "NaN")
 					{
-						token = JSONToken.create( JSONTokenType.NAN, NaN );
+						token = JSONToken.create(JSONTokenType.NAN, NaN);
 						nextChar();
 					}
 					else
 					{
-						parseError( "Expecting 'NaN' but found " + possibleNaN );
+						parseError("Expecting 'NaN' but found " + possibleNaN);
 					}
-					
+
 					break;
-				
+
 				case '"': // the start of a string
 					token = readString();
 					break;
-				
+
 				default:
 					// see if we can read a number
-					if ( isDigit( ch ) || ch == '-' )
+					if (isDigit(ch) || ch == '-')
 					{
 						token = readNumber();
 					}
-					else if ( ch == '' )
+					else if (ch == '')
 					{
 						// check for reading past the end of the string
 						token = null;
@@ -203,13 +203,13 @@ package com.adobe.serialization.json
 					{
 						// not sure what was in the input string - it's not
 						// anything we expected
-						parseError( "Unexpected " + ch + " encountered" );
+						parseError("Unexpected " + ch + " encountered");
 					}
 			}
-			
+
 			return token;
 		}
-		
+
 		/**
 		 * Attempts to read a string from the input string.  Places
 		 * the character location at the first character after the
@@ -223,74 +223,75 @@ package com.adobe.serialization.json
 			// Rather than examine the string character-by-character, it's
 			// faster to use indexOf to try to and find the closing quote character
 			// and then replace escape sequences after the fact.
-			
+
 			// Start at the current input stream position
 			var quoteIndex:int = loc;
 			do
 			{
 				// Find the next quote in the input stream
-				quoteIndex = jsonString.indexOf( "\"", quoteIndex );
-				
-				if ( quoteIndex >= 0 )
+				quoteIndex = jsonString.indexOf("\"", quoteIndex);
+
+				if (quoteIndex >= 0)
 				{
 					// We found the next double quote character in the string, but we need
 					// to make sure it is not part of an escape sequence.
-					
+
 					// Keep looping backwards while the previous character is a backslash
 					var backspaceCount:int = 0;
 					var backspaceIndex:int = quoteIndex - 1;
-					while ( jsonString.charAt( backspaceIndex ) == "\\" )
+					while (jsonString.charAt(backspaceIndex) == "\\")
 					{
 						backspaceCount++;
 						backspaceIndex--;
 					}
-					
-					// If we have an even number of backslashes, that means this is the ending quote 
-					if ( ( backspaceCount & 1 ) == 0 )
+
+					// If we have an even number of backslashes, that means this is the ending quote
+					if ((backspaceCount & 1) == 0)
 					{
 						break;
 					}
-					
+
 					// At this point, the quote was determined to be part of an escape sequence
 					// so we need to move past the quote index to look for the next one
 					quoteIndex++;
 				}
 				else // There are no more quotes in the string and we haven't found the end yet
 				{
-					parseError( "Unterminated string literal" );
+					parseError("Unterminated string literal");
 				}
-			} while ( true );
-			
+			}
+			while (true);
+
 			// Unescape the string
 			// the token for the string we'll try to read
-			var token:JSONToken = JSONToken.create( 
+			var token:JSONToken = JSONToken.create(
 					JSONTokenType.STRING,
 					// Attach resulting string to the token to return it
-					unescapeString( jsonString.substr( loc, quoteIndex - loc ) ) );
-			
+					unescapeString(jsonString.substr(loc, quoteIndex - loc)));
+
 			// Move past the closing quote in the input string.  This updates the next
 			// character in the input stream to be the character one after the closing quote
 			loc = quoteIndex + 1;
 			nextChar();
-			
+
 			return token;
 		}
-		
+
 		/**
 		 * Convert all JavaScript escape characters into normal characters
 		 *
 		 * @param input The input string to convert
 		 * @return Original string with escape characters replaced by real characters
 		 */
-		public function unescapeString( input:String ):String
+		public function unescapeString(input:String):String
 		{
 			// Issue #104 - If the string contains any unescaped control characters, this
 			// is an error in strict mode
-			if ( strict && controlCharsRegExp.test( input ) )
+			if (strict && controlCharsRegExp.test(input))
 			{
-				parseError( "String contains unescaped control character (0x00-0x1F)" );
+				parseError("String contains unescaped control character (0x00-0x1F)");
 			}
-			
+
 			var result:String = "";
 			var backslashIndex:int = 0;
 			var nextSubstringStartPosition:int = 0;
@@ -298,28 +299,28 @@ package com.adobe.serialization.json
 			do
 			{
 				// Find the next backslash in the input
-				backslashIndex = input.indexOf( '\\', nextSubstringStartPosition );
-				
-				if ( backslashIndex >= 0 )
+				backslashIndex = input.indexOf('\\', nextSubstringStartPosition);
+
+				if (backslashIndex >= 0)
 				{
-					result += input.substr( nextSubstringStartPosition, backslashIndex - nextSubstringStartPosition );
-					
+					result += input.substr(nextSubstringStartPosition, backslashIndex - nextSubstringStartPosition);
+
 					// Move past the backslash and next character (all escape sequences are
 					// two characters, except for \u, which will advance this further)
 					nextSubstringStartPosition = backslashIndex + 2;
-					
+
 					// Check the next character so we know what to escape
-					var escapedChar:String = input.charAt( backslashIndex + 1 );
-					switch ( escapedChar )
+					var escapedChar:String = input.charAt(backslashIndex + 1);
+					switch (escapedChar)
 					{
 						// Try to list the most common expected cases first to improve performance
-						
+
 						case '"':
 							result += escapedChar;
 							break; // quotation mark
 						case '\\':
 							result += escapedChar;
-							break; // reverse solidus	
+							break; // reverse solidus
 						case 'n':
 							result += '\n';
 							break; // newline
@@ -328,46 +329,46 @@ package com.adobe.serialization.json
 							break; // carriage return
 						case 't':
 							result += '\t';
-							break; // horizontal tab	
-						
-						// Convert a unicode escape sequence to it's character value
+							break; // horizontal tab
+
+							// Convert a unicode escape sequence to it's character value
 						case 'u':
-							
+
 							// Save the characters as a string we'll convert to an int
 							var hexValue:String = "";
-							
+
 							var unicodeEndPosition:int = nextSubstringStartPosition + 4;
-							
+
 							// Make sure there are enough characters in the string leftover
-							if ( unicodeEndPosition > len )
+							if (unicodeEndPosition > len)
 							{
-								parseError( "Unexpected end of input.  Expecting 4 hex digits after \\u." );
+								parseError("Unexpected end of input.  Expecting 4 hex digits after \\u.");
 							}
-							
+
 							// Try to find 4 hex characters
-							for ( var i:int = nextSubstringStartPosition; i < unicodeEndPosition; i++ )
+							for (var i:int = nextSubstringStartPosition; i < unicodeEndPosition; i++)
 							{
 								// get the next character and determine
 								// if it's a valid hex digit or not
-								var possibleHexChar:String = input.charAt( i );
-								if ( !isHexDigit( possibleHexChar ) )
+								var possibleHexChar:String = input.charAt(i);
+								if (!isHexDigit(possibleHexChar))
 								{
-									parseError( "Excepted a hex digit, but found: " + possibleHexChar );
+									parseError("Excepted a hex digit, but found: " + possibleHexChar);
 								}
-								
+
 								// Valid hex digit, add it to the value
 								hexValue += possibleHexChar;
 							}
-							
+
 							// Convert hexValue to an integer, and use that
 							// integer value to create a character to add
 							// to our string.
-							result += String.fromCharCode( parseInt( hexValue, 16 ) );
-							
+							result += String.fromCharCode(parseInt(hexValue, 16));
+
 							// Move past the 4 hex digits that we just read
 							nextSubstringStartPosition = unicodeEndPosition;
 							break;
-						
+
 						case 'f':
 							result += '\f';
 							break; // form feed
@@ -384,15 +385,16 @@ package com.adobe.serialization.json
 				else
 				{
 					// No more backslashes to replace, append the rest of the string
-					result += input.substr( nextSubstringStartPosition );
+					result += input.substr(nextSubstringStartPosition);
 					break;
 				}
-				
-			} while ( nextSubstringStartPosition < len );
-			
+
+			}
+			while (nextSubstringStartPosition < len);
+
 			return result;
 		}
-		
+
 		/**
 		 * Attempts to read a number from the input string.  Places
 		 * the character location at the first character after the
@@ -406,54 +408,54 @@ package com.adobe.serialization.json
 			// the string to accumulate the number characters
 			// into that we'll convert to a number at the end
 			var input:String = "";
-			
+
 			// check for a negative number
-			if ( ch == '-' )
+			if (ch == '-')
 			{
 				input += '-';
 				nextChar();
 			}
-			
+
 			// the number must start with a digit
-			if ( !isDigit( ch ) )
+			if (!isDigit(ch))
 			{
-				parseError( "Expecting a digit" );
+				parseError("Expecting a digit");
 			}
-			
+
 			// 0 can only be the first digit if it
 			// is followed by a decimal point
-			if ( ch == '0' )
+			if (ch == '0')
 			{
 				input += ch;
 				nextChar();
-				
+
 				// make sure no other digits come after 0
-				if ( isDigit( ch ) )
+				if (isDigit(ch))
 				{
-					parseError( "A digit cannot immediately follow 0" );
+					parseError("A digit cannot immediately follow 0");
 				}
 				// unless we have 0x which starts a hex number, but this
 				// doesn't match JSON spec so check for not strict mode.
-				else if ( !strict && ch == 'x' )
+				else if (!strict && ch == 'x')
 				{
 					// include the x in the input
 					input += ch;
 					nextChar();
-					
+
 					// need at least one hex digit after 0x to
 					// be valid
-					if ( isHexDigit( ch ) )
+					if (isHexDigit(ch))
 					{
 						input += ch;
 						nextChar();
 					}
 					else
 					{
-						parseError( "Number in hex format require at least one hex digit after \"0x\"" );
+						parseError("Number in hex format require at least one hex digit after \"0x\"");
 					}
-					
+
 					// consume all of the hex values
-					while ( isHexDigit( ch ) )
+					while (isHexDigit(ch))
 					{
 						input += ch;
 						nextChar();
@@ -463,76 +465,77 @@ package com.adobe.serialization.json
 			else
 			{
 				// read numbers while we can
-				while ( isDigit( ch ) )
+				while (isDigit(ch))
 				{
 					input += ch;
 					nextChar();
 				}
 			}
-			
+
 			// check for a decimal value
-			if ( ch == '.' )
+			if (ch == '.')
 			{
 				input += '.';
 				nextChar();
-				
+
 				// after the decimal there has to be a digit
-				if ( !isDigit( ch ) )
+				if (!isDigit(ch))
 				{
-					parseError( "Expecting a digit" );
+					parseError("Expecting a digit");
 				}
-				
+
 				// read more numbers to get the decimal value
-				while ( isDigit( ch ) )
+				while (isDigit(ch))
 				{
 					input += ch;
 					nextChar();
 				}
 			}
-			
+
 			// check for scientific notation
-			if ( ch == 'e' || ch == 'E' )
+			if (ch == 'e' || ch == 'E')
 			{
-				input += "e"
+				input += "e";
+
 				nextChar();
 				// check for sign
-				if ( ch == '+' || ch == '-' )
+				if (ch == '+' || ch == '-')
 				{
 					input += ch;
 					nextChar();
 				}
-				
+
 				// require at least one number for the exponent
 				// in this case
-				if ( !isDigit( ch ) )
+				if (!isDigit(ch))
 				{
-					parseError( "Scientific notation number needs exponent value" );
+					parseError("Scientific notation number needs exponent value");
 				}
-				
+
 				// read in the exponent
-				while ( isDigit( ch ) )
+				while (isDigit(ch))
 				{
 					input += ch;
 					nextChar();
 				}
 			}
-			
+
 			// convert the string to a number value
-			var num:Number = Number( input );
-			
-			if ( isFinite( num ) && !isNaN( num ) )
+			var num:Number = Number(input);
+
+			if (isFinite(num) && !isNaN(num))
 			{
 				// the token for the number that we've read
-				return JSONToken.create( JSONTokenType.NUMBER, num );
+				return JSONToken.create(JSONTokenType.NUMBER, num);
 			}
 			else
 			{
-				parseError( "Number " + num + " is not valid!" );
+				parseError("Number " + num + " is not valid!");
 			}
-			
+
 			return null;
 		}
-		
+
 		/**
 		 * Reads the next character in the input
 		 * string and advances the character location.
@@ -542,9 +545,9 @@ package com.adobe.serialization.json
 		 */
 		private final function nextChar():String
 		{
-			return ch = jsonString.charAt( loc++ );
+			return ch = jsonString.charAt(loc++ );
 		}
-		
+
 		/**
 		 * Advances the character location past any
 		 * sort of white space and comments
@@ -552,17 +555,18 @@ package com.adobe.serialization.json
 		private final function skipIgnored():void
 		{
 			var originalLoc:int;
-			
+
 			// keep trying to skip whitespace and comments as long
-			// as we keep advancing past the original location 
+			// as we keep advancing past the original location
 			do
 			{
 				originalLoc = loc;
 				skipWhite();
 				skipComments();
-			} while ( originalLoc != loc );
+			}
+			while (originalLoc != loc);
 		}
-		
+
 		/**
 		 * Skips comments in the input string, either
 		 * single-line or multi-line.  Advances the character
@@ -570,39 +574,40 @@ package com.adobe.serialization.json
 		 */
 		private function skipComments():void
 		{
-			if ( ch == '/' )
+			if (ch == '/')
 			{
 				// Advance past the first / to find out what type of comment
 				nextChar();
-				switch ( ch )
+				switch (ch)
 				{
 					case '/': // single-line comment, read through end of line
-						
+
 						// Loop over the characters until we find
 						// a newline or until there's no more characters left
 						do
 						{
 							nextChar();
-						} while ( ch != '\n' && ch != '' )
-						
+						}
+						while (ch != '\n' && ch != '');
+
 						// move past the \n
 						nextChar();
-						
+
 						break;
-					
+
 					case '*': // multi-line comment, read until closing */
-						
+
 						// move past the opening *
 						nextChar();
-						
+
 						// try to find a trailing */
-						while ( true )
+						while (true)
 						{
-							if ( ch == '*' )
+							if (ch == '*')
 							{
 								// check to see if we have a closing /
 								nextChar();
-								if ( ch == '/' )
+								if (ch == '/')
 								{
 									// move past the end of the closing */
 									nextChar();
@@ -614,26 +619,25 @@ package com.adobe.serialization.json
 								// move along, looking if the next character is a *
 								nextChar();
 							}
-							
-							// when we're here we've read past the end of 
+
+							// when we're here we've read past the end of
 							// the string without finding a closing */, so error
-							if ( ch == '' )
+							if (ch == '')
 							{
-								parseError( "Multi-line comment not closed" );
+								parseError("Multi-line comment not closed");
 							}
 						}
-						
+
 						break;
-					
-					// Can't match a comment after a /, so it's a parsing error
+
+						// Can't match a comment after a /, so it's a parsing error
 					default:
-						parseError( "Unexpected " + ch + " encountered (expecting '/' or '*' )" );
+						parseError("Unexpected " + ch + " encountered (expecting '/' or '*' )");
 				}
 			}
-		
+
 		}
-		
-		
+
 		/**
 		 * Skip any whitespace in the input string and advances
 		 * the character to the first character after any possible
@@ -641,67 +645,67 @@ package com.adobe.serialization.json
 		 */
 		private final function skipWhite():void
 		{
-			// As long as there are spaces in the input 
+			// As long as there are spaces in the input
 			// stream, advance the current location pointer
 			// past them
-			while ( isWhiteSpace( ch ) )
+			while (isWhiteSpace(ch))
 			{
 				nextChar();
 			}
-		
+
 		}
-		
+
 		/**
 		 * Determines if a character is whitespace or not.
 		 *
 		 * @return True if the character passed in is a whitespace
 		 *	character
 		 */
-		private final function isWhiteSpace( ch:String ):Boolean
+		private final function isWhiteSpace(ch:String):Boolean
 		{
 			// Check for the whitespace defined in the spec
-			if ( ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r' )
+			if (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r')
 			{
 				return true;
 			}
 			// If we're not in strict mode, we also accept non-breaking space
-			else if ( !strict && ch.charCodeAt( 0 ) == 160 )
+			else if (!strict && ch.charCodeAt(0) == 160)
 			{
 				return true;
 			}
-			
+
 			return false;
 		}
-		
+
 		/**
 		 * Determines if a character is a digit [0-9].
 		 *
 		 * @return True if the character passed in is a digit
 		 */
-		private final function isDigit( ch:String ):Boolean
+		private final function isDigit(ch:String):Boolean
 		{
-			return ( ch >= '0' && ch <= '9' );
+			return (ch >= '0' && ch <= '9');
 		}
-		
+
 		/**
 		 * Determines if a character is a hex digit [0-9A-Fa-f].
 		 *
 		 * @return True if the character passed in is a hex digit
 		 */
-		private final function isHexDigit( ch:String ):Boolean
+		private final function isHexDigit(ch:String):Boolean
 		{
-			return ( isDigit( ch ) || ( ch >= 'A' && ch <= 'F' ) || ( ch >= 'a' && ch <= 'f' ) );
+			return (isDigit(ch) || (ch >= 'A' && ch <= 'F') || (ch >= 'a' && ch <= 'f'));
 		}
-		
+
 		/**
 		 * Raises a parsing error with a specified message, tacking
 		 * on the error location and the original string.
 		 *
 		 * @param message The message indicating why the error occurred
 		 */
-		public final function parseError( message:String ):void
+		public final function parseError(message:String):void
 		{
-			throw new JSONParseError( message, loc, jsonString );
+			throw new JSONParseError(message, loc, jsonString);
 		}
 	}
 

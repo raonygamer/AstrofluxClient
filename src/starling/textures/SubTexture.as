@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.textures
@@ -17,7 +17,7 @@ package starling.textures
     import starling.core.starling_internal;
 
     /** A SubTexture represents a section of another texture. This is achieved solely by
-     *  manipulation of texture coordinates, making the class very efficient. 
+     *  manipulation of texture coordinates, making the class very efficient.
      *
      *  <p><em>Note that it is OK to create subtextures of subtextures.</em></p>
      */
@@ -48,9 +48,9 @@ package starling.textures
          *  @param scaleModifier  The scale factor of the SubTexture will be calculated by
          *                    multiplying the parent texture's scale factor with this value.
          */
-        public function SubTexture(parent:Texture, region:Rectangle=null,
-                                   ownsParent:Boolean=false, frame:Rectangle=null,
-                                   rotated:Boolean=false, scaleModifier:Number=1)
+        public function SubTexture(parent:Texture, region:Rectangle = null,
+                ownsParent:Boolean = false, frame:Rectangle = null,
+                rotated:Boolean = false, scaleModifier:Number = 1)
         {
             starling_internal::setTo(parent, region, ownsParent, frame, rotated, scaleModifier);
         }
@@ -62,30 +62,36 @@ package starling.textures
          *  the texture is not accessible to the outside, this can be overruled in order to avoid
          *  allocations.</p>
          */
-        starling_internal function setTo(parent:Texture, region:Rectangle=null,
-                                         ownsParent:Boolean=false, frame:Rectangle=null,
-                                         rotated:Boolean=false, scaleModifier:Number=1):void
+        starling_internal function setTo(parent:Texture, region:Rectangle = null,
+                ownsParent:Boolean = false, frame:Rectangle = null,
+                rotated:Boolean = false, scaleModifier:Number = 1):void
         {
-            if (_region == null) _region = new Rectangle();
-            if (region) _region.copyFrom(region);
-            else _region.setTo(0, 0, parent.width, parent.height);
+            if (_region == null)
+                _region = new Rectangle();
+            if (region)
+                _region.copyFrom(region);
+            else
+                _region.setTo(0, 0, parent.width, parent.height);
 
             if (frame)
             {
-                if (_frame) _frame.copyFrom(frame);
-                else _frame = frame.clone();
+                if (_frame)
+                    _frame.copyFrom(frame);
+                else
+                    _frame = frame.clone();
             }
-            else _frame = null;
+            else
+                _frame = null;
 
             _parent = parent;
             _ownsParent = ownsParent;
             _rotated = rotated;
-            _width  = (rotated ? _region.height : _region.width)  / scaleModifier;
-            _height = (rotated ? _region.width  : _region.height) / scaleModifier;
+            _width = (rotated ? _region.height : _region.width) / scaleModifier;
+            _height = (rotated ? _region.width : _region.height) / scaleModifier;
             _scale = _parent.scale * scaleModifier;
 
             if (_frame && (_frame.x > 0 || _frame.y > 0 ||
-                _frame.right < _width || _frame.bottom < _height))
+                        _frame.right < _width || _frame.bottom < _height))
             {
                 trace("[Starling] Warning: frames inside the texture's region are unsupported.");
             }
@@ -95,11 +101,15 @@ package starling.textures
 
         private function updateMatrices():void
         {
-            if (_transformationMatrix) _transformationMatrix.identity();
-            else _transformationMatrix = new Matrix();
+            if (_transformationMatrix)
+                _transformationMatrix.identity();
+            else
+                _transformationMatrix = new Matrix();
 
-            if (_transformationMatrixToRoot) _transformationMatrixToRoot.identity();
-            else _transformationMatrixToRoot = new Matrix();
+            if (_transformationMatrixToRoot)
+                _transformationMatrixToRoot.identity();
+            else
+                _transformationMatrixToRoot = new Matrix();
 
             if (_rotated)
             {
@@ -107,10 +117,10 @@ package starling.textures
                 _transformationMatrix.rotate(Math.PI / 2.0);
             }
 
-            _transformationMatrix.scale(_region.width  / _parent.width,
-                                        _region.height / _parent.height);
-            _transformationMatrix.translate(_region.x  / _parent.width,
-                                            _region.y  / _parent.height);
+            _transformationMatrix.scale(_region.width / _parent.width,
+                    _region.height / _parent.height);
+            _transformationMatrix.translate(_region.x / _parent.width,
+                    _region.y / _parent.height);
 
             var texture:SubTexture = this;
             while (texture)
@@ -119,65 +129,117 @@ package starling.textures
                 texture = texture.parent as SubTexture;
             }
         }
-        
+
         /** Disposes the parent texture if this texture owns it. */
         public override function dispose():void
         {
-            if (_ownsParent) _parent.dispose();
+            if (_ownsParent)
+                _parent.dispose();
             super.dispose();
         }
 
         /** The texture which the SubTexture is based on. */
-        public function get parent():Texture { return _parent; }
-        
+        public function get parent():Texture
+        {
+            return _parent;
+        }
+
         /** Indicates if the parent texture is disposed when this object is disposed. */
-        public function get ownsParent():Boolean { return _ownsParent; }
-        
+        public function get ownsParent():Boolean
+        {
+            return _ownsParent;
+        }
+
         /** If true, the SubTexture will show the parent region rotated by 90 degrees (CCW). */
-        public function get rotated():Boolean { return _rotated; }
+        public function get rotated():Boolean
+        {
+            return _rotated;
+        }
 
         /** The region of the parent texture that the SubTexture is showing (in points).
          *
          *  <p>CAUTION: not a copy, but the actual object! Do not modify!</p> */
-        public function get region():Rectangle { return _region; }
+        public function get region():Rectangle
+        {
+            return _region;
+        }
 
         /** @inheritDoc */
-        public override function get transformationMatrix():Matrix { return _transformationMatrix; }
+        public override function get transformationMatrix():Matrix
+        {
+            return _transformationMatrix;
+        }
 
         /** @inheritDoc */
-        public override function get transformationMatrixToRoot():Matrix { return _transformationMatrixToRoot; }
-        
-        /** @inheritDoc */
-        public override function get base():TextureBase { return _parent.base; }
-        
-        /** @inheritDoc */
-        public override function get root():ConcreteTexture { return _parent.root; }
-        
-        /** @inheritDoc */
-        public override function get format():String { return _parent.format; }
-        
-        /** @inheritDoc */
-        public override function get width():Number { return _width; }
-        
-        /** @inheritDoc */
-        public override function get height():Number { return _height; }
-        
-        /** @inheritDoc */
-        public override function get nativeWidth():Number { return _width * _scale; }
-        
-        /** @inheritDoc */
-        public override function get nativeHeight():Number { return _height * _scale; }
-        
-        /** @inheritDoc */
-        public override function get mipMapping():Boolean { return _parent.mipMapping; }
-        
-        /** @inheritDoc */
-        public override function get premultipliedAlpha():Boolean { return _parent.premultipliedAlpha; }
-        
-        /** @inheritDoc */
-        public override function get scale():Number { return _scale; }
+        public override function get transformationMatrixToRoot():Matrix
+        {
+            return _transformationMatrixToRoot;
+        }
 
         /** @inheritDoc */
-        public override function get frame():Rectangle { return _frame; }
+        public override function get base():TextureBase
+        {
+            return _parent.base;
+        }
+
+        /** @inheritDoc */
+        public override function get root():ConcreteTexture
+        {
+            return _parent.root;
+        }
+
+        /** @inheritDoc */
+        public override function get format():String
+        {
+            return _parent.format;
+        }
+
+        /** @inheritDoc */
+        public override function get width():Number
+        {
+            return _width;
+        }
+
+        /** @inheritDoc */
+        public override function get height():Number
+        {
+            return _height;
+        }
+
+        /** @inheritDoc */
+        public override function get nativeWidth():Number
+        {
+            return _width * _scale;
+        }
+
+        /** @inheritDoc */
+        public override function get nativeHeight():Number
+        {
+            return _height * _scale;
+        }
+
+        /** @inheritDoc */
+        public override function get mipMapping():Boolean
+        {
+            return _parent.mipMapping;
+        }
+
+        /** @inheritDoc */
+        public override function get premultipliedAlpha():Boolean
+        {
+            return _parent.premultipliedAlpha;
+        }
+
+        /** @inheritDoc */
+        public override function get scale():Number
+        {
+            return _scale;
+        }
+
+        /** @inheritDoc */
+        public override function get frame():Rectangle
+        {
+            return _frame;
+        }
     }
 }

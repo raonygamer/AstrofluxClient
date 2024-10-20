@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.filters
@@ -50,7 +50,7 @@ package starling.filters
         private var sRegion:Rectangle = new Rectangle();
 
         /** Creates a new, empty instance. */
-        public function FilterHelper(textureFormat:String="bgra")
+        public function FilterHelper(textureFormat:String = "bgra")
         {
             _usePotTextures = Starling.current.profile == Context3DProfile.BASELINE_CONSTRAINED;
             _preferredScale = Starling.contentScaleFactor;
@@ -80,23 +80,24 @@ package starling.filters
         }
 
         /** @inheritDoc */
-        public function getTexture(resolution:Number=1.0):Texture
+        public function getTexture(resolution:Number = 1.0):Texture
         {
             var texture:Texture;
             var subTexture:SubTexture;
 
             if (_numPasses >= 0)
-                if (_numPasses-- == 0) return null;
+                if (_numPasses-- == 0)
+                    return null;
 
             if (_pool.length)
                 texture = _pool.pop();
             else
                 texture = Texture.empty(_nativeWidth / _scale, _nativeHeight / _scale,
-                    true, false, true, _scale, _textureFormat);
+                        true, false, true, _scale, _textureFormat);
 
-            if (!MathUtil.isEquivalent(texture.width,  _width,  0.1) ||
-                !MathUtil.isEquivalent(texture.height, _height, 0.1) ||
-                !MathUtil.isEquivalent(texture.scale,  _scale * resolution))
+            if (!MathUtil.isEquivalent(texture.width, _width, 0.1) ||
+                    !MathUtil.isEquivalent(texture.height, _height, 0.1) ||
+                    !MathUtil.isEquivalent(texture.scale, _scale * resolution))
             {
                 sRegion.setTo(0, 0, _width * resolution, _height * resolution);
                 subTexture = texture as SubTexture;
@@ -139,29 +140,29 @@ package starling.filters
         {
             var factor:Number;
             var newScale:Number = _preferredScale;
-            var maxNativeSize:int   = Texture.maxSize;
-            var newNativeWidth:int  = getNativeSize(width,  newScale);
+            var maxNativeSize:int = Texture.maxSize;
+            var newNativeWidth:int = getNativeSize(width, newScale);
             var newNativeHeight:int = getNativeSize(height, newScale);
 
             if (newNativeWidth > maxNativeSize || newNativeHeight > maxNativeSize)
             {
                 factor = maxNativeSize / Math.max(newNativeWidth, newNativeHeight);
-                newNativeWidth  *= factor;
+                newNativeWidth *= factor;
                 newNativeHeight *= factor;
                 newScale *= factor;
             }
 
             if (_nativeWidth != newNativeWidth || _nativeHeight != newNativeHeight ||
-                _scale != newScale)
+                    _scale != newScale)
             {
                 purge();
 
                 _scale = newScale;
-                _nativeWidth  = newNativeWidth;
+                _nativeWidth = newNativeWidth;
                 _nativeHeight = newNativeHeight;
             }
 
-            _width  = width;
+            _width = width;
             _height = height;
         }
 
@@ -176,21 +177,30 @@ package starling.filters
         }
 
         /** The projection matrix that was active when the filter started processing. */
-        public function get projectionMatrix3D():Matrix3D { return _projectionMatrix; }
+        public function get projectionMatrix3D():Matrix3D
+        {
+            return _projectionMatrix;
+        }
         public function set projectionMatrix3D(value:Matrix3D):void
         {
             _projectionMatrix.copyFrom(value);
         }
 
         /** The render target that was active when the filter started processing. */
-        public function get renderTarget():Texture { return _renderTarget; }
+        public function get renderTarget():Texture
+        {
+            return _renderTarget;
+        }
         public function set renderTarget(value:Texture):void
         {
             _renderTarget = value;
         }
 
         /** @inheritDoc */
-        public function get targetBounds():Rectangle { return _targetBounds; }
+        public function get targetBounds():Rectangle
+        {
+            return _targetBounds;
+        }
         public function set targetBounds(value:Rectangle):void
         {
             _targetBounds.copyFrom(value);
@@ -198,18 +208,33 @@ package starling.filters
         }
 
         /** @inheritDoc */
-        public function get target():DisplayObject { return _target; }
-        public function set target(value:DisplayObject):void { _target = value; }
+        public function get target():DisplayObject
+        {
+            return _target;
+        }
+        public function set target(value:DisplayObject):void
+        {
+            _target = value;
+        }
 
         /** The scale factor of the returned textures. */
-        public function get textureScale():Number { return _preferredScale; }
+        public function get textureScale():Number
+        {
+            return _preferredScale;
+        }
         public function set textureScale(value:Number):void
         {
             _preferredScale = value > 0 ? value : Starling.contentScaleFactor;
         }
 
         /** The texture format of the returned textures. @default BGRA */
-        public function get textureFormat():String { return _textureFormat; }
-        public function set textureFormat(value:String):void { _textureFormat = value; }
+        public function get textureFormat():String
+        {
+            return _textureFormat;
+        }
+        public function set textureFormat(value:String):void
+        {
+            _textureFormat = value;
+        }
     }
 }

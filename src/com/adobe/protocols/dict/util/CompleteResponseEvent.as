@@ -38,10 +38,10 @@ package com.adobe.protocols.dict.util
 	{
 		private var _response:String;
 
-		public static const COMPLETE_RESPONSE:String = "completeResponse"
+		public static const COMPLETE_RESPONSE:String = "completeResponse";
 
 		public function CompleteResponseEvent(type:String, bubbles:Boolean = false,
-														cancelable:Boolean = false)
+				cancelable:Boolean = false)
 		{
 			super(type, bubbles, cancelable);
 		}
@@ -50,18 +50,18 @@ package com.adobe.protocols.dict.util
 		{
 			this._response = response;
 		}
-		
+
 		public function get response():String
 		{
 			return this._response;
 		}
-		
+
 		public override function clone():Event
 		{
-			var out:CompleteResponseEvent = new CompleteResponseEvent(type, 
-															bubbles, cancelable);
+			var out:CompleteResponseEvent = new CompleteResponseEvent(type,
+					bubbles, cancelable);
 			out.response = _response;
-			
+
 			return out;
 		}
 	}

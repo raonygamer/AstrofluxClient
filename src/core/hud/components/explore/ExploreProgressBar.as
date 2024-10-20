@@ -11,66 +11,66 @@ package core.hud.components.explore
    import flash.utils.Timer;
    import starling.display.Quad;
    import starling.display.Sprite;
-   
+
    public class ExploreProgressBar extends Sprite
    {
       public static var COLOR:uint = 3225899;
-      
+
       private var min:Number = 0;
-      
+
       private var max:Number = 1;
-      
+
       private var value:Number = 0;
-      
+
       private var _exploring:Boolean = false;
-      
+
       private var exploreEffect:Vector.<Emitter>;
-      
+
       private var effectForeground:Quad;
-      
+
       private var effectBackground:Quad;
-      
+
       private var effectContainer:Quad;
-      
+
       private var effectTarget:GameObject;
-      
+
       private var effectCanvas:Sprite;
-      
+
       private var finished:Boolean = false;
-      
+
       private var exploreText:Text;
-      
+
       private var body:Body;
-      
+
       private var g:Game;
-      
+
       private var finishedCallback:Function;
-      
+
       private var setValueOnFinishedLoad:Boolean = false;
-      
+
       private var onFinishedLoadValue:Number;
-      
+
       private var onFinishedLoadFailed:Boolean;
-      
+
       private var startOnFinish:Boolean = false;
-      
+
       private var timer:Timer;
-      
+
       private var startTime:Number = 0;
-      
+
       private var finishTime:Number = 0;
-      
+
       private var failTime:Number = 0;
-      
+
       private var barWidth:Number = 452;
-      
+
       private var type:int;
-      
+
       private var loadFinished:Boolean = false;
-      
+
       public function ExploreProgressBar(param1:Game, param2:Body, param3:Function, param4:int)
       {
-         timer = new Timer(1000,1);
+         timer = new Timer(1000, 1);
          this.g = param1;
          this.body = param2;
          this.type = param4;
@@ -79,8 +79,8 @@ package core.hud.components.explore
          super();
          effectTarget = new GameObject();
          effectCanvas = new Sprite();
-         exploreEffect = EmitterFactory.create("9iZrZ9p5nEWqrPhkxTYNgA",param1,0,0,effectTarget,true,true,true,effectCanvas);
-         for each(var _loc5_ in exploreEffect)
+         exploreEffect = EmitterFactory.create("9iZrZ9p5nEWqrPhkxTYNgA", param1, 0, 0, effectTarget, true, true, true, effectCanvas);
+         for each (var _loc5_:* in exploreEffect)
          {
             _loc5_.followEmitter = true;
             _loc5_.followTarget = true;
@@ -91,15 +91,15 @@ package core.hud.components.explore
             _loc5_.startSize = 2;
             _loc5_.finishSize = 0;
          }
-         effectBackground = new Quad(barWidth,17,0);
+         effectBackground = new Quad(barWidth, 17, 0);
          addChild(effectBackground);
-         effectForeground = new Quad(1,17,_loc6_);
-         exploreText = new Text(width / 2,0,true);
+         effectForeground = new Quad(1, 17, _loc6_);
+         exploreText = new Text(width / 2, 0, true);
          exploreText.wordWrap = false;
          exploreText.size = 10;
          exploreText.alignCenter();
          exploreText.y = 1;
-         if(param4 == 0)
+         if (param4 == 0)
          {
             exploreText.color = 1118481;
          }
@@ -107,7 +107,7 @@ package core.hud.components.explore
          {
             exploreText.color = 5592405;
          }
-         if(finished)
+         if (finished)
          {
             exploreText.text = "EXPLORE FINISHED!";
          }
@@ -117,29 +117,29 @@ package core.hud.components.explore
          }
          addChild(exploreText);
          loadFinished = true;
-         if(setValueOnFinishedLoad)
+         if (setValueOnFinishedLoad)
          {
-            start(0,0,0);
-            setValueAndEffect(onFinishedLoadValue,onFinishedLoadFailed);
+            start(0, 0, 0);
+            setValueAndEffect(onFinishedLoadValue, onFinishedLoadFailed);
          }
-         if(startOnFinish)
+         if (startOnFinish)
          {
-            start(startTime,finishTime,failTime);
+            start(startTime, finishTime, failTime);
          }
       }
-      
-      public function setMax() : void
+
+      public function setMax():void
       {
          finished = true;
       }
-      
-      public function start(param1:Number, param2:Number, param3:Number) : void
+
+      public function start(param1:Number, param2:Number, param3:Number):void
       {
          Console.write("start");
          startTime = param1;
          finishTime = param2;
          failTime = param3;
-         if(type == 0)
+         if (type == 0)
          {
             exploreText.color = 1118481;
          }
@@ -147,7 +147,7 @@ package core.hud.components.explore
          {
             exploreText.color = 5592405;
          }
-         if(!loadFinished)
+         if (!loadFinished)
          {
             startOnFinish = true;
             return;
@@ -156,28 +156,28 @@ package core.hud.components.explore
          startTime = param1;
          finishTime = param2;
          failTime = param3;
-         if(!contains(effectForeground))
+         if (!contains(effectForeground))
          {
-            addChildAt(effectForeground,1);
+            addChildAt(effectForeground, 1);
          }
          addChild(effectCanvas);
          exploring = true;
       }
-      
-      public function stop() : void
+
+      public function stop():void
       {
          finished = true;
          stopEffect();
       }
-      
-      public function update() : void
+
+      public function update():void
       {
          var _loc2_:Number = NaN;
          var _loc3_:Number = NaN;
          var _loc1_:Number = NaN;
-         if(_exploring && !finished)
+         if (_exploring && !finished)
          {
-            if(failTime < g.time)
+            if (failTime < g.time)
             {
                _loc2_ = failTime - startTime;
             }
@@ -187,51 +187,51 @@ package core.hud.components.explore
             }
             _loc3_ = finishTime - startTime;
             _loc1_ = _loc2_ / _loc3_;
-            setValue(_loc1_,failTime < g.time);
+            setValue(_loc1_, failTime < g.time);
          }
       }
-      
-      public function stopEffect() : void
+
+      public function stopEffect():void
       {
-         for each(var _loc1_ in exploreEffect)
+         for each (var _loc1_:* in exploreEffect)
          {
             _loc1_.killEmitter();
          }
       }
-      
-      public function set exploring(param1:Boolean) : void
+
+      public function set exploring(param1:Boolean):void
       {
          this._exploring = param1;
       }
-      
-      public function setValueAndEffect(param1:Number, param2:Boolean = false) : void
+
+      public function setValueAndEffect(param1:Number, param2:Boolean = false):void
       {
          var _loc3_:int = 0;
-         if(!loadFinished)
+         if (!loadFinished)
          {
             setValueOnFinishedLoad = true;
             onFinishedLoadValue = param1;
             onFinishedLoadFailed = param2;
             return;
          }
-         if(!contains(effectForeground))
+         if (!contains(effectForeground))
          {
-            addChildAt(effectForeground,1);
+            addChildAt(effectForeground, 1);
          }
-         if(param1 > max)
+         if (param1 > max)
          {
             param1 = max;
          }
          value = param1;
          finished = true;
-         if(param2)
+         if (param2)
          {
             _loc3_ = barWidth * (value / max);
             effectForeground.width = _loc3_;
             effectTarget.x = _loc3_ - 1;
             effectTarget.y = 10;
             exploreText.text = "FAILED AT: " + Math.floor(value * 100) + "%";
-            if(type == 2)
+            if (type == 2)
             {
                exploreText.color = 16777215;
             }
@@ -247,7 +247,7 @@ package core.hud.components.explore
          effectTarget.x = _loc3_ - 1;
          effectTarget.y = 10;
          exploreText.text = "EXPLORED: " + Math.floor(value * 100) + "%";
-         if(type == 0 && value > 0.5)
+         if (type == 0 && value > 0.5)
          {
             exploreText.color = 0;
          }
@@ -256,17 +256,17 @@ package core.hud.components.explore
             exploreText.color = 16777215;
          }
       }
-      
-      private function setValue(param1:Number, param2:Boolean = false) : void
+
+      private function setValue(param1:Number, param2:Boolean = false):void
       {
          var _loc5_:int = 0;
          var _loc3_:Number = NaN;
          var _loc4_:Number = NaN;
-         if(!loadFinished)
+         if (!loadFinished)
          {
             return;
          }
-         if(param1 > max)
+         if (param1 > max)
          {
             param1 = max;
          }
@@ -276,7 +276,7 @@ package core.hud.components.explore
          effectTarget.y = 10;
          effectForeground.width = _loc5_;
          exploreText.text = "EXPLORED: " + Math.floor(value * 100) + "%";
-         if(type == 0 && value > 0.5)
+         if (type == 0 && value > 0.5)
          {
             exploreText.color = 0;
          }
@@ -284,11 +284,11 @@ package core.hud.components.explore
          {
             exploreText.color = 16777215;
          }
-         if(value >= max && !finished)
+         if (value >= max && !finished)
          {
             Console.write("finished explore");
             finished = true;
-            if(type == 0 && value > 0.5)
+            if (type == 0 && value > 0.5)
             {
                exploreText.color = 0;
             }
@@ -298,7 +298,7 @@ package core.hud.components.explore
             }
             finishedCallback();
          }
-         else if(param2 && !finished)
+         else if (param2 && !finished)
          {
             Console.write("failed explore");
             _loc3_ = failTime - startTime;
@@ -309,7 +309,7 @@ package core.hud.components.explore
             effectTarget.y = 10;
             effectForeground.width = _loc5_;
             exploreText.text = "FAILED AT: " + Math.floor(value * 100) + "%";
-            if(type == 2)
+            if (type == 2)
             {
                exploreText.color = 16777215;
             }
@@ -326,4 +326,3 @@ package core.hud.components.explore
       }
    }
 }
-

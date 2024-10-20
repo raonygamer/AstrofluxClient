@@ -16,56 +16,56 @@ package core.states.gameStates
    import starling.display.Quad;
    import starling.display.Sprite;
    import starling.events.TouchEvent;
-   
+
    public class LeaderBoardState2 extends PlayState
    {
       private static const START_HEIGHT:int = 20;
-      
+
       private static const START_WIDTH:int = 50;
-      
+
       private static var topRankList:Array;
-      
+
       private static var topSurvivorList:Array;
-      
+
       private static var topPvpPlayersList:Array;
-      
+
       private static var topPlayersList:Array;
-      
+
       private static var topPlayerClans:Array;
-      
+
       private static var topRankContainer:Sprite = new Sprite();
-      
+
       private static var topSurvivorContainer:Sprite = new Sprite();
-      
+
       private static var topPvpPlayersContainer:Sprite = new Sprite();
-      
+
       private static var topPlayersContainer:Sprite = new Sprite();
-      
+
       private var goTo:String;
-      
+
       private var currentHeight:Number = 20;
-      
+
       private var currentWidth:Number = 50;
-      
+
       private var bgr:Image;
-      
+
       private var closeButton:ButtonExpandableHud;
-      
+
       private var scrollArea:ScrollContainer;
-      
+
       private var topTroonsPerMinuteList:Vector.<Object>;
-      
+
       private var topTroonsPerMinuteContainer:Sprite;
-      
+
       private var dataManager:IDataManager;
-      
+
       public function LeaderBoardState2(param1:Game)
       {
          topTroonsPerMinuteContainer = new Sprite();
          super(param1);
       }
-      
-      override public function enter() : void
+
+      override public function enter():void
       {
          var defaultButton:Button;
          var topRankButton:Button;
@@ -89,92 +89,92 @@ package core.states.gameStates
          topSurvivorContainer.visible = false;
          topPvpPlayersContainer.visible = false;
          defaultButton = new Button(function():void
-         {
-            defaultButton.enabled = false;
-            topRankButton.enabled = true;
-            topPlayerButton.enabled = true;
-            topSurvivorButton.enabled = true;
-            topPvpPlayerButton.enabled = true;
-            topTroonsPerMinuteContainer.visible = true;
-            topRankContainer.visible = false;
-            topPlayersContainer.visible = false;
-            topSurvivorContainer.visible = false;
-            topPvpPlayersContainer.visible = false;
-            scrollArea.scrollToPosition(0,0);
-         },Localize.t("Planet Wars"));
+            {
+               defaultButton.enabled = false;
+               topRankButton.enabled = true;
+               topPlayerButton.enabled = true;
+               topSurvivorButton.enabled = true;
+               topPvpPlayerButton.enabled = true;
+               topTroonsPerMinuteContainer.visible = true;
+               topRankContainer.visible = false;
+               topPlayersContainer.visible = false;
+               topSurvivorContainer.visible = false;
+               topPvpPlayersContainer.visible = false;
+               scrollArea.scrollToPosition(0, 0);
+            }, Localize.t("Planet Wars"));
          defaultButton.x = 50;
          defaultButton.y = 60;
          addChild(defaultButton);
          defaultButton.enabled = false;
          topRankButton = new Button(function():void
-         {
-            defaultButton.enabled = true;
-            topRankButton.enabled = false;
-            topPlayerButton.enabled = true;
-            topSurvivorButton.enabled = true;
-            topPvpPlayerButton.enabled = true;
-            topTroonsPerMinuteContainer.visible = false;
-            topRankContainer.visible = true;
-            topPlayersContainer.visible = false;
-            topSurvivorContainer.visible = false;
-            topPvpPlayersContainer.visible = false;
-            scrollArea.scrollToPosition(0,0);
-         },Localize.t("Power Clans"));
+            {
+               defaultButton.enabled = true;
+               topRankButton.enabled = false;
+               topPlayerButton.enabled = true;
+               topSurvivorButton.enabled = true;
+               topPvpPlayerButton.enabled = true;
+               topTroonsPerMinuteContainer.visible = false;
+               topRankContainer.visible = true;
+               topPlayersContainer.visible = false;
+               topSurvivorContainer.visible = false;
+               topPvpPlayersContainer.visible = false;
+               scrollArea.scrollToPosition(0, 0);
+            }, Localize.t("Power Clans"));
          topRankButton.x = defaultButton.x + defaultButton.width + 10;
          topRankButton.y = 60;
          addChild(topRankButton);
          topSurvivorButton = new Button(function():void
-         {
-            defaultButton.enabled = true;
-            topRankButton.enabled = true;
-            topPlayerButton.enabled = true;
-            topSurvivorButton.enabled = false;
-            topPvpPlayerButton.enabled = true;
-            topTroonsPerMinuteContainer.visible = false;
-            topRankContainer.visible = false;
-            topSurvivorContainer.visible = true;
-            topPlayersContainer.visible = false;
-            topPvpPlayersContainer.visible = false;
-            scrollArea.scrollToPosition(0,0);
-         },Localize.t("Survivor Clans"));
+            {
+               defaultButton.enabled = true;
+               topRankButton.enabled = true;
+               topPlayerButton.enabled = true;
+               topSurvivorButton.enabled = false;
+               topPvpPlayerButton.enabled = true;
+               topTroonsPerMinuteContainer.visible = false;
+               topRankContainer.visible = false;
+               topSurvivorContainer.visible = true;
+               topPlayersContainer.visible = false;
+               topPvpPlayersContainer.visible = false;
+               scrollArea.scrollToPosition(0, 0);
+            }, Localize.t("Survivor Clans"));
          topSurvivorButton.x = topRankButton.x + topRankButton.width + 10;
          topSurvivorButton.y = 60;
          addChild(topSurvivorButton);
          topPvpPlayerButton = new Button(function():void
-         {
-            defaultButton.enabled = true;
-            topRankButton.enabled = true;
-            topPlayerButton.enabled = true;
-            topPvpPlayerButton.enabled = false;
-            topSurvivorButton.enabled = true;
-            topTroonsPerMinuteContainer.visible = false;
-            topRankContainer.visible = false;
-            topPlayersContainer.visible = false;
-            topPvpPlayersContainer.visible = true;
-            topSurvivorContainer.visible = false;
-            scrollArea.scrollToPosition(0,0);
-         },Localize.t("Top PvP Players"));
+            {
+               defaultButton.enabled = true;
+               topRankButton.enabled = true;
+               topPlayerButton.enabled = true;
+               topPvpPlayerButton.enabled = false;
+               topSurvivorButton.enabled = true;
+               topTroonsPerMinuteContainer.visible = false;
+               topRankContainer.visible = false;
+               topPlayersContainer.visible = false;
+               topPvpPlayersContainer.visible = true;
+               topSurvivorContainer.visible = false;
+               scrollArea.scrollToPosition(0, 0);
+            }, Localize.t("Top PvP Players"));
          topPvpPlayerButton.x = topSurvivorButton.x + topSurvivorButton.width + 10;
          topPvpPlayerButton.y = 60;
          addChild(topPvpPlayerButton);
          topPlayerButton = new Button(function():void
-         {
-            defaultButton.enabled = true;
-            topRankButton.enabled = true;
-            topPlayerButton.enabled = false;
-            topPvpPlayerButton.enabled = true;
-            topSurvivorButton.enabled = true;
-            topTroonsPerMinuteContainer.visible = false;
-            topRankContainer.visible = false;
-            topPlayersContainer.visible = true;
-            topSurvivorContainer.visible = false;
-            topPvpPlayersContainer.visible = false;
-            scrollArea.scrollToPosition(0,0);
-         },Localize.t("Top Players"));
+            {
+               defaultButton.enabled = true;
+               topRankButton.enabled = true;
+               topPlayerButton.enabled = false;
+               topPvpPlayerButton.enabled = true;
+               topSurvivorButton.enabled = true;
+               topTroonsPerMinuteContainer.visible = false;
+               topRankContainer.visible = false;
+               topPlayersContainer.visible = true;
+               topSurvivorContainer.visible = false;
+               topPvpPlayersContainer.visible = false;
+               scrollArea.scrollToPosition(0, 0);
+            }, Localize.t("Top Players"));
          topPlayerButton.x = topPvpPlayerButton.x + topPvpPlayerButton.width + 10;
          topPlayerButton.y = 60;
          addChild(topPlayerButton);
-         closeButton = new ButtonExpandableHud(close,Localize.t("close"));
+         closeButton = new ButtonExpandableHud(close, Localize.t("close"));
          closeButton.x = bgr.width - 46 - closeButton.width;
          closeButton.y = 0;
          addChild(closeButton);
@@ -190,74 +190,74 @@ package core.states.gameStates
          scrollArea.addChild(topPlayersContainer);
          scrollArea.addChild(topPvpPlayersContainer);
          g.controlZoneManager.load(function():void
-         {
-            topTroonsPerMinuteList = g.controlZoneManager.getTopTroonsPerMinuteClans();
-            drawTopTroonsPerMinute();
-         });
-         if(topRankList == null)
-         {
-            g.dataManager.loadRangeFromBigDB("Clans","ByRank",null,function(param1:Array):void
             {
-               var array:Array = param1;
-               topRankList = array;
-               loadCompleted();
-               drawTopRank();
-               scrollArea.readjustLayout();
-               if(topPvpPlayersList == null)
+               topTroonsPerMinuteList = g.controlZoneManager.getTopTroonsPerMinuteClans();
+               drawTopTroonsPerMinute();
+            });
+         if (topRankList == null)
+         {
+            g.dataManager.loadRangeFromBigDB("Clans", "ByRank", null, function(param1:Array):void
                {
-                  g.rpcServiceRoom("requestPvpHighscore",function(param1:Message):void
+                  var array:Array = param1;
+                  topRankList = array;
+                  loadCompleted();
+                  drawTopRank();
+                  scrollArea.readjustLayout();
+                  if (topPvpPlayersList == null)
                   {
-                     var _loc3_:int = 0;
-                     var _loc2_:Object = null;
-                     topPvpPlayersList = [];
-                     _loc3_ = 0;
-                     while(_loc3_ < param1.length)
-                     {
-                        _loc2_ = {};
-                        _loc2_.rank = param1.getInt(_loc3_);
-                        _loc2_.name = param1.getString(_loc3_ + 1);
-                        _loc2_.key = param1.getString(_loc3_ + 2);
-                        _loc2_.level = param1.getInt(_loc3_ + 3);
-                        _loc2_.clan = param1.getString(_loc3_ + 4);
-                        _loc2_.value = param1.getNumber(_loc3_ + 5);
-                        topPvpPlayersList.push(_loc2_);
-                        _loc3_ += 6;
-                     }
+                     g.rpcServiceRoom("requestPvpHighscore", function(param1:Message):void
+                        {
+                           var _loc3_:int = 0;
+                           var _loc2_:Object = null;
+                           topPvpPlayersList = [];
+                           _loc3_ = 0;
+                           while (_loc3_ < param1.length)
+                           {
+                              _loc2_ = {};
+                              _loc2_.rank = param1.getInt(_loc3_);
+                              _loc2_.name = param1.getString(_loc3_ + 1);
+                              _loc2_.key = param1.getString(_loc3_ + 2);
+                              _loc2_.level = param1.getInt(_loc3_ + 3);
+                              _loc2_.clan = param1.getString(_loc3_ + 4);
+                              _loc2_.value = param1.getNumber(_loc3_ + 5);
+                              topPvpPlayersList.push(_loc2_);
+                              _loc3_ += 6;
+                           }
+                           drawTopPvpPlayers();
+                        });
+                  }
+                  else
+                  {
                      drawTopPvpPlayers();
-                  });
-               }
-               else
-               {
-                  drawTopPvpPlayers();
-               }
-               if(topPlayersList == null)
-               {
-                  g.rpcServiceRoom("requestTroonsHighscore",function(param1:Message):void
+                  }
+                  if (topPlayersList == null)
                   {
-                     var _loc3_:int = 0;
-                     var _loc2_:Object = null;
-                     topPlayersList = [];
-                     _loc3_ = 0;
-                     while(_loc3_ < param1.length)
-                     {
-                        _loc2_ = {};
-                        _loc2_.rank = param1.getInt(_loc3_);
-                        _loc2_.name = param1.getString(_loc3_ + 1);
-                        _loc2_.key = param1.getString(_loc3_ + 2);
-                        _loc2_.level = param1.getInt(_loc3_ + 3);
-                        _loc2_.clan = param1.getString(_loc3_ + 4);
-                        _loc2_.value = param1.getNumber(_loc3_ + 5);
-                        topPlayersList.push(_loc2_);
-                        _loc3_ += 6;
-                     }
+                     g.rpcServiceRoom("requestTroonsHighscore", function(param1:Message):void
+                        {
+                           var _loc3_:int = 0;
+                           var _loc2_:Object = null;
+                           topPlayersList = [];
+                           _loc3_ = 0;
+                           while (_loc3_ < param1.length)
+                           {
+                              _loc2_ = {};
+                              _loc2_.rank = param1.getInt(_loc3_);
+                              _loc2_.name = param1.getString(_loc3_ + 1);
+                              _loc2_.key = param1.getString(_loc3_ + 2);
+                              _loc2_.level = param1.getInt(_loc3_ + 3);
+                              _loc2_.clan = param1.getString(_loc3_ + 4);
+                              _loc2_.value = param1.getNumber(_loc3_ + 5);
+                              topPlayersList.push(_loc2_);
+                              _loc3_ += 6;
+                           }
+                           drawTopPlayers();
+                        });
+                  }
+                  else
+                  {
                      drawTopPlayers();
-                  });
-               }
-               else
-               {
-                  drawTopPlayers();
-               }
-            },50);
+                  }
+               }, 50);
          }
          else
          {
@@ -265,15 +265,15 @@ package core.states.gameStates
             drawTopPlayers();
             drawTopPvpPlayers();
          }
-         if(topSurvivorList == null)
+         if (topSurvivorList == null)
          {
-            g.dataManager.loadRangeFromBigDB("Clans","ByHighscore",null,function(param1:Array):void
-            {
-               topSurvivorList = param1;
-               loadCompleted();
-               drawTopSurvivor();
-               scrollArea.readjustLayout();
-            },50);
+            g.dataManager.loadRangeFromBigDB("Clans", "ByHighscore", null, function(param1:Array):void
+               {
+                  topSurvivorList = param1;
+                  loadCompleted();
+                  drawTopSurvivor();
+                  scrollArea.readjustLayout();
+               }, 50);
          }
          else
          {
@@ -282,56 +282,56 @@ package core.states.gameStates
          nextReset = new Text();
          date = new Date();
          month = date.month;
-         if(month == 11)
+         if (month == 11)
          {
             month = 0;
          }
          year = date.fullYear;
-         months = [Localize.t("January"),Localize.t("February"),Localize.t("March"),Localize.t("April"),Localize.t("May"),Localize.t("June"),Localize.t("July"),Localize.t("August"),Localize.t("September"),Localize.t("October"),Localize.t("November"),Localize.t("December")];
-         nextReset.htmlText = Localize.t("Next season starts at:") + " <font color=\'#ffff88\'>1 " + months[month + 1] + " " + year + "</font>";
+         months = [Localize.t("January"), Localize.t("February"), Localize.t("March"), Localize.t("April"), Localize.t("May"), Localize.t("June"), Localize.t("July"), Localize.t("August"), Localize.t("September"), Localize.t("October"), Localize.t("November"), Localize.t("December")];
+         nextReset.htmlText = Localize.t("Next season starts at:") + " <font color='#ffff88'>1 " + months[month + 1] + " " + year + "</font>";
          nextReset.y = 40;
          nextReset.x = 50;
          addChild(nextReset);
       }
-      
-      public function drawTopRank() : void
+
+      public function drawTopRank():void
       {
          var _loc2_:int = 0;
-         for each(var _loc1_ in topRankList)
+         for each (var _loc1_:* in topRankList)
          {
-            drawClanObject(_loc1_,_loc2_,topRankContainer);
+            drawClanObject(_loc1_, _loc2_, topRankContainer);
             _loc2_++;
          }
       }
-      
-      public function drawTopSurvivor() : void
+
+      public function drawTopSurvivor():void
       {
          var _loc2_:int = 0;
-         for each(var _loc1_ in topSurvivorList)
+         for each (var _loc1_:* in topSurvivorList)
          {
-            drawClanObject(_loc1_,_loc2_,topSurvivorContainer,false,true);
+            drawClanObject(_loc1_, _loc2_, topSurvivorContainer, false, true);
             _loc2_++;
          }
       }
-      
-      public function drawTopTroonsPerMinute() : void
+
+      public function drawTopTroonsPerMinute():void
       {
          var _loc2_:Text = null;
          var _loc3_:int = 0;
-         for each(var _loc1_ in topTroonsPerMinuteList)
+         for each (var _loc1_:* in topTroonsPerMinuteList)
          {
-            drawClanObject(_loc1_,_loc3_,topTroonsPerMinuteContainer,true);
+            drawClanObject(_loc1_, _loc3_, topTroonsPerMinuteContainer, true);
             _loc3_++;
          }
-         if(_loc3_ == 0)
+         if (_loc3_ == 0)
          {
             _loc2_ = new Text();
             _loc2_.text = Localize.t("No clans have any any control right now.");
             topTroonsPerMinuteContainer.addChild(_loc2_);
          }
       }
-      
-      private function drawClanObject(param1:Object, param2:int, param3:Sprite, param4:Boolean = false, param5:* = false) : void
+
+      private function drawClanObject(param1:Object, param2:int, param3:Sprite, param4:Boolean = false, param5:* = false):void
       {
          var rank:Text;
          var logo:Image;
@@ -344,16 +344,16 @@ package core.states.gameStates
          var perMinute:Boolean = param4;
          var survivor:* = param5;
          var y:int = i * 45;
-         var quad:Quad = new Quad(670,40,2171169);
+         var quad:Quad = new Quad(670, 40, 2171169);
          quad.y = y;
-         quad.addEventListener("touch",function(param1:TouchEvent):void
-         {
-            if(param1.getTouch(quad,"began"))
+         quad.addEventListener("touch", function(param1:TouchEvent):void
             {
-               sm.changeState(new ClanState(g,clan.key));
-               param1.stopPropagation();
-            }
-         });
+               if (param1.getTouch(quad, "began"))
+               {
+                  sm.changeState(new ClanState(g, clan.key));
+                  param1.stopPropagation();
+               }
+            });
          quad.useHandCursor = true;
          y += 10;
          rank = new Text();
@@ -373,8 +373,8 @@ package core.states.gameStates
          name.color = clan.color;
          name.x = logo.x + logo.width + 10;
          troons = new Text();
-         troons.text = perMinute ? Localize.t("[troons] / min").replace("[troons]",clan.troons) : Util.formatAmount(clan.troons);
-         if(survivor)
+         troons.text = perMinute ? Localize.t("[troons] / min").replace("[troons]", clan.troons) : Util.formatAmount(clan.troons);
+         if (survivor)
          {
             troons.text = Math.floor(clan["highscoreic3w-BxdMU6qWhX9t3_EaA"]).toString();
          }
@@ -392,49 +392,49 @@ package core.states.gameStates
          canvas.addChild(troons);
          canvas.addChild(troonIcon);
       }
-      
-      private function drawTopPlayers() : void
+
+      private function drawTopPlayers():void
       {
          var _loc3_:int = 0;
          var _loc1_:int = 0;
          var _loc2_:int = 0;
          _loc3_ = 0;
-         while(_loc3_ < topPlayersList.length)
+         while (_loc3_ < topPlayersList.length)
          {
-            if(topPlayersList[_loc3_].rank != _loc1_ + 1)
+            if (topPlayersList[_loc3_].rank != _loc1_ + 1)
             {
-               drawBlank(_loc3_,topPlayersContainer);
+               drawBlank(_loc3_, topPlayersContainer);
                _loc2_ = 1;
             }
-            drawPlayerObject(topPlayersList[_loc3_],_loc3_,_loc2_,topPlayersContainer,false);
+            drawPlayerObject(topPlayersList[_loc3_], _loc3_, _loc2_, topPlayersContainer, false);
             _loc1_ = int(topPlayersList[_loc3_].rank);
             _loc3_++;
          }
       }
-      
-      private function drawTopPvpPlayers() : void
+
+      private function drawTopPvpPlayers():void
       {
          var _loc3_:int = 0;
          var _loc1_:int = 0;
          var _loc2_:int = 0;
          _loc3_ = 0;
-         while(_loc3_ < topPvpPlayersList.length)
+         while (_loc3_ < topPvpPlayersList.length)
          {
-            if(topPvpPlayersList[_loc3_].rank != _loc1_ + 1)
+            if (topPvpPlayersList[_loc3_].rank != _loc1_ + 1)
             {
-               drawBlank(_loc3_,topPvpPlayersContainer);
+               drawBlank(_loc3_, topPvpPlayersContainer);
                _loc2_ = 1;
             }
-            drawPlayerObject(topPvpPlayersList[_loc3_],_loc3_,_loc2_,topPvpPlayersContainer,true);
+            drawPlayerObject(topPvpPlayersList[_loc3_], _loc3_, _loc2_, topPvpPlayersContainer, true);
             _loc1_ = int(topPvpPlayersList[_loc3_].rank);
             _loc3_++;
          }
       }
-      
-      private function drawBlank(param1:int, param2:Sprite) : void
+
+      private function drawBlank(param1:int, param2:Sprite):void
       {
          var _loc5_:int = param1 * 45;
-         var _loc4_:Quad = new Quad(670,40,2171169);
+         var _loc4_:Quad = new Quad(670, 40, 2171169);
          _loc4_.y = _loc5_;
          _loc5_ += 10;
          var _loc3_:Text = new Text();
@@ -445,26 +445,26 @@ package core.states.gameStates
          param2.addChild(_loc4_);
          param2.addChild(_loc3_);
       }
-      
-      private function drawPlayerObject(param1:Object, param2:int, param3:int, param4:Sprite, param5:Boolean) : void
+
+      private function drawPlayerObject(param1:Object, param2:int, param3:int, param4:Sprite, param5:Boolean):void
       {
          var _loc10_:Quad = null;
          var _loc12_:Object = null;
          var _loc6_:Image = null;
          var _loc7_:Image = null;
          var _loc15_:int = (param2 + param3) * 45;
-         if(param1.key == g.me.id)
+         if (param1.key == g.me.id)
          {
-            _loc10_ = new Quad(670,40,4342338);
+            _loc10_ = new Quad(670, 40, 4342338);
          }
          else
          {
-            _loc10_ = new Quad(670,40,2171169);
+            _loc10_ = new Quad(670, 40, 2171169);
          }
          _loc10_.y = _loc15_;
          _loc15_ += 10;
          var _loc9_:Text = new Text();
-         if(param5 == true)
+         if (param5 == true)
          {
             _loc9_.text = topPvpPlayersList[param2].rank;
             _loc12_ = getPlayerClanObj(topPvpPlayersList[param2].clan);
@@ -478,11 +478,11 @@ package core.states.gameStates
          _loc9_.y = _loc15_;
          _loc9_.x = 10;
          var _loc13_:* = 11184810;
-         if(_loc12_ != null)
+         if (_loc12_ != null)
          {
             _loc13_ = uint(_loc12_.color);
             _loc6_ = new Image(textureManager.getTextureGUIByTextureName(_loc12_.logo));
-            new ToolTip(g,_loc6_,_loc12_.name);
+            new ToolTip(g, _loc6_, _loc12_.name);
          }
          else
          {
@@ -512,7 +512,7 @@ package core.states.gameStates
          _loc8_.size = 14;
          _loc8_.color = Style.COLOR_YELLOW;
          _loc8_.x = 610 - _loc8_.width - 10;
-         if(!param5)
+         if (!param5)
          {
             _loc7_ = new Image(textureManager.getTextureGUIByTextureName("troon.png"));
             _loc7_.y = _loc15_;
@@ -535,43 +535,42 @@ package core.states.gameStates
          param4.addChild(_loc8_);
          param4.addChild(_loc7_);
       }
-      
-      private function getPlayerClanObj(param1:String) : Object
+
+      private function getPlayerClanObj(param1:String):Object
       {
-         for each(var _loc2_ in topRankList)
+         for each (var _loc2_:* in topRankList)
          {
-            if(_loc2_.key == param1)
+            if (_loc2_.key == param1)
             {
                return _loc2_;
             }
          }
          return null;
       }
-      
-      override public function execute() : void
+
+      override public function execute():void
       {
          updateInput();
          super.execute();
       }
-      
-      private function updateInput() : void
+
+      private function updateInput():void
       {
-         if(!loaded)
+         if (!loaded)
          {
             return;
          }
          checkAccelerate(true);
-         if(keybinds.isEscPressed)
+         if (keybinds.isEscPressed)
          {
             close();
             return;
          }
       }
-      
-      private function close() : void
+
+      private function close():void
       {
          sm.changeState(new RoamingState(g));
       }
    }
 }
-

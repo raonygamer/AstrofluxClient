@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.utils
@@ -22,25 +22,29 @@ package starling.utils
     {
         // helper objects
         private static var sRawData:Vector.<Number> =
-            new <Number>[1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1];
+            new <Number>[1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
         private static var sRawData2:Vector.<Number> = new Vector.<Number>(16, true);
         private static var sPoint3D:Vector3D = new Vector3D();
         private static var sMatrixData:Vector.<Number> =
-                new <Number>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            new <Number>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
         /** @private */
-        public function MatrixUtil() { throw new AbstractClassError(); }
+        public function MatrixUtil()
+        {
+            throw new AbstractClassError();
+        }
 
         /** Converts a 2D matrix to a 3D matrix. If you pass an <code>out</code>-matrix,
          *  the result will be stored in this matrix instead of creating a new object. */
-        public static function convertTo3D(matrix:Matrix, out:Matrix3D=null):Matrix3D
+        public static function convertTo3D(matrix:Matrix, out:Matrix3D = null):Matrix3D
         {
-            if (out == null) out = new Matrix3D();
+            if (out == null)
+                out = new Matrix3D();
 
-            sRawData[ 0] = matrix.a;
-            sRawData[ 1] = matrix.b;
-            sRawData[ 4] = matrix.c;
-            sRawData[ 5] = matrix.d;
+            sRawData[0] = matrix.a;
+            sRawData[1] = matrix.b;
+            sRawData[4] = matrix.c;
+            sRawData[5] = matrix.d;
             sRawData[12] = matrix.tx;
             sRawData[13] = matrix.ty;
 
@@ -50,15 +54,16 @@ package starling.utils
 
         /** Converts a 3D matrix to a 2D matrix. Beware that this will work only for a 3D matrix
          *  describing a pure 2D transformation. */
-        public static function convertTo2D(matrix3D:Matrix3D, out:Matrix=null):Matrix
+        public static function convertTo2D(matrix3D:Matrix3D, out:Matrix = null):Matrix
         {
-            if (out == null) out = new Matrix();
+            if (out == null)
+                out = new Matrix();
 
             matrix3D.copyRawDataTo(sRawData2);
-            out.a  = sRawData2[ 0];
-            out.b  = sRawData2[ 1];
-            out.c  = sRawData2[ 4];
-            out.d  = sRawData2[ 5];
+            out.a = sRawData2[0];
+            out.b = sRawData2[1];
+            out.c = sRawData2[4];
+            out.d = sRawData2[5];
             out.tx = sRawData2[12];
             out.ty = sRawData2[13];
 
@@ -68,8 +73,8 @@ package starling.utils
         /** Determines if the matrix is an identity matrix. */
         public static function isIdentity(matrix:Matrix):Boolean
         {
-            return matrix.a  == 1.0 && matrix.b  == 0.0 && matrix.c == 0.0 && matrix.d == 1.0 &&
-                   matrix.tx == 0.0 && matrix.ty == 0.0;
+            return matrix.a == 1.0 && matrix.b == 0.0 && matrix.c == 0.0 && matrix.d == 1.0 &&
+                matrix.tx == 0.0 && matrix.ty == 0.0;
         }
 
         /** Determines if the 3D matrix is an identity matrix. */
@@ -78,22 +83,22 @@ package starling.utils
             var data:Vector.<Number> = sRawData2;
             matrix.copyRawDataTo(data);
 
-            return data[ 0] == 1.0 && data[ 1] == 0.0 && data[ 2] == 0.0 && data[ 3] == 0.0 &&
-                   data[ 4] == 0.0 && data[ 5] == 1.0 && data[ 6] == 0.0 && data[ 7] == 0.0 &&
-                   data[ 8] == 0.0 && data[ 9] == 0.0 && data[10] == 1.0 && data[11] == 0.0 &&
-                   data[12] == 0.0 && data[13] == 0.0 && data[14] == 0.0 && data[15] == 1.0;
+            return data[0] == 1.0 && data[1] == 0.0 && data[2] == 0.0 && data[3] == 0.0 &&
+                data[4] == 0.0 && data[5] == 1.0 && data[6] == 0.0 && data[7] == 0.0 &&
+                data[8] == 0.0 && data[9] == 0.0 && data[10] == 1.0 && data[11] == 0.0 &&
+                data[12] == 0.0 && data[13] == 0.0 && data[14] == 0.0 && data[15] == 1.0;
         }
 
         /** Transform a point with the given matrix. */
         public static function transformPoint(matrix:Matrix, point:Point,
-                                              out:Point=null):Point
+                out:Point = null):Point
         {
             return transformCoords(matrix, point.x, point.y, out);
         }
 
         /** Transforms a 3D point with the given matrix. */
         public static function transformPoint3D(matrix:Matrix3D, point:Vector3D,
-                                                out:Vector3D=null):Vector3D
+                out:Vector3D = null):Vector3D
         {
             return transformCoords3D(matrix, point.x, point.y, point.z, out);
         }
@@ -102,9 +107,10 @@ package starling.utils
          *  <code>out</code>-point, the result will be stored in this point instead of creating
          *  a new object. */
         public static function transformCoords(matrix:Matrix, x:Number, y:Number,
-                                               out:Point=null):Point
+                out:Point = null):Point
         {
-            if (out == null) out = new Point();
+            if (out == null)
+                out = new Point();
 
             out.x = matrix.a * x + matrix.c * y + matrix.tx;
             out.y = matrix.d * y + matrix.b * x + matrix.ty;
@@ -116,13 +122,14 @@ package starling.utils
          *  'resultVector', the result will be stored in this vector3D instead of creating a
          *  new object. */
         public static function transformCoords3D(matrix:Matrix3D, x:Number, y:Number, z:Number,
-                                                 out:Vector3D=null):Vector3D
+                out:Vector3D = null):Vector3D
         {
-            if (out == null) out = new Vector3D();
+            if (out == null)
+                out = new Vector3D();
 
             matrix.copyRawDataTo(sRawData2);
-            out.x = x * sRawData2[0] + y * sRawData2[4] + z * sRawData2[ 8] + sRawData2[12];
-            out.y = x * sRawData2[1] + y * sRawData2[5] + z * sRawData2[ 9] + sRawData2[13];
+            out.x = x * sRawData2[0] + y * sRawData2[4] + z * sRawData2[8] + sRawData2[12];
+            out.y = x * sRawData2[1] + y * sRawData2[5] + z * sRawData2[9] + sRawData2[13];
             out.z = x * sRawData2[2] + y * sRawData2[6] + z * sRawData2[10] + sRawData2[14];
             out.w = x * sRawData2[3] + y * sRawData2[7] + z * sRawData2[11] + sRawData2[15];
 
@@ -144,23 +151,23 @@ package starling.utils
             var sinY:Number = Math.sin(skewY);
             var cosY:Number = Math.cos(skewY);
 
-            matrix.setTo(matrix.a  * cosY - matrix.b  * sinX,
-                         matrix.a  * sinY + matrix.b  * cosX,
-                         matrix.c  * cosY - matrix.d  * sinX,
-                         matrix.c  * sinY + matrix.d  * cosX,
-                         matrix.tx * cosY - matrix.ty * sinX,
-                         matrix.tx * sinY + matrix.ty * cosX);
+            matrix.setTo(matrix.a * cosY - matrix.b * sinX,
+                    matrix.a * sinY + matrix.b * cosX,
+                    matrix.c * cosY - matrix.d * sinX,
+                    matrix.c * sinY + matrix.d * cosX,
+                    matrix.tx * cosY - matrix.ty * sinX,
+                    matrix.tx * sinY + matrix.ty * cosX);
         }
 
         /** Prepends a matrix to 'base' by multiplying it with another matrix. */
         public static function prependMatrix(base:Matrix, prep:Matrix):void
         {
             base.setTo(base.a * prep.a + base.c * prep.b,
-                       base.b * prep.a + base.d * prep.b,
-                       base.a * prep.c + base.c * prep.d,
-                       base.b * prep.c + base.d * prep.d,
-                       base.tx + base.a * prep.tx + base.c * prep.ty,
-                       base.ty + base.b * prep.tx + base.d * prep.ty);
+                    base.b * prep.a + base.d * prep.b,
+                    base.a * prep.c + base.c * prep.d,
+                    base.b * prep.c + base.d * prep.d,
+                    base.tx + base.a * prep.tx + base.c * prep.ty,
+                    base.ty + base.b * prep.tx + base.d * prep.ty);
         }
 
         /** Prepends an incremental translation to a Matrix object. */
@@ -174,8 +181,8 @@ package starling.utils
         public static function prependScale(matrix:Matrix, sx:Number, sy:Number):void
         {
             matrix.setTo(matrix.a * sx, matrix.b * sx,
-                         matrix.c * sy, matrix.d * sy,
-                         matrix.tx, matrix.ty);
+                    matrix.c * sy, matrix.d * sy,
+                    matrix.tx, matrix.ty);
         }
 
         /** Prepends an incremental rotation to a Matrix object (angle in radians). */
@@ -184,9 +191,9 @@ package starling.utils
             var sin:Number = Math.sin(angle);
             var cos:Number = Math.cos(angle);
 
-            matrix.setTo(matrix.a * cos + matrix.c * sin,  matrix.b * cos + matrix.d * sin,
-                         matrix.c * cos - matrix.a * sin,  matrix.d * cos - matrix.b * sin,
-                         matrix.tx, matrix.ty);
+            matrix.setTo(matrix.a * cos + matrix.c * sin, matrix.b * cos + matrix.d * sin,
+                    matrix.c * cos - matrix.a * sin, matrix.d * cos - matrix.b * sin,
+                    matrix.tx, matrix.ty);
         }
 
         /** Prepends a skew transformation to a Matrix object (angles in radians). The skew matrix
@@ -205,35 +212,41 @@ package starling.utils
             var cosY:Number = Math.cos(skewY);
 
             matrix.setTo(matrix.a * cosY + matrix.c * sinY,
-                         matrix.b * cosY + matrix.d * sinY,
-                         matrix.c * cosX - matrix.a * sinX,
-                         matrix.d * cosX - matrix.b * sinX,
-                         matrix.tx, matrix.ty);
+                    matrix.b * cosY + matrix.d * sinY,
+                    matrix.c * cosX - matrix.a * sinX,
+                    matrix.d * cosX - matrix.b * sinX,
+                    matrix.tx, matrix.ty);
         }
 
         /** Converts a Matrix3D instance to a String, which is useful when debugging. Per default,
          *  the raw data is displayed transposed, so that the columns are displayed vertically. */
-        public static function toString3D(matrix:Matrix3D, transpose:Boolean=true,
-                                          precision:int=3):String
+        public static function toString3D(matrix:Matrix3D, transpose:Boolean = true,
+                precision:int = 3):String
         {
-            if (transpose) matrix.transpose();
+            if (transpose)
+                matrix.transpose();
             matrix.copyRawDataTo(sRawData2);
-            if (transpose) matrix.transpose();
+            if (transpose)
+                matrix.transpose();
 
             return "[Matrix3D rawData=\n" + formatRawData(sRawData2, 4, 4, precision) + "\n]";
         }
 
         /** Converts a Matrix instance to a String, which is useful when debugging. */
-        public static function toString(matrix:Matrix, precision:int=3):String
+        public static function toString(matrix:Matrix, precision:int = 3):String
         {
-            sRawData2[0] = matrix.a; sRawData2[1] = matrix.c; sRawData2[2] = matrix.tx;
-            sRawData2[3] = matrix.b; sRawData2[4] = matrix.d; sRawData2[5] = matrix.ty;
+            sRawData2[0] = matrix.a;
+            sRawData2[1] = matrix.c;
+            sRawData2[2] = matrix.tx;
+            sRawData2[3] = matrix.b;
+            sRawData2[4] = matrix.d;
+            sRawData2[5] = matrix.ty;
 
             return "[Matrix rawData=\n" + formatRawData(sRawData2, 3, 2, precision) + "\n]";
         }
 
         private static function formatRawData(data:Vector.<Number>, numCols:int, numRows:int,
-                                              precision:int, indent:String="  "):String
+                precision:int, indent:String = "  "):String
         {
             var result:String = indent;
             var numValues:int = numCols * numRows;
@@ -241,28 +254,32 @@ package starling.utils
             var valueString:String;
             var value:Number;
 
-            for (var i:int=0; i<numValues; ++i)
+            for (var i:int = 0; i < numValues; ++i)
             {
                 value = Math.abs(data[i]);
-                if (value > highestValue) highestValue = value;
+                if (value > highestValue)
+                    highestValue = value;
             }
 
             var numChars:int = highestValue.toFixed(precision).length + 1;
 
-            for (var y:int=0; y<numRows; ++y)
+            for (var y:int = 0; y < numRows; ++y)
             {
-                for (var x:int=0; x<numCols; ++x)
+                for (var x:int = 0; x < numCols; ++x)
                 {
                     value = data[numCols * y + x];
                     valueString = value.toFixed(precision);
 
-                    while (valueString.length < numChars) valueString = " " + valueString;
+                    while (valueString.length < numChars)
+                        valueString = " " + valueString;
 
                     result += valueString;
-                    if (x != numCols - 1) result += ", ";
+                    if (x != numCols - 1)
+                        result += ", ";
                 }
 
-                if (y != numRows - 1) result += "\n" + indent;
+                if (y != numRows - 1)
+                    result += "\n" + indent;
             }
 
             return result;
@@ -323,45 +340,48 @@ package starling.utils
          */
         public static function createPerspectiveProjectionMatrix(
                 x:Number, y:Number, width:Number, height:Number,
-                stageWidth:Number=0, stageHeight:Number=0, cameraPos:Vector3D=null,
-                out:Matrix3D=null):Matrix3D
+                stageWidth:Number = 0, stageHeight:Number = 0, cameraPos:Vector3D = null,
+                out:Matrix3D = null):Matrix3D
         {
-            if (out == null) out = new Matrix3D();
-            if (stageWidth  <= 0) stageWidth = width;
-            if (stageHeight <= 0) stageHeight = height;
+            if (out == null)
+                out = new Matrix3D();
+            if (stageWidth <= 0)
+                stageWidth = width;
+            if (stageHeight <= 0)
+                stageHeight = height;
             if (cameraPos == null)
             {
                 cameraPos = sPoint3D;
                 cameraPos.setTo(
-                        stageWidth / 2, stageHeight / 2,   // -> center of stage
+                        stageWidth / 2, stageHeight / 2, // -> center of stage
                         stageWidth / Math.tan(0.5) * 0.5); // -> fieldOfView = 1.0 rad
             }
 
             const focalLength:Number = Math.abs(cameraPos.z);
-            const offsetX:Number = cameraPos.x - stageWidth  / 2;
+            const offsetX:Number = cameraPos.x - stageWidth / 2;
             const offsetY:Number = cameraPos.y - stageHeight / 2;
-            const far:Number    = focalLength * 20;
-            const near:Number   = 1;
-            const scaleX:Number = stageWidth  / width;
+            const far:Number = focalLength * 20;
+            const near:Number = 1;
+            const scaleX:Number = stageWidth / width;
             const scaleY:Number = stageHeight / height;
 
             // set up general perspective
-            sMatrixData[ 0] =  2 * focalLength / stageWidth;  // 0,0
-            sMatrixData[ 5] = -2 * focalLength / stageHeight; // 1,1  [negative to invert y-axis]
-            sMatrixData[10] =  far / (far - near);            // 2,2
-            sMatrixData[14] = -far * near / (far - near);     // 2,3
-            sMatrixData[11] =  1;                             // 3,2
+            sMatrixData[0] = 2 * focalLength / stageWidth; // 0,0
+            sMatrixData[5] = -2 * focalLength / stageHeight; // 1,1  [negative to invert y-axis]
+            sMatrixData[10] = far / (far - near); // 2,2
+            sMatrixData[14] = -far * near / (far - near); // 2,3
+            sMatrixData[11] = 1; // 3,2
 
             // now zoom in to visible area
-            sMatrixData[0] *=  scaleX;
-            sMatrixData[5] *=  scaleY;
-            sMatrixData[8]  =  scaleX - 1 - 2 * scaleX * (x - offsetX) / stageWidth;
-            sMatrixData[9]  = -scaleY + 1 + 2 * scaleY * (y - offsetY) / stageHeight;
+            sMatrixData[0] *= scaleX;
+            sMatrixData[5] *= scaleY;
+            sMatrixData[8] = scaleX - 1 - 2 * scaleX * (x - offsetX) / stageWidth;
+            sMatrixData[9] = -scaleY + 1 + 2 * scaleY * (y - offsetY) / stageHeight;
 
             out.copyRawDataFrom(sMatrixData);
             out.prependTranslation(
-                    -stageWidth /2.0 - offsetX,
-                    -stageHeight/2.0 - offsetY,
+                    -stageWidth / 2.0 - offsetX,
+                    -stageHeight / 2.0 - offsetY,
                     focalLength);
 
             return out;
@@ -369,12 +389,13 @@ package starling.utils
 
         /** Creates a orthographic projection matrix suitable for 2D rendering. */
         public static function createOrthographicProjectionMatrix(
-                x:Number, y:Number, width:Number, height:Number, out:Matrix=null):Matrix
+                x:Number, y:Number, width:Number, height:Number, out:Matrix = null):Matrix
         {
-            if (out == null) out = new Matrix();
+            if (out == null)
+                out = new Matrix();
 
-            out.setTo(2.0/width, 0, 0, -2.0/height,
-                    -(2*x + width) / width, (2*y + height) / height);
+            out.setTo(2.0 / width, 0, 0, -2.0 / height,
+                    -(2 * x + width) / width, (2 * y + height) / height);
 
             return out;
         }

@@ -9,27 +9,27 @@ package core.hud.components.map
    import starling.events.Event;
    import textures.ITextureManager;
    import textures.TextureLocator;
-   
+
    public class MapKilled
    {
       private var scale:Number = 0.4;
-      
+
       private var layer:Sprite;
-      
+
       private var scull:Image;
-      
+
       private var g:Game;
-      
+
       private var timeLeftOnKillAnimation:Number = 0;
-      
+
       private const dropShowTime:Number = 60000;
-      
+
       private var isRunningAnimation:Boolean = false;
-      
+
       private var tween1:TweenMax;
-      
+
       private var tween2:TweenMax;
-      
+
       public function MapKilled(param1:Sprite, param2:Game)
       {
          layer = new Sprite();
@@ -43,15 +43,15 @@ package core.hud.components.map
          scull.pivotY = scull.height / 2;
          layer.addChild(scull);
          scull.visible = false;
-         layer.addEventListener("removedFromStage",clean);
+         layer.addEventListener("removedFromStage", clean);
       }
-      
-      public function update() : void
+
+      public function update():void
       {
          timeLeftOnKillAnimation = Killed.killedTime + 60000 - g.time;
-         if(timeLeftOnKillAnimation > 0 && !g.solarSystem.isPvpSystemInEditor)
+         if (timeLeftOnKillAnimation > 0 && !g.solarSystem.isPvpSystemInEditor)
          {
-            if(isRunningAnimation)
+            if (isRunningAnimation)
             {
                return;
             }
@@ -59,41 +59,41 @@ package core.hud.components.map
             layer.y = Killed.killedPosition.y * Map.SCALE;
             startAnimation();
          }
-         else if(isRunningAnimation)
+         else if (isRunningAnimation)
          {
             clean();
          }
       }
-      
-      private function startAnimation() : void
+
+      private function startAnimation():void
       {
          isRunningAnimation = true;
          scull.alpha = 1;
          scull.visible = true;
-         tween1 = TweenMax.to(scull,0.5,{
-            "yoyo":true,
-            "scaleX":1.15,
-            "repeat":-1,
-            "alpha":0.5,
-            "ease":Sine.easeInOut
-         });
-         tween2 = TweenMax.to(scull,0.5,{
-            "yoyo":true,
-            "scaleY":1.15,
-            "delay":-1,
-            "repeat":-1,
-            "ease":Sine.easeInOut
-         });
+         tween1 = TweenMax.to(scull, 0.5, {
+                  "yoyo": true,
+                  "scaleX": 1.15,
+                  "repeat": -1,
+                  "alpha": 0.5,
+                  "ease": Sine.easeInOut
+               });
+         tween2 = TweenMax.to(scull, 0.5, {
+                  "yoyo": true,
+                  "scaleY": 1.15,
+                  "delay": -1,
+                  "repeat": -1,
+                  "ease": Sine.easeInOut
+               });
       }
-      
-      public function clean(param1:Event = null) : void
+
+      public function clean(param1:Event = null):void
       {
-         if(tween1 != null)
+         if (tween1 != null)
          {
             tween1.kill();
             tween1 = null;
          }
-         if(tween2 != null)
+         if (tween2 != null)
          {
             tween2.kill();
             tween2 = null;
@@ -103,4 +103,3 @@ package core.hud.components.map
       }
    }
 }
-

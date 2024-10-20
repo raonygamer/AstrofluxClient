@@ -30,36 +30,36 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 package com.adobe.webapis.events
 {
 
 	import flash.events.Event;
 
 	/**
-	* Event class that contains data loaded from remote services.
-	*
-	* @author Mike Chambers
-	*/
+	 * Event class that contains data loaded from remote services.
+	 *
+	 * @author Mike Chambers
+	 */
 	public class ServiceEvent extends Event
 	{
-		private var _data:Object = new Object();;
+		private var _data:Object = new Object();
+		;
 
 		/**
-		* Constructor for ServiceEvent class.
-		*
-		* @param type The type of event that the instance represents.
-		*/
-		public function ServiceEvent(type:String, bubbles:Boolean = false, 
-														cancelable:Boolean=false)
+		 * Constructor for ServiceEvent class.
+		 *
+		 * @param type The type of event that the instance represents.
+		 */
+		public function ServiceEvent(type:String, bubbles:Boolean = false,
+				cancelable:Boolean = false)
 		{
 			super(type, bubbles, cancelable);
 		}
 
 		/**
-		* 	This object contains data loaded in response
-		* 	to remote service calls, and properties associated with that call.
-		*/
+		 * 	This object contains data loaded in response
+		 * 	to remote service calls, and properties associated with that call.
+		 */
 		public function get data():Object
 		{
 			return _data;
@@ -69,12 +69,12 @@ package com.adobe.webapis.events
 		{
 			_data = d;
 		}
-		
+
 		public override function clone():Event
 		{
 			var out:ServiceEvent = new ServiceEvent(type, bubbles, cancelable);
 			out.data = data;
-			
+
 			return out;
 		}
 

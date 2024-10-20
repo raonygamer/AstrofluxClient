@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.filters
@@ -48,9 +48,10 @@ package starling.filters
         /** Creates a new ColorMatrixFilter instance with the specified matrix.
          *  @param matrix a vector of 20 items arranged as a 4x5 matrix.
          */
-        public function ColorMatrixFilter(matrix:Vector.<Number>=null)
+        public function ColorMatrixFilter(matrix:Vector.<Number> = null)
         {
-            if (matrix) colorEffect.matrix = matrix;
+            if (matrix)
+                colorEffect.matrix = matrix;
         }
 
         /** @private */
@@ -64,10 +65,10 @@ package starling.filters
         /** Inverts the colors of the filtered object. */
         public function invert():void
         {
-            concatValues(-1,  0,  0,  0, 255,
-                          0, -1,  0,  0, 255,
-                          0,  0, -1,  0, 255,
-                          0,  0,  0,  1,   0);
+            concatValues(-1, 0, 0, 0, 255,
+                    0, -1, 0, 0, 255,
+                    0, 0, -1, 0, 255,
+                    0, 0, 0, 1, 0);
         }
 
         /** Changes the saturation. Typical values are in the range (-1, 1).
@@ -77,15 +78,15 @@ package starling.filters
         {
             sat += 1;
 
-            var invSat:Number  = 1 - sat;
+            var invSat:Number = 1 - sat;
             var invLumR:Number = invSat * LUMA_R;
             var invLumG:Number = invSat * LUMA_G;
             var invLumB:Number = invSat * LUMA_B;
 
-            concatValues((invLumR + sat), invLumG,  invLumB, 0, 0,
-                          invLumR, (invLumG + sat), invLumB, 0, 0,
-                          invLumR, invLumG, (invLumB + sat), 0, 0,
-                          0, 0, 0, 1, 0);
+            concatValues((invLumR + sat), invLumG, invLumB, 0, 0,
+                    invLumR, (invLumG + sat), invLumB, 0, 0,
+                    invLumR, invLumG, (invLumB + sat), 0, 0,
+                    0, 0, 0, 1, 0);
         }
 
         /** Changes the contrast. Typical values are in the range (-1, 1).
@@ -96,9 +97,9 @@ package starling.filters
             var o:Number = 128 * (1 - s);
 
             concatValues(s, 0, 0, 0, o,
-                         0, s, 0, 0, o,
-                         0, 0, s, 0, o,
-                         0, 0, 0, 1, 0);
+                    0, s, 0, 0, o,
+                    0, 0, s, 0, o,
+                    0, 0, 0, 1, 0);
         }
 
         /** Changes the brightness. Typical values are in the range (-1, 1).
@@ -108,9 +109,9 @@ package starling.filters
             value *= 255;
 
             concatValues(1, 0, 0, 0, value,
-                         0, 1, 0, 0, value,
-                         0, 0, 1, 0, value,
-                         0, 0, 0, 1, 0);
+                    0, 1, 0, 0, value,
+                    0, 0, 1, 0, value,
+                    0, 0, 0, 1, 0);
         }
 
         /** Changes the hue of the image. Typical values are in the range (-1, 1). */
@@ -122,10 +123,10 @@ package starling.filters
             var sin:Number = Math.sin(value);
 
             concatValues(
-                ((LUMA_R + (cos * (1 - LUMA_R))) + (sin * -(LUMA_R))), ((LUMA_G + (cos * -(LUMA_G))) + (sin * -(LUMA_G))), ((LUMA_B + (cos * -(LUMA_B))) + (sin * (1 - LUMA_B))), 0, 0,
-                ((LUMA_R + (cos * -(LUMA_R))) + (sin * 0.143)), ((LUMA_G + (cos * (1 - LUMA_G))) + (sin * 0.14)), ((LUMA_B + (cos * -(LUMA_B))) + (sin * -0.283)), 0, 0,
-                ((LUMA_R + (cos * -(LUMA_R))) + (sin * -((1 - LUMA_R)))), ((LUMA_G + (cos * -(LUMA_G))) + (sin * LUMA_G)), ((LUMA_B + (cos * (1 - LUMA_B))) + (sin * LUMA_B)), 0, 0,
-                0, 0, 0, 1, 0);
+                    ((LUMA_R + (cos * (1 - LUMA_R))) + (sin * -(LUMA_R))), ((LUMA_G + (cos * -(LUMA_G))) + (sin * -(LUMA_G))), ((LUMA_B + (cos * -(LUMA_B))) + (sin * (1 - LUMA_B))), 0, 0,
+                    ((LUMA_R + (cos * -(LUMA_R))) + (sin * 0.143)), ((LUMA_G + (cos * (1 - LUMA_G))) + (sin * 0.14)), ((LUMA_B + (cos * -(LUMA_B))) + (sin * -0.283)), 0, 0,
+                    ((LUMA_R + (cos * -(LUMA_R))) + (sin * -((1 - LUMA_R)))), ((LUMA_G + (cos * -(LUMA_G))) + (sin * LUMA_G)), ((LUMA_B + (cos * (1 - LUMA_B))) + (sin * LUMA_B)), 0, 0,
+                    0, 0, 0, 1, 0);
         }
 
         /** Tints the image in a certain color, analog to what can be done in Adobe Animate.
@@ -133,11 +134,11 @@ package starling.filters
          *  @param color   the RGB color with which the image should be tinted.
          *  @param amount  the intensity with which tinting should be applied. Range (0, 1).
          */
-        public function tint(color:uint, amount:Number=1.0):void
+        public function tint(color:uint, amount:Number = 1.0):void
         {
-            var r:Number = Color.getRed(color)   / 255.0;
+            var r:Number = Color.getRed(color) / 255.0;
             var g:Number = Color.getGreen(color) / 255.0;
-            var b:Number = Color.getBlue(color)  / 255.0;
+            var b:Number = Color.getBlue(color) / 255.0;
             var q:Number = 1 - amount;
 
             var rA:Number = amount * r;
@@ -145,10 +146,10 @@ package starling.filters
             var bA:Number = amount * b;
 
             concatValues(
-                q + rA * LUMA_R, rA * LUMA_G, rA * LUMA_B, 0, 0,
-                gA * LUMA_R, q + gA * LUMA_G, gA * LUMA_B, 0, 0,
-                bA * LUMA_R, bA * LUMA_G, q + bA * LUMA_B, 0, 0,
-                0, 0, 0, 1, 0);
+                    q + rA * LUMA_R, rA * LUMA_G, rA * LUMA_B, 0, 0,
+                    gA * LUMA_R, q + gA * LUMA_G, gA * LUMA_B, 0, 0,
+                    bA * LUMA_R, bA * LUMA_G, q + bA * LUMA_B, 0, 0,
+                    0, 0, 0, 1, 0);
         }
 
         // matrix manipulation
@@ -168,19 +169,22 @@ package starling.filters
 
         /** Concatenates the current matrix with another one, passing its contents directly. */
         public function concatValues(m0:Number, m1:Number, m2:Number, m3:Number, m4:Number,
-                                     m5:Number, m6:Number, m7:Number, m8:Number, m9:Number,
-                                     m10:Number, m11:Number, m12:Number, m13:Number, m14:Number,
-                                     m15:Number, m16:Number, m17:Number, m18:Number, m19:Number):void
+                m5:Number, m6:Number, m7:Number, m8:Number, m9:Number,
+                m10:Number, m11:Number, m12:Number, m13:Number, m14:Number,
+                m15:Number, m16:Number, m17:Number, m18:Number, m19:Number):void
         {
             sMatrix.length = 0;
             sMatrix.push(m0, m1, m2, m3, m4, m5, m6, m7, m8, m9,
-                m10, m11, m12, m13, m14, m15, m16, m17, m18, m19);
+                    m10, m11, m12, m13, m14, m15, m16, m17, m18, m19);
 
             concat(sMatrix);
         }
 
         /** A vector of 20 items arranged as a 4x5 matrix. */
-        public function get matrix():Vector.<Number> { return colorEffect.matrix; }
+        public function get matrix():Vector.<Number>
+        {
+            return colorEffect.matrix;
+        }
         public function set matrix(value:Vector.<Number>):void
         {
             colorEffect.matrix = value;
@@ -202,18 +206,18 @@ import starling.rendering.Program;
 
 class ColorMatrixEffect extends FilterEffect
 {
-    private var _userMatrix:Vector.<Number>;   // offset in range 0-255
+    private var _userMatrix:Vector.<Number>; // offset in range 0-255
     private var _shaderMatrix:Vector.<Number>; // offset in range 0-1, changed order
 
     private static const MIN_COLOR:Vector.<Number> = new <Number>[0, 0, 0, 0.0001];
-    private static const IDENTITY:Array = [1,0,0,0,0,  0,1,0,0,0,  0,0,1,0,0,  0,0,0,1,0];
+    private static const IDENTITY:Array = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0];
 
     // helpers
     private static var sMatrix:Vector.<Number> = new Vector.<Number>(20, true);
 
     public function ColorMatrixEffect():void
     {
-        _userMatrix   = new <Number>[];
+        _userMatrix = new <Number>[];
         _shaderMatrix = new <Number>[];
 
         this.matrix = null;
@@ -223,14 +227,14 @@ class ColorMatrixEffect extends FilterEffect
     {
         var vertexShader:String = FilterEffect.STD_VERTEX_SHADER;
         var fragmentShader:String = [
-            tex("ft0", "v0", 0, texture),      // read texture color
-            "max ft0, ft0, fc5              ", // avoid division through zero in next step
-            "div ft0.xyz, ft0.xyz, ft0.www  ", // restore original (non-PMA) RGB values
-            "m44 ft0, ft0, fc0              ", // multiply color with 4x4 matrix
-            "add ft0, ft0, fc4              ", // add offset
-            "mul ft0.xyz, ft0.xyz, ft0.www  ", // multiply with alpha again (PMA)
-            "mov oc, ft0                    "  // copy to output
-        ].join("\n");
+                tex("ft0", "v0", 0, texture), // read texture color
+                "max ft0, ft0, fc5              ", // avoid division through zero in next step
+                "div ft0.xyz, ft0.xyz, ft0.www  ", // restore original (non-PMA) RGB values
+                "m44 ft0, ft0, fc0              ", // multiply color with 4x4 matrix
+                "add ft0, ft0, fc4              ", // add offset
+                "mul ft0.xyz, ft0.xyz, ft0.www  ", // multiply with alpha again (PMA)
+                "mov oc, ft0                    " // copy to output
+            ].join("\n");
 
         return Program.fromSource(vertexShader, fragmentShader);
     }
@@ -255,15 +259,15 @@ class ColorMatrixEffect extends FilterEffect
     {
         var i:int = 0;
 
-        for (var y:int=0; y<4; ++y)
+        for (var y:int = 0; y < 4; ++y)
         {
-            for (var x:int=0; x<5; ++x)
+            for (var x:int = 0; x < 5; ++x)
             {
-                sMatrix[i+x] = matrix[i    ] * _userMatrix[x     ] +
-                               matrix[i + 1] * _userMatrix[x +  5] +
-                               matrix[i + 2] * _userMatrix[x + 10] +
-                               matrix[i + 3] * _userMatrix[x + 15] +
-                               (x == 4 ? matrix[i + 4] : 0);
+                sMatrix[i + x] = matrix[i] * _userMatrix[x] +
+                    matrix[i + 1] * _userMatrix[x + 5] +
+                    matrix[i + 2] * _userMatrix[x + 10] +
+                    matrix[i + 3] * _userMatrix[x + 15] +
+                    (x == 4 ? matrix[i + 4] : 0);
             }
 
             i += 5;
@@ -275,7 +279,7 @@ class ColorMatrixEffect extends FilterEffect
 
     private function copyMatrix(from:Vector.<Number>, to:Vector.<Number>):void
     {
-        for (var i:int=0; i<20; ++i)
+        for (var i:int = 0; i < 20; ++i)
             to[i] = from[i];
     }
 
@@ -286,18 +290,21 @@ class ColorMatrixEffect extends FilterEffect
 
         _shaderMatrix.length = 0;
         _shaderMatrix.push(
-            _userMatrix[0 ], _userMatrix[ 1], _userMatrix[ 2], _userMatrix[ 3],
-            _userMatrix[5 ], _userMatrix[ 6], _userMatrix[ 7], _userMatrix[ 8],
-            _userMatrix[10], _userMatrix[11], _userMatrix[12], _userMatrix[13],
-            _userMatrix[15], _userMatrix[16], _userMatrix[17], _userMatrix[18],
-            _userMatrix[ 4] / 255.0, _userMatrix[9] / 255.0,  _userMatrix[14] / 255.0,
-            _userMatrix[19] / 255.0
-        );
+                _userMatrix[0], _userMatrix[1], _userMatrix[2], _userMatrix[3],
+                _userMatrix[5], _userMatrix[6], _userMatrix[7], _userMatrix[8],
+                _userMatrix[10], _userMatrix[11], _userMatrix[12], _userMatrix[13],
+                _userMatrix[15], _userMatrix[16], _userMatrix[17], _userMatrix[18],
+                _userMatrix[4] / 255.0, _userMatrix[9] / 255.0, _userMatrix[14] / 255.0,
+                _userMatrix[19] / 255.0
+            );
     }
 
     // properties
 
-    public function get matrix():Vector.<Number> { return _userMatrix; }
+    public function get matrix():Vector.<Number>
+    {
+        return _userMatrix;
+    }
     public function set matrix(value:Vector.<Number>):void
     {
         if (value && value.length != 20)

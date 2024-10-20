@@ -2,15 +2,15 @@ package core.text
 {
    import core.scene.Game;
    import flash.geom.Point;
-   
+
    public class TextHandler
    {
       public var texts:Vector.<TextParticle>;
-      
+
       private var inactiveTexts:Vector.<TextParticle>;
-      
+
       private var g:Game;
-      
+
       public function TextHandler(param1:Game)
       {
          super();
@@ -18,20 +18,20 @@ package core.text
          this.g = param1;
          texts = new Vector.<TextParticle>();
       }
-      
-      public function update() : void
+
+      public function update():void
       {
          var _loc4_:int = 0;
          var _loc1_:TextParticle = null;
          var _loc2_:Number = NaN;
          var _loc3_:int = int(texts.length);
          _loc4_ = _loc3_ - 1;
-         while(_loc4_ > -1)
+         while (_loc4_ > -1)
          {
             _loc1_ = texts[_loc4_];
-            if(!_loc1_.alive)
+            if (!_loc1_.alive)
             {
-               remove(_loc1_,_loc4_);
+               remove(_loc1_, _loc4_);
             }
             else
             {
@@ -39,7 +39,7 @@ package core.text
                _loc1_.x += _loc1_.speed.x * 33 / 1000;
                _loc1_.y += _loc1_.speed.y * 33 / 1000;
                _loc2_ = _loc1_.ttl / _loc1_.maxTtl;
-               if(_loc2_ <= 0.5)
+               if (_loc2_ <= 0.5)
                {
                   _loc1_.alpha = _loc2_;
                }
@@ -47,11 +47,11 @@ package core.text
             _loc4_--;
          }
       }
-      
-      public function add(param1:String, param2:Point, param3:Point, param4:Number = 400, param5:uint = 16777215, param6:Number = 20, param7:Boolean = false, param8:String = "center", param9:String = "normal") : TextParticle
+
+      public function add(param1:String, param2:Point, param3:Point, param4:Number = 400, param5:uint = 16777215, param6:Number = 20, param7:Boolean = false, param8:String = "center", param9:String = "normal"):TextParticle
       {
          var _loc11_:TextParticle = null;
-         if(inactiveTexts.length > 0)
+         if (inactiveTexts.length > 0)
          {
             _loc11_ = inactiveTexts.pop();
          }
@@ -64,7 +64,7 @@ package core.text
          _loc11_.ttl = param4;
          _loc11_.maxTtl = param4;
          var _loc10_:String = "font13";
-         if(param6 > 18)
+         if (param6 > 18)
          {
             _loc10_ = "font26";
          }
@@ -78,11 +78,11 @@ package core.text
          _loc11_.width = _loc11_.textBounds.width + 45;
          _loc11_.touchable = false;
          _loc11_.blendMode = "normal";
-         if(param8 == "center")
+         if (param8 == "center")
          {
             _loc11_.pivotX = _loc11_.width / 2;
          }
-         else if(param8 == "right")
+         else if (param8 == "right")
          {
             _loc11_.pivotX = _loc11_.width;
          }
@@ -92,7 +92,7 @@ package core.text
          _loc11_.fixed = param7;
          _loc11_.alive = true;
          texts.push(_loc11_);
-         if(param7)
+         if (param7)
          {
             g.addChild(_loc11_);
          }
@@ -102,13 +102,13 @@ package core.text
          }
          return _loc11_;
       }
-      
-      public function remove(param1:TextParticle, param2:int) : void
+
+      public function remove(param1:TextParticle, param2:int):void
       {
          param1.reset();
-         texts.splice(param2,1);
+         texts.splice(param2, 1);
          inactiveTexts.push(param1);
-         if(param1.fixed)
+         if (param1.fixed)
          {
             g.removeChild(param1);
          }
@@ -117,12 +117,12 @@ package core.text
             g.canvasTexts.removeChild(param1);
          }
       }
-      
-      public function dispose() : void
+
+      public function dispose():void
       {
-         for each(var _loc1_ in texts)
+         for each (var _loc1_:* in texts)
          {
-            if(_loc1_.fixed)
+            if (_loc1_.fixed)
             {
                g.removeChild(_loc1_);
             }
@@ -137,4 +137,3 @@ package core.text
       }
    }
 }
-

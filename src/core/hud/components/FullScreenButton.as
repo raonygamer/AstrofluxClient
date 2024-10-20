@@ -6,11 +6,11 @@ package core.hud.components
    import flash.events.MouseEvent;
    import flash.system.Capabilities;
    import starling.core.Starling;
-   
+
    public class FullScreenButton extends Sprite
    {
       private var hoverImage:Sprite;
-      
+
       public function FullScreenButton()
       {
          hoverImage = new Sprite();
@@ -18,40 +18,40 @@ package core.hud.components
          tabChildren = false;
          tabEnabled = false;
          graphics.beginFill(1842461);
-         graphics.lineStyle(1,4409416);
-         graphics.drawRoundRect(0,0,22,25,4,4);
+         graphics.lineStyle(1, 4409416);
+         graphics.drawRoundRect(0, 0, 22, 25, 4, 4);
          graphics.beginFill(13027014);
-         graphics.lineStyle(0,0);
-         graphics.drawRoundRect(3,8,16,12,2,2);
+         graphics.lineStyle(0, 0);
+         graphics.drawRoundRect(3, 8, 16, 12, 2, 2);
          graphics.beginFill(0);
-         graphics.drawRoundRect(6,12,10,4,2,2);
+         graphics.drawRoundRect(6, 12, 10, 4, 2, 2);
          graphics.endFill();
          hoverImage.graphics.beginFill(1842461);
-         hoverImage.graphics.lineStyle(1,4409416);
-         hoverImage.graphics.drawRoundRect(0,0,22,25,4,4);
+         hoverImage.graphics.lineStyle(1, 4409416);
+         hoverImage.graphics.drawRoundRect(0, 0, 22, 25, 4, 4);
          hoverImage.graphics.beginFill(13027014);
-         hoverImage.graphics.lineStyle(0,0);
-         hoverImage.graphics.drawRoundRect(3,8,16,12,2,2);
+         hoverImage.graphics.lineStyle(0, 0);
+         hoverImage.graphics.drawRoundRect(3, 8, 16, 12, 2, 2);
          hoverImage.graphics.beginFill(0);
-         hoverImage.graphics.drawRoundRect(6,12,10,4,2,2);
+         hoverImage.graphics.drawRoundRect(6, 12, 10, 4, 2, 2);
          hoverImage.graphics.endFill();
          hoverImage.blendMode = "add";
          hoverImage.visible = false;
          addChild(hoverImage);
-         addEventListener("click",onFullscreen);
-         addEventListener("mouseOver",function(param1:MouseEvent):void
-         {
-            hoverImage.visible = true;
-         });
-         addEventListener("mouseOut",function(param1:MouseEvent):void
-         {
-            hoverImage.visible = false;
-         });
+         addEventListener("click", onFullscreen);
+         addEventListener("mouseOver", function(param1:MouseEvent):void
+            {
+               hoverImage.visible = true;
+            });
+         addEventListener("mouseOut", function(param1:MouseEvent):void
+            {
+               hoverImage.visible = false;
+            });
          this.buttonMode = true;
          this.useHandCursor = true;
       }
-      
-      public function onFullscreen(param1:MouseEvent) : void
+
+      public function onFullscreen(param1:MouseEvent):void
       {
          var _loc4_:* = Starling.current.nativeStage.displayState == "fullScreenInteractive";
          _loc4_ = !_loc4_;
@@ -61,11 +61,11 @@ package core.hud.components
          var _loc6_:String = _loc7_[0];
          var _loc5_:Number = Number(_loc2_[0]);
          _loc5_ = _loc5_ + _loc2_[1] / 10;
-         if(_loc4_ && _loc5_ >= 1.3)
+         if (_loc4_ && _loc5_ >= 1.3)
          {
             Starling.current.nativeStage.displayState = "fullScreenInteractive";
          }
-         else if(_loc4_)
+         else if (_loc4_)
          {
             Console.write("You need flash version 11.3");
          }
@@ -78,4 +78,3 @@ package core.hud.components
       }
    }
 }
-

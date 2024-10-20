@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.filters
@@ -122,7 +122,7 @@ package starling.filters
 
             // Handle lost context (using conventional Flash event for weak listener support)
             Starling.current.stage3D.addEventListener(Event.CONTEXT3D_CREATE,
-                onContextCreated, false, 0, true);
+                    onContextCreated, false, 0, true);
         }
 
         /** Disposes all resources that have been created by the filter. */
@@ -130,9 +130,12 @@ package starling.filters
         {
             Starling.current.stage3D.removeEventListener(Event.CONTEXT3D_CREATE, onContextCreated);
 
-            if (_helper) _helper.dispose();
-            if (_effect) _effect.dispose();
-            if (_quad)   _quad.dispose();
+            if (_helper)
+                _helper.dispose();
+            if (_effect)
+                _effect.dispose();
+            if (_quad)
+                _quad.dispose();
 
             _effect = null;
             _quad = null;
@@ -167,9 +170,15 @@ package starling.filters
 
         private function renderPasses(painter:Painter, forCache:Boolean):void
         {
-            if (_helper  == null) _helper = new FilterHelper(_textureFormat);
-            if (_quad  == null) _quad  = new FilterQuad(_textureSmoothing);
-            else { _helper.putTexture(_quad.texture); _quad.texture = null; }
+            if (_helper == null)
+                _helper = new FilterHelper(_textureFormat);
+            if (_quad == null)
+                _quad = new FilterQuad(_textureSmoothing);
+            else
+            {
+                _helper.putTexture(_quad.texture);
+                _quad.texture = null;
+            }
 
             var bounds:Rectangle = Pool.getRectangle(); // might be recursive -> no static var
             var drawLastPassToBackBuffer:Boolean = false;
@@ -183,7 +192,7 @@ package starling.filters
             {
                 // If 'requiresRedraw' is true, the object is non-static, and we guess that this
                 // will be the same in the next frame. So we render directly to the back buffer.
-                //
+                // 
                 // -- That, however, is only possible for full alpha values, because
                 // (1) 'FilterEffect' can't handle alpha (and that will do the rendering)
                 // (2) we don't want lower layers (CompositeFilter!) to shine through.
@@ -215,14 +224,19 @@ package starling.filters
             }
 
             _quad.visible = !bounds.isEmpty();
-            if (!_quad.visible) { Pool.putRectangle(bounds); return; }
+            if (!_quad.visible)
+            {
+                Pool.putRectangle(bounds);
+                return;
+            }
 
-            if (_padding) RectangleUtil.extend(bounds,
-                _padding.left, _padding.right, _padding.top, _padding.bottom);
+            if (_padding)
+                RectangleUtil.extend(bounds,
+                        _padding.left, _padding.right, _padding.top, _padding.bottom);
 
             // integer bounds for maximum sharpness + to avoid jiggling
-            bounds.setTo(Math.floor(bounds.x),    Math.floor(bounds.y),
-                         Math.ceil(bounds.width), Math.ceil(bounds.height));
+            bounds.setTo(Math.floor(bounds.x), Math.floor(bounds.y),
+                    Math.ceil(bounds.width), Math.ceil(bounds.height));
 
             _helper.textureScale = Starling.contentScaleFactor * _resolution;
             _helper.projectionMatrix3D = painter.state.projectionMatrix3D;
@@ -233,7 +247,7 @@ package starling.filters
 
             _quad.setBounds(bounds);
             _resolution = 1.0; // applied via '_helper.textureScale' already;
-                               // only 'child'-filters use resolution directly (in 'process')
+            // only 'child'-filters use resolution directly (in 'process')
 
             var wasCacheEnabled:Boolean = painter.cacheEnabled;
             var input:Texture = _helper.getTexture();
@@ -244,8 +258,8 @@ package starling.filters
             painter.state.alpha = 1.0;
             painter.state.renderTarget = input;
             painter.state.setProjectionMatrix(bounds.x, bounds.y,
-                input.root.width, input.root.height,
-                stage.stageWidth, stage.stageHeight, stage.cameraPosition);
+                    input.root.width, input.root.height,
+                    stage.stageWidth, stage.stageHeight, stage.cameraPosition);
 
             _target.render(painter); // -> draw target object into 'input'
 
@@ -262,8 +276,10 @@ package starling.filters
             {
                 painter.pushState();
 
-                if (_target.is3D) painter.state.setModelviewMatricesToIdentity(); // -> stage coords
-                else              _quad.moveVertices(renderSpace, _target);       // -> local coords
+                if (_target.is3D)
+                    painter.state.setModelviewMatricesToIdentity(); // -> stage coords
+                else
+                    _quad.moveVertices(renderSpace, _target); // -> local coords
 
                 _quad.texture = output;
                 _quad.render(painter);
@@ -296,8 +312,8 @@ package starling.filters
          *  lies at the caller; only temporary textures should be put into the helper.</p>
          */
         public function process(painter:Painter, helper:IFilterHelper,
-                                input0:Texture=null, input1:Texture=null,
-                                input2:Texture=null, input3:Texture=null):Texture
+                input0:Texture = null, input1:Texture = null,
+                input2:Texture = null, input3:Texture = null):Texture
         {
             var effect:FilterEffect = this.effect;
             var output:Texture = helper.getTexture(_resolution);
@@ -309,8 +325,8 @@ package starling.filters
             {
                 renderTarget = output;
                 projectionMatrix = MatrixUtil.createPerspectiveProjectionMatrix(0, 0,
-                    output.root.width / _resolution, output.root.height / _resolution,
-                    0, 0, null, sMatrix3D);
+                        output.root.width / _resolution, output.root.height / _resolution,
+                        0, 0, null, sMatrix3D);
             }
             else // render to back buffer
             {
@@ -401,7 +417,8 @@ package starling.filters
         /** The effect instance returning the FilterEffect created via <code>createEffect</code>. */
         protected function get effect():FilterEffect
         {
-            if (_effect == null) _effect = createEffect();
+            if (_effect == null)
+                _effect = createEffect();
             return _effect;
         }
 
@@ -409,7 +426,8 @@ package starling.filters
          *  by the effect, and contains four vertices enclosing the target object. */
         protected function get vertexData():VertexData
         {
-            if (_vertexData == null) _vertexData = new VertexData(effect.vertexFormat, 4);
+            if (_vertexData == null)
+                _vertexData = new VertexData(effect.vertexFormat, 4);
             return _vertexData;
         }
 
@@ -431,8 +449,10 @@ package starling.filters
         protected function setRequiresRedraw():void
         {
             dispatchEventWith(Event.CHANGE);
-            if (_target) _target.setRequiresRedraw();
-            if (_cached) _cacheRequested = true;
+            if (_target)
+                _target.setRequiresRedraw();
+            if (_cached)
+                _cacheRequested = true;
         }
 
         /** Indicates the number of rendering passes required for this filter.
@@ -445,7 +465,8 @@ package starling.filters
         /** Called when assigning a target display object.
          *  Override to plug in class-specific logic. */
         protected function onTargetAssigned(target:DisplayObject):void
-        { }
+        {
+        }
 
         /** Padding can extend the size of the filter texture in all directions.
          *  That's useful when the filter "grows" the bounds of the object in any direction. */
@@ -466,44 +487,60 @@ package starling.filters
         }
 
         /** Indicates if the filter is cached (via the <code>cache</code> method). */
-        public function get isCached():Boolean { return _cached; }
+        public function get isCached():Boolean
+        {
+            return _cached;
+        }
 
         /** The resolution of the filter texture. "1" means stage resolution, "0.5" half the stage
          *  resolution. A lower resolution saves memory and execution time, but results in a lower
          *  output quality. Values greater than 1 are allowed; such values might make sense for a
          *  cached filter when it is scaled up. @default 1
          */
-        public function get resolution():Number { return _resolution; }
+        public function get resolution():Number
+        {
+            return _resolution;
+        }
         public function set resolution(value:Number):void
         {
             if (value != _resolution)
             {
-                if (value > 0) _resolution = value;
-                else throw new ArgumentError("resolution must be > 0");
+                if (value > 0)
+                    _resolution = value;
+                else
+                    throw new ArgumentError("resolution must be > 0");
                 setRequiresRedraw();
             }
         }
 
         /** The smoothing mode of the filter texture. @default bilinear */
-        public function get textureSmoothing():String { return _textureSmoothing; }
+        public function get textureSmoothing():String
+        {
+            return _textureSmoothing;
+        }
         public function set textureSmoothing(value:String):void
         {
             if (value != _textureSmoothing)
             {
                 _textureSmoothing = value;
-                if (_quad) _quad.textureSmoothing = value;
+                if (_quad)
+                    _quad.textureSmoothing = value;
                 setRequiresRedraw();
             }
         }
 
         /** The format of the filter texture. @default BGRA */
-        public function get textureFormat():String { return _textureFormat; }
+        public function get textureFormat():String
+        {
+            return _textureFormat;
+        }
         public function set textureFormat(value:String):void
         {
             if (value != _textureFormat)
             {
                 _textureFormat = value;
-                if (_helper) _helper.textureFormat = value;
+                if (_helper)
+                    _helper.textureFormat = value;
                 setRequiresRedraw();
             }
         }
@@ -521,7 +558,10 @@ package starling.filters
          *
          *  @default false
          */
-        public function get alwaysDrawToBackBuffer():Boolean { return _alwaysDrawToBackBuffer; }
+        public function get alwaysDrawToBackBuffer():Boolean
+        {
+            return _alwaysDrawToBackBuffer;
+        }
         public function set alwaysDrawToBackBuffer(value:Boolean):void
         {
             _alwaysDrawToBackBuffer = value;
@@ -539,9 +579,12 @@ package starling.filters
 
                 if (target == null)
                 {
-                    if (_helper) _helper.purge();
-                    if (_effect) _effect.purgeBuffers();
-                    if (_quad)   _quad.disposeTexture();
+                    if (_helper)
+                        _helper.purge();
+                    if (_effect)
+                        _effect.purgeBuffers();
+                    if (_quad)
+                        _quad.disposeTexture();
                 }
 
                 if (prevTarget)
@@ -629,6 +672,7 @@ class FilterQuad extends Mesh
     override public function set texture(value:Texture):void
     {
         super.texture = value;
-        if (value) value.setupTextureCoordinates(vertexData);
+        if (value)
+            value.setupTextureCoordinates(vertexData);
     }
 }

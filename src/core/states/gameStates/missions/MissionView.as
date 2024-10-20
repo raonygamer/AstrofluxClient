@@ -29,35 +29,35 @@ package core.states.gameStates.missions
    import starling.text.TextFormat;
    import textures.ITextureManager;
    import textures.TextureLocator;
-   
+
    public class MissionView extends Sprite
    {
       private var mission:Mission;
-      
+
       private var g:Game;
-      
+
       private var heading:Text;
-      
+
       private var description:Text;
-      
+
       private var missionType:Object;
-      
+
       private var box:GradientBox;
-      
+
       private var dataManager:IDataManager;
-      
+
       private var fluxIcon:Image;
-      
+
       private var dropBase:DropBase;
-      
+
       private var boxWidth:int;
-      
+
       private var textureManager:ITextureManager;
-      
+
       private var tween:TweenMax;
-      
+
       private var timeLeft:Text;
-      
+
       public function MissionView(param1:Game, param2:Mission, param3:int)
       {
          timeLeft = new Text();
@@ -67,161 +67,161 @@ package core.states.gameStates.missions
          this.boxWidth = param3;
          this.textureManager = TextureLocator.getService();
       }
-      
-      public static function fixText(param1:Game, param2:Object, param3:String) : String
+
+      public static function fixText(param1:Game, param2:Object, param3:String):String
       {
-         if(param2.value != null)
+         if (param2.value != null)
          {
-            param3 = param3.replace("[amount]","<font color=\'#ffffff\'>" + param2.value + "</font>");
+            param3 = param3.replace("[amount]", "<font color='#ffffff'>" + param2.value + "</font>");
          }
-         param3 = param3.replace("[player]",param1.me.name);
-         param3 = param3.replace("[h]","<font color=\'#ffffff\'>");
-         return param3.replace("[/h]","</font>");
+         param3 = param3.replace("[player]", param1.me.name);
+         param3 = param3.replace("[h]", "<font color='#ffffff'>");
+         return param3.replace("[/h]", "</font>");
       }
-      
-      public function init() : void
+
+      public function init():void
       {
          var instance:MissionView;
          var rewardY:Number;
          var cancelButton:Button;
-         if(mission.majorType == "time")
+         if (mission.majorType == "time")
          {
-            box = new GradientBox(boxWidth,160,0,1,15,16746564);
+            box = new GradientBox(boxWidth, 160, 0, 1, 15, 16746564);
          }
          else
          {
-            box = new GradientBox(boxWidth,160,0,1,15,8978312);
+            box = new GradientBox(boxWidth, 160, 0, 1, 15, 8978312);
          }
          instance = this;
          box.load();
          addChild(box);
          dataManager = DataLocator.getService();
-         missionType = dataManager.loadKey("MissionTypes",mission.missionTypeKey);
+         missionType = dataManager.loadKey("MissionTypes", mission.missionTypeKey);
          addHeading();
          rewardY = addReward();
          addDescription();
          addRewardButton(rewardY);
-         if(mission.majorType == "time" && !mission.finished)
+         if (mission.majorType == "time" && !mission.finished)
          {
             cancelButton = new Button(function():void
-            {
-               g.creditManager.refresh(function():void
                {
-                  var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g,CreditManager.getCostSkipMission(),Localize.t("Skip this timed mission and receive a new one!"));
-                  g.addChildToOverlay(confirmBuyWithFlux);
-                  confirmBuyWithFlux.addEventListener("accept",function(param1:Event):void
-                  {
-                     var e:Event = param1;
-                     g.rpc("skipMission",function(param1:Message):void
+                  g.creditManager.refresh(function():void
                      {
-                        if(param1.getBoolean(0))
-                        {
-                           Game.trackEvent("used flux","skipped mission","player level " + g.me.level,CreditManager.getCostSkipMission());
-                           removeAndRedrawList();
-                           g.creditManager.refresh();
-                        }
-                        else
-                        {
-                           g.showErrorDialog(param1.getString(1),false);
-                        }
-                     },mission.id);
-                     confirmBuyWithFlux.removeEventListeners();
-                  });
-                  confirmBuyWithFlux.addEventListener("close",function(param1:Event):void
-                  {
-                     confirmBuyWithFlux.removeEventListeners();
-                     cancelButton.enabled = true;
-                     g.removeChildFromOverlay(confirmBuyWithFlux,true);
-                  });
-               });
-            },Localize.t("Skip Mission"),"normal",12);
+                        var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostSkipMission(), Localize.t("Skip this timed mission and receive a new one!"));
+                        g.addChildToOverlay(confirmBuyWithFlux);
+                        confirmBuyWithFlux.addEventListener("accept", function(param1:Event):void
+                           {
+                              var e:Event = param1;
+                              g.rpc("skipMission", function(param1:Message):void
+                                 {
+                                    if (param1.getBoolean(0))
+                                    {
+                                       Game.trackEvent("used flux", "skipped mission", "player level " + g.me.level, CreditManager.getCostSkipMission());
+                                       removeAndRedrawList();
+                                       g.creditManager.refresh();
+                                    }
+                                    else
+                                    {
+                                       g.showErrorDialog(param1.getString(1), false);
+                                    }
+                                 }, mission.id);
+                              confirmBuyWithFlux.removeEventListeners();
+                           });
+                        confirmBuyWithFlux.addEventListener("close", function(param1:Event):void
+                           {
+                              confirmBuyWithFlux.removeEventListeners();
+                              cancelButton.enabled = true;
+                              g.removeChildFromOverlay(confirmBuyWithFlux, true);
+                           });
+                     });
+               }, Localize.t("Skip Mission"), "normal", 12);
             cancelButton.x = width - cancelButton.width - box.padding * 2;
             cancelButton.y = height - cancelButton.height - box.padding * 2;
             addChild(cancelButton);
          }
          instance[missionType.type]();
       }
-      
-      public function level() : void
+
+      public function level():void
       {
       }
-      
-      public function transport() : void
+
+      public function transport():void
       {
          var _loc1_:Object = null;
          var _loc2_:Text = null;
          var _loc5_:Vector.<Object> = new Vector.<Object>();
          var _loc7_:int = 1;
          var _loc3_:String = description.htmlText;
-         for each(var _loc6_ in missionType.addedBodies)
+         for each (var _loc6_:* in missionType.addedBodies)
          {
-            _loc1_ = dataManager.loadKey("Bodies",_loc6_);
+            _loc1_ = dataManager.loadKey("Bodies", _loc6_);
             _loc5_.push(_loc1_);
-            _loc3_ = _loc3_.replace("[location" + _loc7_ + "]","<font color=\'#ffffff\'>" + _loc1_.name + "</font>");
+            _loc3_ = _loc3_.replace("[location" + _loc7_ + "]", "<font color='#ffffff'>" + _loc1_.name + "</font>");
             _loc7_++;
          }
          description.htmlText = _loc3_;
          _loc7_ = 1;
-         for each(var _loc4_ in _loc5_)
+         for each (var _loc4_:* in _loc5_)
          {
             _loc2_ = new Text();
             _loc2_.size = 13;
             _loc2_.x = 0;
             _loc2_.y = description.height + 10 + _loc7_ * 20;
-            if(_loc7_ == 1)
+            if (_loc7_ == 1)
             {
-               _loc2_.htmlText = Localize.t("Go to") + ": <font color=\'#ae7108\'>" + _loc4_.name;
+               _loc2_.htmlText = Localize.t("Go to") + ": <font color='#ae7108'>" + _loc4_.name;
             }
             else
             {
-               _loc2_.htmlText = Localize.t("Then to") + ": <font color=\'#ae7108\'>" + _loc4_.name;
+               _loc2_.htmlText = Localize.t("Then to") + ": <font color='#ae7108'>" + _loc4_.name;
             }
             box.addChild(_loc2_);
             _loc7_++;
          }
       }
-      
-      private function kill() : void
+
+      private function kill():void
       {
          var _loc1_:* = this;
          _loc1_[missionType.subtype]();
       }
-      
-      private function pvpStart() : void
+
+      private function pvpStart():void
       {
       }
-      
-      private function player() : void
-      {
-         var _loc1_:Text = new Text();
-         _loc1_.size = 13;
-         _loc1_.x = 0;
-         _loc1_.y = 145;
-         _loc1_.htmlText = Localize.t("Killed") + ": <font color=\'#ae0808\'>" + mission.count + " / " + missionType.value;
-         box.addChild(_loc1_);
-      }
-      
-      private function frenzy() : void
+
+      private function player():void
       {
          var _loc1_:Text = new Text();
          _loc1_.size = 13;
          _loc1_.x = 0;
          _loc1_.y = 145;
-         _loc1_.htmlText = Localize.t("Longest killing frenzy") + ": <font color=\'#ae0808\'>" + mission.count + " / " + missionType.value;
+         _loc1_.htmlText = Localize.t("Killed") + ": <font color='#ae0808'>" + mission.count + " / " + missionType.value;
          box.addChild(_loc1_);
       }
-      
-      private function explore() : void
+
+      private function frenzy():void
+      {
+         var _loc1_:Text = new Text();
+         _loc1_.size = 13;
+         _loc1_.x = 0;
+         _loc1_.y = 145;
+         _loc1_.htmlText = Localize.t("Longest killing frenzy") + ": <font color='#ae0808'>" + mission.count + " / " + missionType.value;
+         box.addChild(_loc1_);
+      }
+
+      private function explore():void
       {
       }
-      
-      private function pickup() : void
+
+      private function pickup():void
       {
          var _loc3_:Object = null;
          var _loc2_:Image = null;
-         if(missionType.item != null)
+         if (missionType.item != null)
          {
-            _loc3_ = dataManager.loadKey("Commodities",missionType.item);
+            _loc3_ = dataManager.loadKey("Commodities", missionType.item);
             _loc2_ = new Image(textureManager.getTextureGUIByKey(_loc3_.bitmap));
             _loc2_.y = description.y + description.height + 20;
             box.addChild(_loc2_);
@@ -230,17 +230,17 @@ package core.states.gameStates.missions
          _loc1_.size = 13;
          _loc1_.x = 0;
          _loc1_.y = 145;
-         _loc1_.htmlText = Localize.t("Picked up") + ": <font color=\'#08ae08\'>" + mission.count + " / " + missionType.value;
+         _loc1_.htmlText = Localize.t("Picked up") + ": <font color='#08ae08'>" + mission.count + " / " + missionType.value;
          box.addChild(_loc1_);
       }
-      
-      private function recycle() : void
+
+      private function recycle():void
       {
          var _loc3_:Object = null;
          var _loc2_:Image = null;
-         if(missionType.item != null)
+         if (missionType.item != null)
          {
-            _loc3_ = dataManager.loadKey("Commodities",missionType.item);
+            _loc3_ = dataManager.loadKey("Commodities", missionType.item);
             _loc2_ = new Image(textureManager.getTextureGUIByKey(_loc3_.bitmap));
             _loc2_.y = description.y + description.height + 20;
             box.addChild(_loc2_);
@@ -249,38 +249,38 @@ package core.states.gameStates.missions
          _loc1_.size = 13;
          _loc1_.x = 0;
          _loc1_.y = 145;
-         _loc1_.htmlText = Localize.t("Recycled") + ": <font color=\'#08ae08\'>" + mission.count + " / " + missionType.value;
+         _loc1_.htmlText = Localize.t("Recycled") + ": <font color='#08ae08'>" + mission.count + " / " + missionType.value;
          box.addChild(_loc1_);
       }
-      
-      private function reputation() : void
+
+      private function reputation():void
       {
       }
-      
-      private function boss() : void
+
+      private function boss():void
       {
          var _loc1_:Text = new Text();
          _loc1_.size = 13;
          _loc1_.x = 0;
          _loc1_.y = 145;
-         _loc1_.htmlText = Localize.t("Killed") + ": <font color=\'#ae7108\'>" + mission.count + " / 1";
+         _loc1_.htmlText = Localize.t("Killed") + ": <font color='#ae7108'>" + mission.count + " / 1";
          box.addChild(_loc1_);
       }
-      
-      private function ship() : void
+
+      private function ship():void
       {
          var _loc9_:Object = null;
          var _loc1_:Object = null;
          var _loc7_:Object = null;
          var _loc5_:MovieClip = null;
          var _loc2_:Vector.<Object> = new Vector.<Object>();
-         for each(var _loc11_ in missionType.addedEnemies)
+         for each (var _loc11_:* in missionType.addedEnemies)
          {
-            _loc9_ = dataManager.loadKey("Enemies",_loc11_);
+            _loc9_ = dataManager.loadKey("Enemies", _loc11_);
             _loc1_ = {};
-            if(_loc9_ != null)
+            if (_loc9_ != null)
             {
-               _loc7_ = dataManager.loadKey("Ships",_loc9_.ship);
+               _loc7_ = dataManager.loadKey("Ships", _loc9_.ship);
                _loc1_.ship = _loc7_;
                _loc1_.enemy = _loc9_;
                _loc2_.push(_loc1_);
@@ -290,22 +290,22 @@ package core.states.gameStates.missions
          var _loc8_:Number = 0;
          var _loc12_:int = 5;
          var _loc10_:int = description.y + description.height + 20;
-         for each(var _loc4_ in _loc2_)
+         for each (var _loc4_:* in _loc2_)
          {
-            if(_loc6_ != _loc4_.ship.bitmap)
+            if (_loc6_ != _loc4_.ship.bitmap)
             {
                _loc6_ = _loc4_.ship.bitmap;
                _loc5_ = new MovieClip(textureManager.getTexturesMainByKey(_loc4_.ship.bitmap));
                _loc5_.x = _loc12_;
                _loc5_.y = _loc10_;
                _loc12_ += _loc5_.width + 15;
-               if(_loc12_ > 400)
+               if (_loc12_ > 400)
                {
                   _loc10_ += _loc5_.height + 5;
                   _loc12_ = 5;
                }
-               new ToolTip(g,_loc5_,_loc4_.enemy.name,null,"missionView");
-               _loc8_ = Math.max(_loc8_,_loc5_.height);
+               new ToolTip(g, _loc5_, _loc4_.enemy.name, null, "missionView");
+               _loc8_ = Math.max(_loc8_, _loc5_.height);
                box.addChild(_loc5_);
             }
          }
@@ -313,20 +313,20 @@ package core.states.gameStates.missions
          _loc3_.size = 13;
          _loc3_.x = 0;
          _loc3_.y = _loc10_ + _loc8_ + 20;
-         _loc3_.htmlText = Localize.t("Killed") + ": <font color=\'#ae7108\'>" + mission.count + " / " + missionType.value;
+         _loc3_.htmlText = Localize.t("Killed") + ": <font color='#ae7108'>" + mission.count + " / " + missionType.value;
          box.addChild(_loc3_);
       }
-      
-      private function spawner() : void
+
+      private function spawner():void
       {
          var _loc2_:String = null;
          var _loc1_:Text = new Text();
          _loc1_.size = 13;
          _loc1_.x = 70;
          _loc1_.y = 125;
-         _loc1_.htmlText = Localize.t("Killed") + ": <font color=\'#ae7108\'>" + mission.count + " / " + missionType.value;
+         _loc1_.htmlText = Localize.t("Killed") + ": <font color='#ae7108'>" + mission.count + " / " + missionType.value;
          box.addChild(_loc1_);
-         if(missionType.hasOwnProperty("bitmap"))
+         if (missionType.hasOwnProperty("bitmap"))
          {
             _loc2_ = missionType.bitmap;
          }
@@ -340,8 +340,8 @@ package core.states.gameStates.missions
          _loc3_.scaleX = _loc3_.scaleY = 0.7;
          box.addChild(_loc3_);
       }
-      
-      private function addReward() : Number
+
+      private function addReward():Number
       {
          var x:int;
          var rewardY:int;
@@ -358,7 +358,7 @@ package core.states.gameStates.missions
          var repImg:String;
          var reputationIcon:Image;
          var reputationText:Text;
-         dropBase = g.dropManager.getDropItems(missionType.drop,g,mission.created);
+         dropBase = g.dropManager.getDropItems(missionType.drop, g, mission.created);
          var rewardHeading:Text = new Text();
          rewardHeading.color = 11432200;
          rewardHeading.size = 14;
@@ -369,17 +369,17 @@ package core.states.gameStates.missions
          box.addChild(rewardHeading);
          x = rewardHeading.x;
          rewardY = rewardHeading.y + 25;
-         if(dropBase == null)
+         if (dropBase == null)
          {
-            g.showErrorDialog(Localize.t("Error with mission") + ": " + missionType.title,true);
+            g.showErrorDialog(Localize.t("Error with mission") + ": " + missionType.title, true);
             return 0;
          }
-         for each(d in dropBase.items)
+         for each (d in dropBase.items)
          {
-            rewardY = addRewardItem(d,x,rewardY);
+            rewardY = addRewardItem(d, x, rewardY);
          }
          rewardY += 5;
-         if(dropBase.flux > 0)
+         if (dropBase.flux > 0)
          {
             fluxText = new Text();
             fluxText.color = 16777215;
@@ -396,7 +396,7 @@ package core.states.gameStates.missions
             addChild(fluxText);
             rewardY += 20;
          }
-         if(dropBase.artifactAmount > 0)
+         if (dropBase.artifactAmount > 0)
          {
             artifactText = new Text();
             artifactText.color = 16777215;
@@ -412,54 +412,54 @@ package core.states.gameStates.missions
             addChild(artifactIcon);
             addChild(artifactText);
             rewardY += 20;
-            t = new ToolTip(g,artifactIcon,Localize.t("[amount]x (lvl [level]) artifacts").replace("[amount]",dropBase.artifactAmount).replace("[level]",dropBase.artifactLevel),null,"missionView");
+            t = new ToolTip(g, artifactIcon, Localize.t("[amount]x (lvl [level]) artifacts").replace("[amount]", dropBase.artifactAmount).replace("[level]", dropBase.artifactLevel), null, "missionView");
          }
-         if(dropBase.xp > 0)
+         if (dropBase.xp > 0)
          {
-            xpText = new TextField(100,30,"",new TextFormat("DAIDRR"));
+            xpText = new TextField(100, 30, "", new TextFormat("DAIDRR"));
             xpText.format.color = 16777215;
             xpText.autoSize = "bothDirections";
             xpText.isHtmlText = true;
             dropBase.xp = 0.75 * dropBase.xp + 0.5;
             s = Localize.t("XP") + ": " + dropBase.xp;
             boostXp = Math.ceil(dropBase.xp * 0.3);
-            if(g.me.hasExpBoost)
+            if (g.me.hasExpBoost)
             {
-               s += " <FONT COLOR=\'#88ff88\'>(+" + boostXp + ")</FONT>";
+               s += " <FONT COLOR='#88ff88'>(+" + boostXp + ")</FONT>";
                xpText.text = s;
-               new ToolTip(g,xpText,Localize.t("You have XP BOOST enabled!."),null,"missionView");
+               new ToolTip(g, xpText, Localize.t("You have XP BOOST enabled!."), null, "missionView");
             }
             else
             {
-               s += " <FONT COLOR=\'#333333\'>(+" + boostXp + ")</FONT>";
+               s += " <FONT COLOR='#333333'>(+" + boostXp + ")</FONT>";
                xpText.text = s;
-               new ToolTip(g,xpText,Localize.t("You don\'t have any XP BOOST active, get one if you want to gain <FONT COLOR=\'#FFFFFF\'>[xpBoost]%</FONT> more XP.").replace("[xpBoost]",0.3 * 100),null,"missionView");
+               new ToolTip(g, xpText, Localize.t("You don't have any XP BOOST active, get one if you want to gain <FONT COLOR='#FFFFFF'>[xpBoost]%</FONT> more XP.").replace("[xpBoost]", 0.3 * 100), null, "missionView");
             }
             xpText.x = x;
             xpText.y = rewardY + 5;
             xpText.pivotX = xpText.width / 2;
-            if(!g.me.hasExpBoost)
+            if (!g.me.hasExpBoost)
             {
                toolTipText = Localize.t("Get XP BOOST now!");
                xpBoostIcon = new Image(textureManager.getTextureGUIByTextureName("button_pay"));
                xpBoostIcon.useHandCursor = true;
-               xpBoostIcon.addEventListener("touch",function(param1:TouchEvent):void
-               {
-                  if(param1.getTouch(xpBoostIcon,"ended"))
+               xpBoostIcon.addEventListener("touch", function(param1:TouchEvent):void
                   {
-                     g.enterState(new RoamingState(g));
-                     g.enterState(new ShopState(g,"xpBoost"));
-                  }
-               });
+                     if (param1.getTouch(xpBoostIcon, "ended"))
+                     {
+                        g.enterState(new RoamingState(g));
+                        g.enterState(new ShopState(g, "xpBoost"));
+                     }
+                  });
                xpBoostIcon.x = xpText.x + xpText.width / 2 + 5;
                xpBoostIcon.y = xpText.y;
                addChild(xpBoostIcon);
-               new ToolTip(g,xpBoostIcon,toolTipText,null,"shopIcons");
+               new ToolTip(g, xpBoostIcon, toolTipText, null, "shopIcons");
             }
             addChild(xpText);
             rewardY += 20;
          }
-         if(mission.majorType == "time")
+         if (mission.majorType == "time")
          {
             timeLeft.font = "Verdana";
             timeLeft.color = 11432200;
@@ -468,9 +468,9 @@ package core.states.gameStates.missions
             timeLeft.y = heading.y;
             addChild(timeLeft);
          }
-         if(dropBase.reputation > 0)
+         if (dropBase.reputation > 0)
          {
-            if(g.me.reputation > 0)
+            if (g.me.reputation > 0)
             {
                repImg = "police_icon.png";
             }
@@ -496,24 +496,24 @@ package core.states.gameStates.missions
          }
          return rewardY;
       }
-      
-      public function update() : void
+
+      public function update():void
       {
-         if(mission.majorType == "time")
+         if (mission.majorType == "time")
          {
             drawExpireTime();
          }
       }
-      
-      private function drawExpireTime() : void
+
+      private function drawExpireTime():void
       {
          var _loc2_:int = (mission.expires - g.time) / 1000;
-         if(_loc2_ < 0)
+         if (_loc2_ < 0)
          {
             removeAndRedrawList();
             return;
          }
-         if(timeLeft != null)
+         if (timeLeft != null)
          {
             timeLeft.htmlText = "" + _loc2_;
          }
@@ -525,13 +525,13 @@ package core.states.gameStates.missions
          var _loc7_:String = _loc5_ < 10 ? "0" + _loc5_ : "" + _loc5_;
          var _loc6_:String = _loc1_ < 10 ? "0" + _loc1_ : "" + _loc1_;
          var _loc3_:String = _loc4_ < 10 ? "0" + _loc4_ : "" + _loc4_;
-         if(timeLeft != null)
+         if (timeLeft != null)
          {
             timeLeft.htmlText = "(" + Localize.t("expires in") + ": " + _loc7_ + ":" + _loc6_ + ":" + _loc3_ + ")";
          }
       }
-      
-      private function addRewardItem(param1:DropItem, param2:int, param3:int) : int
+
+      private function addRewardItem(param1:DropItem, param2:int, param3:int):int
       {
          var _loc6_:Image = null;
          var _loc4_:Text = new Text();
@@ -543,12 +543,12 @@ package core.states.gameStates.missions
          var _loc8_:String = param1.name;
          _loc8_.toLocaleUpperCase();
          _loc4_.htmlText = param1.quantity.toString();
-         while(_loc4_.width > 160)
+         while (_loc4_.width > 160)
          {
             _loc4_.size--;
          }
          var _loc7_:Sprite = new Sprite();
-         if(param1.table == "Skins")
+         if (param1.table == "Skins")
          {
             _loc6_ = new Image(textureManager.getTexturesMainByKey(param1.bitmapKey)[0]);
          }
@@ -556,25 +556,25 @@ package core.states.gameStates.missions
          {
             _loc6_ = new Image(textureManager.getTextureGUIByKey(param1.bitmapKey));
          }
-         if(_loc6_.height > 30)
+         if (_loc6_.height > 30)
          {
             _loc6_.scaleX = _loc6_.scaleY = 20 / _loc6_.height;
          }
          _loc6_.x = param2 - _loc4_.width / 2 - _loc6_.width / 2 - 4;
          _loc6_.y = param3 + _loc4_.height / 2 - _loc6_.height / 2 - 2;
          _loc4_.x += _loc6_.width / 2 - 2;
-         var _loc5_:ToolTip = new ToolTip(g,_loc7_,_loc8_,null,"missionView");
+         var _loc5_:ToolTip = new ToolTip(g, _loc7_, _loc8_, null, "missionView");
          _loc7_.addChild(_loc6_);
          box.addChild(_loc7_);
          box.addChild(_loc4_);
          return param3 + _loc6_.height + 5;
       }
-      
-      private function addRewardButton(param1:Number) : void
+
+      private function addRewardButton(param1:Number):void
       {
-         var _loc2_:Button = new Button(tryCollectReward,Localize.t("COLLECT REWARD").toUpperCase(),"positive");
+         var _loc2_:Button = new Button(tryCollectReward, Localize.t("COLLECT REWARD").toUpperCase(), "positive");
          _loc2_.visible = mission.finished;
-         if(box.height < param1 + _loc2_.height + box.padding * 2)
+         if (box.height < param1 + _loc2_.height + box.padding * 2)
          {
             box.height = param1 + _loc2_.height + box.padding;
          }
@@ -582,19 +582,19 @@ package core.states.gameStates.missions
          _loc2_.y = height - _loc2_.height - box.padding * 2;
          addChild(_loc2_);
       }
-      
-      private function addHeading() : void
+
+      private function addHeading():void
       {
          heading = new Text();
          heading.y = -5;
          heading.color = 16777215;
          heading.size = 13;
          var _loc1_:String = missionType.title;
-         heading.htmlText = fixText(g,missionType,_loc1_);
+         heading.htmlText = fixText(g, missionType, _loc1_);
          addChild(heading);
       }
-      
-      private function addDescription() : void
+
+      private function addDescription():void
       {
          description = new Text();
          description.font = "Verdana";
@@ -603,9 +603,9 @@ package core.states.gameStates.missions
          description.wordWrap = true;
          description.width = 380;
          var _loc1_:String = missionType.description;
-         if(mission.finished && missionType.completeDescription != null)
+         if (mission.finished && missionType.completeDescription != null)
          {
-            if(missionType.hasOwnProperty("nextMission"))
+            if (missionType.hasOwnProperty("nextMission"))
             {
                description.htmlText = Localize.t("Mission Completed! Click claim reward to proceed to next step.");
             }
@@ -616,44 +616,44 @@ package core.states.gameStates.missions
          }
          else
          {
-            description.htmlText = fixText(g,missionType,_loc1_);
+            description.htmlText = fixText(g, missionType, _loc1_);
          }
          description.y = 22;
-         if(description.height > 90)
+         if (description.height > 90)
          {
             description.width = 460;
          }
-         if(description.height > 90)
+         if (description.height > 90)
          {
             description.size--;
          }
          addChild(description);
       }
-      
-      private function tryCollectReward(param1:TouchEvent) : void
+
+      private function tryCollectReward(param1:TouchEvent):void
       {
-         g.rpc("requestMissionReward",rewardArrived,mission.id,mission.majorType);
+         g.rpc("requestMissionReward", rewardArrived, mission.id, mission.majorType);
       }
-      
-      private function rewardArrived(param1:Message) : void
+
+      private function rewardArrived(param1:Message):void
       {
          var _loc3_:Boolean = param1.getBoolean(0);
-         if(!_loc3_)
+         if (!_loc3_)
          {
             g.showErrorDialog(Localize.t("Mission not complete."));
             return;
          }
-         if(missionType.majorType == "static")
+         if (missionType.majorType == "static")
          {
-            Game.trackEvent("missions","static",missionType.title);
+            Game.trackEvent("missions", "static", missionType.title);
          }
-         else if(missionType.majorType == "time")
+         else if (missionType.majorType == "time")
          {
-            Game.trackEvent("missions","timed",missionType.title);
+            Game.trackEvent("missions", "timed", missionType.title);
          }
          g.me.removeMission(mission);
          g.creditManager.refresh();
-         for each(var _loc2_ in dropBase.items)
+         for each (var _loc2_:* in dropBase.items)
          {
             transferItemToCargo(_loc2_);
          }
@@ -662,46 +662,45 @@ package core.states.gameStates.missions
          g.hud.cargoButton.flash();
          animateCollectReward();
       }
-      
-      private function removeAndRedrawList() : void
+
+      private function removeAndRedrawList():void
       {
-         tween = TweenMax.to(this,0.3,{
-            "alpha":0,
-            "onComplete":redrawParentList,
-            "ease":Circ.easeIn
-         });
+         tween = TweenMax.to(this, 0.3, {
+                  "alpha": 0,
+                  "onComplete": redrawParentList,
+                  "ease": Circ.easeIn
+               });
       }
-      
-      private function redrawParentList() : void
+
+      private function redrawParentList():void
       {
          g.me.removeMission(mission);
          dispatchEventWith("reload");
       }
-      
-      private function animateCollectReward() : void
+
+      private function animateCollectReward():void
       {
-         tween = TweenMax.to(this,0.3,{
-            "alpha":0,
-            "onComplete":collectReward,
-            "ease":Circ.easeIn
-         });
+         tween = TweenMax.to(this, 0.3, {
+                  "alpha": 0,
+                  "onComplete": collectReward,
+                  "ease": Circ.easeIn
+               });
          var _loc1_:ISound = SoundLocator.getService();
          _loc1_.preCacheSound("7zeIcPFb-UWzgtR_3nrZ8Q");
       }
-      
-      private function collectReward() : void
+
+      private function collectReward():void
       {
-         dispatchEventWith("animateCollectReward",true);
+         dispatchEventWith("animateCollectReward", true);
          g.textManager.createMissionCompleteText();
       }
-      
-      private function transferItemToCargo(param1:Object) : void
+
+      private function transferItemToCargo(param1:Object):void
       {
          var _loc4_:String = param1.table;
          var _loc3_:String = param1.item;
          var _loc2_:Number = Number(param1.quantity);
-         g.myCargo.addItem(_loc4_,_loc3_,_loc2_);
+         g.myCargo.addItem(_loc4_, _loc3_, _loc2_);
       }
    }
 }
-

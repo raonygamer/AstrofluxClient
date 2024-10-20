@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.textures
@@ -24,12 +24,12 @@ package starling.textures
     {
         /** Creates a new instance with the given parameters. */
         public function ConcreteRectangleTexture(base:RectangleTexture, format:String,
-                                                 width:int, height:int, premultipliedAlpha:Boolean,
-                                                 optimizedForRenderTexture:Boolean=false,
-                                                 scale:Number=1)
+                width:int, height:int, premultipliedAlpha:Boolean,
+                optimizedForRenderTexture:Boolean = false,
+                scale:Number = 1)
         {
             super(base, format, width, height, false, premultipliedAlpha,
-                  optimizedForRenderTexture, scale);
+                    optimizedForRenderTexture, scale);
         }
 
         /** @inheritDoc */

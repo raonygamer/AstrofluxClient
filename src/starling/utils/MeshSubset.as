@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.utils
@@ -26,16 +26,16 @@ package starling.utils
         public var numIndices:int;
 
         /** Creates a new MeshSubset. */
-        public function MeshSubset(vertexID:int=0, numVertices:int=-1,
-                                   indexID:int=0,  numIndices:int=-1)
+        public function MeshSubset(vertexID:int = 0, numVertices:int = -1,
+                indexID:int = 0, numIndices:int = -1)
         {
             setTo(vertexID, numVertices, indexID, numIndices);
         }
 
         /** Changes all properties at once.
          *  Call without any arguments to reference a complete mesh. */
-        public function setTo(vertexID:int=0, numVertices:int=-1,
-                               indexID:int=0, numIndices:int=-1):void
+        public function setTo(vertexID:int = 0, numVertices:int = -1,
+                indexID:int = 0, numIndices:int = -1):void
         {
             this.vertexID = vertexID;
             this.numVertices = numVertices;

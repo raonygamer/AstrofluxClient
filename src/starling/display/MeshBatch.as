@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.display
@@ -68,7 +68,8 @@ package starling.display
         /** @inheritDoc */
         override public function dispose():void
         {
-            if (_effect) _effect.dispose();
+            if (_effect)
+                _effect.dispose();
             super.dispose();
         }
 
@@ -108,12 +109,13 @@ package starling.display
         /** Removes all geometry. */
         public function clear():void
         {
-            if (_parent) setRequiresRedraw();
+            if (_parent)
+                setRequiresRedraw();
 
             _vertexData.numVertices = 0;
-            _indexData.numIndices   = 0;
+            _indexData.numIndices = 0;
             _vertexSyncRequired = true;
-            _indexSyncRequired  = true;
+            _indexSyncRequired = true;
         }
 
         /** Adds a mesh to the batch by appending its vertices and indices.
@@ -129,15 +131,18 @@ package starling.display
          *                   without transforming them in any way (no matter the value of the
          *                   <code>matrix</code> parameter).
          */
-        public function addMesh(mesh:Mesh, matrix:Matrix=null, alpha:Number=1.0,
-                                subset:MeshSubset=null, ignoreTransformations:Boolean=false):void
+        public function addMesh(mesh:Mesh, matrix:Matrix = null, alpha:Number = 1.0,
+                subset:MeshSubset = null, ignoreTransformations:Boolean = false):void
         {
-            if (ignoreTransformations) matrix = null;
-            else if (matrix == null) matrix = mesh.transformationMatrix;
-            if (subset == null) subset = sFullMeshSubset;
+            if (ignoreTransformations)
+                matrix = null;
+            else if (matrix == null)
+                matrix = mesh.transformationMatrix;
+            if (subset == null)
+                subset = sFullMeshSubset;
 
             var targetVertexID:int = _vertexData.numVertices;
-            var targetIndexID:int  = _indexData.numIndices;
+            var targetIndexID:int = _indexData.numIndices;
             var meshStyle:MeshStyle = mesh._style;
 
             if (targetVertexID == 0)
@@ -145,10 +150,12 @@ package starling.display
 
             meshStyle.batchVertexData(_style, targetVertexID, matrix, subset.vertexID, subset.numVertices);
             meshStyle.batchIndexData(_style, targetIndexID, targetVertexID - subset.vertexID,
-                subset.indexID, subset.numIndices);
+                    subset.indexID, subset.numIndices);
 
-            if (alpha != 1.0) _vertexData.scaleAlphas("color", alpha, targetVertexID, subset.numVertices);
-            if (_parent) setRequiresRedraw();
+            if (alpha != 1.0)
+                _vertexData.scaleAlphas("color", alpha, targetVertexID, subset.numVertices);
+            if (_parent)
+                setRequiresRedraw();
 
             _indexSyncRequired = _vertexSyncRequired = true;
         }
@@ -175,8 +182,10 @@ package starling.display
             meshStyle.batchVertexData(_style, vertexID, matrix, 0, numVertices);
             meshStyle.batchIndexData(_style, indexID, vertexID, 0, numIndices);
 
-            if (alpha != 1.0) _vertexData.scaleAlphas("color", alpha, vertexID, numVertices);
-            if (_parent) setRequiresRedraw();
+            if (alpha != 1.0)
+                _vertexData.scaleAlphas("color", alpha, vertexID, numVertices);
+            if (_parent)
+                setRequiresRedraw();
 
             _indexSyncRequired = _vertexSyncRequired = true;
         }
@@ -200,14 +209,18 @@ package starling.display
          *  @param mesh         the mesh to add to the batch.
          *  @param numVertices  if <code>-1</code>, <code>mesh.numVertices</code> will be used
          */
-        public function canAddMesh(mesh:Mesh, numVertices:int=-1):Boolean
+        public function canAddMesh(mesh:Mesh, numVertices:int = -1):Boolean
         {
             var currentNumVertices:int = _vertexData.numVertices;
 
-            if (currentNumVertices == 0) return true;
-            if (numVertices  < 0) numVertices = mesh.numVertices;
-            if (numVertices == 0) return true;
-            if (numVertices + currentNumVertices > MAX_NUM_VERTICES) return false;
+            if (currentNumVertices == 0)
+                return true;
+            if (numVertices < 0)
+                numVertices = mesh.numVertices;
+            if (numVertices == 0)
+                return true;
+            if (numVertices + currentNumVertices > MAX_NUM_VERTICES)
+                return false;
 
             return _style.canBatchWith(mesh._style);
         }
@@ -216,9 +229,11 @@ package starling.display
          *  to the painter's current batch. Otherwise, this will actually do the drawing. */
         override public function render(painter:Painter):void
         {
-            if (_vertexData.numVertices == 0) return;
-            if (_pixelSnapping) MatrixUtil.snapToPixels(
-                painter.state.modelviewMatrix, painter.pixelSize);
+            if (_vertexData.numVertices == 0)
+                return;
+            if (_pixelSnapping)
+                MatrixUtil.snapToPixels(
+                        painter.state.modelviewMatrix, painter.pixelSize);
 
             if (_batchable)
             {
@@ -231,8 +246,10 @@ package starling.display
                 painter.prepareToDraw();
                 painter.excludeFromCache(this);
 
-                if (_vertexSyncRequired) syncVertexBuffer();
-                if (_indexSyncRequired)  syncIndexBuffer();
+                if (_vertexSyncRequired)
+                    syncVertexBuffer();
+                if (_indexSyncRequired)
+                    syncIndexBuffer();
 
                 _style.updateEffect(_effect, painter.state);
                 _effect.render(0, _indexData.numTriangles);
@@ -240,8 +257,8 @@ package starling.display
         }
 
         /** @inheritDoc */
-        override public function setStyle(meshStyle:MeshStyle=null,
-                                          mergeWithPredecessor:Boolean=true):void
+        override public function setStyle(meshStyle:MeshStyle = null,
+                mergeWithPredecessor:Boolean = true):void
         {
             super.setStyle(meshStyle, mergeWithPredecessor);
 
@@ -287,7 +304,10 @@ package starling.display
          *
          *  @default false
          */
-        public function get batchable():Boolean { return _batchable; }
+        public function get batchable():Boolean
+        {
+            return _batchable;
+        }
         public function set batchable(value:Boolean):void
         {
             if (_batchable != value)

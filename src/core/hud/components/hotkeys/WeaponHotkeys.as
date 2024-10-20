@@ -11,21 +11,21 @@ package core.hud.components.hotkeys
    import starling.display.DisplayObjectContainer;
    import textures.ITextureManager;
    import textures.TextureLocator;
-   
+
    public class WeaponHotkeys extends DisplayObjectContainer
    {
       private var g:Game;
-      
+
       public var selectedHotkey:WeaponHotkey;
-      
+
       private var hotkeys:Vector.<WeaponHotkey>;
-      
+
       private var ship:PlayerShip;
-      
+
       private var player:Player;
-      
+
       private var textureManager:ITextureManager;
-      
+
       public function WeaponHotkeys(param1:Game)
       {
          super();
@@ -33,33 +33,33 @@ package core.hud.components.hotkeys
          textureManager = TextureLocator.getService();
          hotkeys = new Vector.<WeaponHotkey>();
       }
-      
-      public function load() : void
+
+      public function load():void
       {
          var _loc2_:Object = null;
          var _loc3_:WeaponHotkey = null;
          ship = g.me.ship;
          player = g.me;
-         if(ship == null)
+         if (ship == null)
          {
             Console.write("No ship for weapon hotkeys.");
             return;
          }
-         if(ship.weapons.length == 0)
+         if (ship.weapons.length == 0)
          {
             Console.write("No weapons for hotkeys");
             return;
          }
-         for each(var _loc1_ in ship.weapons)
+         for each (var _loc1_:* in ship.weapons)
          {
-            if(_loc1_.active)
+            if (_loc1_.active)
             {
-               _loc2_ = DataLocator.getService().loadKey("Images",_loc1_.techIconFileName);
-               _loc3_ = new WeaponHotkey(clickedHotkey,textureManager.getTextureGUIByTextureName(_loc2_.textureName),textureManager.getTextureGUIByTextureName(_loc2_.textureName + "_inactive"),_loc1_.hotkey);
+               _loc2_ = DataLocator.getService().loadKey("Images", _loc1_.techIconFileName);
+               _loc3_ = new WeaponHotkey(clickedHotkey, textureManager.getTextureGUIByTextureName(_loc2_.textureName), textureManager.getTextureGUIByTextureName(_loc2_.textureName + "_inactive"), _loc1_.hotkey);
                hotkeys.push(_loc3_);
                addChild(_loc3_);
                _loc1_.fireCallback = _loc3_.initiateCooldown;
-               new ToolTip(g,_loc3_,createWeaponToolTip(_loc1_),null,"WeaponHotkeys",300);
+               new ToolTip(g, _loc3_, createWeaponToolTip(_loc1_), null, "WeaponHotkeys", 300);
                _loc3_.cooldownTime = _loc1_.reloadTime;
                _loc3_.x = 17 + (_loc1_.hotkey - 1) * 50;
                _loc3_.y = 22;
@@ -67,27 +67,27 @@ package core.hud.components.hotkeys
          }
          highlightWeapon(ship.weapons[player.selectedWeaponIndex].hotkey);
       }
-      
-      private function createWeaponToolTip(param1:Weapon) : String
+
+      private function createWeaponToolTip(param1:Weapon):String
       {
          return param1.getDescription(param1 is Beam);
       }
-      
-      private function clickedHotkey(param1:WeaponHotkey) : void
+
+      private function clickedHotkey(param1:WeaponHotkey):void
       {
          player.sendChangeWeapon(param1.key);
          selectedHotkey = param1;
       }
-      
-      public function reloadWeapon() : void
+
+      public function reloadWeapon():void
       {
       }
-      
-      public function highlightWeapon(param1:int) : void
+
+      public function highlightWeapon(param1:int):void
       {
-         for each(var _loc2_ in hotkeys)
+         for each (var _loc2_:* in hotkeys)
          {
-            if(_loc2_.key == param1)
+            if (_loc2_.key == param1)
             {
                selectedHotkey = _loc2_;
                _loc2_.active = true;
@@ -98,25 +98,24 @@ package core.hud.components.hotkeys
             }
          }
       }
-      
-      public function update() : void
+
+      public function update():void
       {
-         for each(var _loc1_ in hotkeys)
+         for each (var _loc1_:* in hotkeys)
          {
             _loc1_.update();
          }
       }
-      
-      public function refresh() : void
+
+      public function refresh():void
       {
          ToolTip.disposeType("WeaponHotkeys");
-         for each(var _loc1_ in hotkeys)
+         for each (var _loc1_:* in hotkeys)
          {
-            removeChild(_loc1_,true);
+            removeChild(_loc1_, true);
          }
          hotkeys.length = 0;
          load();
       }
    }
 }
-

@@ -9,49 +9,49 @@ package core.engine
    import extensions.RibbonTrail;
    import flash.geom.Point;
    import generics.Color;
-   
+
    public class Engine extends GameObject
    {
       public var thrustEmitters:Vector.<Emitter>;
-      
+
       public var idleThrustEmitters:Vector.<Emitter>;
-      
+
       public var speed:Number;
-      
+
       private var _rotationSpeed:Number;
-      
+
       public var rotationMod:Number;
-      
+
       public var acceleration:Number;
-      
+
       public var accelerating:Boolean;
-      
+
       private var g:Game;
-      
+
       public var ship:Ship;
-      
+
       public var alive:Boolean;
-      
+
       public var dual:Boolean = false;
-      
+
       public var dualDistance:int = 0;
-      
+
       public var obj:Object;
-      
+
       public var colorHue:Number = 0;
-      
+
       public var ribbonBaseMovingRatio:Number = 1;
-      
+
       public var hasRibbonTrail:Boolean = false;
-      
+
       public var ribbonThickness:Number = 0;
-      
+
       public var ribbonTrail:RibbonTrail;
-      
+
       private var followingRibbonSegment:RibbonSegment;
-      
+
       public var followingRibbonSegmentLine:Vector.<RibbonSegment>;
-      
+
       public function Engine(param1:Game)
       {
          followingRibbonSegment = new RibbonSegment();
@@ -67,8 +67,8 @@ package core.engine
          ship = null;
          accelerating = false;
       }
-      
-      override public function update() : void
+
+      override public function update():void
       {
          var _loc6_:Point = null;
          var _loc4_:Number = NaN;
@@ -78,14 +78,14 @@ package core.engine
          var _loc5_:Number = NaN;
          var _loc3_:Number = NaN;
          var _loc2_:Number = NaN;
-         if(alive && ship != null && ship.alive)
+         if (alive && ship != null && ship.alive)
          {
             _loc6_ = ship.enginePos;
             _loc4_ = _loc6_.y;
             _loc1_ = _loc6_.x;
             _loc7_ = Math.sqrt(_loc1_ * _loc1_ + _loc4_ * _loc4_);
             _loc8_ = 0;
-            if(_loc1_ != 0)
+            if (_loc1_ != 0)
             {
                _loc8_ = Math.atan(_loc4_ / _loc1_);
             }
@@ -94,148 +94,148 @@ package core.engine
             _loc3_ = Math.sin(_rotation + _loc8_) * _loc7_;
             _pos.x = ship.x + _loc5_;
             _pos.y = ship.y + _loc3_;
-            if(ribbonTrail && ribbonTrail.isPlaying)
+            if (ribbonTrail && ribbonTrail.isPlaying)
             {
-               if(ship.speed.x != 0 || ship.speed.y != 0)
+               if (ship.speed.x != 0 || ship.speed.y != 0)
                {
-                  _loc2_ = Math.atan2(ship.speed.y,ship.speed.x) + 3.141592653589793;
+                  _loc2_ = Math.atan2(ship.speed.y, ship.speed.x) + 3.141592653589793;
                }
                else
                {
                   _loc2_ = ship.rotation + 3.141592653589793;
                }
-               followingRibbonSegment.setTo2(_pos.x,_pos.y,ribbonThickness,_loc2_,1);
+               followingRibbonSegment.setTo2(_pos.x, _pos.y, ribbonThickness, _loc2_, 1);
                ribbonTrail.advanceTime(33);
             }
          }
       }
-      
-      public function accelerate() : void
+
+      public function accelerate():void
       {
          var _loc2_:int = 0;
          var _loc1_:int = 0;
-         if(accelerating)
+         if (accelerating)
          {
             return;
          }
-         if(ribbonTrail)
+         if (ribbonTrail)
          {
             ribbonTrail.movingRatio = ribbonBaseMovingRatio;
          }
          accelerating = true;
-         if(!thrustEmitters)
+         if (!thrustEmitters)
          {
             return;
          }
          _loc2_ = 0;
-         while(_loc2_ < thrustEmitters.length)
+         while (_loc2_ < thrustEmitters.length)
          {
             thrustEmitters[_loc2_].play();
             _loc2_++;
          }
-         if(idleThrustEmitters != null)
+         if (idleThrustEmitters != null)
          {
             _loc1_ = 0;
-            while(_loc1_ < idleThrustEmitters.length)
+            while (_loc1_ < idleThrustEmitters.length)
             {
                idleThrustEmitters[_loc1_].stop();
                _loc1_++;
             }
          }
       }
-      
-      public function idle() : void
+
+      public function idle():void
       {
          var _loc2_:int = 0;
          var _loc1_:int = 0;
-         if(!accelerating)
+         if (!accelerating)
          {
             return;
          }
-         if(ribbonTrail)
+         if (ribbonTrail)
          {
             ribbonTrail.movingRatio = ribbonBaseMovingRatio * 1.5;
          }
          accelerating = false;
-         if(!thrustEmitters)
+         if (!thrustEmitters)
          {
             return;
          }
          _loc2_ = 0;
-         while(_loc2_ < thrustEmitters.length)
+         while (_loc2_ < thrustEmitters.length)
          {
             thrustEmitters[_loc2_].stop();
             _loc2_++;
          }
-         if(idleThrustEmitters != null)
+         if (idleThrustEmitters != null)
          {
             _loc1_ = 0;
-            while(_loc1_ < idleThrustEmitters.length)
+            while (_loc1_ < idleThrustEmitters.length)
             {
                idleThrustEmitters[_loc1_].play();
                _loc1_++;
             }
          }
       }
-      
-      public function stop() : void
+
+      public function stop():void
       {
          var _loc2_:int = 0;
          var _loc1_:int = 0;
-         if(ribbonTrail)
+         if (ribbonTrail)
          {
             ribbonTrail.movingRatio = ribbonBaseMovingRatio * 1.5;
          }
          accelerating = false;
-         if(!thrustEmitters)
+         if (!thrustEmitters)
          {
             return;
          }
          _loc2_ = 0;
-         while(_loc2_ < thrustEmitters.length)
+         while (_loc2_ < thrustEmitters.length)
          {
             thrustEmitters[_loc2_].stop();
             _loc2_++;
          }
-         if(idleThrustEmitters != null)
+         if (idleThrustEmitters != null)
          {
             _loc1_ = 0;
-            while(_loc1_ < idleThrustEmitters.length)
+            while (_loc1_ < idleThrustEmitters.length)
             {
                idleThrustEmitters[_loc1_].stop();
                _loc1_++;
             }
          }
       }
-      
-      public function destroy() : void
+
+      public function destroy():void
       {
          hide();
          reset();
       }
-      
-      public function hide() : void
+
+      public function hide():void
       {
          var _loc2_:int = 0;
          var _loc1_:int = 0;
-         if(hasRibbonTrail)
+         if (hasRibbonTrail)
          {
             ribbonTrail.isPlaying = false;
          }
-         if(!thrustEmitters)
+         if (!thrustEmitters)
          {
             return;
          }
          _loc2_ = 0;
-         while(_loc2_ < thrustEmitters.length)
+         while (_loc2_ < thrustEmitters.length)
          {
             thrustEmitters[_loc2_].alive = false;
             _loc2_++;
          }
-         if(idleThrustEmitters != null)
+         if (idleThrustEmitters != null)
          {
             _loc1_ = 0;
-            while(_loc1_ < idleThrustEmitters.length)
+            while (_loc1_ < idleThrustEmitters.length)
             {
                idleThrustEmitters[_loc1_].alive = false;
                _loc1_++;
@@ -244,43 +244,43 @@ package core.engine
          thrustEmitters = null;
          idleThrustEmitters = null;
       }
-      
-      public function show() : void
+
+      public function show():void
       {
          var _loc5_:* = undefined;
          var _loc4_:Emitter = null;
          var _loc2_:* = undefined;
          var _loc1_:* = undefined;
          var _loc6_:* = undefined;
-         if(hasRibbonTrail)
+         if (hasRibbonTrail)
          {
             ribbonTrail.isPlaying = true;
             resetTrail();
          }
-         if(!obj.useEffects || obj.effect == null)
+         if (!obj.useEffects || obj.effect == null)
          {
             return;
          }
-         if(thrustEmitters != null)
+         if (thrustEmitters != null)
          {
             return;
          }
          var _loc8_:int = 0;
          thrustEmitters = new Vector.<Emitter>();
-         if(dual)
+         if (dual)
          {
-            _loc5_ = EmitterFactory.create(obj.effect,g,x,y,this,accelerating);
+            _loc5_ = EmitterFactory.create(obj.effect, g, x, y, this, accelerating);
             _loc8_ = 0;
-            while(_loc8_ < _loc5_.length)
+            while (_loc8_ < _loc5_.length)
             {
                _loc4_ = _loc5_[_loc8_];
                _loc4_.yOffset = dualDistance / 2;
                thrustEmitters.push(_loc4_);
                _loc8_++;
             }
-            _loc2_ = EmitterFactory.create(obj.effect,g,x,y,this,accelerating);
+            _loc2_ = EmitterFactory.create(obj.effect, g, x, y, this, accelerating);
             _loc8_ = 0;
-            while(_loc8_ < _loc2_.length)
+            while (_loc8_ < _loc2_.length)
             {
                _loc4_ = _loc2_[_loc8_];
                _loc4_.yOffset = -dualDistance / 2;
@@ -290,37 +290,37 @@ package core.engine
          }
          else
          {
-            thrustEmitters = EmitterFactory.create(obj.effect,g,x,y,this,accelerating);
+            thrustEmitters = EmitterFactory.create(obj.effect, g, x, y, this, accelerating);
          }
-         if(obj.changeThrustColors)
+         if (obj.changeThrustColors)
          {
-            for each(var _loc7_ in thrustEmitters)
+            for each (var _loc7_:* in thrustEmitters)
             {
-               _loc7_.startColor = Color.HEXHue(obj.thrustStartColor,colorHue);
-               _loc7_.finishColor = Color.HEXHue(obj.thrustFinishColor,colorHue);
+               _loc7_.startColor = Color.HEXHue(obj.thrustStartColor, colorHue);
+               _loc7_.finishColor = Color.HEXHue(obj.thrustFinishColor, colorHue);
             }
          }
          else
          {
-            for each(_loc7_ in thrustEmitters)
+            for each (_loc7_ in thrustEmitters)
             {
                _loc7_.changeHue(colorHue);
             }
          }
          idleThrustEmitters = new Vector.<Emitter>();
-         if(dual)
+         if (dual)
          {
-            _loc1_ = EmitterFactory.create(obj.idleEffect,g,x,y,this,!accelerating);
+            _loc1_ = EmitterFactory.create(obj.idleEffect, g, x, y, this, !accelerating);
             _loc8_ = 0;
-            while(_loc8_ < _loc1_.length)
+            while (_loc8_ < _loc1_.length)
             {
                _loc1_[_loc8_].yOffset = dualDistance / 2;
                idleThrustEmitters.push(_loc1_[_loc8_]);
                _loc8_++;
             }
-            _loc6_ = EmitterFactory.create(obj.idleEffect,g,x,y,this,!accelerating);
+            _loc6_ = EmitterFactory.create(obj.idleEffect, g, x, y, this, !accelerating);
             _loc8_ = 0;
-            while(_loc8_ < _loc6_.length)
+            while (_loc8_ < _loc6_.length)
             {
                _loc6_[_loc8_].yOffset = -dualDistance / 2;
                idleThrustEmitters.push(_loc6_[_loc8_]);
@@ -329,46 +329,46 @@ package core.engine
          }
          else
          {
-            idleThrustEmitters = EmitterFactory.create(obj.idleEffect,g,x,y,this,!accelerating);
+            idleThrustEmitters = EmitterFactory.create(obj.idleEffect, g, x, y, this, !accelerating);
          }
-         if(obj.changeIdleThrustColors)
+         if (obj.changeIdleThrustColors)
          {
-            for each(var _loc3_ in idleThrustEmitters)
+            for each (var _loc3_:* in idleThrustEmitters)
             {
-               _loc3_.startColor = Color.HEXHue(obj.idleThrustStartColor,colorHue);
-               _loc3_.finishColor = Color.HEXHue(obj.idleThrustFinishColor,colorHue);
+               _loc3_.startColor = Color.HEXHue(obj.idleThrustStartColor, colorHue);
+               _loc3_.finishColor = Color.HEXHue(obj.idleThrustFinishColor, colorHue);
             }
          }
          else
          {
-            for each(_loc3_ in idleThrustEmitters)
+            for each (_loc3_ in idleThrustEmitters)
             {
                _loc3_.changeHue(colorHue);
             }
          }
       }
-      
-      public function get rotationSpeed() : Number
+
+      public function get rotationSpeed():Number
       {
          return _rotationSpeed * rotationMod;
       }
-      
-      public function set rotationSpeed(param1:Number) : void
+
+      public function set rotationSpeed(param1:Number):void
       {
          _rotationSpeed = param1;
       }
-      
-      public function resetTrail() : void
+
+      public function resetTrail():void
       {
-         if(hasRibbonTrail)
+         if (hasRibbonTrail)
          {
-            followingRibbonSegment.setTo2(ship.pos.x,ship.pos.y,2,0,1);
-            ribbonTrail.resetAllTo(ship.pos.x,ship.pos.y,ship.pos.x,ship.pos.y,0.85);
+            followingRibbonSegment.setTo2(ship.pos.x, ship.pos.y, 2, 0, 1);
+            ribbonTrail.resetAllTo(ship.pos.x, ship.pos.y, ship.pos.x, ship.pos.y, 0.85);
             ribbonTrail.advanceTime(33);
          }
       }
-      
-      override public function reset() : void
+
+      override public function reset():void
       {
          thrustEmitters = null;
          idleThrustEmitters = null;
@@ -384,14 +384,13 @@ package core.engine
          ribbonBaseMovingRatio = 1;
          hasRibbonTrail = false;
          ribbonThickness = 0;
-         if(ribbonTrail)
+         if (ribbonTrail)
          {
             g.ribbonTrailPool.removeRibbonTrail(ribbonTrail);
             ribbonTrail.isPlaying = false;
-            ribbonTrail.resetAllTo(0,0,0,0,0);
+            ribbonTrail.resetAllTo(0, 0, 0, 0, 0);
             ribbonTrail = null;
          }
       }
    }
 }
-

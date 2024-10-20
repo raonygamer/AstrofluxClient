@@ -8,27 +8,27 @@ package core.states.gameStates
    import starling.display.Image;
    import starling.display.Sprite;
    import starling.events.Event;
-   
+
    public class SettingsState extends PlayState
    {
       private var goTo:String;
-      
+
       private var settings:Settings;
-      
+
       private var bg:Image;
-      
+
       private var closeButton:ButtonExpandableHud;
-      
+
       private var generalButton:ButtonExpandableHud;
-      
+
       private var bindingsButton:ButtonExpandableHud;
-      
+
       private var chatButton:ButtonExpandableHud;
-      
+
       private var activeButton:ButtonExpandableHud;
-      
+
       private var activePage:Sprite;
-      
+
       public function SettingsState(param1:Game, param2:String = "")
       {
          var g:Game = param1;
@@ -38,21 +38,21 @@ package core.states.gameStates
          this.settings = SceneBase.settings;
          bg = new Image(textureManager.getTextureGUIByTextureName("map_bgr.png"));
          generalButton = new ButtonExpandableHud(function():void
-         {
-            show(SettingsGeneral,generalButton);
-         },"General");
+            {
+               show(SettingsGeneral, generalButton);
+            }, "General");
          bindingsButton = new ButtonExpandableHud(function():void
-         {
-            show(SettingsBindings,bindingsButton);
-         },"Key bindings");
+            {
+               show(SettingsBindings, bindingsButton);
+            }, "Key bindings");
          chatButton = new ButtonExpandableHud(function():void
-         {
-            show(SettingsChat,chatButton);
-         },"Chat");
-         closeButton = new ButtonExpandableHud(close,Localize.t("close"));
+            {
+               show(SettingsChat, chatButton);
+            }, "Chat");
+         closeButton = new ButtonExpandableHud(close, Localize.t("close"));
       }
-      
-      override public function enter() : void
+
+      override public function enter():void
       {
          super.enter();
          g.hud.show = false;
@@ -63,10 +63,10 @@ package core.states.gameStates
          g.addChildToMenu(chatButton);
          g.addChildToMenu(closeButton);
          resize();
-         show(SettingsGeneral,generalButton);
+         show(SettingsGeneral, generalButton);
       }
-      
-      override public function resize(param1:Event = null) : void
+
+      override public function resize(param1:Event = null):void
       {
          super.resize();
          container.x = g.stage.stageWidth / 2 - bg.width / 2;
@@ -80,43 +80,43 @@ package core.states.gameStates
          closeButton.y = container.y;
          closeButton.x = container.x + 760 - 46 - closeButton.width;
       }
-      
-      override public function execute() : void
+
+      override public function execute():void
       {
          updateInput();
          super.execute();
       }
-      
-      private function updateInput() : void
+
+      private function updateInput():void
       {
-         if(!loaded)
+         if (!loaded)
          {
             return;
          }
          checkAccelerate(true);
-         if(keybinds.isEscPressed || keybinds.isInputPressed(8))
+         if (keybinds.isEscPressed || keybinds.isInputPressed(8))
          {
             close();
          }
       }
-      
-      private function show(param1:Class, param2:ButtonExpandableHud) : void
+
+      private function show(param1:Class, param2:ButtonExpandableHud):void
       {
-         if(activeButton == param2)
+         if (activeButton == param2)
          {
             activeButton.enabled = true;
             return;
          }
-         if(activePage)
+         if (activePage)
          {
-            container.removeChild(activePage,true);
+            container.removeChild(activePage, true);
          }
          activePage = new param1(g);
          container.addChild(activePage);
          updateButtons(param2);
       }
-      
-      private function updateButtons(param1:ButtonExpandableHud) : void
+
+      private function updateButtons(param1:ButtonExpandableHud):void
       {
          generalButton.select = param1 == generalButton;
          bindingsButton.select = param1 == bindingsButton;
@@ -124,16 +124,16 @@ package core.states.gameStates
          activeButton = param1;
          activeButton.enabled = true;
       }
-      
-      private function close() : void
+
+      private function close():void
       {
          g.removeChildFromMenu(generalButton);
          g.removeChildFromMenu(bindingsButton);
          g.removeChildFromMenu(chatButton);
          g.removeChildFromMenu(closeButton);
-         if(activePage)
+         if (activePage)
          {
-            container.removeChild(activePage,true);
+            container.removeChild(activePage, true);
          }
          clearBackground();
          g.me.rotationSpeedMod = settings.rotationSpeed;
@@ -142,4 +142,3 @@ package core.states.gameStates
       }
    }
 }
-

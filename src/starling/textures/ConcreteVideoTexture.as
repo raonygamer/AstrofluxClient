@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.textures
@@ -29,10 +29,10 @@ package starling.textures
         /** Creates a new instance with the given parameters.
          *  <code>base</code> must be of type <code>flash.display3D.textures.VideoTexture</code>.
          */
-        public function ConcreteVideoTexture(base:VideoTexture, scale:Number=1)
+        public function ConcreteVideoTexture(base:VideoTexture, scale:Number = 1)
         {
             super(base, Context3DTextureFormat.BGRA, base.videoWidth, base.videoHeight, false,
-                  false, false, scale);
+                    false, false, scale);
         }
 
         /** @inheritDoc */
@@ -50,7 +50,7 @@ package starling.textures
 
         /** @private */
         override internal function attachVideo(type:String, attachment:Object,
-                                               onComplete:Function=null):void
+                onComplete:Function = null):void
         {
             _textureReadyCallback = onComplete;
             base["attach" + type](attachment);

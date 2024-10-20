@@ -39,22 +39,22 @@ package com.adobe.net.proxies
 	/**
 	 * This class allows TCP socket connections through HTTP proxies in accordance with
 	 * RFC 2817:
-	 * 
+	 *
 	 * ftp://ftp.rfc-editor.org/in-notes/rfc2817.txt
-	 * 
+	 *
 	 * It can also be used to make direct connections to a destination, as well. If you
 	 * pass the host and port into the constructor, no proxy will be used. You can also
 	 * call connect, passing in the host and the port, and if you didn't set the proxy
 	 * info, a direct connection will be made. A proxy is only used after you have called
 	 * the setProxyInfo function.
-	 * 
+	 *
 	 * The connection to and negotiation with the proxy is completely hidden. All the
 	 * same events are thrown whether you are using a proxy or not, and the data you
 	 * receive from the target server will look exact as it would if you were connected
 	 * to it directly rather than through a proxy.
-	 * 
+	 *
 	 * @author Christian Cantrell
-	 * 
+	 *
 	 **/
 	public class RFC2817Socket
 		extends Socket
@@ -75,7 +75,7 @@ package com.adobe.net.proxies
 		{
 			super(host, port);
 		}
-		
+
 		/**
 		 * Set the proxy host and port number. Your connection will only proxied if
 		 * this function has been called.
@@ -98,7 +98,7 @@ package com.adobe.net.proxies
 				super.removeEventListener(Event.CONNECT, deferredConnectHandler.listener, deferredConnectHandler.useCapture);
 			}
 		}
-		
+
 		/**
 		 * Connect to the specified host over the specified port. If you want your
 		 * connection proxied, call the setProxyInfo function first.
@@ -123,11 +123,11 @@ package com.adobe.net.proxies
 
 		private function onConnect(event:Event):void
 		{
-			this.writeUTFBytes("CONNECT "+this.host+":"+this.port+" HTTP/1.1\n\n");
+			this.writeUTFBytes("CONNECT " + this.host + ":" + this.port + " HTTP/1.1\n\n");
 			this.flush();
 			this.redirectConnectEvent();
 		}
-		
+
 		private function onSocketData(event:ProgressEvent):void
 		{
 			while (this.bytesAvailable != 0)
@@ -140,15 +140,15 @@ package com.adobe.net.proxies
 				}
 			}
 		}
-		
+
 		private function checkResponse(event:ProgressEvent):void
 		{
-			var responseCode:String = this.buffer.substr(this.buffer.indexOf(" ")+1, 3);
+			var responseCode:String = this.buffer.substr(this.buffer.indexOf(" ") + 1, 3);
 
 			if (responseCode.search(/^2/) == -1)
 			{
 				var ioError:IOErrorEvent = new IOErrorEvent(IOErrorEvent.IO_ERROR);
-				ioError.text = "Error connecting to the proxy ["+this.proxyHost+"] on port ["+this.proxyPort+"]: " + this.buffer;
+				ioError.text = "Error connecting to the proxy [" + this.proxyHost + "] on port [" + this.proxyPort + "]: " + this.buffer;
 				this.dispatchEvent(ioError);
 			}
 			else
@@ -162,32 +162,32 @@ package com.adobe.net.proxies
 			}
 			this.buffer = null;
 		}
-		
+
 		private function redirectConnectEvent():void
 		{
 			super.removeEventListener(Event.CONNECT, onConnect);
 			var deferredEventHandler:Object = this.deferredEventHandlers[Event.CONNECT];
 			if (deferredEventHandler != null)
 			{
-				super.addEventListener(Event.CONNECT, deferredEventHandler.listener, deferredEventHandler.useCapture, deferredEventHandler.priority, deferredEventHandler.useWeakReference);			
+				super.addEventListener(Event.CONNECT, deferredEventHandler.listener, deferredEventHandler.useCapture, deferredEventHandler.priority, deferredEventHandler.useWeakReference);
 			}
 		}
-		
+
 		private function redirectSocketDataEvent():void
 		{
 			super.removeEventListener(ProgressEvent.SOCKET_DATA, onSocketData);
 			var deferredEventHandler:Object = this.deferredEventHandlers[ProgressEvent.SOCKET_DATA];
 			if (deferredEventHandler != null)
 			{
-				super.addEventListener(ProgressEvent.SOCKET_DATA, deferredEventHandler.listener, deferredEventHandler.useCapture, deferredEventHandler.priority, deferredEventHandler.useWeakReference);			
+				super.addEventListener(ProgressEvent.SOCKET_DATA, deferredEventHandler.listener, deferredEventHandler.useCapture, deferredEventHandler.priority, deferredEventHandler.useWeakReference);
 			}
 		}
-		
-		public override function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int=0.0, useWeakReference:Boolean=false):void
+
+		public override function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0.0, useWeakReference:Boolean = false):void
 		{
 			if (type == Event.CONNECT || type == ProgressEvent.SOCKET_DATA)
 			{
-				this.deferredEventHandlers[type] = {listener:listener,useCapture:useCapture, priority:priority, useWeakReference:useWeakReference};
+				this.deferredEventHandlers[type] = {listener: listener, useCapture: useCapture, priority: priority, useWeakReference: useWeakReference};
 			}
 			else
 			{

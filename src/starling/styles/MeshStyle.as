@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.styles
@@ -101,8 +101,8 @@ package starling.styles
         private var _textureBase:TextureBase;
         private var _textureSmoothing:String;
         private var _textureRepeat:Boolean;
-        private var _vertexData:VertexData;   // just a reference to the target's vertex data
-        private var _indexData:IndexData;     // just a reference to the target's index data
+        private var _vertexData:VertexData; // just a reference to the target's vertex data
+        private var _indexData:IndexData; // just a reference to the target's index data
 
         // helper objects
         private static var sPoint:Point = new Point();
@@ -170,14 +170,17 @@ package starling.styles
             {
                 var newTexture:Texture = meshStyle._texture;
 
-                if (_texture == null && newTexture == null) return true;
+                if (_texture == null && newTexture == null)
+                    return true;
                 else if (_texture && newTexture)
                     return _textureBase == meshStyle._textureBase &&
-                           _textureSmoothing == meshStyle._textureSmoothing &&
-                           _textureRepeat == meshStyle._textureRepeat;
-                else return false;
+                        _textureSmoothing == meshStyle._textureSmoothing &&
+                        _textureRepeat == meshStyle._textureRepeat;
+                else
+                    return false;
             }
-            else return false;
+            else
+                return false;
         }
 
         /** Copies the vertex data of the style's current target to the target of another style.
@@ -188,8 +191,8 @@ package starling.styles
          *  subclass of <code>Mesh</code>). Subclasses may override this method if they need
          *  to modify the vertex data in that process.</p>
          */
-        public function batchVertexData(targetStyle:MeshStyle, targetVertexID:int=0,
-                                        matrix:Matrix=null, vertexID:int=0, numVertices:int=-1):void
+        public function batchVertexData(targetStyle:MeshStyle, targetVertexID:int = 0,
+                matrix:Matrix = null, vertexID:int = 0, numVertices:int = -1):void
         {
             _vertexData.copyTo(targetStyle._vertexData, targetVertexID, matrix, vertexID, numVertices);
         }
@@ -202,8 +205,8 @@ package starling.styles
          *  subclass of <code>Mesh</code>). Subclasses may override this method if they need
          *  to modify the index data in that process.</p>
          */
-        public function batchIndexData(targetStyle:MeshStyle, targetIndexID:int=0, offset:int=0,
-                                       indexID:int=0, numIndices:int=-1):void
+        public function batchIndexData(targetStyle:MeshStyle, targetIndexID:int = 0, offset:int = 0,
+                indexID:int = 0, numIndices:int = -1):void
         {
             _indexData.copyTo(targetStyle._indexData, targetIndexID, offset, indexID, numIndices);
         }
@@ -212,26 +215,30 @@ package starling.styles
          *  The call is simply forwarded to the target mesh. */
         protected function setRequiresRedraw():void
         {
-            if (_target) _target.setRequiresRedraw();
+            if (_target)
+                _target.setRequiresRedraw();
         }
 
         /** Call this method when the vertex data changed.
          *  The call is simply forwarded to the target mesh. */
         protected function setVertexDataChanged():void
         {
-            if (_target) _target.setVertexDataChanged();
+            if (_target)
+                _target.setVertexDataChanged();
         }
 
         /** Call this method when the index data changed.
          *  The call is simply forwarded to the target mesh. */
         protected function setIndexDataChanged():void
         {
-            if (_target) _target.setIndexDataChanged();
+            if (_target)
+                _target.setIndexDataChanged();
         }
 
         /** Called when assigning a target mesh. Override to plug in class-specific logic. */
         protected function onTargetAssigned(target:Mesh):void
-        { }
+        {
+        }
 
         // enter frame event
 
@@ -259,13 +266,15 @@ package starling.styles
         // internal methods
 
         /** @private */
-        starling_internal function setTarget(target:Mesh=null, vertexData:VertexData=null,
-                                             indexData:IndexData=null):void
+        starling_internal function setTarget(target:Mesh = null, vertexData:VertexData = null,
+                indexData:IndexData = null):void
         {
             if (_target != target)
             {
-                if (_target) _target.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-                if (vertexData) vertexData.format = vertexFormat;
+                if (_target)
+                    _target.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+                if (vertexData)
+                    vertexData.format = vertexFormat;
 
                 _target = target;
                 _vertexData = vertexData;
@@ -292,7 +301,7 @@ package starling.styles
          *  area; some of its optimized methods won't work correctly if that premise is no longer
          *  fulfilled or the original bounds change.</p>
          */
-        public function getVertexPosition(vertexID:int, out:Point=null):Point
+        public function getVertexPosition(vertexID:int, out:Point = null):Point
         {
             return _vertexData.getPoint(vertexID, "position", out);
         }
@@ -332,15 +341,19 @@ package starling.styles
         /** Returns the texture coordinates of the vertex at the specified index. */
         public function getTexCoords(vertexID:int, out:Point = null):Point
         {
-            if (_texture) return _texture.getTexCoords(_vertexData, vertexID, "texCoords", out);
-            else return _vertexData.getPoint(vertexID, "texCoords", out);
+            if (_texture)
+                return _texture.getTexCoords(_vertexData, vertexID, "texCoords", out);
+            else
+                return _vertexData.getPoint(vertexID, "texCoords", out);
         }
 
         /** Sets the texture coordinates of the vertex at the specified index to the given values. */
         public function setTexCoords(vertexID:int, u:Number, v:Number):void
         {
-            if (_texture) _texture.setTexCoords(_vertexData, vertexID, "texCoords", u, v);
-            else _vertexData.setPoint(vertexID, "texCoords", u, v);
+            if (_texture)
+                _texture.setTexCoords(_vertexData, vertexID, "texCoords", u, v);
+            else
+                _vertexData.setPoint(vertexID, "texCoords", u, v);
 
             setVertexDataChanged();
         }
@@ -350,22 +363,33 @@ package starling.styles
         /** Returns a reference to the vertex data of the assigned target (or <code>null</code>
          *  if there is no target). Beware: the style itself does not own any vertices;
          *  it is limited to manipulating those of the target mesh. */
-        protected function get vertexData():VertexData { return _vertexData; }
+        protected function get vertexData():VertexData
+        {
+            return _vertexData;
+        }
 
         /** Returns a reference to the index data of the assigned target (or <code>null</code>
          *  if there is no target). Beware: the style itself does not own any indices;
          *  it is limited to manipulating those of the target mesh. */
-        protected function get indexData():IndexData { return _indexData; }
+        protected function get indexData():IndexData
+        {
+            return _indexData;
+        }
 
         /** The actual class of this style. */
-        public function get type():Class { return _type; }
+        public function get type():Class
+        {
+            return _type;
+        }
 
         /** Changes the color of all vertices to the same value.
          *  The getter simply returns the color of the first vertex. */
         public function get color():uint
         {
-            if (_vertexData.numVertices > 0) return _vertexData.getColor(0);
-            else return 0x0;
+            if (_vertexData.numVertices > 0)
+                return _vertexData.getColor(0);
+            else
+                return 0x0;
         }
 
         public function set color(value:uint):void
@@ -373,7 +397,7 @@ package starling.styles
             var i:int;
             var numVertices:int = _vertexData.numVertices;
 
-            for (i=0; i<numVertices; ++i)
+            for (i = 0; i < numVertices; ++i)
                 _vertexData.setColor(i, "color", value);
 
             if (value == 0xffffff && _vertexData.tinted)
@@ -389,7 +413,10 @@ package starling.styles
         }
 
         /** The texture that is mapped to the mesh (or <code>null</code>, if there is none). */
-        public function get texture():Texture { return _texture; }
+        public function get texture():Texture
+        {
+            return _texture;
+        }
         public function set texture(value:Texture):void
         {
             if (value != _texture)
@@ -407,7 +434,8 @@ package starling.styles
 
                     setVertexDataChanged();
                 }
-                else setRequiresRedraw();
+                else
+                    setRequiresRedraw();
 
                 _texture = value;
                 _textureBase = value ? value.base : null;
@@ -415,7 +443,10 @@ package starling.styles
         }
 
         /** The smoothing filter that is used for the texture. @default bilinear */
-        public function get textureSmoothing():String { return _textureSmoothing; }
+        public function get textureSmoothing():String
+        {
+            return _textureSmoothing;
+        }
         public function set textureSmoothing(value:String):void
         {
             if (value != _textureSmoothing)
@@ -427,10 +458,19 @@ package starling.styles
 
         /** Indicates if pixels at the edges will be repeated or clamped.
          *  Only works for power-of-two textures. @default false */
-        public function get textureRepeat():Boolean { return _textureRepeat; }
-        public function set textureRepeat(value:Boolean):void { _textureRepeat = value; }
+        public function get textureRepeat():Boolean
+        {
+            return _textureRepeat;
+        }
+        public function set textureRepeat(value:Boolean):void
+        {
+            _textureRepeat = value;
+        }
 
         /** The target the style is currently assigned to. */
-        public function get target():Mesh { return _target; }
+        public function get target():Mesh
+        {
+            return _target;
+        }
     }
 }

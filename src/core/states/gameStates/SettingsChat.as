@@ -9,19 +9,19 @@ package core.states.gameStates
    import starling.events.Event;
    import starling.text.TextField;
    import starling.text.TextFormat;
-   
+
    public class SettingsChat extends Sprite
    {
-      private static var labelFormat:TextFormat = new TextFormat("DAIDRR",13,16777215,"left");
-      
+      private static var labelFormat:TextFormat = new TextFormat("DAIDRR", 13, 16777215, "left");
+
       private var g:Game;
-      
+
       private var xpos:int = 50;
-      
+
       private var ypos:int = 0;
-      
+
       private var scrollArea:ScrollContainer;
-      
+
       public function SettingsChat(param1:Game)
       {
          super();
@@ -39,19 +39,19 @@ package core.states.gameStates
          _loc2_.x = xpos;
          scrollArea.addChild(_loc2_);
          ypos += 40;
-         addChannel("system","System");
-         addChannel("local","Local");
-         addChannel("global","Global");
-         addChannel("clan","Clan");
-         addChannel("group","Group");
-         addChannel("private","Private");
-         addChannel("planetwars","Planet wars");
-         addChannel("join_leave","Player join/leave");
-         addChannel("death","Player death");
-         addChannel("loot","Loot found");
+         addChannel("system", "System");
+         addChannel("local", "Local");
+         addChannel("global", "Global");
+         addChannel("clan", "Clan");
+         addChannel("group", "Group");
+         addChannel("private", "Private");
+         addChannel("planetwars", "Planet wars");
+         addChannel("join_leave", "Player join/leave");
+         addChannel("death", "Player death");
+         addChannel("loot", "Loot found");
       }
-      
-      private function addChannel(param1:String, param2:String) : void
+
+      private function addChannel(param1:String, param2:String):void
       {
          var label:TextField;
          var msgType:String = param1;
@@ -60,12 +60,12 @@ package core.states.gameStates
          check.x = xpos;
          check.y = ypos;
          check.isSelected = !g.messageLog.isMuted(msgType);
-         check.addEventListener("change",function(param1:Event):void
-         {
-            g.messageLog.toggleMuted(msgType,!check.isSelected);
-         });
+         check.addEventListener("change", function(param1:Event):void
+            {
+               g.messageLog.toggleMuted(msgType, !check.isSelected);
+            });
          scrollArea.addChild(check);
-         label = new TextField(200,13,text,labelFormat);
+         label = new TextField(200, 13, text, labelFormat);
          label.x = xpos + 30;
          label.y = ypos + 5;
          scrollArea.addChild(label);
@@ -73,4 +73,3 @@ package core.states.gameStates
       }
    }
 }
-

@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.rendering
@@ -64,20 +64,22 @@ package starling.rendering
          *                    without transforming them in any way (no matter the value of the
          *                    state's <code>modelviewMatrix</code>).
          */
-        public function addMesh(mesh:Mesh, state:RenderState, subset:MeshSubset=null,
-                                ignoreTransformations:Boolean=false):void
+        public function addMesh(mesh:Mesh, state:RenderState, subset:MeshSubset = null,
+                ignoreTransformations:Boolean = false):void
         {
             if (subset == null)
             {
                 subset = sMeshSubset;
                 subset.vertexID = subset.indexID = 0;
                 subset.numVertices = mesh.numVertices;
-                subset.numIndices  = mesh.numIndices;
+                subset.numIndices = mesh.numIndices;
             }
             else
             {
-                if (subset.numVertices < 0) subset.numVertices = mesh.numVertices - subset.vertexID;
-                if (subset.numIndices  < 0) subset.numIndices  = mesh.numIndices  - subset.indexID;
+                if (subset.numVertices < 0)
+                    subset.numVertices = mesh.numVertices - subset.vertexID;
+                if (subset.numIndices < 0)
+                    subset.numIndices = mesh.numIndices - subset.indexID;
             }
 
             if (subset.numVertices > 0)
@@ -87,18 +89,18 @@ package starling.rendering
                     finishBatch();
 
                     _currentStyleType = mesh.style.type;
-                    _currentBatch = _batchPool.get(_currentStyleType);
+                    _currentBatch = _batchPool.get (_currentStyleType);
                     _currentBatch.blendMode = state ? state.blendMode : mesh.blendMode;
                     _cacheToken.setTo(_batches.length);
                     _batches[_batches.length] = _currentBatch;
                 }
 
                 var matrix:Matrix = state ? state._modelviewMatrix : null;
-                var alpha:Number  = state ? state._alpha : 1.0;
+                var alpha:Number = state ? state._alpha : 1.0;
 
                 _currentBatch.addMesh(mesh, matrix, alpha, subset, ignoreTransformations);
                 _cacheToken.vertexID += subset.numVertices;
-                _cacheToken.indexID  += subset.numIndices;
+                _cacheToken.indexID += subset.numIndices;
             }
         }
 
@@ -123,7 +125,7 @@ package starling.rendering
         {
             var numBatches:int = _batches.length;
 
-            for (var i:int=0; i<numBatches; ++i)
+            for (var i:int = 0; i < numBatches; ++i)
                 _batchPool.put(_batches[i]);
 
             _batches.length = 0;
@@ -148,20 +150,29 @@ package starling.rendering
          *  within this instance. */
         public function fillToken(token:BatchToken):BatchToken
         {
-            token.batchID  = _cacheToken.batchID;
+            token.batchID = _cacheToken.batchID;
             token.vertexID = _cacheToken.vertexID;
-            token.indexID  = _cacheToken.indexID;
+            token.indexID = _cacheToken.indexID;
             return token;
         }
 
         /** The number of batches currently stored in the BatchProcessor. */
-        public function get numBatches():int { return _batches.length; }
+        public function get numBatches():int
+        {
+            return _batches.length;
+        }
 
         /** This callback is executed whenever a batch is finished and replaced by a new one.
          *  The finished MeshBatch is passed to the callback. Typically, this callback is used
          *  to actually render it. */
-        public function get onBatchComplete():Function { return _onBatchComplete; }
-        public function set onBatchComplete(value:Function):void { _onBatchComplete = value; }
+        public function get onBatchComplete():Function
+        {
+            return _onBatchComplete;
+        }
+        public function set onBatchComplete(value:Function):void
+        {
+            _onBatchComplete = value;
+        }
     }
 }
 
@@ -182,14 +193,14 @@ class BatchPool
     {
         for each (var batchList:Vector.<MeshBatch> in _batchLists)
         {
-            for (var i:int=0; i<batchList.length; ++i)
+            for (var i:int = 0; i < batchList.length; ++i)
                 batchList[i].dispose();
 
             batchList.length = 0;
         }
     }
 
-    public function get(styleType:Class):MeshBatch
+    public function get (styleType:Class):MeshBatch
     {
         var batchList:Vector.<MeshBatch> = _batchLists[styleType];
         if (batchList == null)
@@ -198,8 +209,10 @@ class BatchPool
             _batchLists[styleType] = batchList;
         }
 
-        if (batchList.length > 0) return batchList.pop();
-        else return new MeshBatch();
+        if (batchList.length > 0)
+            return batchList.pop();
+        else
+            return new MeshBatch();
     }
 
     public function put(meshBatch:MeshBatch):void

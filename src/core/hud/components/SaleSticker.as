@@ -4,7 +4,7 @@ package core.hud.components
    import starling.display.Sprite;
    import starling.textures.Texture;
    import textures.TextureLocator;
-   
+
    public class SaleSticker extends Sprite
    {
       public function SaleSticker(param1:String = "", param2:String = "", param3:String = "", param4:uint = 14942208, param5:Texture = null, param6:Texture = null)
@@ -16,7 +16,7 @@ package core.hud.components
          _loc10_.pivotY = _loc10_.texture.height / 2;
          _loc10_.color = param4;
          addChild(_loc10_);
-         if(Login.currentState == "facebook")
+         if (Login.currentState == "facebook")
          {
             _loc11_ = new Image(param5 == null ? TextureLocator.getService().getTextureGUIByTextureName("fb_sale_lg") : param6);
             _loc11_.y = _loc10_.y + _loc10_.height / 2 - 45;
@@ -47,4 +47,3 @@ package core.hud.components
       }
    }
 }
-

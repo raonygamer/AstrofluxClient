@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//  Starling Framework
-//  Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.display
@@ -47,8 +47,11 @@ package starling.display
     public class Mesh extends DisplayObject
     {
         /** @private */ internal var _style:MeshStyle;
+
         /** @private */ internal var _vertexData:VertexData;
+
         /** @private */ internal var _indexData:IndexData;
+
         /** @private */ internal var _pixelSnapping:Boolean;
 
         private static var sDefaultStyle:Class = MeshStyle;
@@ -58,10 +61,12 @@ package starling.display
          *  If you don't pass a style, an instance of <code>MeshStyle</code> will be created
          *  for you. Note that the format of the vertex data will be matched to the
          *  given style right away. */
-        public function Mesh(vertexData:VertexData, indexData:IndexData, style:MeshStyle=null)
+        public function Mesh(vertexData:VertexData, indexData:IndexData, style:MeshStyle = null)
         {
-            if (vertexData == null) throw new ArgumentError("VertexData must not be null");
-            if (indexData == null)  throw new ArgumentError("IndexData must not be null");
+            if (vertexData == null)
+                throw new ArgumentError("VertexData must not be null");
+            if (indexData == null)
+                throw new ArgumentError("IndexData must not be null");
 
             _vertexData = vertexData;
             _indexData = indexData;
@@ -81,12 +86,14 @@ package starling.display
         /** @inheritDoc */
         override public function hitTest(localPoint:Point):DisplayObject
         {
-            if (!visible || !touchable || !hitTestMask(localPoint)) return null;
-            else return MeshUtil.containsPoint(_vertexData, _indexData, localPoint) ? this : null;
+            if (!visible || !touchable || !hitTestMask(localPoint))
+                return null;
+            else
+                return MeshUtil.containsPoint(_vertexData, _indexData, localPoint) ? this : null;
         }
 
         /** @inheritDoc */
-        override public function getBounds(targetSpace:DisplayObject, out:Rectangle=null):Rectangle
+        override public function getBounds(targetSpace:DisplayObject, out:Rectangle = null):Rectangle
         {
             return MeshUtil.calculateBounds(_vertexData, this, targetSpace, out);
         }
@@ -115,15 +122,19 @@ package starling.display
          *  @see #defaultStyle
          *  @see #defaultStyleFactory
          */
-        public function setStyle(meshStyle:MeshStyle=null, mergeWithPredecessor:Boolean=true):void
+        public function setStyle(meshStyle:MeshStyle = null, mergeWithPredecessor:Boolean = true):void
         {
-            if (meshStyle == null) meshStyle = createDefaultMeshStyle();
-            else if (meshStyle == _style) return;
-            else if (meshStyle.target) meshStyle.target.setStyle();
+            if (meshStyle == null)
+                meshStyle = createDefaultMeshStyle();
+            else if (meshStyle == _style)
+                return;
+            else if (meshStyle.target)
+                meshStyle.target.setStyle();
 
             if (_style)
             {
-                if (mergeWithPredecessor) meshStyle.copyFrom(_style);
+                if (mergeWithPredecessor)
+                    meshStyle.copyFrom(_style);
                 _style.setTarget(null);
             }
 
@@ -137,8 +148,10 @@ package starling.display
 
             if (sDefaultStyleFactory != null)
             {
-                if (sDefaultStyleFactory.length == 0) meshStyle = sDefaultStyleFactory();
-                else meshStyle = sDefaultStyleFactory(this);
+                if (sDefaultStyleFactory.length == 0)
+                    meshStyle = sDefaultStyleFactory();
+                else
+                    meshStyle = sDefaultStyleFactory(this);
             }
 
             if (meshStyle == null)
@@ -172,7 +185,7 @@ package starling.display
          *  area; some of its optimized methods won't work correctly if that premise is no longer
          *  fulfilled or the original bounds change.</p>
          */
-        public function getVertexPosition(vertexID:int, out:Point=null):Point
+        public function getVertexPosition(vertexID:int, out:Point = null):Point
         {
             return _style.getVertexPosition(vertexID, out);
         }
@@ -222,11 +235,17 @@ package starling.display
 
         /** The vertex data describing all vertices of the mesh.
          *  Any change requires a call to <code>setRequiresRedraw</code>. */
-        protected function get vertexData():VertexData { return _vertexData; }
+        protected function get vertexData():VertexData
+        {
+            return _vertexData;
+        }
 
         /** The index data describing how the vertices are interconnected.
          *  Any change requires a call to <code>setRequiresRedraw</code>. */
-        protected function get indexData():IndexData { return _indexData; }
+        protected function get indexData():IndexData
+        {
+            return _indexData;
+        }
 
         /** The style that is used to render the mesh. Styles (which are always subclasses of
          *  <code>MeshStyle</code>) provide a means to completely modify the way a mesh is rendered.
@@ -236,57 +255,105 @@ package starling.display
          *
          *  @default MeshStyle
          */
-        public function get style():MeshStyle { return _style; }
+        public function get style():MeshStyle
+        {
+            return _style;
+        }
         public function set style(value:MeshStyle):void
         {
             setStyle(value);
         }
 
         /** The texture that is mapped to the mesh (or <code>null</code>, if there is none). */
-        public function get texture():Texture { return _style.texture; }
-        public function set texture(value:Texture):void { _style.texture = value; }
+        public function get texture():Texture
+        {
+            return _style.texture;
+        }
+        public function set texture(value:Texture):void
+        {
+            _style.texture = value;
+        }
 
         /** Changes the color of all vertices to the same value.
          *  The getter simply returns the color of the first vertex. */
-        public function get color():uint { return _style.color; }
-        public function set color(value:uint):void { _style.color = value; }
+        public function get color():uint
+        {
+            return _style.color;
+        }
+        public function set color(value:uint):void
+        {
+            _style.color = value;
+        }
 
         /** The smoothing filter that is used for the texture.
          *  @default bilinear */
-        public function get textureSmoothing():String { return _style.textureSmoothing; }
-        public function set textureSmoothing(value:String):void { _style.textureSmoothing = value; }
+        public function get textureSmoothing():String
+        {
+            return _style.textureSmoothing;
+        }
+        public function set textureSmoothing(value:String):void
+        {
+            _style.textureSmoothing = value;
+        }
 
         /** Indicates if pixels at the edges will be repeated or clamped. Only works for
          *  power-of-two textures; for a solution that works with all kinds of textures,
          *  see <code>Image.tileGrid</code>. @default false */
-        public function get textureRepeat():Boolean { return _style.textureRepeat; }
-        public function set textureRepeat(value:Boolean):void { _style.textureRepeat = value; }
+        public function get textureRepeat():Boolean
+        {
+            return _style.textureRepeat;
+        }
+        public function set textureRepeat(value:Boolean):void
+        {
+            _style.textureRepeat = value;
+        }
 
         /** Controls whether or not the instance snaps to the nearest pixel. This can prevent the
          *  object from looking blurry when it's not exactly aligned with the pixels of the screen.
          *  @default false */
-        public function get pixelSnapping():Boolean { return _pixelSnapping; }
-        public function set pixelSnapping(value:Boolean):void { _pixelSnapping = value; }
+        public function get pixelSnapping():Boolean
+        {
+            return _pixelSnapping;
+        }
+        public function set pixelSnapping(value:Boolean):void
+        {
+            _pixelSnapping = value;
+        }
 
         /** The total number of vertices in the mesh. */
-        public function get numVertices():int { return _vertexData.numVertices; }
+        public function get numVertices():int
+        {
+            return _vertexData.numVertices;
+        }
 
         /** The total number of indices referencing vertices. */
-        public function get numIndices():int { return _indexData.numIndices; }
+        public function get numIndices():int
+        {
+            return _indexData.numIndices;
+        }
 
         /** The total number of triangles in this mesh.
          *  (In other words: the number of indices divided by three.) */
-        public function get numTriangles():int { return _indexData.numTriangles; }
+        public function get numTriangles():int
+        {
+            return _indexData.numTriangles;
+        }
 
         /** The format used to store the vertices. */
-        public function get vertexFormat():VertexDataFormat { return _style.vertexFormat; }
+        public function get vertexFormat():VertexDataFormat
+        {
+            return _style.vertexFormat;
+        }
 
         // static properties
 
         /** The default style used for meshes if no specific style is provided. The default is
          *  <code>starling.rendering.MeshStyle</code>, and any assigned class must be a subclass
          *  of the same. */
-        public static function get defaultStyle():Class { return sDefaultStyle; }
+        public static function get defaultStyle():Class
+        {
+            return sDefaultStyle;
+        }
         public static function set defaultStyle(value:Class):void
         {
             sDefaultStyle = value;
@@ -306,7 +373,10 @@ package starling.display
          *      return new ColorizeMeshStyle(Math.random() * 0xffffff);
          *  }</listing>
          */
-        public static function get defaultStyleFactory():Function { return sDefaultStyleFactory; }
+        public static function get defaultStyleFactory():Function
+        {
+            return sDefaultStyleFactory;
+        }
         public static function set defaultStyleFactory(value:Function):void
         {
             sDefaultStyleFactory = value;
@@ -318,7 +388,7 @@ package starling.display
          *  Vertex positions and indices will be set up according to the polygon;
          *  any other vertex attributes (e.g. texture coordinates) need to be set up manually.
          */
-        public static function fromPolygon(polygon:Polygon, style:MeshStyle=null):Mesh
+        public static function fromPolygon(polygon:Polygon, style:MeshStyle = null):Mesh
         {
             var vertexData:VertexData = new VertexData(null, polygon.numVertices);
             var indexData:IndexData = new IndexData(polygon.numTriangles);

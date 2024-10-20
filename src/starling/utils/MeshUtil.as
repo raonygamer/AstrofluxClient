@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.utils
@@ -31,12 +31,15 @@ package starling.utils
         private static var sMatrix3D:Matrix3D = new Matrix3D();
 
         /** @private */
-        public function MeshUtil() { throw new AbstractClassError(); }
+        public function MeshUtil()
+        {
+            throw new AbstractClassError();
+        }
 
         /** Determines if a point is inside a mesh that is spawned up by the given
          *  vertex- and index-data. */
         public static function containsPoint(vertexData:VertexData, indexData:IndexData,
-                                             point:Point):Boolean
+                point:Point):Boolean
         {
             var i:int;
             var result:Boolean = false;
@@ -45,11 +48,11 @@ package starling.utils
             var p1:Point = Pool.getPoint();
             var p2:Point = Pool.getPoint();
 
-            for (i=0; i<numIndices; i+=3)
+            for (i = 0; i < numIndices; i += 3)
             {
-                vertexData.getPoint(indexData.getIndex(i  ), "position", p0);
-                vertexData.getPoint(indexData.getIndex(i+1), "position", p1);
-                vertexData.getPoint(indexData.getIndex(i+2), "position", p2);
+                vertexData.getPoint(indexData.getIndex(i), "position", p0);
+                vertexData.getPoint(indexData.getIndex(i + 1), "position", p1);
+                vertexData.getPoint(indexData.getIndex(i + 2), "position", p2);
 
                 if (MathUtil.isPointInTriangle(point, p0, p1, p2))
                 {
@@ -67,11 +70,12 @@ package starling.utils
 
         /** Calculates the bounds of the given vertices in the target coordinate system. */
         public static function calculateBounds(vertexData:VertexData,
-                                               sourceSpace:DisplayObject,
-                                               targetSpace:DisplayObject,
-                                               out:Rectangle=null):Rectangle
+                sourceSpace:DisplayObject,
+                targetSpace:DisplayObject,
+                out:Rectangle = null):Rectangle
         {
-            if (out == null) out = new Rectangle();
+            if (out == null)
+                out = new Rectangle();
 
             var stage:Stage = sourceSpace.stage;
 

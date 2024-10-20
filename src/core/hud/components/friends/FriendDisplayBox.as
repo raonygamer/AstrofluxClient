@@ -13,13 +13,13 @@ package core.hud.components.friends
    import starling.events.TouchEvent;
    import textures.ITextureManager;
    import textures.TextureLocator;
-   
+
    public class FriendDisplayBox extends Sprite
    {
       private var friend:Friend;
-      
+
       private var reputationIcon:Image;
-      
+
       public function FriendDisplayBox(param1:Game, param2:Friend)
       {
          var dataManager:IDataManager;
@@ -39,9 +39,9 @@ package core.hud.components.friends
          this.friend = friend;
          dataManager = DataLocator.getService();
          textureManager = TextureLocator.getService();
-         skinObj = dataManager.loadKey("Skins",friend.skin);
-         obj = dataManager.loadKey("Ships",skinObj.ship);
-         obj2 = dataManager.loadKey("Images",obj.bitmap);
+         skinObj = dataManager.loadKey("Skins", friend.skin);
+         obj = dataManager.loadKey("Ships", skinObj.ship);
+         obj2 = dataManager.loadKey("Images", obj.bitmap);
          preview = new MovieClip(textureManager.getTexturesMainByKey(obj.bitmap));
          preview.x = -preview.width / 2;
          addChild(preview);
@@ -60,28 +60,27 @@ package core.hud.components.friends
          level.format.color = 6710886;
          addChild(level);
          that = this;
-         objSolar = dataManager.loadKey("SolarSystems",friend.currentSolarSystem);
-         if(friend.isOnline)
+         objSolar = dataManager.loadKey("SolarSystems", friend.currentSolarSystem);
+         if (friend.isOnline)
          {
             useHandCursor = true;
-            addEventListener("touch",function(param1:TouchEvent):void
-            {
-               if(param1.getTouch(that,"ended"))
+            addEventListener("touch", function(param1:TouchEvent):void
                {
-                  dispatchEventWith("friendSelected",false,friend.currentSolarSystem);
-               }
-            });
+                  if (param1.getTouch(that, "ended"))
+                  {
+                     dispatchEventWith("friendSelected", false, friend.currentSolarSystem);
+                  }
+               });
          }
          b = new Button(function():void
-         {
-            g.friendManager.sendRemoveFriendById(friend.id);
-            that.parent.visible = false;
-            g.showErrorDialog("Friend removed.",false);
-         },"remove");
+            {
+               g.friendManager.sendRemoveFriendById(friend.id);
+               that.parent.visible = false;
+               g.showErrorDialog("Friend removed.", false);
+            }, "remove");
          b.x = 490;
          b.y = 4;
          addChild(b);
       }
    }
 }
-

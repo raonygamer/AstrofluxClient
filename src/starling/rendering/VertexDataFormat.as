@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.rendering
@@ -86,7 +86,8 @@ package starling.rendering
          */
         public static function fromString(format:String):VertexDataFormat
         {
-            if (format in sFormats) return sFormats[format];
+            if (format in sFormats)
+                return sFormats[format];
             else
             {
                 var instance:VertexDataFormat = new VertexDataFormat();
@@ -155,8 +156,9 @@ package starling.rendering
         {
             var numAttributes:int = _attributes.length;
 
-            for (var i:int=0; i<numAttributes; ++i)
-                if (_attributes[i].name == attrName) return true;
+            for (var i:int = 0; i < numAttributes; ++i)
+                if (_attributes[i].name == attrName)
+                    return true;
 
             return false;
         }
@@ -186,7 +188,7 @@ package starling.rendering
                 var numParts:int = parts.length;
                 var offset:int = 0;
 
-                for (var i:int=0; i<numParts; ++i)
+                for (var i:int = 0; i < numParts; ++i)
                 {
                     var attrDesc:String = parts[i];
                     var attrParts:Array = attrDesc.split(":");
@@ -231,10 +233,11 @@ package starling.rendering
             var i:int, attribute:VertexDataAttribute;
             var numAttributes:int = _attributes.length;
 
-            for (i=0; i<numAttributes; ++i)
+            for (i = 0; i < numAttributes; ++i)
             {
                 attribute = _attributes[i];
-                if (attribute.name == attrName) return attribute;
+                if (attribute.name == attrName)
+                    return attribute;
             }
 
             return null;

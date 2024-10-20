@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.text
@@ -39,8 +39,8 @@ package starling.text
         private var _leading:Number;
 
         /** Creates a new TextFormat instance with the given properties. */
-        public function TextFormat(font:String="Verdana", size:Number=12, color:uint=0x0,
-                                   horizontalAlign:String="center", verticalAlign:String="center")
+        public function TextFormat(font:String = "Verdana", size:Number = 12, color:uint = 0x0,
+                horizontalAlign:String = "center", verticalAlign:String = "center")
         {
             _font = font;
             _size = size;
@@ -77,8 +77,8 @@ package starling.text
         }
 
         /** Sets the most common properties at once. */
-        public function setTo(font:String="Verdana", size:Number=12, color:uint=0x0,
-                              horizontalAlign:String="center", verticalAlign:String="center"):void
+        public function setTo(font:String = "Verdana", size:Number = 12, color:uint = 0x0,
+                horizontalAlign:String = "center", verticalAlign:String = "center"):void
         {
             _font = font;
             _size = size;
@@ -90,9 +90,10 @@ package starling.text
         }
 
         /** Converts the Starling TextFormat instance to a Flash TextFormat. */
-        public function toNativeFormat(out:flash.text.TextFormat=null):flash.text.TextFormat
+        public function toNativeFormat(out:flash.text.TextFormat = null):flash.text.TextFormat
         {
-            if (out == null) out = new flash.text.TextFormat();
+            if (out == null)
+                out = new flash.text.TextFormat();
 
             out.font = _font;
             out.size = _size;
@@ -112,7 +113,10 @@ package starling.text
          *  Beware: If you loaded an embedded font at runtime, you must call
          *  <code>TextField.updateEmbeddedFonts()</code> for Starling to recognize it.
          */
-        public function get font():String { return _font; }
+        public function get font():String
+        {
+            return _font;
+        }
         public function set font(value:String):void
         {
             if (value != _font)
@@ -124,7 +128,10 @@ package starling.text
 
         /** The size of the font. For bitmap fonts, use <code>BitmapFont.NATIVE_SIZE</code> for
          *  the original size. */
-        public function get size():Number { return _size; }
+        public function get size():Number
+        {
+            return _size;
+        }
         public function set size(value:Number):void
         {
             if (value != _size)
@@ -137,7 +144,10 @@ package starling.text
         /** The color of the text. Note that bitmap fonts should be exported in plain white so
          *  that tinting works correctly. If your bitmap font contains colors, set this property
          *  to <code>Color.WHITE</code> to get the desired result. @default black */
-        public function get color():uint { return _color; }
+        public function get color():uint
+        {
+            return _color;
+        }
         public function set color(value:uint):void
         {
             if (value != _color)
@@ -148,7 +158,10 @@ package starling.text
         }
 
         /** Indicates whether the text is bold. @default false */
-        public function get bold():Boolean { return _bold; }
+        public function get bold():Boolean
+        {
+            return _bold;
+        }
         public function set bold(value:Boolean):void
         {
             if (value != _bold)
@@ -159,7 +172,10 @@ package starling.text
         }
 
         /** Indicates whether the text is italicized. @default false */
-        public function get italic():Boolean { return _italic; }
+        public function get italic():Boolean
+        {
+            return _italic;
+        }
         public function set italic(value:Boolean):void
         {
             if (value != _italic)
@@ -170,7 +186,10 @@ package starling.text
         }
 
         /** Indicates whether the text is underlined. @default false */
-        public function get underline():Boolean { return _underline; }
+        public function get underline():Boolean
+        {
+            return _underline;
+        }
         public function set underline(value:Boolean):void
         {
             if (value != _underline)
@@ -182,7 +201,10 @@ package starling.text
 
         /** The horizontal alignment of the text. @default center
          *  @see starling.utils.Align */
-        public function get horizontalAlign():String { return _horizontalAlign; }
+        public function get horizontalAlign():String
+        {
+            return _horizontalAlign;
+        }
         public function set horizontalAlign(value:String):void
         {
             if (!Align.isValidHorizontal(value))
@@ -197,7 +219,10 @@ package starling.text
 
         /** The vertical alignment of the text. @default center
          *  @see starling.utils.Align */
-        public function get verticalAlign():String { return _verticalAlign; }
+        public function get verticalAlign():String
+        {
+            return _verticalAlign;
+        }
         public function set verticalAlign(value:String):void
         {
             if (!Align.isValidVertical(value))
@@ -212,7 +237,10 @@ package starling.text
 
         /** Indicates whether kerning is enabled. Kerning adjusts the pixels between certain
          *  character pairs to improve readability. @default true */
-        public function get kerning():Boolean { return _kerning; }
+        public function get kerning():Boolean
+        {
+            return _kerning;
+        }
         public function set kerning(value:Boolean):void
         {
             if (value != _kerning)
@@ -223,7 +251,10 @@ package starling.text
         }
 
         /** The amount of vertical space (called 'leading') between lines. @default 0 */
-        public function get leading():Number { return _leading; }
+        public function get leading():Number
+        {
+            return _leading;
+        }
         public function set leading(value:Number):void
         {
             if (value != _leading)

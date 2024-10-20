@@ -8,20 +8,20 @@ package core.hud.components.map
    import starling.display.Sprite;
    import starling.textures.Texture;
    import textures.TextureManager;
-   
+
    public class MapEliteArea extends MapBodyBase
    {
       public function MapEliteArea(param1:Game, param2:starling.display.Sprite, param3:Body)
       {
-         super(param1,param2,param3);
+         super(param1, param2, param3);
          addImage();
          addOrbits();
          addText();
          layer.touchable = false;
          init();
       }
-      
-      private function addImage() : void
+
+      private function addImage():void
       {
          var _loc1_:Texture = textureManager.getTextureGUIByTextureName("warning.png");
          var _loc2_:Image = new Image(_loc1_);
@@ -29,19 +29,19 @@ package core.hud.components.map
          _loc2_.y = 15 + body.labelOffset;
          layer.addChild(_loc2_);
       }
-      
-      override protected function addOrbits() : void
+
+      override protected function addOrbits():void
       {
          var _loc2_:flash.display.Sprite = new flash.display.Sprite();
-         _loc2_.graphics.beginFill(15636992,0.1);
-         _loc2_.graphics.lineStyle(2,15636992,0.3);
-         _loc2_.graphics.drawCircle(2,2,body.warningRadius * Map.SCALE);
+         _loc2_.graphics.beginFill(15636992, 0.1);
+         _loc2_.graphics.lineStyle(2, 15636992, 0.3);
+         _loc2_.graphics.drawCircle(2, 2, body.warningRadius * Map.SCALE);
          _loc2_.graphics.endFill();
-         var _loc1_:Image = TextureManager.imageFromSprite(_loc2_,body.key);
+         var _loc1_:Image = TextureManager.imageFromSprite(_loc2_, body.key);
          layer.addChild(_loc1_);
       }
-      
-      private function addText() : void
+
+      private function addText():void
       {
          var _loc1_:TextBitmap = new TextBitmap();
          _loc1_.text = body.name == "Warning" ? "Elite Zone" : body.name;
@@ -53,4 +53,3 @@ package core.hud.components.map
       }
    }
 }
-

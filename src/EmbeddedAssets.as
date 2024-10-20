@@ -22,11 +22,10 @@ package
       public static const button_normal:Class = ButtonNormalBitmap;
       public static const box_highlight:Class = BoxHighlightBitmap;
       public static const box_normal:Class = BoxNormalBitmap;
-      
+
       public function EmbeddedAssets()
       {
          super();
       }
    }
 }
-

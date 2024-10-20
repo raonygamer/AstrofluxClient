@@ -2,25 +2,25 @@ package core.weapon
 {
    import core.scene.Game;
    import core.ship.PlayerShip;
-   
+
    public class Teleport extends Weapon
    {
       public function Teleport(param1:Game)
       {
          super(param1);
       }
-      
-      override protected function shoot() : void
+
+      override protected function shoot():void
       {
          var _loc1_:PlayerShip = null;
-         if(hasChargeUp)
+         if (hasChargeUp)
          {
             _loc1_ = unit as PlayerShip;
-            if(fireNextTime < g.time)
+            if (fireNextTime < g.time)
             {
-               if(chargeUpTime == 0)
+               if (chargeUpTime == 0)
                {
-                  if(fireEffect != "")
+                  if (fireEffect != "")
                   {
                      _loc1_.startChargeUpEffect(fireEffect);
                   }
@@ -30,9 +30,9 @@ package core.weapon
                   }
                }
                chargeUpTime += 33;
-               if(_loc1_.player.isMe)
+               if (_loc1_.player.isMe)
                {
-                  if(chargeUpTime < chargeUpTimeMax)
+                  if (chargeUpTime < chargeUpTimeMax)
                   {
                      g.hud.powerBar.updateLoadBar(chargeUpTime / chargeUpTimeMax);
                   }
@@ -42,7 +42,7 @@ package core.weapon
                   }
                }
             }
-            else if(_loc1_.player.isMe)
+            else if (_loc1_.player.isMe)
             {
                g.hud.powerBar.updateLoadBar(0);
                chargeUpTime = 0;
@@ -50,10 +50,10 @@ package core.weapon
             return;
          }
       }
-      
-      public function updateCooldown() : void
+
+      public function updateCooldown():void
       {
-         if(fireCallback != null && this.hasChargeUp == true && (projectiles.length + 1 < maxProjectiles || maxProjectiles == 0))
+         if (fireCallback != null && this.hasChargeUp == true && (projectiles.length + 1 < maxProjectiles || maxProjectiles == 0))
          {
             lastFire = g.time;
             fireNextTime = g.time + reloadTime;
@@ -62,4 +62,3 @@ package core.weapon
       }
    }
 }
-

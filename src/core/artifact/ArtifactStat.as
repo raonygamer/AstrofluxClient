@@ -1,26 +1,26 @@
 package core.artifact
 {
    import generics.Localize;
-   
+
    public class ArtifactStat
    {
       public var type:String;
-      
+
       public var value:Number;
-      
+
       public function ArtifactStat(param1:String, param2:Number)
       {
          super();
          this.type = param1;
          this.value = param2;
       }
-      
-      public static function parseTextFromStatType(param1:String, param2:Number) : String
+
+      public static function parseTextFromStatType(param1:String, param2:Number):String
       {
          var _loc5_:String = "";
-         var _loc3_:String = "<FONT COLOR=\'#ffffff\'>";
+         var _loc3_:String = "<FONT COLOR='#ffffff'>";
          var _loc4_:String = "</FONT>";
-         switch(param1)
+         switch (param1)
          {
             case "healthAdd":
             case "healthAdd2":
@@ -104,7 +104,7 @@ package core.artifact
                _loc5_ = _loc3_ + "+" + (0.30000000000000004 * param2).toFixed(1) + "%" + _loc4_ + " " + Localize.t("inc attack speed");
                break;
             case "convHp":
-               if(0.1 * param2 > 100)
+               if (0.1 * param2 > 100)
                {
                   _loc5_ = _loc3_ + "-100%" + _loc4_ + " " + Localize.t("hp to 150% shield");
                }
@@ -114,7 +114,7 @@ package core.artifact
                }
                break;
             case "convShield":
-               if(0.1 * param2 > 100)
+               if (0.1 * param2 > 100)
                {
                   _loc5_ = _loc3_ + "-100%" + _loc4_ + " " + Localize.t("shield to 150% hp");
                }
@@ -138,15 +138,15 @@ package core.artifact
          }
          return _loc5_;
       }
-      
-      public static function parseTextFromStatTypeShort(param1:String, param2:Number) : String
+
+      public static function parseTextFromStatTypeShort(param1:String, param2:Number):String
       {
          var _loc3_:String = "+";
-         if(param2 < 0)
+         if (param2 < 0)
          {
             _loc3_ = "";
          }
-         switch(param1)
+         switch (param1)
          {
             case "healthAdd":
             case "healthAdd2":
@@ -209,14 +209,14 @@ package core.artifact
             case "refire3":
                return _loc3_ + (0.30000000000000004 * param2).toFixed(1) + "% " + Localize.t("attack speed");
             case "convHp":
-               if(0.1 * param2 > 100)
+               if (0.1 * param2 > 100)
                {
                   return "-100% " + Localize.t("hp to 150% shield");
                }
                return _loc3_ + (0.1 * param2).toFixed(1) + "% " + Localize.t("hp to 150% shield");
                break;
             case "convShield":
-               if(0.1 * param2 > 100)
+               if (0.1 * param2 > 100)
                {
                   return "-100% " + Localize.t("shield to 150% hp");
                }
@@ -239,4 +239,3 @@ package core.artifact
       }
    }
 }
-

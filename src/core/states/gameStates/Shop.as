@@ -26,31 +26,31 @@ package core.states.gameStates
    import starling.events.TouchEvent;
    import textures.ITextureManager;
    import textures.TextureLocator;
-   
+
    public class Shop extends Sprite
    {
       private var g:Game;
-      
+
       private var container:Sprite;
-      
+
       private var infoContainer:Sprite;
-      
+
       private var bg:Image;
-      
+
       private var items:Array;
-      
+
       private var closeButton:ButtonExpandableHud;
-      
+
       private var balance:CreditLabel;
-      
+
       private var textureManager:ITextureManager;
-      
+
       private var redeemButton:Button;
-      
+
       private var state:String;
-      
+
       private var pods:CreditPods;
-      
+
       public function Shop(param1:Game, param2:String = "")
       {
          var g:Game = param1;
@@ -64,12 +64,12 @@ package core.states.gameStates
          this.state = state;
          textureManager = TextureLocator.getService();
          closeButton = new ButtonExpandableHud(function():void
-         {
-            dispatchEventWith("close");
-         },Localize.t("close"));
+            {
+               dispatchEventWith("close");
+            }, Localize.t("close"));
       }
-      
-      public function load(param1:Function) : void
+
+      public function load(param1:Function):void
       {
          var name:TextBitmap;
          var description:TextBitmap;
@@ -88,7 +88,7 @@ package core.states.gameStates
          infoContainer.x = 340;
          infoContainer.y = 140;
          addChild(infoContainer);
-         name = new TextBitmap(60,50,Localize.t("Flux Shop"),30);
+         name = new TextBitmap(60, 50, Localize.t("Flux Shop"), 30);
          addChild(name);
          description = new TextBitmap();
          description.text = Localize.t("Buy cool stuff to support the game");
@@ -102,211 +102,210 @@ package core.states.gameStates
          addChild(balance);
          refreshCreditManager();
          getMoreButton = new Button(function():void
-         {
-            var buyFlux:BuyFlux;
-            select(pods);
-            buyFlux = new BuyFlux(g);
-            buyFlux.addEventListener("buyFluxClose",function():void
             {
-               buyFlux.removeEventListeners("buyFluxClose");
-               g.removeChildFromOverlay(buyFlux);
-               refreshCreditManager();
-               getMoreButton.enabled = true;
-            });
-            g.addChildToOverlay(buyFlux);
-         },Localize.t("Get more"),"positive");
+               var buyFlux:BuyFlux;
+               select(pods);
+               buyFlux = new BuyFlux(g);
+               buyFlux.addEventListener("buyFluxClose", function():void
+                  {
+                     buyFlux.removeEventListeners("buyFluxClose");
+                     g.removeChildFromOverlay(buyFlux);
+                     refreshCreditManager();
+                     getMoreButton.enabled = true;
+                  });
+               g.addChildToOverlay(buyFlux);
+            }, Localize.t("Get more"), "positive");
          getMoreButton.x = balance.x + 45;
          getMoreButton.y = balance.y;
          getMoreButton.alignWithText();
          addChild(getMoreButton);
-         redeemButton = new Button(onRedeem,Localize.t("Redeem"),"positive");
+         redeemButton = new Button(onRedeem, Localize.t("Redeem"), "positive");
          redeemButton.x = getMoreButton.x;
          redeemButton.y = getMoreButton.y + getMoreButton.height + 15;
          redeemButton.width = getMoreButton.width;
          redeemButton.alignWithText();
          addChild(redeemButton);
-         g.creditManager.addEventListener("refresh",updateCreditText);
+         g.creditManager.addEventListener("refresh", updateCreditText);
          loadItems();
          callback();
       }
-      
-      private function loadItems() : void
+
+      private function loadItems():void
       {
          var _loc8_:int = 0;
-         pods = new CreditPods(g,infoContainer);
+         pods = new CreditPods(g, infoContainer);
          pods.y = _loc8_;
          container.addChild(pods);
          items.push(pods);
-         pods.addEventListener("select",onSelect);
+         pods.addEventListener("select", onSelect);
          _loc8_ += 52;
-         var _loc4_:CreditBeginnerPackage = new CreditBeginnerPackage(g,infoContainer);
+         var _loc4_:CreditBeginnerPackage = new CreditBeginnerPackage(g, infoContainer);
          _loc4_.y = _loc8_;
          container.addChild(_loc4_);
          items.push(_loc4_);
-         _loc4_.addEventListener("select",onSelect);
-         _loc4_.addEventListener("bought",bought);
+         _loc4_.addEventListener("select", onSelect);
+         _loc4_.addEventListener("bought", bought);
          _loc8_ += 52;
-         var _loc7_:CreditPowerPackage = new CreditPowerPackage(g,infoContainer,false);
+         var _loc7_:CreditPowerPackage = new CreditPowerPackage(g, infoContainer, false);
          _loc7_.y = _loc8_;
          container.addChild(_loc7_);
          items.push(_loc7_);
-         _loc7_.addEventListener("select",onSelect);
-         _loc7_.addEventListener("bought",bought);
+         _loc7_.addEventListener("select", onSelect);
+         _loc7_.addEventListener("bought", bought);
          _loc8_ += 52;
-         var _loc5_:CreditMegaPackage = new CreditMegaPackage(g,infoContainer,false);
+         var _loc5_:CreditMegaPackage = new CreditMegaPackage(g, infoContainer, false);
          _loc5_.y = _loc8_;
          container.addChild(_loc5_);
          items.push(_loc5_);
-         _loc5_.addEventListener("select",onSelect);
-         _loc5_.addEventListener("bought",bought);
+         _loc5_.addEventListener("select", onSelect);
+         _loc5_.addEventListener("bought", bought);
          _loc8_ += 52;
-         var _loc3_:CreditSupporterItem = new CreditSupporterItem(g,infoContainer);
+         var _loc3_:CreditSupporterItem = new CreditSupporterItem(g, infoContainer);
          _loc3_.y = _loc8_;
          container.addChild(_loc3_);
          items.push(_loc3_);
-         _loc3_.addEventListener("select",onSelect);
-         _loc3_.addEventListener("bought",bought);
+         _loc3_.addEventListener("select", onSelect);
+         _loc3_.addEventListener("bought", bought);
          _loc8_ += 52;
-         var _loc2_:CreditTractorBeam = new CreditTractorBeam(g,infoContainer);
+         var _loc2_:CreditTractorBeam = new CreditTractorBeam(g, infoContainer);
          container.addChild(_loc2_);
          items.push(_loc2_);
          _loc2_.y = _loc8_;
-         _loc2_.addEventListener("select",onSelect);
-         _loc2_.addEventListener("bought",bought);
+         _loc2_.addEventListener("select", onSelect);
+         _loc2_.addEventListener("bought", bought);
          _loc8_ += 52;
-         var _loc9_:CreditExpBoost = new CreditExpBoost(g,infoContainer);
+         var _loc9_:CreditExpBoost = new CreditExpBoost(g, infoContainer);
          _loc9_.y = _loc8_;
          container.addChild(_loc9_);
          items.push(_loc9_);
-         _loc9_.addEventListener("select",onSelect);
-         _loc9_.addEventListener("bought",bought);
+         _loc9_.addEventListener("select", onSelect);
+         _loc9_.addEventListener("bought", bought);
          _loc8_ += 52;
-         var _loc1_:CreditXpProtection = new CreditXpProtection(g,infoContainer);
+         var _loc1_:CreditXpProtection = new CreditXpProtection(g, infoContainer);
          _loc1_.y = _loc8_;
          container.addChild(_loc1_);
          items.push(_loc1_);
-         _loc1_.addEventListener("select",onSelect);
-         _loc1_.addEventListener("bought",bought);
+         _loc1_.addEventListener("select", onSelect);
+         _loc1_.addEventListener("bought", bought);
          _loc8_ += 52;
-         var _loc6_:CreditCargoProtection = new CreditCargoProtection(g,infoContainer);
+         var _loc6_:CreditCargoProtection = new CreditCargoProtection(g, infoContainer);
          _loc6_.y = _loc8_;
          container.addChild(_loc6_);
          items.push(_loc6_);
-         _loc6_.addEventListener("select",onSelect);
-         _loc6_.addEventListener("bought",bought);
-         if(state == "tractorBeam")
+         _loc6_.addEventListener("select", onSelect);
+         _loc6_.addEventListener("bought", bought);
+         if (state == "tractorBeam")
          {
             _loc2_.select();
          }
-         else if(state == "xpBoost")
+         else if (state == "xpBoost")
          {
             _loc9_.select();
          }
-         else if(state == "xpProtection")
+         else if (state == "xpProtection")
          {
             _loc1_.select();
          }
-         else if(state == "cargoProtection")
+         else if (state == "cargoProtection")
          {
             _loc6_.select();
          }
-         else if(state == "supporterPackage")
+         else if (state == "supporterPackage")
          {
             _loc3_.select();
          }
-         else if(state == "podPackage")
+         else if (state == "podPackage")
          {
             pods.select();
          }
       }
-      
-      private function onRedeem(param1:TouchEvent) : void
+
+      private function onRedeem(param1:TouchEvent):void
       {
          var redeem:Redeem;
          var e:TouchEvent = param1;
          select(pods);
          redeem = new Redeem(g);
-         redeem.addEventListener("close",function(param1:Event):void
-         {
-            redeem.removeEventListeners();
-            g.removeChildFromOverlay(redeem);
-            redeemButton.enabled = true;
-         });
-         redeem.addEventListener("success",function(param1:Event):void
-         {
-            redeem.removeEventListeners();
-            g.removeChildFromOverlay(redeem);
-            dispatchEventWith("close");
-         });
+         redeem.addEventListener("close", function(param1:Event):void
+            {
+               redeem.removeEventListeners();
+               g.removeChildFromOverlay(redeem);
+               redeemButton.enabled = true;
+            });
+         redeem.addEventListener("success", function(param1:Event):void
+            {
+               redeem.removeEventListeners();
+               g.removeChildFromOverlay(redeem);
+               dispatchEventWith("close");
+            });
          g.addChildToOverlay(redeem);
       }
-      
-      private function refreshCreditManager() : void
+
+      private function refreshCreditManager():void
       {
          g.creditManager.refresh(function():void
-         {
-            updateCreditText();
-         });
+            {
+               updateCreditText();
+            });
       }
-      
-      private function updateCreditText(param1:Event = null) : void
+
+      private function updateCreditText(param1:Event = null):void
       {
          balance.text = Localize.t("You have: ") + CreditManager.FLUX;
          balance.alignRight();
       }
-      
-      private function onSelect(param1:TouchEvent) : void
+
+      private function onSelect(param1:TouchEvent):void
       {
          var _loc2_:ICreditItem = param1.target as ICreditItem;
-         for each(var _loc3_ in items)
+         for each (var _loc3_:* in items)
          {
-            if(_loc2_ != _loc3_)
+            if (_loc2_ != _loc3_)
             {
                _loc3_.deselect();
             }
          }
       }
-      
-      private function select(param1:ICreditItem) : void
+
+      private function select(param1:ICreditItem):void
       {
          deselectAll();
          param1.select();
       }
-      
-      private function deselectAll() : void
+
+      private function deselectAll():void
       {
-         for each(var _loc1_ in items)
+         for each (var _loc1_:* in items)
          {
             _loc1_.deselect();
          }
       }
-      
-      private function bought(param1:Event) : void
+
+      private function bought(param1:Event):void
       {
          refreshCreditManager();
-         for each(var _loc2_ in items)
+         for each (var _loc2_:* in items)
          {
             _loc2_.update();
          }
       }
-      
-      public function update() : void
+
+      public function update():void
       {
       }
-      
-      public function exit() : void
+
+      public function exit():void
       {
-         for each(var _loc2_ in items)
+         for each (var _loc2_:* in items)
          {
             _loc2_.exit();
          }
-         g.creditManager.removeEventListener("refresh",refreshCreditManager);
-         for each(var _loc1_ in items)
+         g.creditManager.removeEventListener("refresh", refreshCreditManager);
+         for each (var _loc1_:* in items)
          {
             _loc1_.removeEventListeners();
          }
-         removeChild(container,true);
+         removeChild(container, true);
       }
    }
 }
-

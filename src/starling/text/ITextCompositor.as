@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.text
@@ -17,7 +17,7 @@ package starling.text
     {
         /** Draws the given text into a MeshBatch, using the supplied format and options. */
         function fillMeshBatch(meshBatch:MeshBatch, width:Number, height:Number, text:String,
-                               format:TextFormat, options:TextOptions=null):void;
+                format:TextFormat, options:TextOptions = null):void;
 
         /** Clears the MeshBatch (filled by the same class) and disposes any resources that
          *  are no longer needed. */

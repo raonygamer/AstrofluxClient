@@ -1,7 +1,7 @@
 package
 {
    import flash.display.Bitmap;
-   
+
    [Embed(source="../images/logo.png")]
    public class LogoBitmap extends Bitmap
    {
@@ -11,4 +11,3 @@ package
       }
    }
 }
-

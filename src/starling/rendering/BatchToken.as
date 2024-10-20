@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.rendering
@@ -34,7 +34,7 @@ package starling.rendering
         public var indexID:int;
 
         /** Creates a new BatchToken. */
-        public function BatchToken(batchID:int=0, vertexID:int=0, indexID:int=0)
+        public function BatchToken(batchID:int = 0, vertexID:int = 0, indexID:int = 0)
         {
             setTo(batchID, vertexID, indexID);
         }
@@ -42,13 +42,13 @@ package starling.rendering
         /** Copies the properties from the given token to this instance. */
         public function copyFrom(token:BatchToken):void
         {
-            batchID  = token.batchID;
+            batchID = token.batchID;
             vertexID = token.vertexID;
-            indexID  = token.indexID;
+            indexID = token.indexID;
         }
 
         /** Changes all properties at once. */
-        public function setTo(batchID:int=0, vertexID:int=0, indexID:int=0):void
+        public function setTo(batchID:int = 0, vertexID:int = 0, indexID:int = 0):void
         {
             this.batchID = batchID;
             this.vertexID = vertexID;
@@ -71,7 +71,7 @@ package starling.rendering
         public function toString():String
         {
             return StringUtil.format("[BatchToken batchID={0} vertexID={1} indexID={2}]",
-                batchID, vertexID, indexID);
+                    batchID, vertexID, indexID);
         }
     }
 }

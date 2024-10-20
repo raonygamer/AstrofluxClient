@@ -1,11 +1,11 @@
 // =================================================================================================
-//
-//	Starling Framework
-//	Copyright Gamua GmbH. All Rights Reserved.
-//
-//	This program is free software. You can redistribute and/or modify it
-//	in accordance with the terms of the accompanying license agreement.
-//
+// 
+// Starling Framework
+// Copyright Gamua GmbH. All Rights Reserved.
+// 
+// This program is free software. You can redistribute and/or modify it
+// in accordance with the terms of the accompanying license agreement.
+// 
 // =================================================================================================
 
 package starling.rendering
@@ -74,20 +74,20 @@ package starling.rendering
                 vertexShader =
                     "m44 op, va0, vc0 \n" + // 4x4 matrix transform to output clip-space
                     "mov v0, va1      \n" + // pass texture coordinates to fragment program
-                    "mul v1, va2, vc4 \n";  // multiply alpha (vc4) with color (va2), pass to fp
+                    "mul v1, va2, vc4 \n"; // multiply alpha (vc4) with color (va2), pass to fp
 
                 fragmentShader =
                     tex("ft0", "v0", 0, texture) +
-                    "mul oc, ft0, v1  \n";  // multiply color with texel color
+                    "mul oc, ft0, v1  \n"; // multiply color with texel color
             }
             else
             {
                 vertexShader =
                     "m44 op, va0, vc0 \n" + // 4x4 matrix transform to output clipspace
-                    "mul v0, va2, vc4 \n";  // multiply alpha (vc4) with color (va2)
+                    "mul v0, va2, vc4 \n"; // multiply alpha (vc4) with color (va2)
 
                 fragmentShader =
-                    "mov oc, v0       \n";  // output color
+                    "mov oc, v0       \n"; // output color
             }
 
             return Program.fromSource(vertexShader, fragmentShader);
@@ -128,18 +128,33 @@ package starling.rendering
 
         /** The data format that this effect requires from the VertexData that it renders:
          *  <code>"position:float2, texCoords:float2, color:bytes4"</code> */
-        override public function get vertexFormat():VertexDataFormat { return VERTEX_FORMAT; }
+        override public function get vertexFormat():VertexDataFormat
+        {
+            return VERTEX_FORMAT;
+        }
 
         /** The alpha value of the object rendered by the effect. Must be taken into account
          *  by all subclasses. */
-        public function get alpha():Number { return _alpha; }
-        public function set alpha(value:Number):void { _alpha = value; }
+        public function get alpha():Number
+        {
+            return _alpha;
+        }
+        public function set alpha(value:Number):void
+        {
+            _alpha = value;
+        }
 
         /** Indicates if the rendered vertices are tinted in any way, i.e. if there are vertices
          *  that have a different color than fully opaque white. The base <code>MeshEffect</code>
          *  class uses this information to simplify the fragment shader if possible. May be
          *  ignored by subclasses. */
-        public function get tinted():Boolean { return _tinted; }
-        public function set tinted(value:Boolean):void { _tinted = value; }
+        public function get tinted():Boolean
+        {
+            return _tinted;
+        }
+        public function set tinted(value:Boolean):void
+        {
+            _tinted = value;
+        }
     }
 }
