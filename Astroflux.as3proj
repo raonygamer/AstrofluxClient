@@ -26,7 +26,7 @@
     <option benchmark="False" />
     <option es="False" />
     <option inline="False" />
-    <option locale="" />
+    <option locale="en_US" />
     <option loadConfig="" />
     <option optimize="False" />
     <option omitTraces="True" />
