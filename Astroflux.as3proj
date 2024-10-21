@@ -1,102 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?>
-<project>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project version="2">
+  <!-- Output SWF options -->
   <output>
-    <movie fps="32"/>
-    <movie version="32"/>
-    <movie background="#FFFFFF"/>
-    <movie width="800"/>
-    <movie height="600"/>
-    <movie disabled="False"/>
-    <movie input=""/>
-    <movie path="bin-debug/Astroflux.swf"/>
-    <movie platform="AIR"/>
+    <movie outputType="Application" />
+    <movie input="" />
+    <movie path="bin\Game.swf" />
+    <movie fps="60" />
+    <movie width="1280" />
+    <movie height="720" />
+    <movie version="28" />
+    <movie minorVersion="0" />
+    <movie platform="AIR" />
+    <movie background="#000000" />
   </output>
-  &lt;!-- Other classes to be compiled into your SWF --&gt;
+  <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="src"/>
-    <class path="libs/src"/>
+    <class path="src" />
+    <class path="libs\src" />
   </classpaths>
-  <moonshineResourcePaths></moonshineResourcePaths>
-  <moonshineNativeExtensionPaths></moonshineNativeExtensionPaths>
+  <!-- Build options -->
   <build>
-    <option customSDK=""/>
-    <option showUnusedTypeSelectorWarnings="True"/>
-    <option es="False"/>
-    <option staticLinkRSL="False"/>
-    <option strict="False"/>
-    <option additional=""/>
-    <option compilerConstants=""/>
-    <option useNetwork="True"/>
-    <option optimize="False"/>
-    <option sourceMap="False"/>
-    <option loadConfig=""/>
-    <option showActionScriptWarnings="True"/>
-    <option antBuildPath="build/build.xml"/>
-    <option accessible="False"/>
-    <option warnings="True"/>
-    <option locale=""/>
-    <option showBindingWarnings="True"/>
-    <option useResourceBundleMetadata="True"/>
-    <option allowSourcePathOverlap="False"/>
-    <option verboseStackTraces="False"/>
-    <option showDeprecationWarnings="True"/>
-    <option benchmark="False"/>
-    <option linkReport=""/>
+    <option accessible="False" />
+    <option advancedTelemetry="False" />
+    <option allowSourcePathOverlap="False" />
+    <option benchmark="False" />
+    <option es="False" />
+    <option inline="False" />
+    <option locale="" />
+    <option loadConfig="" />
+    <option optimize="False" />
+    <option omitTraces="True" />
+    <option showActionScriptWarnings="True" />
+    <option showBindingWarnings="True" />
+    <option showInvalidCSS="True" />
+    <option showDeprecationWarnings="True" />
+    <option showUnusedTypeSelectorWarnings="True" />
+    <option strict="False" />
+    <option useNetwork="True" />
+    <option useResourceBundleMetadata="True" />
+    <option warnings="True" />
+    <option verboseStackTraces="False" />
+    <option linkReport="" />
+    <option loadExterns="" />
+    <option staticLinkRSL="False" />
+    <option additional="" />
+    <option compilerConstants="" />
+    <option minorVersion="" />
   </build>
-  <mavenBuild>
-    <option settingsFilePath=""/>
-    <option commandLine=""/>
-    <option dominoNotesProgram=""/>
-    <option mavenBuildPath="."/>
-    <option dominoNotesPlatform=""/>
-    <actions>
-      <action actionName="Build" action="install"/>
-      <action actionName="Clean and package" action="clean package"/>
-      <action actionName="Clean" action="clean"/>
-      <action actionName="Clean and Build" action="clean install"/>
-      <action actionName="Exploded" action="war:exploded"/>
-    </actions>
-  </mavenBuild>
-  <includeLibraries></includeLibraries>
+  <!-- SWC Include Libraries -->
+  <includeLibraries>
+    <!-- example: <element path="..." /> -->
+  </includeLibraries>
+  <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="libs"/>
+    <element path="libs\" />
   </libraryPaths>
-  <externalLibraryPaths></externalLibraryPaths>
-  <rslPaths></rslPaths>
-  <intrinsics></intrinsics>
-  <library></library>
-  <modules/>
+  <!-- External Libraries -->
+  <externalLibraryPaths>
+    <!-- example: <element path="..." /> -->
+  </externalLibraryPaths>
+  <!-- Runtime Shared Libraries -->
+  <rslPaths>
+    <!-- example: <element path="..." /> -->
+  </rslPaths>
+  <!-- Intrinsic Libraries -->
+  <intrinsics>
+    <!-- example: <element path="..." /> -->
+  </intrinsics>
+  <!-- Assets to embed into the output SWF -->
+  <library>
+    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
+  </library>
+  <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src/Astroflux.as"/>
+    <compile path="src\Astroflux.as" />
   </compileTargets>
-  <hiddenPaths></hiddenPaths>
-  <preBuildCommand>null</preBuildCommand>
-  <postBuildCommand alwaysRun="False">null</postBuildCommand>
-  <trustSVNCertificate>False</trustSVNCertificate>
+  <!-- Paths to exclude from the Project Explorer tree -->
+  <hiddenPaths>
+    <hidden path="obj" />
+  </hiddenPaths>
+  <!-- Executed before build -->
+  <preBuildCommand>xcopy "$(ProjectDir)\src\Game-app.xml" "$(OutputDir)\" /y</preBuildCommand>
+  <!-- Executed after build -->
+  <postBuildCommand alwaysRun="False" />
+  <!-- Other project options -->
   <options>
-    <option defaultBuildTargets=""/>
-    <option isRoyale="False"/>
-    <option visualEditorExportPath=""/>
-    <option jdkType="default-java"/>
-    <option isDominoVisualEditor="False"/>
-    <option showHiddenPaths="False"/>
-    <option testMovieCommand=""/>
-    <option isPrimeFacesVisualEditor="False"/>
-    <option isExportedToExistingSource="False"/>
-    <option testMovie="AIR"/>
+    <option showHiddenPaths="False" />
+    <option testMovie="Custom" />
+    <option testMovieCommand="$(FlexSDK)/bin/adl.exe bin/Game-app.xml" />
   </options>
-  <moonshineRunCustomization>
-    <option webBrowser="null"/>
-    <option customUrlToLaunch=""/>
-    <option projectType="1"/>
-    <option launchMethod="Simulator"/>
-    <option targetPlatform="1"/>
-    <option deviceConnectType="USB"/>
-    <option urlToLaunch=""/>
-    <option deviceSimulator="null"/>
-    <deviceSimulator>null</deviceSimulator>
-    <certAndroid>null</certAndroid>
-    <certIos>null</certIos>
-    <certIosProvisioning>null</certIosProvisioning>
-  </moonshineRunCustomization>
+  <!-- Plugin storage -->
+  <storage />
 </project>
