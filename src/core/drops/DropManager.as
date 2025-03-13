@@ -1,5 +1,4 @@
-package core.drops
-{
+package core.drops {
 	import core.player.Player;
 	import core.scene.Game;
 	import data.DataLocator;
@@ -8,28 +7,19 @@ package core.drops
 	import generics.Random;
 	import playerio.Message;
 	
-	public class DropManager
-	{
+	public class DropManager {
 		public static const PICKUPINTERVAL:Number = 250;
-		
 		public static const ATTEMPTS_TO_TIMEOUT:int = 80;
-		
 		public var dropsById:Dictionary;
-		
 		public var drops:Vector.<Drop>;
-		
 		private var createdDropIds:Dictionary;
-		
 		private var pickupQueue:Vector.<PickUpMsg>;
-		
 		private var nextPickUpTime:Number;
-		
 		private var g:Game;
 		
-		public function DropManager(param1:Game)
-		{
+		public function DropManager(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 			nextPickUpTime = 0;
 			drops = new Vector.<Drop>();
 			dropsById = new Dictionary();
@@ -37,342 +27,277 @@ package core.drops
 			pickupQueue = new Vector.<PickUpMsg>();
 		}
 		
-		public function addMessageHandlers():void
-		{
-			g.addMessageHandler("spawnDrops", onSpawn);
+		public function addMessageHandlers() : void {
+			g.addMessageHandler("spawnDrops",onSpawn);
 		}
 		
-		public function initDrops(param1:Message):void
-		{
-			spawn(param1);
+		public function initDrops(m:Message) : void {
+			spawn(m);
 		}
 		
-		public function update():void
-		{
-			var _loc3_:int = 0;
-			var _loc1_:Drop = null;
-			var _loc2_:int = int(drops.length);
-			_loc3_ = _loc2_ - 1;
-			while (_loc3_ > -1)
-			{
-				_loc1_ = drops[_loc3_];
-				_loc1_.update();
-				if (_loc1_.expired)
-				{
-					remove(_loc1_, _loc3_);
-					g.emitterManager.clean(_loc1_);
+		public function update() : void {
+			var _local3:int = 0;
+			var _local1:Drop = null;
+			var _local2:int = int(drops.length);
+			_local3 = _local2 - 1;
+			while(_local3 > -1) {
+				_local1 = drops[_local3];
+				_local1.update();
+				if(_local1.expired) {
+					remove(_local1,_local3);
+					g.emitterManager.clean(_local1);
 				}
-				_loc3_--;
+				_local3--;
 			}
-			if (nextPickUpTime > g.time)
-			{
+			if(nextPickUpTime > g.time) {
 				return;
 			}
-			_loc2_ = int(pickupQueue.length);
-			_loc3_ = _loc2_ - 1;
-			while (_loc3_ > -1)
-			{
-				if (pickupQueue.length > _loc3_)
-				{
-					tryPickup(null, pickupQueue[_loc3_], pickupQueue[_loc3_].i);
+			_local2 = int(pickupQueue.length);
+			_local3 = _local2 - 1;
+			while(_local3 > -1) {
+				if(pickupQueue.length > _local3) {
+					tryPickup(null,pickupQueue[_local3],pickupQueue[_local3].i);
 				}
-				_loc3_--;
+				_local3--;
 			}
 			nextPickUpTime = g.time + 250;
 		}
 		
-		public function getDrop():Drop
-		{
+		public function getDrop() : Drop {
 			return new Drop(g);
 		}
 		
-		private function remove(param1:Drop, param2:int):void
-		{
-			drops.splice(param2, 1);
-			g.hud.radar.remove(param1);
-			createdDropIds[param1.id.toString()] = false;
-			dropsById[param1.id.toString()] = null;
-			param1.removeFromCanvas();
-			param1.reset();
+		private function remove(drop:Drop, index:int) : void {
+			drops.splice(index,1);
+			g.hud.radar.remove(drop);
+			createdDropIds[drop.id.toString()] = false;
+			dropsById[drop.id.toString()] = null;
+			drop.removeFromCanvas();
+			drop.reset();
 		}
 		
-		private function onSpawn(param1:Message):void
-		{
-			spawn(param1);
+		private function onSpawn(m:Message) : void {
+			spawn(m);
 		}
 		
-		public function spawn(param1:Message, param2:int = 0, param3:int = 0):void
-		{
-			var _loc8_:* = 0;
-			var _loc6_:String = null;
-			var _loc4_:int = 0;
-			var _loc7_:Boolean = false;
-			var _loc5_:int = int(param3 != 0 ? param3 : param1.length - param2);
-			_loc8_ = param2;
-			while (_loc8_ < param2 + _loc5_)
-			{
-				_loc6_ = param1.getString(_loc8_);
-				_loc4_ = param1.getInt(_loc8_ + 1);
-				_loc7_ = param1.getBoolean(_loc8_ + 2);
-				if (_loc6_ == null || _loc6_ == "")
-				{
-					g.showErrorDialog("Init drops didn't work correctly! message: " + param1.toString(), true);
+		public function spawn(m:Message, start:int = 0, end:int = 0) : void {
+			var _local8:* = 0;
+			var _local6:String = null;
+			var _local4:int = 0;
+			var _local7:Boolean = false;
+			var _local5:int = int(end != 0 ? end : m.length - start);
+			_local8 = start;
+			while(_local8 < start + _local5) {
+				_local6 = m.getString(_local8);
+				_local4 = m.getInt(_local8 + 1);
+				_local7 = m.getBoolean(_local8 + 2);
+				if(_local6 == null || _local6 == "") {
+					g.showErrorDialog("Init drops didn\'t work correctly! message: " + m.toString(),true);
 					return;
 				}
-				if (_loc6_ == "empty")
-				{
+				if(_local6 == "empty") {
 					return;
 				}
-				createdDropIds[_loc4_.toString()] = true;
-				if (!_loc7_)
-				{
-					createSetDrop(DropFactory.createDrop(_loc6_, g), param1, _loc8_);
+				createdDropIds[_local4.toString()] = true;
+				if(!_local7) {
+					createSetDrop(DropFactory.createDrop(_local6,g),m,_local8);
+				} else {
+					createSetDrop(DropFactory.createDropFromCargo(_local6,g),m,_local8);
 				}
-				else
-				{
-					createSetDrop(DropFactory.createDropFromCargo(_loc6_, g), param1, _loc8_);
-				}
-				_loc8_ += 9;
+				_local8 += 9;
 			}
 		}
 		
-		public function getDropItems(param1:String, param2:Game, param3:Number):DropBase
-		{
-			var _loc5_:Boolean = false;
-			var _loc6_:int = 0;
-			var _loc4_:int = 0;
-			var _loc12_:int = 0;
-			var _loc7_:DropItem = null;
-			if (param1 == "" || param1 == null)
-			{
+		public function getDropItems(key:String, g:Game, seed:Number) : DropBase {
+			var _local5:Boolean = false;
+			var _local6:int = 0;
+			var _local4:int = 0;
+			var _local12:int = 0;
+			var _local7:DropItem = null;
+			if(key == "" || key == null) {
 				return null;
 			}
-			var _loc8_:Random = new Random(param3);
-			var _loc11_:Object = DataLocator.getService().loadKey("Drops", param1);
-			var _loc10_:DropBase = new DropBase();
-			_loc10_.crate = _loc11_.crate;
-			if (_loc10_.crate)
-			{
-				if (_loc8_.randomNumber() >= _loc11_.chance)
-				{
-					_loc10_.crate = false;
+			var _local8:Random = new Random(seed);
+			var _local11:Object = DataLocator.getService().loadKey("Drops",key);
+			var _local10:DropBase = new DropBase();
+			_local10.crate = _local11.crate;
+			if(_local10.crate) {
+				if(_local8.randomNumber() >= _local11.chance) {
+					_local10.crate = false;
 					return null;
 				}
-				_loc5_ = Boolean(_loc11_.artifactChance);
-				_loc10_.containsArtifact = _loc5_ > _loc8_.randomNumber();
+				_local5 = Boolean(_local11.artifactChance);
+				_local10.containsArtifact = _local5 > _local8.randomNumber();
 			}
-			if (_loc11_.type == "mission")
-			{
-				_loc6_ = int(_loc11_.fluxMax);
-				_loc4_ = int(_loc11_.fluxMin);
-				_loc10_.flux = _loc4_;
-				_loc12_ = 0;
-				while (_loc12_ < _loc6_ - _loc4_)
-				{
-					if (_loc8_.randomNumber() <= 0.5)
-					{
+			if(_local11.type == "mission") {
+				_local6 = int(_local11.fluxMax);
+				_local4 = int(_local11.fluxMin);
+				_local10.flux = _local4;
+				_local12 = 0;
+				while(_local12 < _local6 - _local4) {
+					if(_local8.randomNumber() <= 0.5) {
 						break;
 					}
-					_loc10_.flux += 1;
-					_loc12_++;
+					_local10.flux += 1;
+					_local12++;
 				}
-				if (_loc10_.flux == _loc6_)
-				{
-					if (_loc8_.randomNumber() > 0.5)
-					{
-						_loc10_.flux = _loc4_;
+				if(_local10.flux == _local6) {
+					if(_local8.randomNumber() > 0.5) {
+						_local10.flux = _local4;
 					}
 				}
-				_loc10_.artifactAmount = _loc11_.artifactAmount;
-				_loc10_.artifactLevel = _loc11_.artifactLevel;
+				_local10.artifactAmount = _local11.artifactAmount;
+				_local10.artifactLevel = _local11.artifactLevel;
+			} else {
+				_local10.flux = _local11.fluxMin + _local8.random(_local11.fluxMax - _local11.fluxMin + 1);
 			}
-			else
-			{
-				_loc10_.flux = _loc11_.fluxMin + _loc8_.random(_loc11_.fluxMax - _loc11_.fluxMin + 1);
+			_local10.xp = _local11.xpMin + _local8.random(_local11.xpMax - _local11.xpMin + 1);
+			if(_local11.reputation) {
+				_local10.reputation = _local11.reputation;
+			} else {
+				_local10.reputation = 0;
 			}
-			_loc10_.xp = _loc11_.xpMin + _loc8_.random(_loc11_.xpMax - _loc11_.xpMin + 1);
-			if (_loc11_.reputation)
-			{
-				_loc10_.reputation = _loc11_.reputation;
-			}
-			else
-			{
-				_loc10_.reputation = 0;
-			}
-			for each (var _loc9_:* in _loc11_.dropItems)
-			{
-				_loc7_ = getDropItem(_loc9_, _loc8_);
-				if (_loc7_ != null)
-				{
-					_loc10_.items.push(_loc7_);
+			for each(var _local9 in _local11.dropItems) {
+				_local7 = getDropItem(_local9,_local8);
+				if(_local7 != null) {
+					_local10.items.push(_local7);
 				}
 			}
-			return _loc10_;
+			return _local10;
 		}
 		
-		public function getDropItem(param1:Object, param2:Random):DropItem
-		{
-			var _loc6_:DropItem = null;
-			var _loc3_:int = 0;
-			var _loc5_:int = 0;
-			var _loc8_:int = 0;
-			var _loc4_:Object = null;
-			var _loc7_:Object = null;
-			if (param2.randomNumber() <= param1.chance)
-			{
-				_loc6_ = new DropItem();
-				_loc3_ = 0;
-				_loc5_ = 0;
-				if (param1.min && param1.max)
-				{
-					_loc3_ = int(param1.min);
-					_loc5_ = int(param1.max);
+		public function getDropItem(obj:Object, r:Random) : DropItem {
+			var _local6:DropItem = null;
+			var _local3:int = 0;
+			var _local5:int = 0;
+			var _local8:int = 0;
+			var _local4:Object = null;
+			var _local7:Object = null;
+			if(r.randomNumber() <= obj.chance) {
+				_local6 = new DropItem();
+				_local3 = 0;
+				_local5 = 0;
+				if(obj.min && obj.max) {
+					_local3 = int(obj.min);
+					_local5 = int(obj.max);
 				}
-				_loc8_ = _loc5_ - _loc3_;
-				_loc6_.quantity = _loc3_ + param2.random(_loc8_);
-				_loc6_.item = param1.item;
-				_loc6_.table = param1.table;
-				if (_loc6_.quantity == 0)
-				{
+				_local8 = _local5 - _local3;
+				_local6.quantity = _local3 + r.random(_local8);
+				_local6.item = obj.item;
+				_local6.table = obj.table;
+				if(_local6.quantity == 0) {
 					return null;
 				}
-				_loc4_ = DataLocator.getService().loadKey(_loc6_.table, _loc6_.item);
-				_loc6_.name = _loc4_.name;
-				_loc6_.hasTechTree = _loc4_.hasTechTree;
-				if (_loc6_.table == "Weapons")
-				{
-					_loc6_.bitmapKey = _loc4_.techIcon;
+				_local4 = DataLocator.getService().loadKey(_local6.table,_local6.item);
+				_local6.name = _local4.name;
+				_local6.hasTechTree = _local4.hasTechTree;
+				if(_local6.table == "Weapons") {
+					_local6.bitmapKey = _local4.techIcon;
+				} else if(_local6.table == "Skins") {
+					_local7 = DataLocator.getService().loadKey("Ships",_local4.ship);
+					_local6.bitmapKey = _local7.bitmap;
+				} else {
+					_local6.bitmapKey = _local4.bitmap;
 				}
-				else if (_loc6_.table == "Skins")
-				{
-					_loc7_ = DataLocator.getService().loadKey("Ships", _loc4_.ship);
-					_loc6_.bitmapKey = _loc7_.bitmap;
-				}
-				else
-				{
-					_loc6_.bitmapKey = _loc4_.bitmap;
-				}
-				return _loc6_;
+				return _local6;
 			}
 			return null;
 		}
 		
-		private function createSetDrop(param1:Drop, param2:Message, param3:int):void
-		{
-			var _loc4_:Drop = null;
-			if (param1 == null)
-			{
+		private function createSetDrop(drop:Drop, m:Message, i:int) : void {
+			var _local4:Drop = null;
+			if(drop == null) {
 				return;
 			}
-			param1.id = param2.getInt(param3 + 1);
-			param1.x = 0.01 * param2.getInt(param3 + 3);
-			param1.y = 0.01 * param2.getInt(param3 + 4);
-			param1.speed.x = 0.01 * param2.getInt(param3 + 5);
-			param1.speed.y = 0.01 * param2.getInt(param3 + 6);
-			param1.expireTime = param2.getNumber(param3 + 7);
-			param1.quantity = param2.getInt(param3 + 8);
-			if (dropsById[param1.id.toString()] != null)
-			{
-				_loc4_ = dropsById[param1.id.toString()];
-				_loc4_.expire();
+			drop.id = m.getInt(i + 1);
+			drop.x = 0.01 * m.getInt(i + 3);
+			drop.y = 0.01 * m.getInt(i + 4);
+			drop.speed.x = 0.01 * m.getInt(i + 5);
+			drop.speed.y = 0.01 * m.getInt(i + 6);
+			drop.expireTime = m.getNumber(i + 7);
+			drop.quantity = m.getInt(i + 8);
+			if(dropsById[drop.id.toString()] != null) {
+				_local4 = dropsById[drop.id.toString()];
+				_local4.expire();
 			}
-			dropsById[param1.id.toString()] = param1;
-			drops.push(param1);
+			dropsById[drop.id.toString()] = drop;
+			drops.push(drop);
 		}
 		
-		public function tryBeamPickup(param1:Message, param2:int):void
-		{
-			var _loc5_:String = param1.getString(param2);
-			var _loc4_:int = param1.getInt(param2 + 1);
-			var _loc3_:Player = g.playerManager.playersById[_loc5_];
-			var _loc6_:Drop = dropsById[_loc4_.toString()];
-			if (_loc6_ != null && _loc3_ != null)
-			{
-				_loc6_.tractorBeamPlayer = _loc3_;
-				_loc6_.expireTime = g.time + 2000;
+		public function tryBeamPickup(m:Message, i:int) : void {
+			var _local5:String = m.getString(i);
+			var _local4:int = m.getInt(i + 1);
+			var _local3:Player = g.playerManager.playersById[_local5];
+			var _local6:Drop = dropsById[_local4.toString()];
+			if(_local6 != null && _local3 != null) {
+				_local6.tractorBeamPlayer = _local3;
+				_local6.expireTime = g.time + 2000;
 			}
-			pickupQueue.push(new PickUpMsg(param1, 3 * 80, param2));
+			pickupQueue.push(new PickUpMsg(m,3 * 80,i));
 		}
 		
-		public function tryPickup(param1:Message = null, param2:PickUpMsg = null, param3:int = 0):void
-		{
-			var _loc9_:int = 0;
-			if (param1 == null)
-			{
-				param1 = param2.msg;
-			}
-			else if (param1.length < param3 + 2)
-			{
+		public function tryPickup(m:Message = null, po:PickUpMsg = null, i:int = 0) : void {
+			var _local9:int = 0;
+			if(m == null) {
+				m = po.msg;
+			} else if(m.length < i + 2) {
 				return;
 			}
-			var _loc8_:int = param1.getInt(param3 - 1);
-			var _loc6_:String = param1.getString(param3);
-			var _loc5_:String = param1.getInt(param3 + 1).toString();
-			var _loc7_:Drop = dropsById[_loc5_];
-			if (_loc7_ == null && createdDropIds[_loc5_] != null)
-			{
-				if (createdDropIds[_loc5_] == true)
-				{
-					for each (var _loc11_:* in pickupQueue)
-					{
-						if (_loc11_.msg == param1)
-						{
-							Console.write("Pickup already queued. dropId: " + _loc5_);
+			var _local8:int = m.getInt(i - 1);
+			var _local6:String = m.getString(i);
+			var _local5:String = m.getInt(i + 1).toString();
+			var _local7:Drop = dropsById[_local5];
+			if(_local7 == null && createdDropIds[_local5] != null) {
+				if(createdDropIds[_local5] == true) {
+					for each(var _local11 in pickupQueue) {
+						if(_local11.msg == m) {
+							Console.write("Pickup already queued. dropId: " + _local5);
 							return;
 						}
 					}
 					Console.write("Pickup queued.");
-					pickupQueue.push(new PickUpMsg(param1, 80, param3));
+					pickupQueue.push(new PickUpMsg(m,80,i));
 					return;
 				}
-				_loc9_ = int(pickupQueue.indexOf(param2));
-				pickupQueue.splice(_loc9_, 1);
+				_local9 = int(pickupQueue.indexOf(po));
+				pickupQueue.splice(_local9,1);
 				return;
 			}
-			if (_loc7_ == null)
-			{
-				Console.write("FAILED Pickup. No drop with id : " + _loc5_);
-				_loc9_ = int(pickupQueue.indexOf(param2));
-				if (param2 != null && _loc9_ != -1)
-				{
-					param2.timeout--;
-					if (param2.timeout < 1)
-					{
-						pickupQueue.splice(_loc9_, 1);
+			if(_local7 == null) {
+				Console.write("FAILED Pickup. No drop with id : " + _local5);
+				_local9 = int(pickupQueue.indexOf(po));
+				if(po != null && _local9 != -1) {
+					po.timeout--;
+					if(po.timeout < 1) {
+						pickupQueue.splice(_local9,1);
 						Console.write("FAILED Pickup. Removed from queue due to timeout.");
 					}
 				}
 				return;
 			}
-			var _loc4_:Player = g.playerManager.playersById[_loc6_];
-			if (_loc4_ == null || _loc4_.ship == null)
-			{
+			var _local4:Player = g.playerManager.playersById[_local6];
+			if(_local4 == null || _local4.ship == null) {
 				return;
 			}
-			var _loc10_:Boolean = _loc7_.pickup(_loc4_, param1, param3 + 2);
-			if (!_loc10_)
-			{
+			var _local10:Boolean = _local7.pickup(_local4,m,i + 2);
+			if(!_local10) {
 				return;
 			}
-			delete dropsById[_loc5_];
-			_loc9_ = int(pickupQueue.indexOf(param2));
-			if (_loc9_ != -1)
-			{
-				pickupQueue.splice(_loc9_, 1);
+			delete dropsById[_local5];
+			_local9 = int(pickupQueue.indexOf(po));
+			if(_local9 != -1) {
+				pickupQueue.splice(_local9,1);
 			}
 		}
 		
-		private function buyTractorBeam():void
-		{
+		private function buyTractorBeam() : void {
 			g.send("buyTractorBeam");
 		}
 		
-		public function dispose():void
-		{
-			for each (var _loc1_:* in drops)
-			{
-				_loc1_.removeFromCanvas();
-				_loc1_.reset();
+		public function dispose() : void {
+			for each(var _local1 in drops) {
+				_local1.removeFromCanvas();
+				_local1.reset();
 			}
 			drops = null;
 			createdDropIds = null;
@@ -380,16 +305,14 @@ package core.drops
 			dropsById = null;
 		}
 		
-		public function forceUpdate():void
-		{
-			var _loc1_:Drop = null;
-			var _loc2_:int = 0;
-			_loc2_ = 0;
-			while (_loc2_ < drops.length)
-			{
-				_loc1_ = drops[_loc2_];
-				_loc1_.nextDistanceCalculation = -1;
-				_loc2_++;
+		public function forceUpdate() : void {
+			var _local1:Drop = null;
+			var _local2:int = 0;
+			_local2 = 0;
+			while(_local2 < drops.length) {
+				_local1 = drops[_local2];
+				_local1.nextDistanceCalculation = -1;
+				_local2++;
 			}
 		}
 	}
@@ -397,19 +320,15 @@ package core.drops
 
 import playerio.Message;
 
-class PickUpMsg
-{
+class PickUpMsg {
 	public var msg:Message;
-	
 	public var timeout:int;
-	
 	public var i:int;
 	
-	public function PickUpMsg(param1:Message, param2:int, param3:int = 0)
-	{
+	public function PickUpMsg(m:Message, timeout:int, i:int = 0) {
 		super();
-		this.timeout = param2;
-		this.i = param3;
-		this.msg = param1;
+		this.timeout = timeout;
+		this.i = i;
+		this.msg = m;
 	}
 }

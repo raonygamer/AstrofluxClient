@@ -1,146 +1,118 @@
-package movement
-{
+package movement {
 	import flash.geom.Point;
 	import generics.Util;
 	import playerio.Message;
 	
-	public class Heading
-	{
+	public class Heading {
 		public static const NR_OF_VARS:int = 10;
-		
 		public var time:Number = 0;
-		
-		public var pos:Point;
-		
+		public var pos:Point = new Point();
 		public var rotation:Number = 0;
-		
-		public var speed:Point;
-		
+		public var speed:Point = new Point();
 		public var rotateLeft:Boolean = false;
-		
 		public var rotateRight:Boolean = false;
-		
 		public var accelerate:Boolean = false;
-		
 		public var deaccelerate:Boolean = false;
-		
 		public var roll:Boolean = false;
 		
-		public function Heading()
-		{
-			pos = new Point();
-			speed = new Point();
+		public function Heading() {
 			super();
 		}
 		
-		public function parseMessage(param1:Message, param2:int):int
-		{
-			this.time = param1.getNumber(param2);
-			this.pos.x = 0.01 * param1.getInt(param2 + 1);
-			this.pos.y = 0.01 * param1.getInt(param2 + 2);
-			this.speed.x = 0.01 * param1.getInt(param2 + 3);
-			this.speed.y = 0.01 * param1.getInt(param2 + 4);
-			this.rotation = 0.001 * param1.getInt(param2 + 5);
-			this.accelerate = param1.getBoolean(param2 + 6);
-			this.deaccelerate = param1.getBoolean(param2 + 7);
-			this.rotateLeft = param1.getBoolean(param2 + 8);
-			this.rotateRight = param1.getBoolean(param2 + 9);
-			return param2 + 10;
+		public function parseMessage(m:Message, i:int) : int {
+			this.time = m.getNumber(i);
+			this.pos.x = 0.01 * m.getInt(i + 1);
+			this.pos.y = 0.01 * m.getInt(i + 2);
+			this.speed.x = 0.01 * m.getInt(i + 3);
+			this.speed.y = 0.01 * m.getInt(i + 4);
+			this.rotation = 0.001 * m.getInt(i + 5);
+			this.accelerate = m.getBoolean(i + 6);
+			this.deaccelerate = m.getBoolean(i + 7);
+			this.rotateLeft = m.getBoolean(i + 8);
+			this.rotateRight = m.getBoolean(i + 9);
+			return i + 10;
 		}
 		
-		public function populateMessage(param1:Message):Message
-		{
-			param1.add(time);
-			param1.add(pos.x);
-			param1.add(pos.y);
-			param1.add(speed.x);
-			param1.add(speed.y);
-			param1.add(rotation);
-			param1.add(accelerate);
-			param1.add(deaccelerate);
-			param1.add(rotateLeft);
-			param1.add(rotateRight);
-			return param1;
+		public function populateMessage(m:Message) : Message {
+			m.add(time);
+			m.add(pos.x);
+			m.add(pos.y);
+			m.add(speed.x);
+			m.add(speed.y);
+			m.add(rotation);
+			m.add(accelerate);
+			m.add(deaccelerate);
+			m.add(rotateLeft);
+			m.add(rotateRight);
+			return m;
 		}
 		
-		public function almostEqual(param1:Heading):Boolean
-		{
-			var _loc2_:Number = 0.01;
-			if (Math.abs(this.pos.x - param1.pos.x) > _loc2_)
-			{
+		public function almostEqual(h2:Heading) : Boolean {
+			var _local2:Number = 0.01;
+			if(Math.abs(this.pos.x - h2.pos.x) > _local2) {
 				return false;
 			}
-			if (Math.abs(this.pos.y - param1.pos.y) > _loc2_)
-			{
+			if(Math.abs(this.pos.y - h2.pos.y) > _local2) {
 				return false;
 			}
-			if (Math.abs(this.rotation - param1.rotation) > _loc2_)
-			{
+			if(Math.abs(this.rotation - h2.rotation) > _local2) {
 				return false;
 			}
-			if (Math.abs(this.speed.x - param1.speed.x) > _loc2_)
-			{
+			if(Math.abs(this.speed.x - h2.speed.x) > _local2) {
 				return false;
 			}
-			if (Math.abs(this.speed.y - param1.speed.y) > _loc2_)
-			{
+			if(Math.abs(this.speed.y - h2.speed.y) > _local2) {
 				return false;
 			}
 			return true;
 		}
 		
-		public function copy(param1:Heading):void
-		{
-			this.time = param1.time;
-			this.pos.x = param1.pos.x;
-			this.pos.y = param1.pos.y;
-			this.rotation = param1.rotation;
-			this.speed.x = param1.speed.x;
-			this.speed.y = param1.speed.y;
-			this.accelerate = param1.accelerate;
-			this.deaccelerate = param1.deaccelerate;
-			this.rotateLeft = param1.rotateLeft;
-			this.rotateRight = param1.rotateRight;
+		public function copy(heading:Heading) : void {
+			this.time = heading.time;
+			this.pos.x = heading.pos.x;
+			this.pos.y = heading.pos.y;
+			this.rotation = heading.rotation;
+			this.speed.x = heading.speed.x;
+			this.speed.y = heading.speed.y;
+			this.accelerate = heading.accelerate;
+			this.deaccelerate = heading.deaccelerate;
+			this.rotateLeft = heading.rotateLeft;
+			this.rotateRight = heading.rotateRight;
 		}
 		
-		public function clone():Heading
-		{
-			var _loc1_:Heading = new Heading();
-			_loc1_.copy(this);
-			return _loc1_;
+		public function clone() : Heading {
+			var _local1:Heading = new Heading();
+			_local1.copy(this);
+			return _local1;
 		}
 		
-		public function runCommand(param1:Command):void
-		{
-			switch (param1.type)
-			{
-			case 0: 
-				this.accelerate = param1.active;
-				break;
-			case 1: 
-				this.rotateLeft = param1.active;
-				break;
-			case 2: 
-				this.rotateRight = param1.active;
-				break;
-			case 4: 
-				accelerate = true;
-				deaccelerate = true;
-				rotateLeft = false;
-				rotateRight = false;
-				break;
-			case 8: 
-				this.deaccelerate = param1.active;
+		public function runCommand(cmd:Command) : void {
+			switch(cmd.type) {
+				case 0:
+					this.accelerate = cmd.active;
+					break;
+				case 1:
+					this.rotateLeft = cmd.active;
+					break;
+				case 2:
+					this.rotateRight = cmd.active;
+					break;
+				case 4:
+					accelerate = true;
+					deaccelerate = true;
+					rotateLeft = false;
+					rotateRight = false;
+					break;
+				case 8:
+					this.deaccelerate = cmd.active;
 			}
 		}
 		
-		public function toString():String
-		{
-			return "x:" + Util.formatDecimal(pos.x, 1) + ", y:" + Util.formatDecimal(pos.y, 1) + ", angle:" + Util.formatDecimal(rotation, 1) + ", speedX:" + Util.formatDecimal(speed.x, 1) + ", speedY:" + Util.formatDecimal(speed.y, 1) + ", time:" + time;
+		public function toString() : String {
+			return "x:" + Util.formatDecimal(pos.x,1) + ", y:" + Util.formatDecimal(pos.y,1) + ", angle:" + Util.formatDecimal(rotation,1) + ", speedX:" + Util.formatDecimal(speed.x,1) + ", speedY:" + Util.formatDecimal(speed.y,1) + ", time:" + time;
 		}
 		
-		public function reset():void
-		{
+		public function reset() : void {
 			this.time = 0;
 			this.pos.x = 0;
 			this.pos.y = 0;
@@ -154,3 +126,4 @@ package movement
 		}
 	}
 }
+

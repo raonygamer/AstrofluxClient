@@ -1,300 +1,257 @@
-package generics
-{
+package generics {
 	import flash.geom.ColorTransform;
 	
-	public class Color
-	{
+	public class Color {
 		private static const lR:Number = 0.213;
-		
 		private static const lG:Number = 0.715;
-		
 		private static const lB:Number = 0.072;
 		
-		public function Color()
-		{
+		public function Color() {
 			super();
 		}
 		
-		public static function tintColor(param1:ColorTransform, param2:uint, param3:Number):ColorTransform
-		{
-			param1.redMultiplier = param1.greenMultiplier = param1.blueMultiplier = 1 - param3;
-			param1.redOffset = Math.round(((param2 & 0xFF0000) >> 16) * param3);
-			param1.greenOffset = Math.round(((param2 & 0xFF00) >> 8) * param3);
-			param1.blueOffset = Math.round((param2 & 0xFF) * param3);
-			return param1;
+		public static function tintColor(colTransform:ColorTransform, tintColor:uint, tintMultiplier:Number) : ColorTransform {
+			colTransform.redMultiplier = colTransform.greenMultiplier = colTransform.blueMultiplier = 1 - tintMultiplier;
+			colTransform.redOffset = Math.round(((tintColor & 0xFF0000) >> 16) * tintMultiplier);
+			colTransform.greenOffset = Math.round(((tintColor & 0xFF00) >> 8) * tintMultiplier);
+			colTransform.blueOffset = Math.round((tintColor & 0xFF) * tintMultiplier);
+			return colTransform;
 		}
 		
-		public static function getDesaturationMatrix(param1:Number, param2:Number, param3:Number):Array
-		{
-			var _loc4_:Array = [];
-			_loc4_ = _loc4_.concat([param1, param2, param2, 0, 0]);
-			_loc4_ = _loc4_.concat([param2, param1, param2, 0, 0]);
-			_loc4_ = _loc4_.concat([param2, param2, param1, 0, 0]);
-			return _loc4_.concat([0, 0, 0, param3, 0]);
+		public static function getDesaturationMatrix(saturation:Number, desaturation:Number, alpha:Number) : Array {
+			var _local4:Array = [];
+			_local4 = _local4.concat([saturation,desaturation,desaturation,0,0]);
+			_local4 = _local4.concat([desaturation,saturation,desaturation,0,0]);
+			_local4 = _local4.concat([desaturation,desaturation,saturation,0,0]);
+			return _local4.concat([0,0,0,alpha,0]);
 		}
 		
-		public static function getColorMatrix(param1:Number, param2:Number, param3:Number, param4:Number, param5:Number):Vector.<Number>
-		{
-			var _loc6_:Number = param1 * param2;
-			var _loc7_:Number = param1 * param3;
-			var _loc8_:Number = param1 * param4;
-			return new <Number>[_loc6_, _loc7_, _loc8_, 0, 0, _loc6_, _loc7_, _loc8_, 0, 0, _loc6_, _loc7_, _loc8_, 0, 0, 0, 0, 0, param5, 0];
+		public static function getColorMatrix(brightness:Number, r:Number, g:Number, b:Number, alpha:Number) : Vector.<Number> {
+			var _local6:Number = brightness * r;
+			var _local7:Number = brightness * g;
+			var _local8:Number = brightness * b;
+			return new <Number>[_local6,_local7,_local8,0,0,_local6,_local7,_local8,0,0,_local6,_local7,_local8,0,0,0,0,0,alpha,0];
 		}
 		
-		public static function fixColorCode(param1:Object, param2:Boolean = false):uint
-		{
-			var _loc4_:Number = Number(param1);
-			var _loc3_:Number = param2 ? 4294967295 : 16777215;
-			return uint(Math.min(Math.max(_loc4_, 0), _loc3_));
+		public static function fixColorCode(c:Object, hasAlpha:Boolean = false) : uint {
+			var _local4:Number = Number(c);
+			var _local3:Number = hasAlpha ? 4294967295 : 16777215;
+			return uint(Math.min(Math.max(_local4,0),_local3));
 		}
 		
-		public static function HEXtoRGB(param1:uint):Array
-		{
-			var _loc2_:* = param1 >> 16 & 0xFF;
-			var _loc4_:* = param1 >> 8 & 0xFF;
-			var _loc3_:* = param1 & 0xFF;
-			return [_loc2_, _loc4_, _loc3_];
+		public static function HEXtoRGB(hex:uint) : Array {
+			var _local2:* = hex >> 16 & 0xFF;
+			var _local4:* = hex >> 8 & 0xFF;
+			var _local3:* = hex & 0xFF;
+			return [_local2,_local4,_local3];
 		}
 		
-		public static function adjustColor(param1:Number = 0, param2:Number = 0, param3:Number = 0, param4:Number = 0):Vector.<Number>
-		{
-			var _loc5_:Vector.<Number> = new <Number>[1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0];
-			multiplyMatrix(_loc5_, adjustHue(param4));
-			multiplyMatrix(_loc5_, adjustSaturation(param3));
-			multiplyMatrix(_loc5_, adjustBrightness(param1));
-			multiplyMatrix(_loc5_, adjustContrast(param2));
-			return _loc5_;
+		public static function adjustColor(Brightness:Number = 0, Contrast:Number = 0, Saturation:Number = 0, Hue:Number = 0) : Vector.<Number> {
+			var _local5:Vector.<Number> = new <Number>[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0];
+			multiplyMatrix(_local5,adjustHue(Hue));
+			multiplyMatrix(_local5,adjustSaturation(Saturation));
+			multiplyMatrix(_local5,adjustBrightness(Brightness));
+			multiplyMatrix(_local5,adjustContrast(Contrast));
+			return _local5;
 		}
 		
-		public static function adjustHue(param1:Number):Vector.<Number>
-		{
-			param1 = param1 < -1 ? -1 : param1;
-			param1 = param1 > 1 ? 1 : param1;
-			var _loc2_:Number = 180 * param1 * (3.141592653589793 / 180);
-			var _loc4_:Number = Math.cos(_loc2_);
-			var _loc3_:Number = Math.sin(_loc2_);
-			return new <Number>[0.213 + _loc4_ * (1 - 0.213) + _loc3_ * -0.213, 0.715 + _loc4_ * -0.715 + _loc3_ * -0.715, 0.072 + _loc4_ * -0.072 + _loc3_ * (1 - 0.072), 0, 0, 0.213 + _loc4_ * -0.213 + _loc3_ * 0.143, 0.715 + _loc4_ * (1 - 0.715) + _loc3_ * 0.14, 0.072 + _loc4_ * -0.072 + _loc3_ * -0.283, 0, 0, 0.213 + _loc4_ * -0.213 + _loc3_ * -0.787, 0.715 + _loc4_ * -0.715 + _loc3_ * 0.715, 0.072 + _loc4_ * (1 - 0.072) + _loc3_ * 0.072, 0, 0, 0, 0, 0, 1, 0];
+		public static function adjustHue(value:Number) : Vector.<Number> {
+			value = value < -1 ? -1 : value;
+			value = value > 1 ? 1 : value;
+			var _local2:Number = 3 * 60 * value * (3.141592653589793 / (3 * 60));
+			var _local4:Number = Math.cos(_local2);
+			var _local3:Number = Math.sin(_local2);
+			return new <Number>[0.213 + _local4 * (1 - 0.213) + _local3 * -0.213,0.715 + _local4 * -0.715 + _local3 * -0.715,0.072 + _local4 * -0.072 + _local3 * (1 - 0.072),0,0,0.213 + _local4 * -0.213 + _local3 * 0.143,0.715 + _local4 * (1 - 0.715) + _local3 * 0.14,0.072 + _local4 * -0.072 + _local3 * -0.283,0,0,0.213 + _local4 * -0.213 + _local3 * -0.787,0.715 + _local4 * -0.715 + _local3 * 0.715,0.072 + _local4 * (1 - 0.072) + _local3 * 0.072,0,0,0,0,0,1,0];
 		}
 		
-		public static function RGBToHex(param1:uint, param2:uint, param3:uint):uint
-		{
-			return uint(param1 << 16 | param2 << 8 | param3);
+		public static function RGBToHex(r:uint, g:uint, b:uint) : uint {
+			return uint(r << 16 | g << 8 | b);
 		}
 		
-		public static function HexToRGB(param1:uint):Array
-		{
-			var _loc5_:Array = [];
-			var _loc4_:uint = uint(param1 >> 16 & 0xFF);
-			var _loc2_:uint = uint(param1 >> 8 & 0xFF);
-			var _loc3_:uint = uint(param1 & 0xFF);
-			_loc5_.push(_loc4_, _loc2_, _loc3_);
-			return _loc5_;
+		public static function HexToRGB(hex:uint) : Array {
+			var _local5:Array = [];
+			var _local4:uint = uint(hex >> 16 & 0xFF);
+			var _local2:uint = uint(hex >> 8 & 0xFF);
+			var _local3:uint = uint(hex & 0xFF);
+			_local5.push(_local4,_local2,_local3);
+			return _local5;
 		}
 		
-		public static function RGBtoHSV(param1:Number, param2:Number, param3:Number):Array
-		{
-			var _loc5_:uint = Math.max(param1, param2, param3);
-			var _loc4_:uint = Math.min(param1, param2, param3);
-			var _loc8_:Number = 0;
-			var _loc6_:Number = 0;
-			var _loc9_:Number = 0;
-			var _loc7_:Array = [];
-			if (_loc5_ == _loc4_)
-			{
-				_loc8_ = 0;
+		public static function RGBtoHSV(r:Number, g:Number, b:Number) : Array {
+			var _local5:uint = Math.max(r,g,b);
+			var _local4:uint = Math.min(r,g,b);
+			var _local8:Number = 0;
+			var _local6:Number = 0;
+			var _local9:Number = 0;
+			var _local7:Array = [];
+			if(_local5 == _local4) {
+				_local8 = 0;
+			} else if(_local5 == r) {
+				_local8 = (60 * (g - b) / (_local5 - _local4) + 6 * 60) % (6 * 60);
+			} else if(_local5 == g) {
+				_local8 = 60 * (b - r) / (_local5 - _local4) + 2 * 60;
+			} else if(_local5 == b) {
+				_local8 = 60 * (r - g) / (_local5 - _local4) + 4 * 60;
 			}
-			else if (_loc5_ == param1)
-			{
-				_loc8_ = (60 * (param2 - param3) / (_loc5_ - _loc4_) + 360) % 360;
+			_local9 = _local5;
+			if(_local5 == 0) {
+				_local6 = 0;
+			} else {
+				_local6 = (_local5 - _local4) / _local5;
 			}
-			else if (_loc5_ == param2)
-			{
-				_loc8_ = 60 * (param3 - param1) / (_loc5_ - _loc4_) + 120;
-			}
-			else if (_loc5_ == param3)
-			{
-				_loc8_ = 60 * (param1 - param2) / (_loc5_ - _loc4_) + 240;
-			}
-			_loc9_ = _loc5_;
-			if (_loc5_ == 0)
-			{
-				_loc6_ = 0;
-			}
-			else
-			{
-				_loc6_ = (_loc5_ - _loc4_) / _loc5_;
-			}
-			return [Math.round(_loc8_), Math.round(_loc6_ * 100), Math.round(_loc9_ / 255 * 100)];
+			return [Math.round(_local8),Math.round(_local6 * 100),Math.round(_local9 / 255 * 100)];
 		}
 		
-		public static function HSVtoRGB(param1:Number, param2:Number, param3:Number):Array
-		{
-			var _loc12_:* = 0;
-			var _loc5_:* = 0;
-			var _loc6_:* = 0;
-			var _loc7_:Array = [];
-			var _loc10_:Number = param2 / 100;
-			var _loc9_:Number = param3 / 100;
-			var _loc8_:int = Math.floor(param1 / 60) % 6;
-			var _loc4_:Number = param1 / 60 - Math.floor(param1 / 60);
-			var _loc14_:Number = _loc9_ * (1 - _loc10_);
-			var _loc13_:Number = _loc9_ * (1 - _loc4_ * _loc10_);
-			var _loc11_:Number = _loc9_ * (1 - (1 - _loc4_) * _loc10_);
-			switch (_loc8_)
-			{
-			case 0: 
-				_loc12_ = _loc9_;
-				_loc5_ = _loc11_;
-				_loc6_ = _loc14_;
-				break;
-			case 1: 
-				_loc12_ = _loc13_;
-				_loc5_ = _loc9_;
-				_loc6_ = _loc14_;
-				break;
-			case 2: 
-				_loc12_ = _loc14_;
-				_loc5_ = _loc9_;
-				_loc6_ = _loc11_;
-				break;
-			case 3: 
-				_loc12_ = _loc14_;
-				_loc5_ = _loc13_;
-				_loc6_ = _loc9_;
-				break;
-			case 4: 
-				_loc12_ = _loc11_;
-				_loc5_ = _loc14_;
-				_loc6_ = _loc9_;
-				break;
-			case 5: 
-				_loc12_ = _loc9_;
-				_loc5_ = _loc14_;
-				_loc6_ = _loc13_;
+		public static function HSVtoRGB(h:Number, s:Number, v:Number) : Array {
+			var _local12:* = 0;
+			var _local5:* = 0;
+			var _local6:* = 0;
+			var _local7:Array = [];
+			var _local10:Number = s / 100;
+			var _local9:Number = v / 100;
+			var _local8:int = Math.floor(h / (60)) % 6;
+			var _local4:Number = h / (60) - Math.floor(h / (60));
+			var _local14:Number = _local9 * (1 - _local10);
+			var _local13:Number = _local9 * (1 - _local4 * _local10);
+			var _local11:Number = _local9 * (1 - (1 - _local4) * _local10);
+			switch(_local8) {
+				case 0:
+					_local12 = _local9;
+					_local5 = _local11;
+					_local6 = _local14;
+					break;
+				case 1:
+					_local12 = _local13;
+					_local5 = _local9;
+					_local6 = _local14;
+					break;
+				case 2:
+					_local12 = _local14;
+					_local5 = _local9;
+					_local6 = _local11;
+					break;
+				case 3:
+					_local12 = _local14;
+					_local5 = _local13;
+					_local6 = _local9;
+					break;
+				case 4:
+					_local12 = _local11;
+					_local5 = _local14;
+					_local6 = _local9;
+					break;
+				case 5:
+					_local12 = _local9;
+					_local5 = _local14;
+					_local6 = _local13;
 			}
-			return [Math.round(_loc12_ * 255), Math.round(_loc5_ * 255), Math.round(_loc6_ * 255)];
+			return [Math.round(_local12 * 255),Math.round(_local5 * 255),Math.round(_local6 * 255)];
 		}
 		
-		public static function HEXHue(param1:uint, param2:Number):uint
-		{
-			var _loc7_:Number = extractRedFromHEX(param1);
-			var _loc4_:Number = extractGreenFromHEX(param1);
-			var _loc6_:Number = extractBlueFromHEX(param1);
-			var _loc8_:Array = RGBtoHSV(_loc7_, _loc4_, _loc6_);
-			var _loc10_:Number = Number(_loc8_[0]);
-			var _loc5_:Number = Number(_loc8_[1]);
-			var _loc3_:Number = Number(_loc8_[2]);
-			_loc10_ += Util.radiansToDegrees(param2 * 2);
-			if (_loc10_ < 0)
-			{
-				_loc10_ = 359 - _loc10_;
+		public static function HEXHue(c:uint, a:Number) : uint {
+			var _local7:Number = extractRedFromHEX(c);
+			var _local4:Number = extractGreenFromHEX(c);
+			var _local6:Number = extractBlueFromHEX(c);
+			var _local8:Array = RGBtoHSV(_local7,_local4,_local6);
+			var _local10:Number = Number(_local8[0]);
+			var _local5:Number = Number(_local8[1]);
+			var _local3:Number = Number(_local8[2]);
+			_local10 += Util.radiansToDegrees(a * 2);
+			if(_local10 < 0) {
+				_local10 = 359 - _local10;
+			} else if(_local10 > 359) {
+				_local10 -= 359;
 			}
-			else if (_loc10_ > 359)
-			{
-				_loc10_ -= 359;
-			}
-			var _loc9_:Array = HSVtoRGB(_loc10_, _loc5_, _loc3_);
-			return RGBToHex(_loc9_[0], _loc9_[1], _loc9_[2]);
+			var _local9:Array = HSVtoRGB(_local10,_local5,_local3);
+			return RGBToHex(_local9[0],_local9[1],_local9[2]);
 		}
 		
-		public static function adjustSaturation(param1:Number):Vector.<Number>
-		{
-			param1 = param1 < -1 ? -1 : param1;
-			param1 = param1 > 1 ? 1 : param1;
-			var _loc3_:Number = param1 + 1;
-			var _loc6_:Number = 1 - _loc3_;
-			var _loc5_:Number = _loc6_ * 0.213;
-			var _loc2_:Number = _loc6_ * 0.715;
-			var _loc4_:Number = _loc6_ * 0.072;
-			return new <Number>[_loc5_ + _loc3_, _loc2_, _loc4_, 0, 0, _loc5_, _loc2_ + _loc3_, _loc4_, 0, 0, _loc5_, _loc2_, _loc4_ + _loc3_, 0, 0, 0, 0, 0, 1, 0];
+		public static function adjustSaturation(value:Number) : Vector.<Number> {
+			value = value < -1 ? -1 : value;
+			value = value > 1 ? 1 : value;
+			var _local3:Number = value + 1;
+			var _local6:Number = 1 - _local3;
+			var _local5:Number = _local6 * 0.213;
+			var _local2:Number = _local6 * 0.715;
+			var _local4:Number = _local6 * 0.072;
+			return new <Number>[_local5 + _local3,_local2,_local4,0,0,_local5,_local2 + _local3,_local4,0,0,_local5,_local2,_local4 + _local3,0,0,0,0,0,1,0];
 		}
 		
-		public static function adjustContrast(param1:Number):Vector.<Number>
-		{
-			param1 = param1 < -1 ? -1 : param1;
-			param1 = param1 > 1 ? 1 : param1;
-			var _loc2_:Number = param1 + 1;
-			var _loc3_:Number = 128 * (1 - _loc2_);
-			return new <Number>[_loc2_, 0, 0, 0, _loc3_, 0, _loc2_, 0, 0, _loc3_, 0, 0, _loc2_, 0, _loc3_, 0, 0, 0, _loc2_, 0];
+		public static function adjustContrast(value:Number) : Vector.<Number> {
+			value = value < -1 ? -1 : value;
+			value = value > 1 ? 1 : value;
+			var _local2:Number = value + 1;
+			var _local3:Number = 128 * (1 - _local2);
+			return new <Number>[_local2,0,0,0,_local3,0,_local2,0,0,_local3,0,0,_local2,0,_local3,0,0,0,_local2,0];
 		}
 		
-		public static function adjustBrightness(param1:Number):Vector.<Number>
-		{
-			param1 = param1 < -1 ? -1 : param1;
-			param1 = param1 > 1 ? 1 : param1;
-			var _loc2_:Number = 255 * param1;
-			return new <Number>[1, 0, 0, 0, _loc2_, 0, 1, 0, 0, _loc2_, 0, 0, 1, 0, _loc2_, 0, 0, 0, 1, 0];
+		public static function adjustBrightness(value:Number) : Vector.<Number> {
+			value = value < -1 ? -1 : value;
+			value = value > 1 ? 1 : value;
+			var _local2:Number = 255 * value;
+			return new <Number>[1,0,0,0,_local2,0,1,0,0,_local2,0,0,1,0,_local2,0,0,0,1,0];
 		}
 		
-		protected static function multiplyMatrix(param1:Vector.<Number>, param2:Vector.<Number>):void
-		{
-			var _loc7_:* = 0;
-			var _loc5_:* = 0;
-			var _loc6_:Number = NaN;
-			var _loc3_:Number = NaN;
-			var _loc4_:Array = [];
-			_loc7_ = 0;
-			while (_loc7_ < 4)
-			{
-				_loc5_ = 0;
-				while (_loc5_ < 5)
-				{
-					_loc4_[_loc5_] = param1[_loc5_ + _loc7_ * 5];
-					_loc5_++;
+		protected static function multiplyMatrix(TargetMatrix:Vector.<Number>, MultiplyMatrix:Vector.<Number>) : void {
+			var _local7:* = 0;
+			var _local5:* = 0;
+			var _local6:Number = NaN;
+			var _local3:Number = NaN;
+			var _local4:Array = [];
+			_local7 = 0;
+			while(_local7 < 4) {
+				_local5 = 0;
+				while(_local5 < 5) {
+					_local4[_local5] = TargetMatrix[_local5 + _local7 * 5];
+					_local5++;
 				}
-				_loc5_ = 0;
-				while (_loc5_ < 5)
-				{
-					_loc3_ = 0;
-					_loc6_ = 0;
-					while (_loc6_ < 4)
-					{
-						_loc3_ += param2[_loc5_ + _loc6_ * 5] * _loc4_[_loc6_];
-						_loc6_++;
+				_local5 = 0;
+				while(_local5 < 5) {
+					_local3 = 0;
+					_local6 = 0;
+					while(_local6 < 4) {
+						_local3 += MultiplyMatrix[_local5 + _local6 * 5] * _local4[_local6];
+						_local6++;
 					}
-					param1[_loc5_ + _loc7_ * 5] = _loc3_;
-					_loc5_++;
+					TargetMatrix[_local5 + _local7 * 5] = _local3;
+					_local5++;
 				}
-				_loc7_++;
+				_local7++;
 			}
 		}
 		
-		public static function RGBtoHEX(param1:uint, param2:uint, param3:uint):uint
-		{
-			return param1 << 16 | param2 << 8 | param3;
+		public static function RGBtoHEX(r:uint, g:uint, b:uint) : uint {
+			return r << 16 | g << 8 | b;
 		}
 		
-		public static function extractRedFromHEX(param1:uint):uint
-		{
-			return param1 >> 16 & 0xFF;
+		public static function extractRedFromHEX(c:uint) : uint {
+			return c >> 16 & 0xFF;
 		}
 		
-		public static function extractGreenFromHEX(param1:uint):uint
-		{
-			return param1 >> 8 & 0xFF;
+		public static function extractGreenFromHEX(c:uint) : uint {
+			return c >> 8 & 0xFF;
 		}
 		
-		public static function extractBlueFromHEX(param1:uint):uint
-		{
-			return param1 & 0xFF;
+		public static function extractBlueFromHEX(c:uint) : uint {
+			return c & 0xFF;
 		}
 		
-		public static function interpolateColor(param1:uint, param2:uint, param3:Number):uint
-		{
-			var _loc16_:Number = 1 - param3;
-			var _loc13_:uint = uint(param1 >> 24 & 0xFF);
-			var _loc14_:uint = uint(param1 >> 16 & 0xFF);
-			var _loc8_:uint = uint(param1 >> 8 & 0xFF);
-			var _loc5_:uint = uint(param1 & 0xFF);
-			var _loc11_:uint = uint(param2 >> 24 & 0xFF);
-			var _loc17_:uint = uint(param2 >> 16 & 0xFF);
-			var _loc4_:uint = uint(param2 >> 8 & 0xFF);
-			var _loc9_:uint = uint(param2 & 0xFF);
-			var _loc7_:uint = _loc13_ * _loc16_ + _loc11_ * param3;
-			var _loc15_:uint = _loc14_ * _loc16_ + _loc17_ * param3;
-			var _loc10_:uint = _loc8_ * _loc16_ + _loc4_ * param3;
-			var _loc6_:uint = _loc5_ * _loc16_ + _loc9_ * param3;
-			return uint(_loc7_ << 24 | _loc15_ << 16 | _loc10_ << 8 | _loc6_);
+		public static function interpolateColor(fromColor:uint, toColor:uint, progress:Number) : uint {
+			var _local16:Number = 1 - progress;
+			var _local13:uint = uint(fromColor >> 24 & 0xFF);
+			var _local14:uint = uint(fromColor >> 16 & 0xFF);
+			var _local8:uint = uint(fromColor >> 8 & 0xFF);
+			var _local5:uint = uint(fromColor & 0xFF);
+			var _local11:uint = uint(toColor >> 24 & 0xFF);
+			var _local17:uint = uint(toColor >> 16 & 0xFF);
+			var _local4:uint = uint(toColor >> 8 & 0xFF);
+			var _local9:uint = uint(toColor & 0xFF);
+			var _local7:uint = _local13 * _local16 + _local11 * progress;
+			var _local15:uint = _local14 * _local16 + _local17 * progress;
+			var _local10:uint = _local8 * _local16 + _local4 * progress;
+			var _local6:uint = _local5 * _local16 + _local9 * progress;
+			return uint(_local7 << 24 | _local15 << 16 | _local10 << 8 | _local6);
 		}
 	}
 }
+

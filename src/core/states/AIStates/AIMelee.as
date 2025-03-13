@@ -1,5 +1,4 @@
-package core.states.AIStates
-{
+package core.states.AIStates {
 	import core.particle.Emitter;
 	import core.scene.Game;
 	import core.ship.EnemyShip;
@@ -14,221 +13,175 @@ package core.states.AIStates
 	import generics.Util;
 	import movement.Heading;
 	
-	public class AIMelee implements IState
-	{
+	public class AIMelee implements IState {
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var targetAngleDiff:Number;
-		
 		private var targetStartAngle:Number;
-		
 		private var error:Point;
-		
 		private var errorAngle:Number;
-		
 		private var convergeTime:Number = 400;
-		
 		private var convergeStartTime:Number;
-		
 		private var speedRotFactor:Number;
-		
 		private var closeRangeSQ:Number;
 		
-		public function AIMelee(param1:Game, param2:EnemyShip, param3:Unit, param4:Heading, param5:int)
-		{
+		public function AIMelee(g:Game, s:EnemyShip, t:Unit, targetPosition:Heading, nextTurnDirection:int) {
 			super();
-			param2.target = param3;
-			if (!param2.aiCloak)
-			{
-				param2.setConvergeTarget(param4);
+			s.target = t;
+			if(!s.aiCloak) {
+				s.setConvergeTarget(targetPosition);
 			}
-			param2.nextTurnDir = param5;
-			this.s = param2;
-			this.g = param1;
-			if (!(param2.target is PlayerShip) && param2.factions.length == 0)
-			{
-				param2.factions.push("tempFaction");
+			s.nextTurnDir = nextTurnDirection;
+			this.s = s;
+			this.g = g;
+			if(!(s.target is PlayerShip) && s.factions.length == 0) {
+				s.factions.push("tempFaction");
 			}
 		}
 		
-		public function enter():void
-		{
+		public function enter() : void {
 			s.accelerate = true;
 			s.meleeStuck = false;
 			error = null;
 			errorAngle = 0;
-			var _loc1_:Random = new Random(1 / s.id);
-			_loc1_.stepTo(5);
-			closeRangeSQ = 66 + 0.8 * _loc1_.random(80) + s.collisionRadius;
+			var _local1:Random = new Random(1 / s.id);
+			_local1.stepTo(5);
+			closeRangeSQ = 66 + 0.8 * _local1.random(80) + s.collisionRadius;
 			closeRangeSQ *= closeRangeSQ;
 			speedRotFactor = s.engine.speed / (0.5 * s.engine.rotationSpeed);
 		}
 		
-		public function execute():void
-		{
-			var _loc3_:Point = null;
-			var _loc1_:Number = NaN;
-			var _loc5_:Point = null;
-			var _loc4_:Number = NaN;
-			var _loc8_:Number = NaN;
-			var _loc6_:Number = NaN;
-			var _loc7_:Number = NaN;
-			if (s.target != null && s.target.alive)
-			{
+		public function execute() : void {
+			var _local3:Point = null;
+			var _local1:Number = NaN;
+			var _local5:Point = null;
+			var _local4:Number = NaN;
+			var _local8:Number = NaN;
+			var _local6:Number = NaN;
+			var _local7:Number = NaN;
+			if(s.target != null && s.target.alive) {
 				s.setAngleTargetPos(s.target.pos);
-				_loc3_ = new Point(s.pos.x - s.target.pos.x, s.pos.y - s.target.pos.y);
-				_loc1_ = _loc3_.x * _loc3_.x + _loc3_.y * _loc3_.y;
-				if (s.meleeCanGrab && _loc1_ < s.chaseRange && s.meleeChargeEndTime != 0 && s.meleeCanGrab)
-				{
+				_local3 = new Point(s.pos.x - s.target.pos.x,s.pos.y - s.target.pos.y);
+				_local1 = _local3.x * _local3.x + _local3.y * _local3.y;
+				if(s.meleeCanGrab && _local1 < s.chaseRange && s.meleeChargeEndTime != 0 && s.meleeCanGrab) {
 					s.meleeChargeEndTime = 1;
 				}
-				if (s.meleeChargeEndTime < g.time && s.meleeChargeEndTime != 0)
-				{
+				if(s.meleeChargeEndTime < g.time && s.meleeChargeEndTime != 0) {
 					s.engine.speed = s.oldSpeed;
 					s.engine.rotationSpeed = s.oldTurningSpeed;
 					s.meleeChargeEndTime = 0;
-					for each (var _loc2_:* in s.chargeEffect)
-					{
-						_loc2_.killEmitter();
+					for each(var _local2 in s.chargeEffect) {
+						_local2.killEmitter();
 					}
 				}
-				if (s.meleeStuck)
-				{
-					if (error == null)
-					{
-						_loc5_ = s.pos.clone();
+				if(s.meleeStuck) {
+					if(error == null) {
+						_local5 = s.pos.clone();
 						errorAngle = s.target.rotation + s.meleeTargetAngleDiff - s.rotation;
 					}
 					s.speed.x = 0;
 					s.speed.y = 0;
 					s.rotation = s.target.rotation + s.meleeTargetAngleDiff;
-					_loc4_ = Util.clampRadians(s.target.rotation - s.meleeTargetStartAngle);
-					s.pos.x = s.target.pos.x + Math.cos(_loc4_) * s.meleeOffset.x - Math.sin(_loc4_) * s.meleeOffset.y;
-					s.pos.y = s.target.pos.y + Math.sin(_loc4_) * s.meleeOffset.x + Math.cos(_loc4_) * s.meleeOffset.y;
+					_local4 = Util.clampRadians(s.target.rotation - s.meleeTargetStartAngle);
+					s.pos.x = s.target.pos.x + Math.cos(_local4) * s.meleeOffset.x - Math.sin(_local4) * s.meleeOffset.y;
+					s.pos.y = s.target.pos.y + Math.sin(_local4) * s.meleeOffset.x + Math.cos(_local4) * s.meleeOffset.y;
 					s.accelerate = false;
-					if (error == null)
-					{
+					if(error == null) {
 						convergeStartTime = g.time;
-						error = new Point(_loc5_.x - s.pos.x, _loc5_.y - s.pos.y);
+						error = new Point(_local5.x - s.pos.x,_local5.y - s.pos.y);
 						convergeTime = error.length / s.engine.speed * 1000;
 					}
-					if (error != null)
-					{
-						_loc8_ = (convergeTime - (g.time - convergeStartTime)) / convergeTime;
-						if (_loc8_ > 0)
-						{
-							s.pos.x += _loc8_ * error.x;
-							s.pos.y += _loc8_ * error.y;
-							s.rotation += _loc8_ * errorAngle;
+					if(error != null) {
+						_local8 = (convergeTime - (g.time - convergeStartTime)) / convergeTime;
+						if(_local8 > 0) {
+							s.pos.x += _local8 * error.x;
+							s.pos.y += _local8 * error.y;
+							s.rotation += _local8 * errorAngle;
 						}
 					}
-				}
-				else
-				{
-					if (s.stopWhenClose && _loc1_ < closeRangeSQ)
-					{
+				} else {
+					if(s.stopWhenClose && _local1 < closeRangeSQ) {
 						s.accelerate = false;
-					}
-					else if (s.meleeChargeEndTime < g.time && _loc1_ < speedRotFactor * speedRotFactor)
-					{
-						_loc6_ = Math.atan2(s.course.pos.y - s.target.pos.y, s.course.pos.x - s.target.pos.x);
-						_loc4_ = Util.angleDifference(s.course.rotation, _loc6_ + 3.141592653589793);
-						if (_loc4_ > 0.4 * 3.141592653589793 && _loc4_ < 0.65 * 3.141592653589793 || _loc4_ < -0.4 * 3.141592653589793 && _loc4_ > -0.65 * 3.141592653589793)
-						{
+					} else if(s.meleeChargeEndTime < g.time && _local1 < speedRotFactor * speedRotFactor) {
+						_local6 = Math.atan2(s.course.pos.y - s.target.pos.y,s.course.pos.x - s.target.pos.x);
+						_local4 = Util.angleDifference(s.course.rotation,_local6 + 3.141592653589793);
+						if(_local4 > 0.4 * 3.141592653589793 && _local4 < 0.65 * 3.141592653589793 || _local4 < -0.4 * 3.141592653589793 && _local4 > -0.65 * 3.141592653589793) {
 							s.accelerate = false;
-						}
-						else
-						{
+						} else {
 							s.accelerate = true;
 						}
-					}
-					else
-					{
+					} else {
 						s.accelerate = true;
 					}
 					error = null;
-					if (!s.aiCloak)
-					{
+					if(!s.aiCloak) {
 						s.runConverger();
 					}
 				}
 			}
-			if (isNaN(s.pos.x))
-			{
+			if(isNaN(s.pos.x)) {
 				trace("NaN Melee");
 			}
 			s.regenerateShield();
 			s.updateHealthBars();
 			s.engine.update();
-			if (s.target != null)
-			{
-				_loc7_ = s.rotation;
+			if(s.target != null) {
+				_local7 = s.rotation;
 				s.updateBeamWeapons();
 				s.rotation = aim();
 				s.updateNonBeamWeapons();
-				s.rotation = _loc7_;
+				s.rotation = _local7;
 			}
 		}
 		
-		public function aim():Number
-		{
-			var _loc7_:int = 0;
-			var _loc3_:Number = NaN;
-			var _loc4_:Number = NaN;
-			var _loc6_:Number = NaN;
-			var _loc2_:Number = NaN;
-			var _loc5_:Point = null;
-			var _loc1_:Weapon = null;
-			_loc7_ = 0;
-			while (_loc7_ < s.weapons.length)
-			{
-				_loc1_ = s.weapons[_loc7_];
-				if (_loc1_.fire && _loc1_ is Blaster)
-				{
-					if (s.aimSkill == 0)
-					{
+		public function aim() : Number {
+			var _local7:int = 0;
+			var _local3:Number = NaN;
+			var _local4:Number = NaN;
+			var _local6:Number = NaN;
+			var _local2:Number = NaN;
+			var _local5:Point = null;
+			var _local1:Weapon = null;
+			_local7 = 0;
+			while(_local7 < s.weapons.length) {
+				_local1 = s.weapons[_local7];
+				if(_local1.fire && _local1 is Blaster) {
+					if(s.aimSkill == 0) {
 						return s.course.rotation;
 					}
-					_loc3_ = s.target.pos.x - s.course.pos.x;
-					_loc4_ = s.target.pos.y - s.course.pos.y;
-					_loc6_ = Math.sqrt(_loc3_ * _loc3_ + _loc4_ * _loc4_);
-					_loc3_ /= _loc6_;
-					_loc4_ /= _loc6_;
-					_loc2_ = _loc6_ / (_loc1_.speed - Util.dotProduct(s.target.speed.x, s.target.speed.y, _loc3_, _loc4_));
-					_loc5_ = new Point(s.target.pos.x + s.target.speed.x * _loc2_ * s.aimSkill, s.target.pos.y + s.target.speed.y * _loc2_ * s.aimSkill);
-					return Math.atan2(_loc5_.y - s.course.pos.y, _loc5_.x - s.course.pos.x);
+					_local3 = s.target.pos.x - s.course.pos.x;
+					_local4 = s.target.pos.y - s.course.pos.y;
+					_local6 = Math.sqrt(_local3 * _local3 + _local4 * _local4);
+					_local3 /= _local6;
+					_local4 /= _local6;
+					_local2 = _local6 / (_local1.speed - Util.dotProduct(s.target.speed.x,s.target.speed.y,_local3,_local4));
+					_local5 = new Point(s.target.pos.x + s.target.speed.x * _local2 * s.aimSkill,s.target.pos.y + s.target.speed.y * _local2 * s.aimSkill);
+					return Math.atan2(_local5.y - s.course.pos.y,_local5.x - s.course.pos.x);
 				}
-				_loc7_++;
+				_local7++;
 			}
 			return s.course.rotation;
 		}
 		
-		public function exit():void
-		{
-			if (s.meleeChargeEndTime != 0)
-			{
+		public function exit() : void {
+			if(s.meleeChargeEndTime != 0) {
 				s.engine.speed = s.oldSpeed;
 				s.engine.rotationSpeed = s.oldTurningSpeed;
 				s.meleeChargeEndTime = 0;
-				for each (var _loc1_:* in s.chargeEffect)
-				{
-					_loc1_.killEmitter();
+				for each(var _local1 in s.chargeEffect) {
+					_local1.killEmitter();
 				}
 			}
 		}
 		
-		public function set stateMachine(param1:StateMachine):void
-		{
-			this.sm = param1;
+		public function set stateMachine(sm:StateMachine) : void {
+			this.sm = sm;
 		}
 		
-		public function get type():String
-		{
+		public function get type() : String {
 			return "AIMelee";
 		}
 	}
 }
+

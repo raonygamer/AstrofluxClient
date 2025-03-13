@@ -1,46 +1,34 @@
-package core.friend
-{
+package core.friend {
 	import core.scene.Game;
 	import playerio.Message;
 	
-	public class Friend
-	{
+	public class Friend {
 		public var id:String;
-		
 		public var name:String;
-		
 		public var currentSolarSystem:String;
-		
 		public var currentRoom:String;
-		
 		public var skin:String;
-		
 		public var level:int;
-		
 		public var reputation:int;
-		
 		public var clan:String;
-		
 		public var isOnline:Boolean = false;
-		
 		private var g:Game;
 		
-		public function Friend()
-		{
+		public function Friend() {
 			super();
 		}
 		
-		public function fill(param1:Message, param2:int):int
-		{
-			this.id = param1.getString(param2++);
-			this.name = param1.getString(param2++);
-			this.currentSolarSystem = param1.getString(param2++);
-			this.currentRoom = param1.getString(param2++);
-			this.skin = param1.getString(param2++);
-			this.level = param1.getInt(param2++);
-			this.reputation = param1.getInt(param2++);
-			this.clan = param1.getString(param2++);
-			return param2;
+		public function fill(m:Message, i:int) : int {
+			this.id = m.getString(i++);
+			this.name = m.getString(i++);
+			this.currentSolarSystem = m.getString(i++);
+			this.currentRoom = m.getString(i++);
+			this.skin = m.getString(i++);
+			this.level = m.getInt(i++);
+			this.reputation = m.getInt(i++);
+			this.clan = m.getString(i++);
+			return i;
 		}
 	}
 }
+

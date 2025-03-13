@@ -1,71 +1,57 @@
-package core.unit
-{
+package core.unit {
 	import core.scene.Game;
 	import core.ship.PlayerShip;
 	import starling.display.Sprite;
 	
-	public class UnitManager
-	{
+	public class UnitManager {
 		private var g:Game;
+		public var units:Vector.<Unit> = new Vector.<Unit>();
 		
-		public var units:Vector.<Unit>;
-		
-		public function UnitManager(param1:Game)
-		{
-			units = new Vector.<Unit>();
+		public function UnitManager(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 		}
 		
-		public function add(param1:Unit, param2:Sprite, param3:Boolean = true):void
-		{
-			units.push(param1);
-			if (param3)
-			{
-				g.hud.radar.add(param1);
+		public function add(unit:Unit, canvas:Sprite, addToRadar:Boolean = true) : void {
+			units.push(unit);
+			if(addToRadar) {
+				g.hud.radar.add(unit);
 			}
-			param1.canvas = param2;
-			if (param1.isBossUnit)
-			{
-				param1.addToCanvas();
+			unit.canvas = canvas;
+			if(unit.isBossUnit) {
+				unit.addToCanvas();
 			}
-			if (param1 is PlayerShip)
-			{
-				param1.addToCanvas();
+			if(unit is PlayerShip) {
+				unit.addToCanvas();
 			}
 		}
 		
-		public function remove(param1:Unit):void
-		{
-			units.splice(units.indexOf(param1), 1);
-			g.hud.radar.remove(param1);
-			param1.removeFromCanvas();
-			param1.reset();
+		public function remove(unit:Unit) : void {
+			units.splice(units.indexOf(unit),1);
+			g.hud.radar.remove(unit);
+			unit.removeFromCanvas();
+			unit.reset();
 		}
 		
-		public function forceUpdate():void
-		{
-			var _loc1_:Unit = null;
-			var _loc2_:int = 0;
-			_loc2_ = 0;
-			while (_loc2_ < units.length)
-			{
-				_loc1_ = units[_loc2_];
-				_loc1_.nextDistanceCalculation = -1;
-				_loc2_++;
+		public function forceUpdate() : void {
+			var _local1:Unit = null;
+			var _local2:int = 0;
+			_local2 = 0;
+			while(_local2 < units.length) {
+				_local1 = units[_local2];
+				_local1.nextDistanceCalculation = -1;
+				_local2++;
 			}
 		}
 		
-		public function getTarget(param1:int):Unit
-		{
-			for each (var _loc2_:* in units)
-			{
-				if (_loc2_.id == param1)
-				{
-					return _loc2_;
+		public function getTarget(targetId:int) : Unit {
+			for each(var _local2 in units) {
+				if(_local2.id == targetId) {
+					return _local2;
 				}
 			}
 			return null;
 		}
 	}
 }
+

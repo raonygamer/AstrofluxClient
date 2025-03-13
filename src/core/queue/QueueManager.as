@@ -1,154 +1,123 @@
-package core.queue
-{
+package core.queue {
 	import core.hud.components.dialogs.PopupMessage;
 	import core.scene.Game;
 	import playerio.Message;
 	import starling.events.Event;
 	
-	public class QueueManager
-	{
+	public class QueueManager {
 		public static const TYPE_PVP:String = "pvp";
-		
 		public static const TYPE_PVP_DM:String = "pvp dm";
-		
 		public static const TYPE_PVP_DOMINATION:String = "pvp dom";
-		
 		public static const TYPE_PVP_ARENA:String = "pvp arena";
-		
 		public static const TYPE_PVP_ARENA_RANKED:String = "pvp arena ranked";
-		
 		public static const TYPE_PVP_RANDOM:String = "pvp random";
-		
 		public static const TYPE_INSTANCE:String = "instance";
-		
 		public var g:Game;
-		
 		public var queues:Vector.<QueueInfoHolder>;
 		
-		public function QueueManager(param1:Game)
-		{
+		public function QueueManager(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 			queues = new Vector.<QueueInfoHolder>();
-			queues.push(new QueueInfoHolder(param1, "pvp random"));
-			param1.addServiceMessageHandler("QueueJoinSuccess", joinedQueue);
-			param1.addServiceMessageHandler("QueueJoinFailed", joinFailed);
-			param1.addServiceMessageHandler("QueueLeaveSuccess", leftQueue);
-			param1.addServiceMessageHandler("QueueLeaveFailed", leaveFailed);
-			param1.addServiceMessageHandler("QueueReady", queueReady);
-			param1.addServiceMessageHandler("JoinMatch", joinMatch);
-			param1.addServiceMessageHandler("QueueRemoved", removedFromQueue);
-			param1.rpcServiceRoom("RequestQueueInfo", handleQueueInfo);
+			queues.push(new QueueInfoHolder(g,"pvp random"));
+			g.addServiceMessageHandler("QueueJoinSuccess",joinedQueue);
+			g.addServiceMessageHandler("QueueJoinFailed",joinFailed);
+			g.addServiceMessageHandler("QueueLeaveSuccess",leftQueue);
+			g.addServiceMessageHandler("QueueLeaveFailed",leaveFailed);
+			g.addServiceMessageHandler("QueueReady",queueReady);
+			g.addServiceMessageHandler("JoinMatch",joinMatch);
+			g.addServiceMessageHandler("QueueRemoved",removedFromQueue);
+			g.rpcServiceRoom("RequestQueueInfo",handleQueueInfo);
 		}
 		
-		public function handleQueueInfo(param1:Message):void
-		{
-			var _loc6_:int = 0;
-			var _loc5_:String = null;
-			var _loc4_:Boolean = false;
-			var _loc2_:Number = NaN;
-			var _loc3_:QueueInfoHolder = null;
-			_loc6_ = 0;
-			while (_loc6_ < param1.length - 2)
-			{
-				_loc5_ = param1.getString(_loc6_);
-				_loc4_ = param1.getBoolean(_loc6_ + 1);
-				_loc2_ = param1.getNumber(_loc6_ + 2);
-				if (_loc4_)
-				{
-					_loc3_ = getQueue(_loc5_);
-					_loc3_.isInQueue = true;
-					_loc3_.isWaiting = false;
-					_loc3_.isReady = false;
-					_loc3_.accepted = false;
-					_loc3_.startTime = _loc2_;
+		public function handleQueueInfo(m:Message) : void {
+			var _local6:int = 0;
+			var _local5:String = null;
+			var _local4:Boolean = false;
+			var _local2:Number = NaN;
+			var _local3:QueueInfoHolder = null;
+			_local6 = 0;
+			while(_local6 < m.length - 2) {
+				_local5 = m.getString(_local6);
+				_local4 = m.getBoolean(_local6 + 1);
+				_local2 = m.getNumber(_local6 + 2);
+				if(_local4) {
+					_local3 = getQueue(_local5);
+					_local3.isInQueue = true;
+					_local3.isWaiting = false;
+					_local3.isReady = false;
+					_local3.accepted = false;
+					_local3.startTime = _local2;
 				}
-				_loc6_ += 3;
+				_local6 += 3;
 			}
 		}
 		
-		public function removedFromAllQueues():void
-		{
-			for each (var _loc1_:* in queues)
-			{
-				_loc1_.isInQueue = false;
-				_loc1_.isWaiting = false;
-				_loc1_.isReady = false;
+		public function removedFromAllQueues() : void {
+			for each(var _local1 in queues) {
+				_local1.isInQueue = false;
+				_local1.isWaiting = false;
+				_local1.isReady = false;
 			}
 		}
 		
-		public function removedFromQueue(param1:Message):void
-		{
-			var _loc3_:String = param1.getString(0);
-			for each (var _loc2_:* in queues)
-			{
-				if (_loc2_.type == _loc3_)
-				{
-					_loc2_.isInQueue = false;
-					_loc2_.isWaiting = false;
-					_loc2_.isReady = false;
+		public function removedFromQueue(m:Message) : void {
+			var _local3:String = m.getString(0);
+			for each(var _local2 in queues) {
+				if(_local2.type == _local3) {
+					_local2.isInQueue = false;
+					_local2.isWaiting = false;
+					_local2.isReady = false;
 				}
 			}
 		}
 		
-		public function queueReady(param1:Message):void
-		{
-			var _loc2_:int = 0;
-			var _loc4_:String = param1.getString(0);
-			for each (var _loc3_:* in queues)
-			{
-				if (_loc3_.type == _loc4_)
-				{
-					_loc2_ = Math.ceil(0.001 * (g.time - _loc3_.startTime));
-					if (_loc2_ > 0 && _loc2_ < 1000000)
-					{
-						Game.trackEvent("pvp", "queue", "ready", _loc2_);
+		public function queueReady(m:Message) : void {
+			var _local2:int = 0;
+			var _local4:String = m.getString(0);
+			for each(var _local3 in queues) {
+				if(_local3.type == _local4) {
+					_local2 = Math.ceil(0.001 * (g.time - _local3.startTime));
+					if(_local2 > 0 && _local2 < 1000000) {
+						Game.trackEvent("pvp","queue","ready",_local2);
 					}
-					_loc3_.startTime = g.time;
-					_loc3_.isInQueue = false;
-					_loc3_.isWaiting = false;
-					_loc3_.isReady = true;
-					_loc3_.createAcceptPopup();
+					_local3.startTime = g.time;
+					_local3.isInQueue = false;
+					_local3.isWaiting = false;
+					_local3.isReady = true;
+					_local3.createAcceptPopup();
 					break;
 				}
 			}
 		}
 		
-		public function joinMatch(param1:Message):void
-		{
-			var _loc3_:String = param1.getString(0);
-			var _loc2_:String = param1.getString(1);
-			var _loc4_:String = param1.getString(2);
-			g.tryJoinMatch(_loc2_, _loc4_);
+		public function joinMatch(m:Message) : void {
+			var _local3:String = m.getString(0);
+			var _local2:String = m.getString(1);
+			var _local4:String = m.getString(2);
+			g.tryJoinMatch(_local2,_local4);
 		}
 		
-		public function joinedQueue(param1:Message):void
-		{
+		public function joinedQueue(m:Message) : void {
 			var errorPopup:PopupMessage;
 			var qi:QueueInfoHolder;
-			var m:Message = param1;
 			var type:String = m.getString(0);
 			var reason:String = m.getString(1);
 			var resetOthers:Boolean = m.getBoolean(2);
-			if (reason != null && reason != "")
-			{
+			if(reason != null && reason != "") {
 				errorPopup = new PopupMessage();
 				errorPopup.text = reason;
 				g.addChildToOverlay(errorPopup);
-				errorPopup.addEventListener("close", (function():*
-				{
+				errorPopup.addEventListener("close",(function():* {
 					var closePopup:Function;
-					return closePopup = function(param1:Event):void
-					{
+					return closePopup = function(param1:Event):void {
 						g.removeChildFromOverlay(errorPopup);
 						errorPopup.removeEventListeners();
 					};
 				})());
 			}
-			for each (qi in queues)
-			{
-				if (qi.type == type)
-				{
+			for each(qi in queues) {
+				if(qi.type == type) {
 					qi.startTime = g.time;
 					qi.isInQueue = true;
 					qi.isWaiting = false;
@@ -159,32 +128,25 @@ package core.queue
 			}
 		}
 		
-		public function joinFailed(param1:Message):void
-		{
+		public function joinFailed(m:Message) : void {
 			var errorPopup:PopupMessage;
 			var qi:QueueInfoHolder;
-			var m:Message = param1;
 			var type:String = m.getString(0);
 			var reason:String = m.getString(1);
-			if (reason != null && reason != "")
-			{
+			if(reason != null && reason != "") {
 				errorPopup = new PopupMessage();
 				errorPopup.text = reason;
 				g.addChildToOverlay(errorPopup);
-				errorPopup.addEventListener("close", (function():*
-				{
+				errorPopup.addEventListener("close",(function():* {
 					var closePopup:Function;
-					return closePopup = function(param1:Event):void
-					{
+					return closePopup = function(param1:Event):void {
 						g.removeChildFromOverlay(errorPopup);
 						errorPopup.removeEventListeners();
 					};
 				})());
 			}
-			for each (qi in queues)
-			{
-				if (qi.type == type)
-				{
+			for each(qi in queues) {
+				if(qi.type == type) {
 					qi.isWaiting = false;
 					qi.isInQueue = false;
 					qi.accepted = false;
@@ -194,60 +156,46 @@ package core.queue
 			}
 		}
 		
-		public function update():void
-		{
-			for each (var _loc1_:* in queues)
-			{
-				_loc1_.update();
+		public function update() : void {
+			for each(var _local1 in queues) {
+				_local1.update();
 			}
 		}
 		
-		public function leftQueue(param1:Message):void
-		{
-			var _loc3_:String = param1.getString(0);
-			for each (var _loc2_:* in queues)
-			{
-				if (_loc2_.type == _loc3_)
-				{
-					_loc2_.isInQueue = false;
-					_loc2_.isWaiting = false;
-					_loc2_.isReady = false;
+		public function leftQueue(m:Message) : void {
+			var _local3:String = m.getString(0);
+			for each(var _local2 in queues) {
+				if(_local2.type == _local3) {
+					_local2.isInQueue = false;
+					_local2.isWaiting = false;
+					_local2.isReady = false;
 				}
 			}
 		}
 		
-		public function leaveFailed(param1:Message):void
-		{
-			var _loc3_:String = param1.getString(0);
-			for each (var _loc2_:* in queues)
-			{
-				if (_loc2_.type == _loc3_)
-				{
-					_loc2_.isInQueue = false;
-					_loc2_.isWaiting = false;
-					_loc2_.isReady = false;
+		public function leaveFailed(m:Message) : void {
+			var _local3:String = m.getString(0);
+			for each(var _local2 in queues) {
+				if(_local2.type == _local3) {
+					_local2.isInQueue = false;
+					_local2.isWaiting = false;
+					_local2.isReady = false;
 				}
 			}
 		}
 		
-		public function getQueue(param1:String):QueueInfoHolder
-		{
-			for each (var _loc2_:* in queues)
-			{
-				if (_loc2_.type == param1)
-				{
-					return _loc2_;
+		public function getQueue(type:String) : QueueInfoHolder {
+			for each(var _local2 in queues) {
+				if(_local2.type == type) {
+					return _local2;
 				}
 			}
 			return null;
 		}
 		
-		private function containsQueue(param1:String):Boolean
-		{
-			for each (var _loc2_:* in queues)
-			{
-				if (_loc2_.type == param1)
-				{
+		private function containsQueue(type:String) : Boolean {
+			for each(var _local2 in queues) {
+				if(_local2.type == type) {
 					return true;
 				}
 			}
@@ -255,3 +203,4 @@ package core.queue
 		}
 	}
 }
+

@@ -1,71 +1,57 @@
-package core.pools
-{
+package core.pools {
 	import core.hud.components.BeamLine;
 	import core.scene.Game;
 	
-	public class BeamLinePool
-	{
+	public class BeamLinePool {
 		private var inactiveLines:Vector.<BeamLine>;
-		
 		private var activeLines:Vector.<BeamLine>;
-		
 		private var g:Game;
 		
-		public function BeamLinePool(param1:Game)
-		{
-			var _loc3_:int = 0;
-			var _loc2_:BeamLine = null;
+		public function BeamLinePool(g:Game) {
+			var _local3:int = 0;
+			var _local2:BeamLine = null;
 			inactiveLines = new Vector.<BeamLine>();
 			activeLines = new Vector.<BeamLine>();
 			super();
-			this.g = param1;
-			_loc3_ = 0;
-			while (_loc3_ < 4)
-			{
-				_loc2_ = new BeamLine(param1);
-				inactiveLines.push(_loc2_);
-				_loc3_++;
+			this.g = g;
+			_local3 = 0;
+			while(_local3 < 4) {
+				_local2 = new BeamLine(g);
+				inactiveLines.push(_local2);
+				_local3++;
 			}
 		}
 		
-		public function getLine():BeamLine
-		{
-			var _loc1_:BeamLine = null;
-			if (inactiveLines.length > 0)
-			{
-				_loc1_ = inactiveLines.pop();
+		public function getLine() : BeamLine {
+			var _local1:BeamLine = null;
+			if(inactiveLines.length > 0) {
+				_local1 = inactiveLines.pop();
+			} else {
+				_local1 = new BeamLine(g);
 			}
-			else
-			{
-				_loc1_ = new BeamLine(g);
-			}
-			activeLines.push(_loc1_);
-			return _loc1_;
+			activeLines.push(_local1);
+			return _local1;
 		}
 		
-		public function removeLine(param1:BeamLine):void
-		{
-			var _loc2_:int = int(activeLines.indexOf(param1));
-			if (_loc2_ == -1)
-			{
+		public function removeLine(bl:BeamLine) : void {
+			var _local2:int = int(activeLines.indexOf(bl));
+			if(_local2 == -1) {
 				return;
 			}
-			activeLines.splice(_loc2_, 1);
-			inactiveLines.push(param1);
+			activeLines.splice(_local2,1);
+			inactiveLines.push(bl);
 		}
 		
-		public function dispose():void
-		{
-			for each (var _loc1_:* in inactiveLines)
-			{
-				_loc1_.dispose();
+		public function dispose() : void {
+			for each(var _local1 in inactiveLines) {
+				_local1.dispose();
 			}
-			for each (_loc1_ in activeLines)
-			{
-				_loc1_.dispose();
+			for each(_local1 in activeLines) {
+				_local1.dispose();
 			}
 			activeLines = null;
 			inactiveLines = null;
 		}
 	}
 }
+

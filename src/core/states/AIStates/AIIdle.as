@@ -1,41 +1,33 @@
-package core.states.AIStates
-{
+package core.states.AIStates {
 	import core.scene.Game;
 	import core.ship.EnemyShip;
 	import core.states.IState;
 	import core.states.StateMachine;
 	import movement.Heading;
 	
-	public class AIIdle implements IState
-	{
+	public class AIIdle implements IState {
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
 		
-		public function AIIdle(param1:Game, param2:EnemyShip, param3:Heading)
-		{
+		public function AIIdle(g:Game, s:EnemyShip, course:Heading) {
 			super();
-			param2.initCourse(param3);
-			param2.engine.speed = 0.2 * param2.engine.speed;
-			if (param2.factions.length == 1 && param2.factions[0] == "tempFaction")
-			{
-				param2.factions.splice(0, 1);
+			s.initCourse(course);
+			s.engine.speed = 0.2 * s.engine.speed;
+			if(s.factions.length == 1 && s.factions[0] == "tempFaction") {
+				s.factions.splice(0,1);
 			}
-			this.g = param1;
-			this.s = param2;
+			this.g = g;
+			this.s = s;
 		}
 		
-		public function enter():void
-		{
+		public function enter() : void {
 			s.target = null;
 			s.setAngleTargetPos(null);
 			s.stopShooting();
 		}
 		
-		public function execute():void
-		{
+		public function execute() : void {
 			s.convergerUpdateHeading(s.course);
 			s.regenerateShield();
 			s.updateHealthBars();
@@ -44,20 +36,18 @@ package core.states.AIStates
 			s.updateWeapons();
 		}
 		
-		public function exit():void
-		{
+		public function exit() : void {
 			s.course.accelerate = false;
 			s.engine.speed = 5 * s.engine.speed;
 		}
 		
-		public function set stateMachine(param1:StateMachine):void
-		{
-			this.sm = param1;
+		public function set stateMachine(sm:StateMachine) : void {
+			this.sm = sm;
 		}
 		
-		public function get type():String
-		{
+		public function get type() : String {
 			return "AIIdle";
 		}
 	}
 }
+

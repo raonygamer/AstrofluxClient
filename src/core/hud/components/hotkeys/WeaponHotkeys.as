@@ -1,5 +1,4 @@
-package core.hud.components.hotkeys
-{
+package core.hud.components.hotkeys {
 	import core.hud.components.ToolTip;
 	import core.player.Player;
 	import core.scene.Game;
@@ -12,110 +11,87 @@ package core.hud.components.hotkeys
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class WeaponHotkeys extends DisplayObjectContainer
-	{
+	public class WeaponHotkeys extends DisplayObjectContainer {
 		private var g:Game;
-		
 		public var selectedHotkey:WeaponHotkey;
-		
 		private var hotkeys:Vector.<WeaponHotkey>;
-		
 		private var ship:PlayerShip;
-		
 		private var player:Player;
-		
 		private var textureManager:ITextureManager;
 		
-		public function WeaponHotkeys(param1:Game)
-		{
+		public function WeaponHotkeys(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 			textureManager = TextureLocator.getService();
 			hotkeys = new Vector.<WeaponHotkey>();
 		}
 		
-		public function load():void
-		{
-			var _loc2_:Object = null;
-			var _loc3_:WeaponHotkey = null;
+		public function load() : void {
+			var _local2:Object = null;
+			var _local3:WeaponHotkey = null;
 			ship = g.me.ship;
 			player = g.me;
-			if (ship == null)
-			{
+			if(ship == null) {
 				Console.write("No ship for weapon hotkeys.");
 				return;
 			}
-			if (ship.weapons.length == 0)
-			{
+			if(ship.weapons.length == 0) {
 				Console.write("No weapons for hotkeys");
 				return;
 			}
-			for each (var _loc1_:* in ship.weapons)
-			{
-				if (_loc1_.active)
-				{
-					_loc2_ = DataLocator.getService().loadKey("Images", _loc1_.techIconFileName);
-					_loc3_ = new WeaponHotkey(clickedHotkey, textureManager.getTextureGUIByTextureName(_loc2_.textureName), textureManager.getTextureGUIByTextureName(_loc2_.textureName + "_inactive"), _loc1_.hotkey);
-					hotkeys.push(_loc3_);
-					addChild(_loc3_);
-					_loc1_.fireCallback = _loc3_.initiateCooldown;
-					new ToolTip(g, _loc3_, createWeaponToolTip(_loc1_), null, "WeaponHotkeys", 300);
-					_loc3_.cooldownTime = _loc1_.reloadTime;
-					_loc3_.x = 17 + (_loc1_.hotkey - 1) * 50;
-					_loc3_.y = 22;
+			for each(var _local1 in ship.weapons) {
+				if(_local1.active) {
+					_local2 = DataLocator.getService().loadKey("Images",_local1.techIconFileName);
+					_local3 = new WeaponHotkey(clickedHotkey,textureManager.getTextureGUIByTextureName(_local2.textureName),textureManager.getTextureGUIByTextureName(_local2.textureName + "_inactive"),_local1.hotkey);
+					hotkeys.push(_local3);
+					addChild(_local3);
+					_local1.fireCallback = _local3.initiateCooldown;
+					new ToolTip(g,_local3,createWeaponToolTip(_local1),null,"WeaponHotkeys",5 * 60);
+					_local3.cooldownTime = _local1.reloadTime;
+					_local3.x = 17 + (_local1.hotkey - 1) * 50;
+					_local3.y = 22;
 				}
 			}
 			highlightWeapon(ship.weapons[player.selectedWeaponIndex].hotkey);
 		}
 		
-		private function createWeaponToolTip(param1:Weapon):String
-		{
-			return param1.getDescription(param1 is Beam);
+		private function createWeaponToolTip(w:Weapon) : String {
+			return w.getDescription(w is Beam);
 		}
 		
-		private function clickedHotkey(param1:WeaponHotkey):void
-		{
-			player.sendChangeWeapon(param1.key);
-			selectedHotkey = param1;
+		private function clickedHotkey(hotkey:WeaponHotkey) : void {
+			player.sendChangeWeapon(hotkey.key);
+			selectedHotkey = hotkey;
 		}
 		
-		public function reloadWeapon():void
-		{
+		public function reloadWeapon() : void {
 		}
 		
-		public function highlightWeapon(param1:int):void
-		{
-			for each (var _loc2_:* in hotkeys)
-			{
-				if (_loc2_.key == param1)
-				{
-					selectedHotkey = _loc2_;
-					_loc2_.active = true;
-				}
-				else
-				{
-					_loc2_.active = false;
+		public function highlightWeapon(i:int) : void {
+			for each(var _local2 in hotkeys) {
+				if(_local2.key == i) {
+					selectedHotkey = _local2;
+					_local2.active = true;
+				} else {
+					_local2.active = false;
 				}
 			}
 		}
 		
-		public function update():void
-		{
-			for each (var _loc1_:* in hotkeys)
-			{
-				_loc1_.update();
+		public function update() : void {
+			for each(var _local1 in hotkeys) {
+				_local1.update();
 			}
 		}
 		
-		public function refresh():void
-		{
+		public function refresh() : void {
 			ToolTip.disposeType("WeaponHotkeys");
-			for each (var _loc1_:* in hotkeys)
-			{
-				removeChild(_loc1_, true);
+			for each(var _local1 in hotkeys) {
+				removeChild(_local1,true);
 			}
 			hotkeys.length = 0;
 			load();
 		}
 	}
 }
+

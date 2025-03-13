@@ -1,5 +1,4 @@
-package movement
-{
+package movement {
 	import core.hud.components.hotkeys.AbilityHotkey;
 	import core.player.Player;
 	import core.scene.Game;
@@ -7,168 +6,138 @@ package movement
 	import flash.utils.Dictionary;
 	import playerio.Message;
 	
-	public class CommandManager
-	{
-		public var commands:Vector.<Command>;
-		
-		private var sendBuffer:Vector.<Command>;
-		
+	public class CommandManager {
+		public var commands:Vector.<Command> = new Vector.<Command>();
+		private var sendBuffer:Vector.<Command> = new Vector.<Command>();
 		private var g:Game;
 		
-		public function CommandManager(param1:Game)
-		{
-			commands = new Vector.<Command>();
-			sendBuffer = new Vector.<Command>();
+		public function CommandManager(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 		}
 		
-		public function addMessageHandlers():void
-		{
-			g.addMessageHandler("command", commandReceived);
+		public function addMessageHandlers() : void {
+			g.addMessageHandler("command",commandReceived);
 		}
 		
-		public function flush():void
-		{
-			if (sendBuffer.length == 0)
-			{
+		public function flush() : void {
+			if(sendBuffer.length == 0) {
 				return;
 			}
-			var _loc1_:Message = g.createMessage("command");
-			for each (var _loc2_:* in sendBuffer)
-			{
-				_loc1_.add(_loc2_.type);
-				_loc1_.add(_loc2_.active);
-				_loc1_.add(_loc2_.time);
+			var _local1:Message = g.createMessage("command");
+			for each(var _local2 in sendBuffer) {
+				_local1.add(_local2.type);
+				_local1.add(_local2.active);
+				_local1.add(_local2.time);
 			}
-			g.sendMessage(_loc1_);
+			g.sendMessage(_local1);
 			sendBuffer = new Vector.<Command>();
 		}
 		
-		public function addCommand(param1:int, param2:Boolean):void
-		{
-			var _loc4_:PlayerShip = g.playerManager.me.ship;
-			var _loc3_:Heading = _loc4_.course;
-			var _loc5_:Command = new Command();
-			_loc5_.type = param1;
-			_loc5_.active = param2;
-			while (_loc3_.time < g.time - 2 * 33)
-			{
-				_loc4_.convergerUpdateHeading(_loc3_);
+		public function addCommand(type:int, active:Boolean) : void {
+			var _local4:PlayerShip = g.playerManager.me.ship;
+			var _local3:Heading = _local4.course;
+			var _local5:Command = new Command();
+			_local5.type = type;
+			_local5.active = active;
+			while(_local3.time < g.time - 2 * 33) {
+				_local4.convergerUpdateHeading(_local3);
 			}
-			_loc5_.time = _loc3_.time;
-			commands.push(_loc5_);
-			sendCommand(_loc5_);
-			_loc4_.clearConvergeTarget();
-			_loc4_.runCommand(_loc5_);
+			_local5.time = _local3.time;
+			commands.push(_local5);
+			sendCommand(_local5);
+			_local4.clearConvergeTarget();
+			_local4.runCommand(_local5);
 		}
 		
-		private function sendCommand(param1:Command):void
-		{
-			var _loc2_:Message = g.createMessage("command");
-			_loc2_.add(param1.type);
-			_loc2_.add(param1.active);
-			_loc2_.add(param1.time);
-			g.sendMessage(_loc2_);
+		private function sendCommand(cmd:Command) : void {
+			var _local2:Message = g.createMessage("command");
+			_local2.add(cmd.type);
+			_local2.add(cmd.active);
+			_local2.add(cmd.time);
+			g.sendMessage(_local2);
 		}
 		
-		public function commandReceived(param1:Message):void
-		{
-			var _loc5_:Dictionary = g.playerManager.playersById;
-			var _loc4_:String = param1.getString(0);
-			var _loc2_:Command = new Command();
-			_loc2_.type = param1.getInt(1);
-			_loc2_.active = param1.getBoolean(2);
-			_loc2_.time = param1.getNumber(3);
-			var _loc3_:Player = _loc5_[_loc4_];
-			if (_loc3_ != null && _loc3_.ship != null)
-			{
-				_loc3_.ship.runCommand(_loc2_);
+		public function commandReceived(m:Message) : void {
+			var _local5:Dictionary = g.playerManager.playersById;
+			var _local4:String = m.getString(0);
+			var _local2:Command = new Command();
+			_local2.type = m.getInt(1);
+			_local2.active = m.getBoolean(2);
+			_local2.time = m.getNumber(3);
+			var _local3:Player = _local5[_local4];
+			if(_local3 != null && _local3.ship != null) {
+				_local3.ship.runCommand(_local2);
 			}
 		}
 		
-		public function runCommand(param1:Heading, param2:Number):void
-		{
-			var _loc4_:int = 0;
-			var _loc3_:Command = null;
-			_loc4_ = 0;
-			while (_loc4_ < commands.length)
-			{
-				_loc3_ = commands[_loc4_];
-				if (_loc3_.time >= param2)
-				{
-					if (_loc3_.time != param2)
-					{
+		public function runCommand(heading:Heading, cmdTime:Number) : void {
+			var _local4:int = 0;
+			var _local3:Command = null;
+			_local4 = 0;
+			while(_local4 < commands.length) {
+				_local3 = commands[_local4];
+				if(_local3.time >= cmdTime) {
+					if(_local3.time != cmdTime) {
 						break;
 					}
-					param1.runCommand(_loc3_);
+					heading.runCommand(_local3);
 				}
-				_loc4_++;
+				_local4++;
 			}
 		}
 		
-		public function clearCommands(param1:Number):void
-		{
-			var _loc3_:int = 0;
-			var _loc2_:int = 0;
-			_loc3_ = 0;
-			while (_loc3_ < commands.length)
-			{
-				if (commands[_loc3_].time >= param1)
-				{
+		public function clearCommands(time:Number) : void {
+			var _local3:int = 0;
+			var _local2:int = 0;
+			_local3 = 0;
+			while(_local3 < commands.length) {
+				if(commands[_local3].time >= time) {
 					break;
 				}
-				_loc2_++;
-				_loc3_++;
+				_local2++;
+				_local3++;
 			}
-			if (_loc2_ != 0)
-			{
-				commands.splice(0, _loc2_);
+			if(_local2 != 0) {
+				commands.splice(0,_local2);
 			}
 		}
 		
-		public function addBoostCommand(param1:AbilityHotkey = null):void
-		{
-			var _loc2_:PlayerShip = g.me.ship;
-			if (_loc2_.boostNextRdy < g.time && _loc2_.hasBoost)
-			{
+		public function addBoostCommand(ab:AbilityHotkey = null) : void {
+			var _local2:PlayerShip = g.me.ship;
+			if(_local2.boostNextRdy < g.time && _local2.hasBoost) {
 				g.hud.abilities.initiateCooldown("Engine");
-				_loc2_.boost();
-				addCommand(4, true);
+				_local2.boost();
+				addCommand(4,true);
 			}
 		}
 		
-		public function addDmgBoostCommand(param1:AbilityHotkey = null):void
-		{
-			var _loc2_:PlayerShip = g.me.ship;
-			if (_loc2_.hasDmgBoost && _loc2_.dmgBoostNextRdy < g.time)
-			{
+		public function addDmgBoostCommand(ab:AbilityHotkey = null) : void {
+			var _local2:PlayerShip = g.me.ship;
+			if(_local2.hasDmgBoost && _local2.dmgBoostNextRdy < g.time) {
 				g.hud.abilities.initiateCooldown("Power");
-				_loc2_.dmgBoost();
-				addCommand(7, true);
+				_local2.dmgBoost();
+				addCommand(7,true);
 			}
 		}
 		
-		public function addShieldConvertCommand(param1:AbilityHotkey = null):void
-		{
-			var _loc2_:PlayerShip = g.me.ship;
-			if (_loc2_.hasArmorConverter && _loc2_.convNextRdy < g.time)
-			{
+		public function addShieldConvertCommand(ab:AbilityHotkey = null) : void {
+			var _local2:PlayerShip = g.me.ship;
+			if(_local2.hasArmorConverter && _local2.convNextRdy < g.time) {
 				g.hud.abilities.initiateCooldown("Armor");
-				_loc2_.convertShield();
-				addCommand(6, true);
+				_local2.convertShield();
+				addCommand(6,true);
 			}
 		}
 		
-		public function addHardenedShieldCommand(param1:AbilityHotkey = null):void
-		{
-			var _loc2_:PlayerShip = g.me.ship;
-			if (_loc2_.hardenNextRdy < g.time && _loc2_.hasHardenedShield)
-			{
+		public function addHardenedShieldCommand(ab:AbilityHotkey = null) : void {
+			var _local2:PlayerShip = g.me.ship;
+			if(_local2.hardenNextRdy < g.time && _local2.hasHardenedShield) {
 				g.hud.abilities.initiateCooldown("Shield");
-				_loc2_.hardenShield();
-				addCommand(5, true);
+				_local2.hardenShield();
+				addCommand(5,true);
 			}
 		}
 	}
 }
+

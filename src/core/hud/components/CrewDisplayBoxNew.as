@@ -1,5 +1,4 @@
-package core.hud.components
-{
+package core.hud.components {
 	import com.greensock.TweenMax;
 	import core.artifact.ArtifactCargoBox;
 	import core.credits.CreditManager;
@@ -17,212 +16,149 @@ package core.hud.components
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class CrewDisplayBoxNew extends Sprite
-	{
+	public class CrewDisplayBoxNew extends Sprite {
 		private static const HEIGHT:int = 58;
-		
 		private static const WIDTH:int = 52;
-		
 		private static const textX1:int = 60;
-		
 		private static const textX2:int = 175;
-		
 		private static const textY1:int = 7;
-		
 		private static const textY2:int = 30;
-		
 		public static const MODE_SHIP:int = 0;
-		
 		public static const MODE_CANTINA:int = 1;
-		
 		public static const MODE_UPGRADE_ARTIFACT:int = 2;
-		
 		private var exploreTimer:HudTimer;
-		
 		private var trainingTimer:HudTimer;
-		
 		private var trainInstantButton:Button;
-		
 		private var upgradeArtifactBox:ArtifactCargoBox;
-		
 		private var upgradeInstantButton:Button;
-		
 		private var upgradeArtifactTimer:HudTimer;
-		
 		private var img:Image;
-		
 		public var crewMember:CrewMember;
-		
 		private var injuryTimer:HudTimer;
-		
 		private var injuryStatus:Text;
-		
 		private var box:Quad;
-		
 		private var g:Game;
-		
 		private var bgColor:uint = 1717572;
-		
 		public var mode:int;
-		
 		private var isSelected:Boolean = false;
-		
 		private var selectButton:Button;
-		
 		private var waitingTween:TweenMax;
-		
 		private var trainingCompleteText:Text;
-		
 		private var onBoardShipText:Text;
-		
 		private var hovering:Boolean = false;
-		
 		private var doUpdate:Boolean = true;
 		
-		public function CrewDisplayBoxNew(param1:Game, param2:CrewMember, param3:int = 0)
-		{
-			this.crewMember = param2;
-			this.mode = param3;
-			this.g = param1;
+		public function CrewDisplayBoxNew(g:Game, crewMember:CrewMember, mode:int = 0) {
+			this.crewMember = crewMember;
+			this.mode = mode;
+			this.g = g;
 			super();
-			var _loc6_:Sprite = new Sprite();
-			var _loc4_:ITextureManager = TextureLocator.getService();
-			img = new Image(_loc4_.getTextureGUIByKey(param2.imageKey));
+			var _local6:Sprite = new Sprite();
+			var _local4:ITextureManager = TextureLocator.getService();
+			img = new Image(_local4.getTextureGUIByKey(crewMember.imageKey));
 			img.height = 58;
 			img.width = 52;
-			var _loc5_:Text = new Text(60, 7);
-			_loc5_.text = param2.name;
-			_loc5_.color = 16623682;
-			_loc5_.size = 14;
-			box = new Quad(273, 58, bgColor);
+			var _local5:Text = new Text(60,7);
+			_local5.text = crewMember.name;
+			_local5.color = 16623682;
+			_local5.size = 14;
+			box = new Quad(273,58,bgColor);
 			box.useHandCursor = true;
 			addChild(box);
-			addChild(_loc5_);
-			_loc6_.addChild(img);
-			addChild(_loc6_);
-			if (param3 == 2)
-			{
-				new ToolTip(param1, _loc6_, param2.getToolTipText(), null, "crewSkill");
+			addChild(_local5);
+			_local6.addChild(img);
+			addChild(_local6);
+			if(mode == 2) {
+				new ToolTip(g,_local6,crewMember.getToolTipText(),null,"crewSkill");
 			}
-			addEventListener("touch", onTouch);
+			addEventListener("touch",onTouch);
 			addLocation();
 			setSelected(false);
-			addEventListener("removedFromStage", clean);
+			addEventListener("removedFromStage",clean);
 			update();
 		}
 		
-		public function get key():String
-		{
+		public function get key() : String {
 			return crewMember.key;
 		}
 		
-		public function setSelected(param1:Boolean):void
-		{
-			param1 ? (box.alpha = 1) : (box.alpha = 0);
-			isSelected = param1;
-			if (!param1)
-			{
+		public function setSelected(value:Boolean) : void {
+			value ? (box.alpha = 1) : (box.alpha = 0);
+			isSelected = value;
+			if(!value) {
 				return;
 			}
-			dispatchEventWith("crewSelected", true);
+			dispatchEventWith("crewSelected",true);
 		}
 		
-		public function getLevel(param1:int):int
-		{
-			return crewMember.skills[param1];
+		public function getLevel(i:int) : int {
+			return crewMember.skills[i];
 		}
 		
-		public function update():void
-		{
-			if (exploreTimer != null)
-			{
-				if (exploreTimer.isComplete())
-				{
+		public function update() : void {
+			if(exploreTimer != null) {
+				if(exploreTimer.isComplete()) {
 					removeChild(exploreTimer);
 					exploreTimer = null;
 					addWaitingForPickup();
 					reloadDetails();
-				}
-				else
-				{
+				} else {
 					exploreTimer.update();
 				}
 			}
 			updateTraining();
-			if (injuryTimer != null)
-			{
-				if (injuryTimer.isComplete())
-				{
+			if(injuryTimer != null) {
+				if(injuryTimer.isComplete()) {
 					removeChild(injuryTimer);
 					removeChild(injuryStatus);
 					injuryTimer = null;
 					reloadDetails();
 					addOnboardShip();
-				}
-				else
-				{
+				} else {
 					injuryTimer.update();
 				}
 			}
-			if (upgradeArtifactTimer != null)
-			{
-				if (upgradeArtifactTimer.isComplete())
-				{
+			if(upgradeArtifactTimer != null) {
+				if(upgradeArtifactTimer.isComplete()) {
 					upgradeArtifactComplete();
-				}
-				else
-				{
+				} else {
 					upgradeArtifactTimer.update();
 				}
-			}
-			else if (crewMember.isUpgrading)
-			{
+			} else if(crewMember.isUpgrading) {
 				addUpgradeTimer();
 			}
-			if (!doUpdate)
-			{
+			if(!doUpdate) {
 				return;
 			}
-			TweenMax.delayedCall(1, update);
+			TweenMax.delayedCall(1,update);
 		}
 		
-		private function upgradeArtifactComplete():void
-		{
+		private function upgradeArtifactComplete() : void {
 			removeChild(upgradeArtifactTimer);
 			removeChild(upgradeArtifactBox);
 			removeChild(upgradeInstantButton);
 			upgradeArtifactTimer = null;
 			reloadDetails();
-			if (onBoardShipText == null)
-			{
+			if(onBoardShipText == null) {
 				addOnboardShip();
 			}
 			onBoardShipText.text = Localize.t("Onboard ship");
-			dispatchEventWith("upgradeArtifactComplete", true);
+			dispatchEventWith("upgradeArtifactComplete",true);
 		}
 		
-		private function updateTraining():void
-		{
-			if (trainingTimer != null)
-			{
-				if (trainingTimer.isComplete())
-				{
+		private function updateTraining() : void {
+			if(trainingTimer != null) {
+				if(trainingTimer.isComplete()) {
 					addTrainingComplete();
 					reloadDetails();
-				}
-				else
-				{
+				} else {
 					trainingTimer.update();
 				}
-			}
-			else if (crewMember.isTraining)
-			{
+			} else if(crewMember.isTraining) {
 				addTrainingTimer();
 			}
-			if (trainingCompleteText != null && crewMember.trainingEnd == 0)
-			{
-				if (waitingTween)
-				{
+			if(trainingCompleteText != null && crewMember.trainingEnd == 0) {
+				if(waitingTween) {
 					waitingTween.kill();
 				}
 				removeChild(trainingCompleteText);
@@ -230,324 +166,272 @@ package core.hud.components
 			}
 		}
 		
-		private function reloadDetails():void
-		{
-			if (!isSelected)
-			{
+		private function reloadDetails() : void {
+			if(!isSelected) {
 				return;
 			}
-			dispatchEventWith("reloadDetails", true);
+			dispatchEventWith("reloadDetails",true);
 		}
 		
-		private function addTrainingTimer():void
-		{
-			if (crewMember.trainingEnd == 0)
-			{
+		private function addTrainingTimer() : void {
+			if(crewMember.trainingEnd == 0) {
 				return;
 			}
-			if (crewMember.trainingEnd < g.time)
-			{
+			if(crewMember.trainingEnd < g.time) {
 				addTrainingComplete();
 				return;
 			}
-			if (trainingTimer != null)
-			{
+			if(trainingTimer != null) {
 				return;
 			}
-			trainingTimer = new HudTimer(g, 10);
-			trainingTimer.start(g.time, crewMember.trainingEnd);
+			trainingTimer = new HudTimer(g,10);
+			trainingTimer.start(g.time,crewMember.trainingEnd);
 			trainingTimer.x = 175;
 			trainingTimer.y = 30 + 1;
 			onBoardShipText.text = Localize.t("Training");
 			addChild(trainingTimer);
-			trainInstantButton = new Button(function():void
-			{
-				g.creditManager.refresh(function():void
-				{
-					var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostCrewTraining(), Localize.t("Are you sure you want to buy instant crew training?"));
+			trainInstantButton = new Button(function():void {
+				g.creditManager.refresh(function():void {
+					var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g,CreditManager.getCostCrewTraining(),Localize.t("Are you sure you want to buy instant crew training?"));
 					g.addChildToOverlay(confirmBuyWithFlux);
-					confirmBuyWithFlux.addEventListener("accept", function():void
-					{
-						g.rpc("buyInstantCrewTraining", instantCrewTraining, crewMember.key);
+					confirmBuyWithFlux.addEventListener("accept",function():void {
+						g.rpc("buyInstantCrewTraining",instantCrewTraining,crewMember.key);
 						confirmBuyWithFlux.removeEventListeners();
-						g.removeChildFromOverlay(confirmBuyWithFlux, true);
+						g.removeChildFromOverlay(confirmBuyWithFlux,true);
 					});
-					confirmBuyWithFlux.addEventListener("close", function():void
-					{
+					confirmBuyWithFlux.addEventListener("close",function():void {
 						trainInstantButton.enabled = true;
 						confirmBuyWithFlux.removeEventListeners();
-						g.removeChildFromOverlay(confirmBuyWithFlux, true);
+						g.removeChildFromOverlay(confirmBuyWithFlux,true);
 					});
 				});
-			}, Localize.t("Speed up"), "buy");
+			},Localize.t("Speed up"),"buy");
 			trainInstantButton.scaleX = trainInstantButton.scaleY = 0.9;
-			trainInstantButton.x = 180;
+			trainInstantButton.x = 3 * 60;
 			trainInstantButton.y = 30 + 1 - 25;
 			addChild(trainInstantButton);
 		}
 		
-		private function instantCrewTraining(param1:Message):void
-		{
-			var _loc2_:int = 0;
-			var _loc3_:int = 0;
-			if (param1.getBoolean(0))
-			{
-				_loc2_ = param1.getInt(1);
-				_loc3_ = _loc2_ - crewMember.skillPoints;
-				crewMember.completeTraining(_loc2_);
-				g.showMessageDialog(Localize.t("[name] got [diff] new skill points!").replace("[name]", crewMember.name).replace("[diff]", _loc3_), reloadDetails);
+		private function instantCrewTraining(m:Message) : void {
+			var _local2:int = 0;
+			var _local3:int = 0;
+			if(m.getBoolean(0)) {
+				_local2 = m.getInt(1);
+				_local3 = _local2 - crewMember.skillPoints;
+				crewMember.completeTraining(_local2);
+				g.showMessageDialog(Localize.t("[name] got [diff] new skill points!").replace("[name]",crewMember.name).replace("[diff]",_local3),reloadDetails);
 				removeChild(trainingTimer);
 				removeChild(trainInstantButton);
 				trainingTimer = null;
 				trainInstantButton = null;
-				Game.trackEvent("used flux", "instant crew training", g.me.level.toString(), CreditManager.getCostCrewTraining());
-			}
-			else if (param1.length > 1)
-			{
-				g.showErrorDialog(param1.getString(1), false);
+				Game.trackEvent("used flux","instant crew training",g.me.level.toString(),CreditManager.getCostCrewTraining());
+			} else if(m.length > 1) {
+				g.showErrorDialog(m.getString(1),false);
 			}
 		}
 		
-		private function addUpgradeTimer():void
-		{
-			if (crewMember.artifactEnd == 0)
-			{
+		private function addUpgradeTimer() : void {
+			if(crewMember.artifactEnd == 0) {
 				return;
 			}
-			if (crewMember.artifactEnd < g.time)
-			{
+			if(crewMember.artifactEnd < g.time) {
 				return;
 			}
-			if (upgradeArtifactTimer != null)
-			{
+			if(upgradeArtifactTimer != null) {
 				return;
 			}
-			upgradeArtifactTimer = new HudTimer(g, 10);
-			upgradeArtifactTimer.start(g.time, crewMember.artifactEnd);
+			upgradeArtifactTimer = new HudTimer(g,10);
+			upgradeArtifactTimer.start(g.time,crewMember.artifactEnd);
 			upgradeArtifactTimer.x = 175;
 			upgradeArtifactTimer.y = 30 + 1;
 			onBoardShipText.text = Localize.t("Upgrading");
 			addChild(upgradeArtifactTimer);
-			upgradeArtifactBox = new ArtifactCargoBox(g, g.me.getArtifactById(crewMember.artifact));
+			upgradeArtifactBox = new ArtifactCargoBox(g,g.me.getArtifactById(crewMember.artifact));
 			upgradeArtifactBox.scaleX = upgradeArtifactBox.scaleY = 0.75;
 			upgradeArtifactBox.x = onBoardShipText.x + onBoardShipText.width + 10;
 			upgradeArtifactBox.y = onBoardShipText.y;
 			addChild(upgradeArtifactBox);
-			upgradeInstantButton = new Button(function():void
-			{
+			upgradeInstantButton = new Button(function():void {
 				g.showModalLoadingScreen(Localize.t("Hang on..."));
-				g.creditManager.refresh(function():void
-				{
+				g.creditManager.refresh(function():void {
 					var confirmBuyWithFlux:CreditBuyBox;
 					g.hideModalLoadingScreen();
-					confirmBuyWithFlux = new CreditBuyBox(g, CreditManager.getCostArtifactUpgrade(g, crewMember.artifactEnd), Localize.t("Are you sure you want to buy instant artifact upgrade?"));
+					confirmBuyWithFlux = new CreditBuyBox(g,CreditManager.getCostArtifactUpgrade(g,crewMember.artifactEnd),Localize.t("Are you sure you want to buy instant artifact upgrade?"));
 					g.addChildToOverlay(confirmBuyWithFlux);
-					confirmBuyWithFlux.addEventListener("accept", function():void
-					{
+					confirmBuyWithFlux.addEventListener("accept",function():void {
 						g.showModalLoadingScreen(Localize.t("Upgrading..."));
-						g.rpc("buyInstantArtifactUpgrade", instantArtifactUpgrade, crewMember.key);
+						g.rpc("buyInstantArtifactUpgrade",instantArtifactUpgrade,crewMember.key);
 						confirmBuyWithFlux.removeEventListeners();
-						g.removeChildFromOverlay(confirmBuyWithFlux, true);
+						g.removeChildFromOverlay(confirmBuyWithFlux,true);
 					});
-					confirmBuyWithFlux.addEventListener("close", function():void
-					{
+					confirmBuyWithFlux.addEventListener("close",function():void {
 						upgradeInstantButton.enabled = true;
 						confirmBuyWithFlux.removeEventListeners();
-						g.removeChildFromOverlay(confirmBuyWithFlux, true);
+						g.removeChildFromOverlay(confirmBuyWithFlux,true);
 					});
 				});
-			}, Localize.t("Speed Up"), "buy");
+			},Localize.t("Speed Up"),"buy");
 			upgradeInstantButton.scaleX = upgradeInstantButton.scaleY = 0.9;
-			upgradeInstantButton.x = 180;
+			upgradeInstantButton.x = 3 * 60;
 			upgradeInstantButton.y = 30 + 1 - 25;
 			addChild(upgradeInstantButton);
 		}
 		
-		private function instantArtifactUpgrade(param1:Message):void
-		{
+		private function instantArtifactUpgrade(m:Message) : void {
 			g.hideModalLoadingScreen();
-			if (param1.getBoolean(0))
-			{
-				crewMember.artifactEnd = param1.getNumber(1);
+			if(m.getBoolean(0)) {
+				crewMember.artifactEnd = m.getNumber(1);
 				upgradeArtifactComplete();
-				Game.trackEvent("used flux", "instant artifact upgrade", g.me.level.toString(), CreditManager.getCostArtifactUpgrade(g, crewMember.artifactEnd));
-			}
-			else if (param1.length > 1)
-			{
-				g.showErrorDialog(param1.getString(1), false);
+				Game.trackEvent("used flux","instant artifact upgrade",g.me.level.toString(),CreditManager.getCostArtifactUpgrade(g,crewMember.artifactEnd));
+			} else if(m.length > 1) {
+				g.showErrorDialog(m.getString(1),false);
 			}
 		}
 		
-		private function addLocation():void
-		{
-			if (crewMember.isDeployed)
-			{
-				addText(60, 30, crewMember.getCompactFullLocation(), 16776960);
-				for each (var _loc1_:* in g.me.explores)
-				{
-					if (_loc1_.areaKey == crewMember.area)
-					{
-						if (_loc1_.finishTime < g.time)
-						{
+		private function addLocation() : void {
+			if(crewMember.isDeployed) {
+				addText(60,30,crewMember.getCompactFullLocation(),0xffff00);
+				for each(var _local1 in g.me.explores) {
+					if(_local1.areaKey == crewMember.area) {
+						if(_local1.finishTime < g.time) {
 							addWaitingForPickup();
 							break;
 						}
-						exploreTimer = new HudTimer(g, 10);
-						exploreTimer.start(_loc1_.startTime, _loc1_.finishTime);
+						exploreTimer = new HudTimer(g,10);
+						exploreTimer.start(_local1.startTime,_local1.finishTime);
 						exploreTimer.x = 175;
 						exploreTimer.y = 30;
 						addChild(exploreTimer);
 						break;
 					}
 				}
-			}
-			else if (crewMember.isInjured)
-			{
-				injuryStatus = new Text(60, 30);
+			} else if(crewMember.isInjured) {
+				injuryStatus = new Text(60,30);
 				injuryStatus.font = "Verdana";
 				injuryStatus.text = Localize.t("In sick bay, injured");
 				injuryStatus.size = 11;
-				injuryStatus.color = 16711680;
+				injuryStatus.color = 0xff0000;
 				addChild(injuryStatus);
-				injuryTimer = new HudTimer(g, 10);
+				injuryTimer = new HudTimer(g,10);
 				injuryTimer.x = 175;
 				injuryTimer.y = 30;
-				injuryTimer.start(crewMember.injuryStart, crewMember.injuryEnd);
+				injuryTimer.start(crewMember.injuryStart,crewMember.injuryEnd);
 				addChild(injuryTimer);
-			}
-			else
-			{
+			} else {
 				addOnboardShip();
 			}
 		}
 		
-		private function addWaitingForPickup():void
-		{
-			var t:Text = addText(175 + 3, 30, Localize.t("Awaiting pickup"), 16623682);
-			waitingTween = TweenMax.to(t, 1, {"repeat": -1, "yoyo": true, "alpha": 0.5, "onComplete": function():void
-			{
-				t.alpha = 1;
-			}});
+		private function addWaitingForPickup() : void {
+			var t:Text = addText(175 + 3,30,Localize.t("Awaiting pickup"),16623682);
+			waitingTween = TweenMax.to(t,1,{
+				"repeat":-1,
+				"yoyo":true,
+				"alpha":0.5,
+				"onComplete":function():void {
+					t.alpha = 1;
+				}
+			});
 		}
 		
-		private function addTrainingComplete():void
-		{
+		private function addTrainingComplete() : void {
 			removeChild(trainingTimer);
 			removeChild(trainInstantButton);
 			trainingTimer = null;
-			if (trainingCompleteText)
-			{
+			if(trainingCompleteText) {
 				return;
 			}
-			trainingCompleteText = addText(175 - 10, 30, Localize.t("Training complete"), 5635925);
-			if (onBoardShipText == null)
-			{
+			trainingCompleteText = addText(175 - 10,30,Localize.t("Training complete"),0x55ff55);
+			if(onBoardShipText == null) {
 				addOnboardShip();
 			}
 			onBoardShipText.text = Localize.t("Onboard ship");
-			waitingTween = TweenMax.to(trainingCompleteText, 1, {"repeat": -1, "yoyo": true, "alpha": 0.5});
+			waitingTween = TweenMax.to(trainingCompleteText,1,{
+				"repeat":-1,
+				"yoyo":true,
+				"alpha":0.5
+			});
 		}
 		
-		private function addOnboardShip():void
-		{
-			if (mode == 1)
-			{
+		private function addOnboardShip() : void {
+			if(mode == 1) {
 				return;
 			}
-			onBoardShipText = addText(60, 30, Localize.t("Onboard ship"), 16777215);
+			onBoardShipText = addText(60,30,Localize.t("Onboard ship"),0xffffff);
 		}
 		
-		private function addText(param1:int, param2:int, param3:String, param4:uint):Text
-		{
-			var _loc5_:Text = new Text(param1, param2);
-			_loc5_.size = 11;
-			_loc5_.font = "Verdana";
-			_loc5_.text = param3;
-			_loc5_.color = param4;
-			addChild(_loc5_);
-			return _loc5_;
+		private function addText(xPos:int, yPos:int, text:String, color:uint) : Text {
+			var _local5:Text = new Text(xPos,yPos);
+			_local5.size = 11;
+			_local5.font = "Verdana";
+			_local5.text = text;
+			_local5.color = color;
+			addChild(_local5);
+			return _local5;
 		}
 		
-		private function onClick(param1:TouchEvent = null):void
-		{
-			var _loc2_:int = 0;
-			_loc2_ = 0;
-			while (_loc2_ < parent.numChildren)
-			{
-				if (parent.getChildAt(_loc2_) is CrewDisplayBoxNew)
-				{
-					(parent.getChildAt(_loc2_) as CrewDisplayBoxNew).setSelected(false);
+		private function onClick(e:TouchEvent = null) : void {
+			var _local2:int = 0;
+			_local2 = 0;
+			while(_local2 < parent.numChildren) {
+				if(parent.getChildAt(_local2) is CrewDisplayBoxNew) {
+					(parent.getChildAt(_local2) as CrewDisplayBoxNew).setSelected(false);
 				}
-				if (parent.getChildAt(_loc2_) is CrewBuySlot)
-				{
-					(parent.getChildAt(_loc2_) as CrewBuySlot).setSelected(false);
+				if(parent.getChildAt(_local2) is CrewBuySlot) {
+					(parent.getChildAt(_local2) as CrewBuySlot).setSelected(false);
 				}
-				_loc2_++;
+				_local2++;
 			}
 			setSelected(true);
 		}
 		
-		public function mOver(param1:TouchEvent):void
-		{
-			if (hovering)
-			{
+		public function mOver(e:TouchEvent) : void {
+			if(hovering) {
 				return;
 			}
 			hovering = true;
-			if (isSelected)
-			{
+			if(isSelected) {
 				return;
 			}
 			box.alpha = 0.6;
 		}
 		
-		public function mOut(param1:TouchEvent):void
-		{
-			if (!hovering)
-			{
+		public function mOut(e:TouchEvent) : void {
+			if(!hovering) {
 				return;
 			}
 			hovering = false;
-			if (isSelected)
-			{
+			if(isSelected) {
 				box.alpha = 1;
 				return;
 			}
 			box.alpha = 0;
 		}
 		
-		private function onTouch(param1:TouchEvent):void
-		{
-			if (mode == 2 && (crewMember.isDeployed || crewMember.isInjured || crewMember.isTraining || crewMember.isUpgrading))
-			{
+		private function onTouch(e:TouchEvent) : void {
+			if(mode == 2 && (crewMember.isDeployed || crewMember.isInjured || crewMember.isTraining || crewMember.isUpgrading)) {
 				useHandCursor = false;
 				return;
 			}
 			useHandCursor = true;
-			if (param1.getTouch(this, "ended"))
-			{
-				onClick(param1);
-			}
-			else if (param1.interactsWith(this))
-			{
-				mOver(param1);
-			}
-			else if (!param1.interactsWith(this))
-			{
-				mOut(param1);
+			if(e.getTouch(this,"ended")) {
+				onClick(e);
+			} else if(e.interactsWith(this)) {
+				mOver(e);
+			} else if(!e.interactsWith(this)) {
+				mOut(e);
 			}
 		}
 		
-		public function clean(param1:Event = null):void
-		{
+		public function clean(e:Event = null) : void {
 			doUpdate = false;
 			ToolTip.disposeType("crewSkill");
-			removeEventListener("touch", onTouch);
-			removeEventListener("removedFromStage", clean);
-			if (waitingTween)
-			{
+			removeEventListener("touch",onTouch);
+			removeEventListener("removedFromStage",clean);
+			if(waitingTween) {
 				waitingTween.kill();
 			}
 		}
 	}
 }
+

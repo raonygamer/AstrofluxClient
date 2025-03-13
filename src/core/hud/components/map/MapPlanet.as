@@ -1,5 +1,4 @@
-package core.hud.components.map
-{
+package core.hud.components.map {
 	import core.controlZones.ControlZone;
 	import core.hud.components.CrewDisplayBox;
 	import core.hud.components.Style;
@@ -15,14 +14,12 @@ package core.hud.components.map
 	import starling.display.Image;
 	import starling.display.Sprite;
 	
-	public class MapPlanet extends MapBodyBase
-	{
-		public function MapPlanet(param1:Game, param2:Sprite, param3:Body)
-		{
-			super(param1, param2, param3);
-			param2.addChild(crew);
-			param2.addChild(text);
-			param2.addChild(percentage);
+	public class MapPlanet extends MapBodyBase {
+		public function MapPlanet(g:Game, container:Sprite, body:Body) {
+			super(g,container,body);
+			container.addChild(crew);
+			container.addChild(text);
+			container.addChild(percentage);
 			layer.useHandCursor = true;
 			addImage();
 			addCrew();
@@ -32,158 +29,139 @@ package core.hud.components.map
 			init();
 		}
 		
-		private function addImage():void
-		{
-			if (body.texture == null)
-			{
+		private function addImage() : void {
+			if(body.texture == null) {
 				return;
 			}
-			var _loc2_:Number = Map.SCALE * 1.5;
-			radius = body.texture.width / 2 * _loc2_;
-			if (radius < 4)
-			{
-				_loc2_ = 4 / (body.texture.width / 2);
+			var _local2:Number = Map.SCALE * 1.5;
+			radius = body.texture.width / 2 * _local2;
+			if(radius < 4) {
+				_local2 = 4 / (body.texture.width / 2);
 			}
-			radius = body.texture.width / 2 * _loc2_;
-			var _loc1_:Image = new Image(body.texture);
-			_loc1_.scaleX = _loc2_;
-			_loc1_.scaleY = _loc2_;
-			layer.addChild(_loc1_);
+			radius = body.texture.width / 2 * _local2;
+			var _local1:Image = new Image(body.texture);
+			_local1.scaleX = _local2;
+			_local1.scaleY = _local2;
+			layer.addChild(_local1);
 			imgHover = new Image(body.texture);
-			imgHover.scaleX = _loc2_;
-			imgHover.scaleY = _loc2_;
+			imgHover.scaleX = _local2;
+			imgHover.scaleY = _local2;
 			imgHover.blendMode = "add";
 			imgSelected = imgHover;
 		}
 		
-		private function addCrew():void
-		{
-			var _loc1_:Image = null;
-			var _loc3_:int = 0;
-			for each (var _loc2_:* in g.me.crewMembers)
-			{
-				if (_loc2_.body == body.key)
-				{
-					_loc1_ = new Image(_loc2_.texture);
-					_loc1_.height *= 0.2;
-					_loc1_.width *= 0.2;
-					_loc1_.x = _loc3_ * (_loc1_.width + 4);
-					crew.addChild(_loc1_);
-					_loc3_++;
+		private function addCrew() : void {
+			var _local1:Image = null;
+			var _local3:int = 0;
+			for each(var _local2 in g.me.crewMembers) {
+				if(_local2.body == body.key) {
+					_local1 = new Image(_local2.texture);
+					_local1.height *= 0.2;
+					_local1.width *= 0.2;
+					_local1.x = _local3 * (_local1.width + 4);
+					crew.addChild(_local1);
+					_local3++;
 				}
 			}
 		}
 		
-		private function addTooltip():void
-		{
-			var _loc7_:int = 0;
-			var _loc13_:IDataManager = null;
-			var _loc3_:Object = null;
-			var _loc12_:ControlZone = null;
-			var _loc9_:Number = NaN;
-			var _loc11_:Boolean = false;
-			for each (var _loc10_:* in g.me.landedBodies)
-			{
-				if (_loc10_.key == body.key)
-				{
-					_loc11_ = true;
+		private function addTooltip() : void {
+			var _local7:int = 0;
+			var _local13:IDataManager = null;
+			var _local3:Object = null;
+			var _local12:ControlZone = null;
+			var _local9:Number = NaN;
+			var _local11:Boolean = false;
+			for each(var _local10 in g.me.landedBodies) {
+				if(_local10.key == body.key) {
+					_local11 = true;
 					break;
 				}
 			}
-			var _loc2_:String = "";
-			if (!_loc11_)
-			{
-				_loc2_ = "Name: " + body.name + "\nAreas: Unknown";
-				new ToolTip(g, layer, _loc2_, null, "Map", 400);
+			var _local2:String = "";
+			if(!_local11) {
+				_local2 = "Name: " + body.name + "\nAreas: Unknown";
+				new ToolTip(g,layer,_local2,null,"Map",400);
 				return;
 			}
-			var _loc1_:Array = [];
-			var _loc5_:int = 0;
-			var _loc6_:int = 0;
-			_loc2_ += "Name: " + body.name + "\nAreas: ";
-			for each (var _loc8_:* in body.obj.exploreAreas)
-			{
-				_loc13_ = DataLocator.getService();
-				_loc3_ = _loc13_.loadKey("BodyAreas", _loc8_);
-				if (_loc3_.skillLevel > 99)
-				{
-					_loc7_ = 34;
+			var _local1:Array = [];
+			var _local5:int = 0;
+			var _local6:int = 0;
+			_local2 += "Name: " + body.name + "\nAreas: ";
+			for each(var _local8 in body.obj.exploreAreas) {
+				_local13 = DataLocator.getService();
+				_local3 = _local13.loadKey("BodyAreas",_local8);
+				if(_local3.skillLevel > 99) {
+					_local7 = 34;
+				} else {
+					_local7 = 26;
 				}
-				else
-				{
-					_loc7_ = 26;
+				_local2 += "\n<FONT COLOR=\'" + Area.COLORTYPESTR[_local3.majorType] + "\'> " + _local3.skillLevel + "      </FONT>";
+				_local1.push({
+					"img":CrewDisplayBox.IMAGES_SKILLS[_local3.majorType],
+					"x":_local7,
+					"y":38 + 19 * _local5
+				});
+				_local6 = 0;
+				for each(var _local4 in _local3.types) {
+					_local6++;
+					_local2 += "    ";
+					_local1.push({
+						"img":CrewDisplayBox.IMAGES_SPECIALS[_local4],
+						"x":_local7 + _local6 * 18,
+						"y":38 + 19 * _local5
+					});
 				}
-				_loc2_ += "\n<FONT COLOR='" + Area.COLORTYPESTR[_loc3_.majorType] + "'> " + _loc3_.skillLevel + "      </FONT>";
-				_loc1_.push({"img": CrewDisplayBox.IMAGES_SKILLS[_loc3_.majorType], "x": _loc7_, "y": 38 + 19 * _loc5_});
-				_loc6_ = 0;
-				for each (var _loc4_:* in _loc3_.types)
-				{
-					_loc6_++;
-					_loc2_ += "    ";
-					_loc1_.push({"img": CrewDisplayBox.IMAGES_SPECIALS[_loc4_], "x": _loc7_ + _loc6_ * 18, "y": 38 + 19 * _loc5_});
+				if(g.me.hasExploredArea(_local8)) {
+					_local2 += "  Complete";
+				} else {
+					_local2 += "  Unexplored";
 				}
-				if (g.me.hasExploredArea(_loc8_))
-				{
-					_loc2_ += "  Complete";
-				}
-				else
-				{
-					_loc2_ += "  Unexplored";
-				}
-				_loc5_++;
+				_local5++;
 			}
-			if (body.explorable && g.me.clanId != "" && g.isSystemTypeHostile())
-			{
-				_loc12_ = g.controlZoneManager.getZoneByKey(body.key);
-				if (_loc12_)
-				{
-					_loc2_ += "\n\n";
-					_loc2_ += "Controlled by\n";
-					_loc2_ += _loc12_.clanName + "\n";
-					if (_loc12_.releaseTime > g.time)
-					{
-						_loc9_ = _loc12_.releaseTime - g.time;
-						_loc2_ += "<FONT COLOR=\"#ff0000\">locked for " + Util.getFormattedTime(_loc9_) + "</FONT>\n";
+			if(body.explorable && g.me.clanId != "" && g.isSystemTypeHostile()) {
+				_local12 = g.controlZoneManager.getZoneByKey(body.key);
+				if(_local12) {
+					_local2 += "\n\n";
+					_local2 += "Controlled by\n";
+					_local2 += _local12.clanName + "\n";
+					if(_local12.releaseTime > g.time) {
+						_local9 = _local12.releaseTime - g.time;
+						_local2 += "<FONT COLOR=\"#ff0000\">locked for " + Util.getFormattedTime(_local9) + "</FONT>\n";
 					}
 				}
 			}
-			new ToolTip(g, layer, _loc2_, _loc1_, "Map", 400);
+			new ToolTip(g,layer,_local2,_local1,"Map",400);
 		}
 		
-		private function addText():void
-		{
-			var _loc4_:ControlZone = null;
-			if (!body.landable)
-			{
+		private function addText() : void {
+			var _local4:ControlZone = null;
+			if(!body.landable) {
 				return;
 			}
 			text.size = 11;
 			text.format.color = Style.COLOR_MAP_PLANET;
 			text.text = body.name;
-			if (body.explorable && g.me.clanId != "" && g.isSystemTypeHostile())
-			{
-				_loc4_ = g.controlZoneManager.getZoneByKey(body.key);
-				if (!_loc4_ || _loc4_.releaseTime < g.time)
-				{
+			if(body.explorable && g.me.clanId != "" && g.isSystemTypeHostile()) {
+				_local4 = g.controlZoneManager.getZoneByKey(body.key);
+				if(!_local4 || _local4.releaseTime < g.time) {
 					text.format.color = Style.COLOR_LIGHT_GREEN;
 				}
 			}
-			var _loc2_:int = 0;
-			var _loc3_:int = 0;
-			for each (var _loc1_:* in body.obj.exploreAreas)
-			{
-				if (g.me.hasExploredArea(_loc1_))
-				{
-					_loc3_++;
+			var _local2:int = 0;
+			var _local3:int = 0;
+			for each(var _local1 in body.obj.exploreAreas) {
+				if(g.me.hasExploredArea(_local1)) {
+					_local3++;
 				}
-				_loc2_++;
+				_local2++;
 			}
-			if (_loc2_ > 0)
-			{
+			if(_local2 > 0) {
 				percentage.size = 11;
 				percentage.format.color = Style.COLOR_BYLINE;
-				percentage.text = Math.floor(_loc3_ / _loc2_ * 100).toString() + "%";
+				percentage.text = Math.floor(_local3 / _local2 * 100).toString() + "%";
 			}
 		}
 	}
 }
+

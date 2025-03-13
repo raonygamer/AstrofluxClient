@@ -1,5 +1,4 @@
-package core.hud.components.radar
-{
+package core.hud.components.radar {
 	import core.GameObject;
 	import core.boss.Boss;
 	import core.drops.Drop;
@@ -14,83 +13,55 @@ package core.hud.components.radar
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class Radar extends Sprite
-	{
+	public class Radar extends Sprite {
 		public static const outerDetectionRadius:Number = 5000;
-		
 		public static const innerDetectionRadius:Number = 2500;
-		
 		private var unitsDetected:Number = 0;
-		
-		private var _scale:Number = 10;
-		
+		//private var scale:Number = 10;
 		public var radius:Number = 60;
-		
 		private var textureManager:ITextureManager;
-		
 		private var g:Game;
-		
-		private var blips:Vector.<Blip>;
-		
+		private var blips:Vector.<Blip> = new Vector.<Blip>();
 		private var loaded:Boolean = false;
-		
-		private var blipBatch:MeshBatch;
-		
+		private var blipBatch:MeshBatch = new MeshBatch();
 		private var firstHalf:Boolean = true;
-		
-		private var quadBatch:MeshBatch;
-		
+		private var quadBatch:MeshBatch = new MeshBatch();
 		private var updateCount:int = 0;
 		
-		public function Radar(param1:Game)
-		{
-			blips = new Vector.<Blip>();
-			blipBatch = new MeshBatch();
-			quadBatch = new MeshBatch();
+		public function Radar(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 			textureManager = TextureLocator.getService();
 			touchable = false;
 		}
 		
-		public function load():void
-		{
-			var _loc6_:* = null;
+		public function load() : void {
+			var _local6:* = null;
 			drawBackground();
-			for each (var _loc2_:* in g.shipManager.enemies)
-			{
-				createBlip(_loc2_, _loc7_);
+			for each(var _local2 in g.shipManager.enemies) {
+				createBlip(_local2,_local7);
 			}
-			for each (var _loc7_:* in g.shipManager.players)
-			{
-				if (!_loc7_.player.isMe)
-				{
-					createBlip(_loc7_);
+			for each(var _local7 in g.shipManager.players) {
+				if(!_local7.player.isMe) {
+					createBlip(_local7);
 				}
 			}
-			for each (var _loc4_:* in g.spawnManager.spawners)
-			{
-				if (_loc4_.alive)
-				{
-					createBlip(_loc4_);
+			for each(var _local4 in g.spawnManager.spawners) {
+				if(_local4.alive) {
+					createBlip(_local4);
 				}
 			}
-			for each (var _loc3_:* in g.bodyManager.bodies)
-			{
-				if (_loc3_.type == "planet" || _loc3_.type == "junk yard" || _loc3_.type == "warpGate" || _loc3_.type == "shop" || _loc3_.type == "pirate" || _loc3_.type == "research" || _loc3_.type == "comet" || _loc3_.type == "sun")
-				{
-					createBlip(_loc3_);
+			for each(var _local3 in g.bodyManager.bodies) {
+				if(_local3.type == "planet" || _local3.type == "junk yard" || _local3.type == "warpGate" || _local3.type == "shop" || _local3.type == "pirate" || _local3.type == "research" || _local3.type == "comet" || _local3.type == "sun") {
+					createBlip(_local3);
 				}
 			}
-			for each (var _loc1_:* in g.dropManager.drops)
-			{
-				createBlip(_loc1_);
+			for each(var _local1 in g.dropManager.drops) {
+				createBlip(_local1);
 			}
-			for each (var _loc5_:* in g.bossManager.bosses)
-			{
-				if (_loc5_.alive)
-				{
-					createBlip(_loc5_);
+			for each(var _local5 in g.bossManager.bosses) {
+				if(_local5.alive) {
+					createBlip(_local5);
 				}
 			}
 			drawCenter();
@@ -98,113 +69,92 @@ package core.hud.components.radar
 			loaded = true;
 		}
 		
-		private function drawBackground():void
-		{
-			var _loc1_:Image = new Image(textureManager.getTextureGUIByTextureName("radar_bg"));
-			addChild(_loc1_);
+		private function drawBackground() : void {
+			var _local1:Image = new Image(textureManager.getTextureGUIByTextureName("radar_bg"));
+			addChild(_local1);
 		}
 		
-		private function drawCenter():void
-		{
-			var _loc1_:Image = new Image(textureManager.getTextureGUIByTextureName("radar_player"));
-			_loc1_.pivotX = _loc1_.pivotY = _loc1_.width / 2;
-			_loc1_.x = 60;
-			_loc1_.y = 60;
-			addChild(_loc1_);
+		private function drawCenter() : void {
+			var _local1:Image = new Image(textureManager.getTextureGUIByTextureName("radar_player"));
+			_local1.pivotX = _local1.pivotY = _local1.width / 2;
+			_local1.x = 60;
+			_local1.y = 60;
+			addChild(_local1);
 		}
 		
-		private function createBlip(param1:GameObject, param2:PlayerShip = null):void
-		{
-			var _loc3_:Blip = null;
-			_loc3_ = new Blip(param1, param2, g);
-			blips.push(_loc3_);
+		private function createBlip(go:GameObject, ps:PlayerShip = null) : void {
+			var _local3:Blip = null;
+			_local3 = new Blip(go,ps,g);
+			blips.push(_local3);
 		}
 		
-		public function add(param1:GameObject):void
-		{
-			var _loc2_:PlayerShip = null;
-			if (!loaded)
-			{
+		public function add(go:GameObject) : void {
+			var _local2:PlayerShip = null;
+			if(!loaded) {
 				return;
 			}
-			if (param1 is PlayerShip)
-			{
-				_loc2_ = param1 as PlayerShip;
-				if (_loc2_.player.isMe)
-				{
+			if(go is PlayerShip) {
+				_local2 = go as PlayerShip;
+				if(_local2.player.isMe) {
 					return;
 				}
 			}
-			createBlip(param1);
+			createBlip(go);
 		}
 		
-		public function remove(param1:GameObject):void
-		{
-			var _loc2_:Blip = null;
-			var _loc3_:int = 0;
-			if (!loaded || blips == null)
-			{
+		public function remove(go:GameObject) : void {
+			var _local2:Blip = null;
+			var _local3:int = 0;
+			if(!loaded || blips == null) {
 				return;
 			}
-			while (_loc3_ < blips.length)
-			{
-				_loc2_ = blips[_loc3_];
-				if (_loc2_.isGameObject(param1))
-				{
-					blips.splice(_loc3_, 1);
-					removeChild(_loc2_);
-					_loc2_.dispose();
+			while(_local3 < blips.length) {
+				_local2 = blips[_local3];
+				if(_local2.isGameObject(go)) {
+					blips.splice(_local3,1);
+					removeChild(_local2);
+					_local2.dispose();
 					return;
 				}
-				_loc3_++;
+				_local3++;
 			}
 		}
 		
-		public function update():void
-		{
-			var _loc2_:Blip = null;
-			var _loc3_:int = 0;
-			if (g.me.ship == null || g.me.isLanded)
-			{
+		public function update() : void {
+			var _local2:Blip = null;
+			var _local3:int = 0;
+			if(g.me.ship == null || g.me.isLanded) {
 				return;
 			}
 			updateCount++;
-			if (updateCount < 4)
-			{
+			if(updateCount < 4) {
 				return;
 			}
 			updateCount = 0;
 			quadBatch.clear();
-			var _loc1_:int = int(blips.length);
-			_loc3_ = 0;
-			while (_loc3_ < _loc1_)
-			{
-				_loc2_ = blips[_loc3_];
-				if (_loc2_.go.distanceToCamera <= 5000)
-				{
-					if (_loc2_.updateVisibility())
-					{
-						quadBatch.addMesh(_loc2_);
+			var _local1:int = int(blips.length);
+			_local3 = 0;
+			while(_local3 < _local1) {
+				_local2 = blips[_local3];
+				if(_local2.go.distanceToCamera <= 5000) {
+					if(_local2.updateVisibility()) {
+						quadBatch.addMesh(_local2);
 					}
 				}
-				_loc3_++;
+				_local3++;
 			}
 		}
 		
-		public function inHostileZone():Boolean
-		{
-			if (unitsDetected > 0)
-			{
+		public function inHostileZone() : Boolean {
+			if(unitsDetected > 0) {
 				return true;
 			}
 			return false;
 		}
 		
-		override public function dispose():void
-		{
-			for each (var _loc1_:* in blips)
-			{
-				_loc1_.dispose();
+		override public function dispose() : void {
+			for each(var _local1 in blips) {
+				_local1.dispose();
 			}
 			blips = null;
 		}
@@ -226,254 +176,180 @@ import starling.textures.Texture;
 import textures.ITextureManager;
 import textures.TextureLocator;
 
-class Blip extends Image
-{
+class Blip extends Image {
 	private static const scale:Number = 10;
-	
 	public static var radarRadius:Number = 60;
-	
 	public var go:GameObject;
-	
 	private var blipWidth:Number;
-	
 	private var blipHeight:Number;
-	
 	private var radius:Number;
-	
 	private var g:Game;
 	
-	public function Blip(param1:GameObject, param2:PlayerShip, param3:Game)
-	{
-		var _loc9_:Texture = null;
-		var _loc4_:* = 0;
-		var _loc8_:EnemyShip = null;
-		var _loc7_:Spawner = null;
-		var _loc6_:Body = null;
-		this.go = param1;
-		this.g = param3;
+	public function Blip(go:GameObject, ps:PlayerShip, g:Game) {
+		var _local9:Texture = null;
+		var _local4:* = 0;
+		var _local8:EnemyShip = null;
+		var _local7:Spawner = null;
+		var _local6:Body = null;
+		this.go = go;
+		this.g = g;
 		touchable = false;
-		var _loc5_:ITextureManager = TextureLocator.getService();
-		if (param1 is EnemyShip)
-		{
-			_loc8_ = param1 as EnemyShip;
-			if (_loc8_.hasFaction("AF"))
-			{
-				_loc4_ = Style.COLOR_FRIENDLY;
-				_loc9_ = _loc5_.getTextureGUIByTextureName("radar_player");
+		var _local5:ITextureManager = TextureLocator.getService();
+		if(go is EnemyShip) {
+			_local8 = go as EnemyShip;
+			if(_local8.hasFaction("AF")) {
+				_local4 = Style.COLOR_FRIENDLY;
+				_local9 = _local5.getTextureGUIByTextureName("radar_player");
+			} else {
+				_local4 = 0xff4444;
+				_local9 = _local5.getTextureGUIByTextureName("radar_enemy");
 			}
-			else
-			{
-				_loc4_ = 16729156;
-				_loc9_ = _loc5_.getTextureGUIByTextureName("radar_enemy");
+		} else if(go is PlayerShip) {
+			_local4 = Style.COLOR_FRIENDLY;
+			_local9 = _local5.getTextureGUIByTextureName("radar_player");
+		} else if(go is Spawner) {
+			_local7 = go as Spawner;
+			if(_local7.hasFaction("AF")) {
+				_local4 = Style.COLOR_FRIENDLY;
+				_local9 = _local5.getTextureGUIByTextureName("radar_comet");
+			} else {
+				_local4 = 0xff4444;
+				_local9 = _local5.getTextureGUIByTextureName("radar_spawner");
 			}
+		} else if(go is Body) {
+			_local6 = go as Body;
+			if(_local6.type == "planet") {
+				_local4 = 0x228822;
+				_local9 = _local5.getTextureGUIByTextureName("radar_planet");
+			} else if(_local6.type == "junk yard" || _local6.type == "warpGate" || _local6.type == "shop" || _local6.type == "pirate" || _local6.type == "research") {
+				_local4 = 0xaaaaaa;
+				_local9 = _local5.getTextureGUIByTextureName("radar_station");
+			} else if(_local6.type == "comet") {
+				_local4 = 0xaaaaff;
+				_local9 = _local5.getTextureGUIByTextureName("radar_comet");
+			} else if(_local6.type == "sun") {
+				_local4 = 0xffdd88;
+				_local9 = _local5.getTextureGUIByTextureName("radar_sun");
+			}
+		} else if(go is Drop) {
+			_local9 = _local5.getTextureGUIByTextureName("radar_drop");
+			_local4 = 0xeeeeee;
+		} else if(go is Boss) {
+			_local9 = _local5.getTextureGUIByTextureName("radar_boss");
+			_local4 = 0xff4444;
 		}
-		else if (param1 is PlayerShip)
-		{
-			_loc4_ = Style.COLOR_FRIENDLY;
-			_loc9_ = _loc5_.getTextureGUIByTextureName("radar_player");
-		}
-		else if (param1 is Spawner)
-		{
-			_loc7_ = param1 as Spawner;
-			if (_loc7_.hasFaction("AF"))
-			{
-				_loc4_ = Style.COLOR_FRIENDLY;
-				_loc9_ = _loc5_.getTextureGUIByTextureName("radar_comet");
-			}
-			else
-			{
-				_loc4_ = 16729156;
-				_loc9_ = _loc5_.getTextureGUIByTextureName("radar_spawner");
-			}
-		}
-		else if (param1 is Body)
-		{
-			_loc6_ = param1 as Body;
-			if (_loc6_.type == "planet")
-			{
-				_loc4_ = 2263074;
-				_loc9_ = _loc5_.getTextureGUIByTextureName("radar_planet");
-			}
-			else if (_loc6_.type == "junk yard" || _loc6_.type == "warpGate" || _loc6_.type == "shop" || _loc6_.type == "pirate" || _loc6_.type == "research")
-			{
-				_loc4_ = 11184810;
-				_loc9_ = _loc5_.getTextureGUIByTextureName("radar_station");
-			}
-			else if (_loc6_.type == "comet")
-			{
-				_loc4_ = 11184895;
-				_loc9_ = _loc5_.getTextureGUIByTextureName("radar_comet");
-			}
-			else if (_loc6_.type == "sun")
-			{
-				_loc4_ = 16768392;
-				_loc9_ = _loc5_.getTextureGUIByTextureName("radar_sun");
-			}
-		}
-		else if (param1 is Drop)
-		{
-			_loc9_ = _loc5_.getTextureGUIByTextureName("radar_drop");
-			_loc4_ = 15658734;
-		}
-		else if (param1 is Boss)
-		{
-			_loc9_ = _loc5_.getTextureGUIByTextureName("radar_boss");
-			_loc4_ = 16729156;
-		}
-		super(_loc9_);
-		color = _loc4_;
+		super(_local9);
+		color = _local4;
 		blipWidth = width;
 		blipHeight = height;
 		radius = Math.sqrt(0.25 * blipWidth * blipWidth + 0.25 * blipHeight * blipHeight) - 1;
 	}
 	
-	public function isGameObject(param1:GameObject):Boolean
-	{
-		if (this.go == param1)
-		{
+	public function isGameObject(go:GameObject) : Boolean {
+		if(this.go == go) {
 			return true;
 		}
 		return false;
 	}
 	
-	public function getGameObject():GameObject
-	{
+	public function getGameObject() : GameObject {
 		return go;
 	}
 	
-	public function updateVisibility():Boolean
-	{
-		var _loc3_:Spawner = null;
-		var _loc2_:Boss = null;
-		var _loc6_:PlayerShip = null;
-		var _loc1_:Player = null;
-		var _loc5_:EnemyShip = null;
-		var _loc4_:Boolean = Boolean(setRadarPos());
-		if (_loc4_)
-		{
+	public function updateVisibility() : Boolean {
+		var _local3:Spawner = null;
+		var _local2:Boss = null;
+		var _local6:PlayerShip = null;
+		var _local1:Player = null;
+		var _local5:EnemyShip = null;
+		var _local4:Boolean = Boolean(setRadarPos());
+		if(_local4) {
 			visible = true;
 			alpha = getRadarAlphaIndex();
-			if (go is Spawner)
-			{
-				_loc3_ = go as Spawner;
-				if (!_loc3_.alive)
-				{
+			if(go is Spawner) {
+				_local3 = go as Spawner;
+				if(!_local3.alive) {
 					visible = false;
 				}
-			}
-			else if (go is Boss)
-			{
-				_loc2_ = go as Boss;
-				if (!_loc2_.alive)
-				{
+			} else if(go is Boss) {
+				_local2 = go as Boss;
+				if(!_local2.alive) {
 					visible = false;
 				}
-			}
-			else if (go is PlayerShip)
-			{
-				_loc6_ = go as PlayerShip;
-				_loc1_ = _loc6_.player;
-				if (_loc6_.player == g.me)
-				{
+			} else if(go is PlayerShip) {
+				_local6 = go as PlayerShip;
+				_local1 = _local6.player;
+				if(_local6.player == g.me) {
 					color = Style.COLOR_LIGHT_GREEN;
-				}
-				else if (g.isSystemTypeDeathMatch())
-				{
+				} else if(g.isSystemTypeDeathMatch()) {
 					color = Style.COLOR_HOSTILE;
+				} else if(g.isSystemTypeDomination()) {
+					color = _local1.team == g.me.team ? Style.COLOR_LIGHT_GREEN : Style.COLOR_HOSTILE;
+				} else if(g.isSystemPvPEnabled()) {
+					color = _local1.group == g.me.group ? Style.COLOR_LIGHT_GREEN : Style.COLOR_HOSTILE;
+				} else {
+					color = _local1.group == g.me.group ? Style.COLOR_LIGHT_GREEN : Style.COLOR_FRIENDLY;
 				}
-				else if (g.isSystemTypeDomination())
-				{
-					color = _loc1_.team == g.me.team ? Style.COLOR_LIGHT_GREEN : Style.COLOR_HOSTILE;
-				}
-				else if (g.isSystemPvPEnabled())
-				{
-					color = _loc1_.group == g.me.group ? Style.COLOR_LIGHT_GREEN : Style.COLOR_HOSTILE;
-				}
-				else
-				{
-					color = _loc1_.group == g.me.group ? Style.COLOR_LIGHT_GREEN : Style.COLOR_FRIENDLY;
-				}
-			}
-			else if (go is EnemyShip)
-			{
-				_loc5_ = go as EnemyShip;
-				_loc6_ = _loc5_.owner;
-				if (_loc6_ != null)
-				{
-					if (_loc6_ == g.me.ship)
-					{
+			} else if(go is EnemyShip) {
+				_local5 = go as EnemyShip;
+				_local6 = _local5.owner;
+				if(_local6 != null) {
+					if(_local6 == g.me.ship) {
 						color = Style.COLOR_LIGHT_GREEN;
-					}
-					else if (g.isSystemTypeDeathMatch())
-					{
+					} else if(g.isSystemTypeDeathMatch()) {
 						color = Style.COLOR_HOSTILE;
-					}
-					else if (g.isSystemTypeDomination())
-					{
-						color = _loc6_.team == g.me.team ? Style.COLOR_LIGHT_GREEN : Style.COLOR_HOSTILE;
-					}
-					else if (g.isSystemPvPEnabled())
-					{
-						color = _loc6_.group == g.me.group ? Style.COLOR_LIGHT_GREEN : Style.COLOR_HOSTILE;
-					}
-					else
-					{
-						color = _loc6_.group == g.me.group ? Style.COLOR_LIGHT_GREEN : Style.COLOR_FRIENDLY;
+					} else if(g.isSystemTypeDomination()) {
+						color = _local6.team == g.me.team ? Style.COLOR_LIGHT_GREEN : Style.COLOR_HOSTILE;
+					} else if(g.isSystemPvPEnabled()) {
+						color = _local6.group == g.me.group ? Style.COLOR_LIGHT_GREEN : Style.COLOR_HOSTILE;
+					} else {
+						color = _local6.group == g.me.group ? Style.COLOR_LIGHT_GREEN : Style.COLOR_FRIENDLY;
 					}
 				}
 			}
-		}
-		else
-		{
+		} else {
 			visible = false;
 		}
 		return visible;
 	}
 	
-	private function setRadarPos(param1:Boolean = true):Boolean
-	{
-		var _loc4_:Number = Number(go.distanceToCamera);
-		var _loc2_:Number = Number(go.distanceToCameraX);
-		var _loc3_:Number = Number(go.distanceToCameraY);
-		if (_loc4_ >= 5000)
-		{
+	private function setRadarPos(showOnEdge:Boolean = true) : Boolean {
+		var _local4:Number = Number(go.distanceToCamera);
+		var _local2:Number = Number(go.distanceToCameraX);
+		var _local3:Number = Number(go.distanceToCameraY);
+		if(_local4 >= 5000) {
 			return false;
 		}
-		if (_loc4_ < 2500 - radius * scale)
-		{
-			_loc2_ /= 2500;
-			_loc3_ /= 2500;
-			x = _loc2_ * radarRadius + radarRadius - blipWidth / 2;
-			y = _loc3_ * radarRadius + radarRadius - blipHeight / 2;
+		if(_local4 < 2500 - radius * scale) {
+			_local2 /= 2500;
+			_local3 /= 2500;
+			x = _local2 * radarRadius + radarRadius - blipWidth / 2;
+			y = _local3 * radarRadius + radarRadius - blipHeight / 2;
 			return true;
 		}
-		if (param1)
-		{
-			_loc2_ /= _loc4_;
-			_loc3_ /= _loc4_;
-			_loc2_ *= radarRadius * scale - radius * scale;
-			_loc3_ *= radarRadius * scale - radius * scale;
-			x = _loc2_ / scale + radarRadius - blipWidth / 2;
-			y = _loc3_ / scale + radarRadius - blipHeight / 2;
+		if(showOnEdge) {
+			_local2 /= _local4;
+			_local3 /= _local4;
+			_local2 *= radarRadius * scale - radius * scale;
+			_local3 *= radarRadius * scale - radius * scale;
+			x = _local2 / scale + radarRadius - blipWidth / 2;
+			y = _local3 / scale + radarRadius - blipHeight / 2;
 			return true;
 		}
 		return false;
 	}
 	
-	private function getRadarAlphaIndex():Number
-	{
-		var _loc3_:Number = 5000;
-		var _loc2_:Number = 2500;
-		var _loc1_:Number = Number(go.distanceToCamera);
-		if (_loc1_ < _loc3_ && _loc1_ >= _loc2_)
-		{
-			return 1 - (_loc1_ - _loc2_) / (_loc3_ - _loc2_);
+	private function getRadarAlphaIndex() : Number {
+		var _local3:Number = 5000;
+		var _local2:Number = 2500;
+		var _local1:Number = Number(go.distanceToCamera);
+		if(_local1 < _local3 && _local1 >= _local2) {
+			return 1 - (_local1 - _local2) / (_local3 - _local2);
 		}
 		return 1;
 	}
 	
-	override public function dispose():void
-	{
+	override public function dispose() : void {
 		go = null;
 		texture.dispose();
 		super.dispose();

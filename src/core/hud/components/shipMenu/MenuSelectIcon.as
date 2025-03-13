@@ -1,5 +1,4 @@
-package core.hud.components.shipMenu
-{
+package core.hud.components.shipMenu {
 	import core.hud.components.Text;
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -10,53 +9,28 @@ package core.hud.components.shipMenu
 	import textures.TextureLocator;
 	import textures.TextureManager;
 	
-	public class MenuSelectIcon extends Sprite
-	{
+	public class MenuSelectIcon extends Sprite {
 		private static const WIDTH:int = 40;
-		
 		private static const HEIGHT:int = 40;
-		
 		public static const BITMAP_WEAPON:String = "slot_weapon.png";
-		
 		public static const BITMAP_ARTIFACT:String = "slot_artifact.png";
-		
 		public static const BITMAP_CREW:String = "slot_crew.png";
-		
 		public static const BITMAP_FRIEND:String = "slot_friend.png";
-		
 		private var bmp:Image;
-		
 		private var bgrBmp:Image;
-		
 		private var lockBmp:Image;
-		
 		public var number:int = 0;
-		
 		private var _captionText:Text;
-		
 		private var _levelText:Text;
-		
 		private var _numberText:Text;
-		
 		private var textureManager:ITextureManager;
-		
 		private var _locked:Boolean;
-		
 		private var _inUse:Boolean;
 		
-		public function MenuSelectIcon(param1:int, param2:Texture, param3:String, param4:Boolean, param5:Boolean, param6:Boolean, param7:int = 0, param8:String = null)
-		{
+		public function MenuSelectIcon(number:int, texture:Texture, type:String, locked:Boolean, inUse:Boolean, enabled:Boolean, level:int = 0, caption:String = null) {
 			var that:Sprite;
 			var texture2:Texture;
 			var texture3:Texture;
-			var number:int = param1;
-			var texture:Texture = param2;
-			var type:String = param3;
-			var locked:Boolean = param4;
-			var inUse:Boolean = param5;
-			var enabled:Boolean = param6;
-			var level:int = param7;
-			var caption:String = param8;
 			_captionText = new Text();
 			_levelText = new Text();
 			_numberText = new Text();
@@ -73,31 +47,24 @@ package core.hud.components.shipMenu
 			this.inUse = inUse;
 			this.number = number;
 			that = this;
-			if (enabled)
-			{
+			if(enabled) {
 				useHandCursor = true;
-				_numberText.color = 16777215;
-				addEventListener("touch", function(param1:TouchEvent):void
-				{
-					var _loc2_:ColorMatrixFilter = null;
-					if (param1.interactsWith(that))
-					{
-						_loc2_ = new ColorMatrixFilter();
-						_loc2_.adjustBrightness(0.2);
-						filter = _loc2_;
-					}
-					else if (filter)
-					{
+				_numberText.color = 0xffffff;
+				addEventListener("touch",function(param1:TouchEvent):void {
+					var _local2:ColorMatrixFilter = null;
+					if(param1.interactsWith(that)) {
+						_local2 = new ColorMatrixFilter();
+						_local2.adjustBrightness(0.2);
+						filter = _local2;
+					} else if(filter) {
 						filter.dispose();
 						filter = null;
 					}
 				});
-			}
-			else
-			{
+			} else {
 				useHandCursor = false;
 				alpha = 0.3;
-				_numberText.color = 11119017;
+				_numberText.color = 0xa9a9a9;
 			}
 			_numberText.text = number.toString();
 			_numberText.x = 40 / 2 - _numberText.width / 2 + 1;
@@ -118,67 +85,58 @@ package core.hud.components.shipMenu
 			addChild(_numberText);
 		}
 		
-		public function get locked():Boolean
-		{
+		public function get locked() : Boolean {
 			return _locked;
 		}
 		
-		public function set locked(param1:Boolean):void
-		{
-			_locked = param1;
-			lockBmp.visible = param1;
-			bgrBmp.visible = param1;
-			if (param1)
-			{
+		public function set locked(value:Boolean) : void {
+			_locked = value;
+			lockBmp.visible = value;
+			bgrBmp.visible = value;
+			if(value) {
 				_numberText.size = 10;
 				_numberText.y = 17;
 				bmp.visible = false;
 				_captionText.visible = false;
 				_levelText.visible = false;
-			}
-			else
-			{
+			} else {
 				_numberText.size = 16;
 				_numberText.y = 10;
 				_numberText.touchable = true;
 			}
 		}
 		
-		public function changeBitmapData(param1:Texture):void
-		{
-			bmp.texture = param1;
+		public function changeBitmapData(texture:Texture) : void {
+			bmp.texture = texture;
 		}
 		
-		public function set inUse(param1:Boolean):void
-		{
-			_inUse = param1;
-			bgrBmp.visible = !param1;
-			bmp.visible = param1;
-			_numberText.visible = !param1;
-			_captionText.visible = param1;
-			_levelText.visible = param1;
+		public function set inUse(value:Boolean) : void {
+			_inUse = value;
+			bgrBmp.visible = !value;
+			bmp.visible = value;
+			_numberText.visible = !value;
+			_captionText.visible = value;
+			_levelText.visible = value;
 		}
 		
-		public function set caption(param1:String):void
-		{
-			_captionText.glowIn(0, 1, 2, 8);
-			_captionText.color = 16777215;
-			_captionText.text = param1;
+		public function set caption(s:String) : void {
+			_captionText.glowIn(0,1,2,8);
+			_captionText.color = 0xffffff;
+			_captionText.text = s;
 			_captionText.x = 38 - _captionText.width;
 			_captionText.y = 2;
 		}
 		
-		public function set level(param1:int):void
-		{
-			if (param1 == 0)
-			{
+		public function set level(l:int) : void {
+			if(l == 0) {
 				return;
 			}
-			_levelText.text = param1.toString();
-			_levelText.color = 11119017;
+			_levelText.text = l.toString();
+			_levelText.color = 0xa9a9a9;
 			_levelText.center();
 			_levelText.x = 20;
 			_levelText.y = 48;
 		}
 	}
 }
+

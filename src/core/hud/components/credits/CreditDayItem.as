@@ -1,5 +1,4 @@
-package core.hud.components.credits
-{
+package core.hud.components.credits {
 	import core.hud.components.Button;
 	import core.hud.components.Style;
 	import core.hud.components.Text;
@@ -9,49 +8,27 @@ package core.hud.components.credits
 	import starling.display.Quad;
 	import starling.display.Sprite;
 	
-	public class CreditDayItem extends CreditBaseItem
-	{
+	public class CreditDayItem extends CreditBaseItem {
 		public static var PRICE_1_DAY:int = 75;
-		
 		public static var PRICE_3_DAY:int = 215;
-		
 		public static var PRICE_7_DAY:int = 425;
-		
-		protected var buyContainer:Sprite;
-		
-		protected var descriptionContainer:Sprite;
-		
-		protected var aquiredContainer:Sprite;
-		
-		protected var waitingContainer:Sprite;
-		
+		protected var buyContainer:Sprite = new Sprite();
+		protected var descriptionContainer:Sprite = new Sprite();
+		protected var aquiredContainer:Sprite = new Sprite();
+		protected var waitingContainer:Sprite = new Sprite();
 		protected var description:String;
-		
 		protected var confirmText:String = "";
-		
 		protected var preview:String;
-		
-		protected var aquiredText:Text;
-		
+		protected var aquiredText:Text = new Text();
 		protected var expiryTime:Number;
-		
 		protected var aquired:Boolean = false;
+		protected var bundles:Array = [];
 		
-		protected var bundles:Array;
-		
-		public function CreditDayItem(param1:Game, param2:Sprite)
-		{
-			buyContainer = new Sprite();
-			descriptionContainer = new Sprite();
-			aquiredContainer = new Sprite();
-			waitingContainer = new Sprite();
-			aquiredText = new Text();
-			bundles = [];
-			super(param1, param2);
+		public function CreditDayItem(g:Game, parent:Sprite) {
+			super(g,parent);
 		}
 		
-		override protected function load():void
-		{
+		override protected function load() : void {
 			super.load();
 			infoContainer.x = 40;
 			addBuyOptions();
@@ -62,57 +39,48 @@ package core.hud.components.credits
 			updateContainers();
 		}
 		
-		protected function addBuyOptions():void
-		{
-			var _loc4_:int = 0;
-			var _loc2_:Object = null;
-			var _loc1_:CreditLabel = null;
-			var _loc5_:int = 0;
-			var _loc3_:int = 0;
-			_loc4_ = 0;
-			while (_loc4_ < bundles.length)
-			{
-				_loc2_ = bundles[_loc4_];
-				_loc3_ = 40 * _loc4_;
-				createButton(_loc2_, _loc3_);
-				_loc1_ = new CreditLabel();
-				_loc1_.x = 170;
-				_loc1_.y = _loc3_;
-				_loc1_.text = _loc2_.cost;
-				_loc1_.alignRight();
-				buyContainer.addChild(_loc1_);
-				_loc4_++;
+		protected function addBuyOptions() : void {
+			var _local4:int = 0;
+			var _local2:Object = null;
+			var _local1:CreditLabel = null;
+			var _local5:int = 0;
+			var _local3:int = 0;
+			_local4 = 0;
+			while(_local4 < bundles.length) {
+				_local2 = bundles[_local4];
+				_local3 = 40 * _local4;
+				createButton(_local2,_local3);
+				_local1 = new CreditLabel();
+				_local1.x = 170;
+				_local1.y = _local3;
+				_local1.text = _local2.cost;
+				_local1.alignRight();
+				buyContainer.addChild(_local1);
+				_local4++;
 			}
 			buyContainer.x = 30;
 			infoContainer.addChild(buyContainer);
 		}
 		
-		private function createButton(param1:Object, param2:int):void
-		{
+		private function createButton(obj:Object, y:int) : void {
 			var button:Button;
-			var obj:Object = param1;
-			var y:int = param2;
 			var text:String = "Buy " + obj.days + " day";
-			if (obj.days > 1)
-			{
+			if(obj.days > 1) {
 				text += "s";
 			}
-			button = new Button(function():void
-			{
-				var buyConfirm:CreditBuyBox = new CreditBuyBox(g, obj.cost, confirmText);
-				buyConfirm.addEventListener("accept", function():void
-				{
+			button = new Button(function():void {
+				var buyConfirm:CreditBuyBox = new CreditBuyBox(g,obj.cost,confirmText);
+				buyConfirm.addEventListener("accept",function():void {
 					onBuy(obj.days);
 					buyConfirm.removeEventListeners();
 					button.enabled = true;
 				});
-				buyConfirm.addEventListener("close", function():void
-				{
+				buyConfirm.addEventListener("close",function():void {
 					buyConfirm.removeEventListeners();
 					button.enabled = true;
 				});
 				g.addChildToOverlay(buyConfirm);
-			}, text, "positive");
+			},text,"positive");
 			button.x = 20;
 			button.y = y;
 			button.width = 100;
@@ -120,88 +88,80 @@ package core.hud.components.credits
 			buyContainer.addChild(button);
 		}
 		
-		protected function addDescription():void
-		{
-			var _loc3_:int = 0;
-			var _loc2_:Image = null;
-			var _loc4_:Quad = null;
-			var _loc1_:Text = new Text();
-			_loc1_.text = description;
-			_loc1_.color = 11184810;
-			_loc1_.width = 300;
-			_loc1_.height = 300;
-			_loc1_.wordWrap = true;
-			descriptionContainer.addChild(_loc1_);
-			if (preview != null)
-			{
-				_loc3_ = 4;
-				_loc2_ = new Image(textureManager.getTextureGUIByTextureName(preview));
-				_loc2_.x = 4;
-				_loc2_.y = _loc1_.height + 10;
-				_loc4_ = new Quad(_loc2_.width + 6, _loc2_.height + 6, 11184810);
-				_loc4_.x = _loc2_.x - 3;
-				_loc4_.y = _loc2_.y - 3;
-				descriptionContainer.addChild(_loc4_);
-				descriptionContainer.addChild(_loc2_);
+		protected function addDescription() : void {
+			var _local3:int = 0;
+			var _local2:Image = null;
+			var _local4:Quad = null;
+			var _local1:Text = new Text();
+			_local1.text = description;
+			_local1.color = 0xaaaaaa;
+			_local1.width = 5 * 60;
+			_local1.height = 5 * 60;
+			_local1.wordWrap = true;
+			descriptionContainer.addChild(_local1);
+			if(preview != null) {
+				_local3 = 4;
+				_local2 = new Image(textureManager.getTextureGUIByTextureName(preview));
+				_local2.x = 4;
+				_local2.y = _local1.height + 10;
+				_local4 = new Quad(_local2.width + 6,_local2.height + 6,0xaaaaaa);
+				_local4.x = _local2.x - 3;
+				_local4.y = _local2.y - 3;
+				descriptionContainer.addChild(_local4);
+				descriptionContainer.addChild(_local2);
 			}
 			descriptionContainer.y = 130;
 			infoContainer.addChild(descriptionContainer);
 		}
 		
-		protected function addWaiting():void
-		{
-			var _loc1_:Text = new Text();
-			_loc1_.text = "waiting...";
-			_loc1_.x = 60;
-			_loc1_.y = 40;
-			waitingContainer.addChild(_loc1_);
+		protected function addWaiting() : void {
+			var _local1:Text = new Text();
+			_local1.text = "waiting...";
+			_local1.x = 60;
+			_local1.y = 40;
+			waitingContainer.addChild(_local1);
 			waitingContainer.visible = false;
 			infoContainer.addChild(waitingContainer);
 		}
 		
-		protected function addAquired():void
-		{
+		protected function addAquired() : void {
 			aquiredText.x = 0;
 			aquiredText.y = 40;
 			aquiredText.color = Style.COLOR_HIGHLIGHT;
 			aquiredText.wordWrap = true;
-			aquiredText.width = 300;
+			aquiredText.width = 5 * 60;
 			aquiredContainer.addChild(aquiredText);
 			aquiredContainer.visible = false;
 			infoContainer.addChild(aquiredContainer);
 		}
 		
-		protected function updateContainers():void
-		{
+		protected function updateContainers() : void {
 			buyContainer.visible = !aquired;
 			aquiredContainer.visible = aquired;
 			waitingContainer.visible = false;
 		}
 		
-		protected function onBuy(param1:int):void
-		{
+		protected function onBuy(days:int) : void {
 			buyContainer.visible = false;
 			waitingContainer.visible = true;
 		}
 		
-		protected function updateAquiredText():void
-		{
-			var _loc2_:Number = NaN;
-			var _loc1_:Date = null;
-			if (aquired)
-			{
-				_loc2_ = expiryTime - g.time;
-				_loc1_ = new Date();
-				_loc1_.milliseconds += _loc2_;
-				aquiredText.text = "Aquired!\nActive until: " + _loc1_.toLocaleDateString();
+		protected function updateAquiredText() : void {
+			var _local2:Number = NaN;
+			var _local1:Date = null;
+			if(aquired) {
+				_local2 = expiryTime - g.time;
+				_local1 = new Date();
+				_local1.milliseconds += _local2;
+				aquiredText.text = "Aquired!\nActive until: " + _local1.toLocaleDateString();
 			}
 		}
 		
-		protected function showFailed(param1:String):void
-		{
-			g.showErrorDialog(param1);
+		protected function showFailed(s:String) : void {
+			g.showErrorDialog(s);
 			buyContainer.visible = true;
 			waitingContainer.visible = false;
 		}
 	}
 }
+

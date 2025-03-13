@@ -1,5 +1,4 @@
-package core.hud.components
-{
+package core.hud.components {
 	import core.scene.SceneBase;
 	import feathers.controls.Label;
 	import feathers.controls.ScrollContainer;
@@ -10,207 +9,160 @@ package core.hud.components
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class ToolTip
-	{
+	public class ToolTip {
 		private static var g:SceneBase;
-		
 		private static var toolTips:Vector.<ToolTip> = new Vector.<ToolTip>();
-		
 		private var container:ScrollContainer;
-		
 		private var target:DisplayObject;
-		
 		private var s:String;
-		
 		private var imgs:Vector.<Image>;
-		
 		private var imgsData:Array;
-		
 		private var maxWidth:int;
-		
 		private var hover:Boolean;
-		
 		private var c:uint;
-		
 		public var type:String;
 		
-		public function ToolTip(param1:SceneBase, param2:DisplayObject, param3:String, param4:Array = null, param5:String = "", param6:int = 200)
-		{
+		public function ToolTip(m:SceneBase, target:DisplayObject, tooltip:String, images:Array = null, type:String = "", maxWidth:int = 200) {
 			super();
-			g = param1;
-			this.type = param5;
-			this.maxWidth = param6;
-			this.target = param2;
-			this.imgsData = param4;
+			g = m;
+			this.type = type;
+			this.maxWidth = maxWidth;
+			this.target = target;
+			this.imgsData = images;
 			imgs = new Vector.<Image>();
-			for each (var _loc7_:* in imgsData)
-			{
-				addImage(_loc7_);
+			for each(var _local7 in imgsData) {
+				addImage(_local7);
 			}
-			s = param3;
+			s = tooltip;
 			toolTips.push(this);
 			addListeners();
 		}
 		
-		public static function disposeType(param1:String = "all"):void
-		{
-			var _loc2_:ToolTip = null;
-			var _loc3_:int = 0;
-			if (g == null)
-			{
+		public static function disposeType(s:String = "all") : void {
+			var _local2:ToolTip = null;
+			var _local3:int = 0;
+			if(g == null) {
 				return;
 			}
-			_loc3_ = toolTips.length - 1;
-			while (_loc3_ > -1)
-			{
-				_loc2_ = toolTips[_loc3_];
-				if (_loc2_.type == param1 || param1 == "all")
-				{
-					_loc2_.dispose();
-					toolTips.splice(_loc3_, 1);
+			_local3 = toolTips.length - 1;
+			while(_local3 > -1) {
+				_local2 = toolTips[_local3];
+				if(_local2.type == s || s == "all") {
+					_local2.dispose();
+					toolTips.splice(_local3,1);
 				}
-				_loc3_--;
+				_local3--;
 			}
 		}
 		
-		public static function disposeAll():void
-		{
+		public static function disposeAll() : void {
 			disposeType();
 		}
 		
-		public function set text(param1:String):void
-		{
-			s = param1;
+		public function set text(value:String) : void {
+			s = value;
 		}
 		
-		public function set color(param1:uint):void
-		{
-			c = param1;
+		public function set color(value:uint) : void {
+			c = value;
 		}
 		
-		public function addImage(param1:Object):void
-		{
-			var _loc2_:ITextureManager = TextureLocator.getService();
-			var _loc3_:Image = new Image(_loc2_.getTextureGUIByTextureName(param1.img));
-			_loc3_.x = param1.x;
-			_loc3_.y = param1.y;
-			imgs.push(_loc3_);
+		public function addImage(obj:Object) : void {
+			var _local2:ITextureManager = TextureLocator.getService();
+			var _local3:Image = new Image(_local2.getTextureGUIByTextureName(obj.img));
+			_local3.x = obj.x;
+			_local3.y = obj.y;
+			imgs.push(_local3);
 		}
 		
-		private function mOver(param1:TouchEvent):void
-		{
-			var _loc3_:Label = null;
-			if (s == null || s == "")
-			{
+		private function mOver(e:TouchEvent) : void {
+			var _local3:Label = null;
+			if(s == null || s == "") {
 				return;
 			}
-			if (hover && container)
-			{
-				container.x = param1.getTouch(target).globalX + 10;
-				container.y = param1.getTouch(target).globalY + 14;
-				if (container.x + container.width + 5 > g.stage.stageWidth)
-				{
+			if(hover && container) {
+				container.x = e.getTouch(target).globalX + 10;
+				container.y = e.getTouch(target).globalY + 14;
+				if(container.x + container.width + 5 > g.stage.stageWidth) {
 					container.x = g.stage.stageWidth - container.width - 5;
 				}
-				if (container.y + container.height + 5 > g.stage.stageHeight)
-				{
+				if(container.y + container.height + 5 > g.stage.stageHeight) {
 					container.y = g.stage.stageHeight - container.height - 35;
 				}
 				return;
 			}
 			hover = true;
-			if (container != null)
-			{
+			if(container != null) {
 				g.addChildToOverlay(container);
-			}
-			else
-			{
+			} else {
 				container = new ScrollContainer();
 				container.touchable = false;
-				container.backgroundSkin = new Quad(40, 5, 0);
+				container.backgroundSkin = new Quad(40,5,0);
 				container.padding = 4;
 				g.addChildToOverlay(container);
-				_loc3_ = new Label();
-				_loc3_.styleNameList.add("tooltip");
-				_loc3_.text = s;
-				_loc3_.maxWidth = maxWidth;
-				container.addChild(_loc3_);
-				_loc3_.textRendererProperties.textFormat.color = c != 0 ? c : Style.COLOR_HIGHLIGHT;
-				_loc3_.validate();
-				_loc3_.width += 5;
-				_loc3_.invalidate();
-				for each (var _loc2_:* in imgs)
-				{
-					container.addChild(_loc2_);
+				_local3 = new Label();
+				_local3.styleNameList.add("tooltip");
+				_local3.text = s;
+				_local3.maxWidth = maxWidth;
+				container.addChild(_local3);
+				_local3.textRendererProperties.textFormat.color = c != 0 ? c : Style.COLOR_HIGHLIGHT;
+				_local3.validate();
+				_local3.width += 5;
+				_local3.invalidate();
+				for each(var _local2 in imgs) {
+					container.addChild(_local2);
 				}
 			}
-			container.x = param1.getTouch(target).globalX + 10;
-			container.y = param1.getTouch(target).globalY + 14;
-			if (container.x + container.width + 5 > g.stage.stageWidth)
-			{
+			container.x = e.getTouch(target).globalX + 10;
+			container.y = e.getTouch(target).globalY + 14;
+			if(container.x + container.width + 5 > g.stage.stageWidth) {
 				container.x = g.stage.stageWidth - container.width - 5;
 			}
-			if (container.y + container.height + 5 > g.stage.stageHeight)
-			{
+			if(container.y + container.height + 5 > g.stage.stageHeight) {
 				container.y = g.stage.stageHeight - container.height - 35;
 			}
 		}
 		
-		private function mOut(param1:TouchEvent):void
-		{
-			if (!hover)
-			{
+		private function mOut(e:TouchEvent) : void {
+			if(!hover) {
 				return;
 			}
 			hover = false;
-			if (container != null)
-			{
-				g.removeChildFromOverlay(container, true);
+			if(container != null) {
+				g.removeChildFromOverlay(container,true);
 				container = null;
 			}
 		}
 		
-		private function onClick(param1:TouchEvent):void
-		{
+		private function onClick(e:TouchEvent) : void {
 			hover = false;
-			if (container != null)
-			{
-				g.removeChildFromOverlay(container, true);
+			if(container != null) {
+				g.removeChildFromOverlay(container,true);
 				container = null;
 			}
 		}
 		
-		private function onTouch(param1:TouchEvent):void
-		{
-			if (param1.getTouch(target, "ended"))
-			{
-				onClick(param1);
-			}
-			else if (param1.interactsWith(target))
-			{
-				mOver(param1);
-			}
-			else if (!param1.interactsWith(target))
-			{
-				mOut(param1);
+		private function onTouch(e:TouchEvent) : void {
+			if(e.getTouch(target,"ended")) {
+				onClick(e);
+			} else if(e.interactsWith(target)) {
+				mOver(e);
+			} else if(!e.interactsWith(target)) {
+				mOut(e);
 			}
 		}
 		
-		public function removeListeners():void
-		{
-			target.removeEventListener("touch", onTouch);
+		public function removeListeners() : void {
+			target.removeEventListener("touch",onTouch);
 		}
 		
-		private function addListeners():void
-		{
-			target.addEventListener("touch", onTouch);
+		private function addListeners() : void {
+			target.addEventListener("touch",onTouch);
 		}
 		
-		public function dispose():void
-		{
-			if (container != null)
-			{
-				g.removeChildFromOverlay(container, true);
+		public function dispose() : void {
+			if(container != null) {
+				g.removeChildFromOverlay(container,true);
 				container = null;
 			}
 			removeListeners();
@@ -220,3 +172,4 @@ package core.hud.components
 		}
 	}
 }
+

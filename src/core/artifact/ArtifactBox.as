@@ -1,5 +1,4 @@
-package core.artifact
-{
+package core.artifact {
 	import com.greensock.TweenMax;
 	import core.hud.components.ToolTip;
 	import core.player.CrewMember;
@@ -13,108 +12,77 @@ package core.artifact
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class ArtifactBox extends Sprite
-	{
+	public class ArtifactBox extends Sprite {
 		private var p:Player;
-		
 		private var g:Game;
-		
 		public var a:Artifact;
-		
 		private var textureManager:ITextureManager;
-		
 		private var artifactImage:Image;
-		
 		private var frame:Image;
-		
 		private var toolTip:ToolTip;
-		
-		private var colors:Array;
-		
+		private var colors:Array = [0xaaaaaa,0x4488ff,0x44ee44,0xff44ff,16761634];
 		public var locked:Boolean;
-		
 		public var unlockable:Boolean;
-		
 		public var slot:int;
 		
-		public function ArtifactBox(param1:Game, param2:Artifact)
-		{
-			colors = [11184810, 4491519, 4517444, 16729343, 16761634];
+		public function ArtifactBox(g:Game, a:Artifact) {
 			super();
-			this.g = param1;
-			this.p = param1.me;
-			this.a = param2;
-			toolTip = new ToolTip(param1, this, "", null, "artifactBox");
+			this.g = g;
+			this.p = g.me;
+			this.a = a;
+			toolTip = new ToolTip(g,this,"",null,"artifactBox");
 			textureManager = TextureLocator.getService();
 		}
 		
-		public function update():void
-		{
+		public function update() : void {
 			removeChildren();
 			drawFrame();
 			toolTip.text = "";
 			useHandCursor = false;
-			removeEventListener("touch", onTouch);
-			if (locked)
-			{
+			removeEventListener("touch",onTouch);
+			if(locked) {
 				setLocked();
-				if (unlockable)
-				{
+				if(unlockable) {
 					toolTip.text = "Locked slot, click to buy.";
 					addListeners();
 				}
-			}
-			else if (a != null)
-			{
+			} else if(a != null) {
 				setArtifact();
 				addListeners();
 				addUpgradeIcon();
 			}
 		}
 		
-		private function addUpgradeIcon():void
-		{
-			var _loc1_:Image = null;
-			if (a.upgrading)
-			{
-				_loc1_ = new Image(textureManager.getTextureGUIByTextureName("upgrading"));
+		private function addUpgradeIcon() : void {
+			var _local1:Image = null;
+			if(a.upgrading) {
+				_local1 = new Image(textureManager.getTextureGUIByTextureName("upgrading"));
+			} else if(a.upgraded >= 10) {
+				_local1 = new Image(textureManager.getTextureGUIByTextureName("upgraded_max"));
+			} else if(a.upgraded > 6) {
+				_local1 = new Image(textureManager.getTextureGUIByTextureName("upgraded3"));
+			} else if(a.upgraded > 3) {
+				_local1 = new Image(textureManager.getTextureGUIByTextureName("upgraded2"));
+			} else if(a.upgraded > 0) {
+				_local1 = new Image(textureManager.getTextureGUIByTextureName("upgraded"));
 			}
-			else if (a.upgraded >= 10)
-			{
-				_loc1_ = new Image(textureManager.getTextureGUIByTextureName("upgraded_max"));
-			}
-			else if (a.upgraded > 6)
-			{
-				_loc1_ = new Image(textureManager.getTextureGUIByTextureName("upgraded3"));
-			}
-			else if (a.upgraded > 3)
-			{
-				_loc1_ = new Image(textureManager.getTextureGUIByTextureName("upgraded2"));
-			}
-			else if (a.upgraded > 0)
-			{
-				_loc1_ = new Image(textureManager.getTextureGUIByTextureName("upgraded"));
-			}
-			if (_loc1_ != null)
-			{
-				_loc1_.x = 35;
-				_loc1_.y = 11;
-				addChild(_loc1_);
+			if(_local1 != null) {
+				_local1.x = 35;
+				_local1.y = 11;
+				addChild(_local1);
 			}
 		}
 		
-		private function drawFrame():void
-		{
+		private function drawFrame() : void {
 			frame = new Image(textureManager.getTextureGUIByTextureName("artifact_box"));
 			addChild(frame);
 		}
 		
-		private function setArtifact():void
-		{
-			var _loc4_:int = 0;
-			var _loc3_:CrewMember = null;
-			var _loc2_:String = null;
-			frame.filter = new GlowFilter(16777215, 1, 8, 1);
+		private function setArtifact() : void {
+			var _local4:int = 0;
+			var _local3:CrewMember = null;
+			var _local2:String = null;
+			frame.filter = new GlowFilter(0xffffff,1,8,1);
 			frame.filter.cache();
 			artifactImage = new Image(textureManager.getTextureGUIByKey(a.bitmap));
 			addChild(artifactImage);
@@ -124,95 +92,79 @@ package core.artifact
 			artifactImage.y = 8 + artifactImage.height / 2 * 0.5;
 			artifactImage.scaleX = 0;
 			artifactImage.scaleY = 0;
-			TweenMax.to(artifactImage, 0.3, {"scaleX": 0.5, "scaleY": 0.5});
-			if (!a.revealed)
-			{
+			TweenMax.to(artifactImage,0.3,{
+				"scaleX":0.5,
+				"scaleY":0.5
+			});
+			if(!a.revealed) {
 				toolTip.text = "Click to reveal!";
 				return;
 			}
-			_loc4_ = 0;
-			while (_loc4_ < p.crewMembers.length)
-			{
-				_loc3_ = p.crewMembers[_loc4_];
-				if (_loc3_.artifact == a.id)
-				{
-					a.upgradeTime = _loc3_.artifactEnd;
+			_local4 = 0;
+			while(_local4 < p.crewMembers.length) {
+				_local3 = p.crewMembers[_local4];
+				if(_local3.artifact == a.id) {
+					a.upgradeTime = _local3.artifactEnd;
 				}
-				_loc4_++;
+				_local4++;
 			}
-			_loc2_ = "<font color='#ffaa44'>" + a.name + "</font><br>Level " + a.levelPotential + ", strength " + a.level + "<br>";
-			if (a.upgraded > 0)
-			{
-				_loc2_ += a.upgraded + " upgrades<br>";
+			_local2 = "<font color=\'#ffaa44\'>" + a.name + "</font><br>Level " + a.levelPotential + ", strength " + a.level + "<br>";
+			if(a.upgraded > 0) {
+				_local2 += a.upgraded + " upgrades<br>";
 			}
-			if (a.upgrading)
-			{
-				_loc2_ += "Upgrading: " + Util.getFormattedTime(a.upgradeTime - g.time) + "<br>";
+			if(a.upgrading) {
+				_local2 += "Upgrading: " + Util.getFormattedTime(a.upgradeTime - g.time) + "<br>";
 			}
-			for each (var _loc1_:* in a.stats)
-			{
-				_loc2_ += ArtifactStat.parseTextFromStatType(_loc1_.type, _loc1_.value) + "<br>";
+			for each(var _local1 in a.stats) {
+				_local2 += ArtifactStat.parseTextFromStatType(_local1.type,_local1.value) + "<br>";
 			}
-			toolTip.text = _loc2_;
+			toolTip.text = _local2;
 			toolTip.color = a.getColor();
 		}
 		
-		private function setLocked():void
-		{
-			var _loc1_:Image = new Image(textureManager.getTextureGUIByTextureName("lock"));
-			_loc1_.scaleX = _loc1_.scaleY = 1.2;
-			_loc1_.x = 16;
-			_loc1_.y = 12;
-			addChild(_loc1_);
+		private function setLocked() : void {
+			var _local1:Image = new Image(textureManager.getTextureGUIByTextureName("lock"));
+			_local1.scaleX = _local1.scaleY = 1.2;
+			_local1.x = 16;
+			_local1.y = 12;
+			addChild(_local1);
 		}
 		
-		private function addListeners():void
-		{
+		private function addListeners() : void {
 			useHandCursor = true;
-			addEventListener("touch", onTouch);
+			addEventListener("touch",onTouch);
 		}
 		
-		private function onTouch(param1:TouchEvent):void
-		{
-			if (param1.getTouch(this, "ended"))
-			{
-				onClick(param1);
+		private function onTouch(e:TouchEvent) : void {
+			if(e.getTouch(this,"ended")) {
+				onClick(e);
 			}
 		}
 		
-		private function onClick(param1:TouchEvent):void
-		{
-			if (locked && unlockable)
-			{
-				dispatchEventWith("artifactSlotUnlock", true);
-			}
-			else
-			{
-				dispatchEventWith("activeArtifactRemoved", true);
+		private function onClick(e:TouchEvent) : void {
+			if(locked && unlockable) {
+				dispatchEventWith("artifactSlotUnlock",true);
+			} else {
+				dispatchEventWith("activeArtifactRemoved",true);
 			}
 		}
 		
-		public function get isEmpty():Boolean
-		{
+		public function get isEmpty() : Boolean {
 			return a == null;
 		}
 		
-		public function setEmpty():void
-		{
+		public function setEmpty() : void {
 			a = null;
 			update();
 		}
 		
-		public function setActive(param1:Artifact):void
-		{
-			this.a = param1;
+		public function setActive(a:Artifact) : void {
+			this.a = a;
 			update();
 		}
 		
-		override public function dispose():void
-		{
-			if (frame && frame.filter)
-			{
+		override public function dispose() : void {
+			if(frame && frame.filter) {
 				frame.filter.dispose();
 				frame.filter = null;
 			}
@@ -220,3 +172,4 @@ package core.artifact
 		}
 	}
 }
+

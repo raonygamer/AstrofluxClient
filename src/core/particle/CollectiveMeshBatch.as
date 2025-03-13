@@ -1,97 +1,77 @@
-package core.particle
-{
+package core.particle {
 	import starling.display.MeshBatch;
 	
-	public class CollectiveMeshBatch extends MeshBatch
-	{
+	public class CollectiveMeshBatch extends MeshBatch {
 		private static var effectsBatch:CollectiveMeshBatch;
-		
 		private static var meshBatches:Vector.<CollectiveMeshBatch> = new Vector.<CollectiveMeshBatch>();
-		
 		private var hasBeenUpdated:Boolean = false;
+		private var emitters:Vector.<Emitter> = new Vector.<Emitter>();
 		
-		private var emitters:Vector.<Emitter>;
-		
-		public function CollectiveMeshBatch()
-		{
-			emitters = new Vector.<Emitter>();
+		public function CollectiveMeshBatch() {
 			super();
 			batchable = false;
 		}
 		
-		public static function Create(param1:Emitter):CollectiveMeshBatch
-		{
-			var _loc2_:CollectiveMeshBatch = null;
-			if (param1.canvasTarget != null)
-			{
-				_loc2_ = new CollectiveMeshBatch();
-				meshBatches.push(_loc2_);
-				_loc2_.emitters.push(param1);
-				return _loc2_;
+		public static function Create(e:Emitter) : CollectiveMeshBatch {
+			var _local2:CollectiveMeshBatch = null;
+			if(e.canvasTarget != null) {
+				_local2 = new CollectiveMeshBatch();
+				meshBatches.push(_local2);
+				_local2.emitters.push(e);
+				return _local2;
 			}
-			if (!effectsBatch)
-			{
+			if(!effectsBatch) {
 				effectsBatch = new CollectiveMeshBatch();
 			}
-			effectsBatch.emitters.push(param1);
+			effectsBatch.emitters.push(e);
 			return effectsBatch;
 		}
 		
-		public static function AllMeshesAreUpdated():void
-		{
-			var _loc2_:int = 0;
-			var _loc1_:CollectiveMeshBatch = null;
-			_loc2_ = meshBatches.length - 1;
-			while (_loc2_ > -1)
-			{
-				_loc1_ = meshBatches[_loc2_];
-				_loc1_.markUpdated();
-				if (_loc1_.emitters.length == 0)
-				{
-					_loc1_.clear();
+		public static function AllMeshesAreUpdated() : void {
+			var _local2:int = 0;
+			var _local1:CollectiveMeshBatch = null;
+			_local2 = meshBatches.length - 1;
+			while(_local2 > -1) {
+				_local1 = meshBatches[_local2];
+				_local1.markUpdated();
+				if(_local1.emitters.length == 0) {
+					_local1.clear();
 				}
-				_loc2_--;
+				_local2--;
 			}
-			if (effectsBatch)
-			{
+			if(effectsBatch) {
 				effectsBatch.markUpdated();
 			}
 		}
 		
-		public static function dispose():void
-		{
+		public static function dispose() : void {
 			effectsBatch.dispose();
 			effectsBatch = null;
-			for each (var _loc1_:* in meshBatches)
-			{
-				_loc1_.emitters.length = 0;
-				_loc1_.dispose();
+			for each(var _local1 in meshBatches) {
+				_local1.emitters.length = 0;
+				_local1.dispose();
 			}
 			meshBatches.length = 0;
 		}
 		
-		override public function clear():void
-		{
-			if (!hasBeenUpdated)
-			{
+		override public function clear() : void {
+			if(!hasBeenUpdated) {
 				return;
 			}
 			super.clear();
 			hasBeenUpdated = false;
 		}
 		
-		public function markUpdated():void
-		{
+		public function markUpdated() : void {
 			hasBeenUpdated = true;
 		}
 		
-		public function remove(param1:Emitter):void
-		{
-			if (emitters.indexOf(param1) == -1)
-			{
+		public function remove(e:Emitter) : void {
+			if(emitters.indexOf(e) == -1) {
 				return;
 			}
-			emitters.removeAt(emitters.indexOf(param1));
+			emitters.removeAt(emitters.indexOf(e));
 		}
 	}
 }
+

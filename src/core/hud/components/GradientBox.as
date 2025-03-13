@@ -1,5 +1,4 @@
-package core.hud.components
-{
+package core.hud.components {
 	import flash.display.Sprite;
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -9,53 +8,37 @@ package core.hud.components
 	import textures.TextureLocator;
 	import textures.TextureManager;
 	
-	public class GradientBox extends starling.display.Sprite
-	{
+	public class GradientBox extends starling.display.Sprite {
 		protected var radius:Number;
-		
 		protected var _color:uint;
-		
 		protected var colorAlpha:Number;
-		
 		public var padding:Number;
-		
 		protected var w:Number;
-		
 		protected var h:Number;
-		
 		private var background:Image;
-		
 		private var backgroundTexture:Texture;
-		
 		protected var borderWidth:Number = 0;
-		
 		protected var borderColor:uint = 0;
-		
 		protected var borderAlpha:Number = 0;
-		
 		private var headerBmp:Image;
-		
 		private var headerTint:uint;
-		
 		private var headerBitmapData:Texture;
 		
-		public function GradientBox(param1:Number, param2:Number, param3:uint = 0, param4:Number = 1, param5:Number = 15, param6:uint = 16777215)
-		{
+		public function GradientBox(width:Number, height:Number, color:uint = 0, alpha:Number = 1, padding:Number = 15, headerTint:uint = 16777215) {
 			super();
-			w = param1;
-			h = param2;
-			this.color = param3;
-			this.colorAlpha = param4;
-			this.padding = param5;
-			this.headerTint = param6;
-			addBorder(1842204, 1, 2);
-			addEventListener("removedFromStage", clean);
+			w = width;
+			h = height;
+			this.color = color;
+			this.colorAlpha = alpha;
+			this.padding = padding;
+			this.headerTint = headerTint;
+			addBorder(0x1c1c1c,1,2);
+			addEventListener("removedFromStage",clean);
 		}
 		
-		public function load():void
-		{
-			var _loc1_:ITextureManager = TextureLocator.getService();
-			headerBitmapData = _loc1_.getTextureGUIByTextureName("gradient_box_header.png");
+		public function load() : void {
+			var _local1:ITextureManager = TextureLocator.getService();
+			headerBitmapData = _local1.getTextureGUIByTextureName("gradient_box_header.png");
 			headerBmp = new Image(headerBitmapData);
 			headerBmp.width = w + padding * 2 - borderWidth;
 			headerBmp.x = -padding + borderWidth / 2;
@@ -64,68 +47,59 @@ package core.hud.components
 			addChild(headerBmp);
 		}
 		
-		public function addBorder(param1:uint, param2:Number, param3:Number):void
-		{
-			this.borderWidth = param3;
-			this.borderColor = param1;
-			this.borderAlpha = param2;
+		public function addBorder(borderColor:uint, borderAlpha:Number, borderWidth:Number) : void {
+			this.borderWidth = borderWidth;
+			this.borderColor = borderColor;
+			this.borderAlpha = borderAlpha;
 			draw();
 		}
 		
-		override public function set width(param1:Number):void
-		{
-			w = param1;
+		override public function set width(value:Number) : void {
+			w = value;
 			draw();
 		}
 		
-		override public function set height(param1:Number):void
-		{
-			h = param1;
+		override public function set height(value:Number) : void {
+			h = value;
 			draw();
 		}
 		
-		public function set color(param1:uint):void
-		{
-			_color = param1;
+		public function set color(value:uint) : void {
+			_color = value;
 			draw();
 		}
 		
-		protected function draw():void
-		{
+		protected function draw() : void {
 			drawBox();
 		}
 		
-		private function drawBox():void
-		{
-			if (background != null)
-			{
+		private function drawBox() : void {
+			if(background != null) {
 				removeChild(background);
 				background.dispose();
 				backgroundTexture.dispose();
 			}
-			var _loc3_:Vector.<int> = new Vector.<int>();
-			var _loc1_:Vector.<Number> = new Vector.<Number>();
-			_loc3_.push(1, 2, 2, 2, 2);
-			_loc1_.push(0 - padding, 0 - padding);
-			_loc1_.push(0 - padding, h + padding);
-			_loc1_.push(w + padding, h + padding);
-			_loc1_.push(w + padding, 0 - padding);
-			_loc1_.push(0 - padding, 0 - padding);
-			var _loc2_:flash.display.Sprite = new flash.display.Sprite();
-			_loc2_.graphics.beginFill(_color, colorAlpha);
-			_loc2_.graphics.drawPath(_loc3_, _loc1_);
-			_loc2_.graphics.endFill();
-			backgroundTexture = TextureManager.textureFromDisplayObject(_loc2_);
+			var _local3:Vector.<int> = new Vector.<int>();
+			var _local1:Vector.<Number> = new Vector.<Number>();
+			_local3.push(1,2,2,2,2);
+			_local1.push(0 - padding,0 - padding);
+			_local1.push(0 - padding,h + padding);
+			_local1.push(w + padding,h + padding);
+			_local1.push(w + padding,0 - padding);
+			_local1.push(0 - padding,0 - padding);
+			var _local2:flash.display.Sprite = new flash.display.Sprite();
+			_local2.graphics.beginFill(_color,colorAlpha);
+			_local2.graphics.drawPath(_local3,_local1);
+			_local2.graphics.endFill();
+			backgroundTexture = TextureManager.textureFromDisplayObject(_local2);
 			background = new Image(backgroundTexture);
 			background.x = -padding;
-			addChildAt(background, 0);
+			addChildAt(background,0);
 		}
 		
-		private function clean(param1:Event = null):void
-		{
+		private function clean(e:Event = null) : void {
 			removeEventListeners();
-			if (background != null)
-			{
+			if(background != null) {
 				removeChild(background);
 				background.dispose();
 				backgroundTexture.dispose();
@@ -133,3 +107,4 @@ package core.hud.components
 		}
 	}
 }
+

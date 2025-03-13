@@ -1,66 +1,53 @@
-package core.states
-{
+package core.states {
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	import starling.display.Sprite;
 	
-	public class DisplayStateMachine
-	{
+	public class DisplayStateMachine {
 		public var parent:Sprite;
-		
 		private var previousState:IDisplayState;
-		
 		private var currentState:IDisplayState;
 		
-		public function DisplayStateMachine(param1:Sprite)
-		{
+		public function DisplayStateMachine(parent:Sprite) {
 			super();
 			previousState = null;
 			currentState = null;
-			this.parent = param1;
+			this.parent = parent;
 		}
 		
-		public function changeState(param1:IDisplayState):void
-		{
-			if (currentState != null)
-			{
+		public function changeState(s:IDisplayState) : void {
+			if(currentState != null) {
 				currentState.exit();
 			}
 			previousState = currentState;
-			if (param1 == null)
-			{
+			if(s == null) {
 				currentState = null;
 				return;
 			}
-			currentState = param1;
+			currentState = s;
 			currentState.stateMachine = this;
 			currentState.enter();
 		}
 		
-		public function revertState():void
-		{
+		public function revertState() : void {
 			changeState(previousState);
 		}
 		
-		public function update(param1:Number = 0):void
-		{
-			if (currentState != null)
-			{
+		public function update(time:Number = 0) : void {
+			if(currentState != null) {
 				currentState.execute();
 			}
 		}
 		
-		public function inState(... rest):Boolean
-		{
-			if (rest[0] is String)
-			{
+		public function inState(... rest) : Boolean {
+			if(rest[0] is String) {
 				return currentState.type == rest[0];
 			}
-			if (rest[0] is IState || rest[0] is Class)
-			{
+			if(rest[0] is IState || rest[0] is Class) {
 				return getQualifiedClassName(currentState) == getQualifiedClassName(Class(getDefinitionByName(getQualifiedClassName(rest[0]))));
 			}
 			return false;
 		}
 	}
 }
+

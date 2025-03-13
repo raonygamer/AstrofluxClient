@@ -1,26 +1,22 @@
-package core.states.gameStates.missions
-{
+package core.states.gameStates.missions {
 	import core.scene.Game;
 	import starling.display.Sprite;
 	
-	public class MissionsDaily extends Sprite
-	{
+	public class MissionsDaily extends Sprite {
 		private var g:Game;
-		
 		private var list:DailyList;
 		
-		public function MissionsDaily(param1:Game)
-		{
+		public function MissionsDaily(g:Game) {
 			super();
-			this.g = param1;
-			list = new DailyList(param1);
+			this.g = g;
+			list = new DailyList(g);
 			addChild(list);
 		}
 		
-		override public function dispose():void
-		{
+		override public function dispose() : void {
 			super.dispose();
 			list.dispose();
 		}
 	}
 }
+

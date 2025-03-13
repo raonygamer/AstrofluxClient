@@ -1,5 +1,4 @@
-package core.states.gameStates.missions
-{
+package core.states.gameStates.missions {
 	import core.hud.components.ToolTip;
 	import core.player.Mission;
 	import core.scene.Game;
@@ -7,77 +6,58 @@ package core.states.gameStates.missions
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class MissionsList extends Sprite
-	{
+	public class MissionsList extends Sprite {
 		public static var instance:MissionsList;
-		
 		private var g:Game;
-		
 		private var missions:Vector.<Mission>;
-		
-		private var missionViews:Vector.<MissionView>;
-		
+		private var missionViews:Vector.<MissionView> = new Vector.<MissionView>();
 		private var missionsContainer:ScrollContainer;
-		
 		private var majorType:String;
 		
-		public function MissionsList(param1:Game)
-		{
-			missionViews = new Vector.<MissionView>();
+		public function MissionsList(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 			instance = this;
 			missionsContainer = new ScrollContainer();
-			missionsContainer.width = 720;
+			missionsContainer.width = 12 * 60;
 			missionsContainer.height = 500;
 			missionsContainer.x = 0;
 			missionsContainer.y = 40;
 			addChild(missionsContainer);
 		}
 		
-		public static function reload():void
-		{
-			if (instance != null)
-			{
+		public static function reload() : void {
+			if(instance != null) {
 				instance.reload();
 			}
 		}
 		
-		public function loadStoryMissions():void
-		{
+		public function loadStoryMissions() : void {
 			this.majorType = "static";
 			load();
 		}
 		
-		public function loadTimedMissions():void
-		{
+		public function loadTimedMissions() : void {
 			this.majorType = "time";
 			load();
 		}
 		
-		public function load():void
-		{
+		public function load() : void {
 			var majorType:String = this.majorType;
-			missions = g.me.missions.filter(function(param1:Mission, param2:int, param3:Vector.<Mission>):Boolean
-			{
+			missions = g.me.missions.filter(function(param1:Mission, param2:int, param3:Vector.<Mission>):Boolean {
 				return param1.majorType == majorType;
 			});
 			sortByDate();
 		}
 		
-		private function sortByDate():void
-		{
-			missions = missions.sort((function():*
-			{
+		private function sortByDate() : void {
+			missions = missions.sort((function():* {
 				var f:Function;
-				return f = function(param1:Mission, param2:Mission):int
-				{
-					if (param1.created < param2.created)
-					{
+				return f = function(param1:Mission, param2:Mission):int {
+					if(param1.created < param2.created) {
 						return 1;
 					}
-					if (param1.created > param2.created)
-					{
+					if(param1.created > param2.created) {
 						return -1;
 					}
 					return 0;
@@ -85,93 +65,81 @@ package core.states.gameStates.missions
 			})());
 		}
 		
-		private function reload(param1:Event = null):void
-		{
+		private function reload(e:Event = null) : void {
 			missionViews.length = 0;
-			missionsContainer.removeChildren(0, -1, true);
+			missionsContainer.removeChildren(0,-1,true);
 			load();
 			drawMissions();
 		}
 		
-		public function drawMissions():void
-		{
-			var _loc4_:int = 0;
-			var _loc2_:Mission = null;
-			var _loc3_:MissionView = null;
-			var _loc1_:int = 635;
-			if (missions.length > 2)
-			{
-				_loc1_ = 620;
+		public function drawMissions() : void {
+			var _local4:int = 0;
+			var _local2:Mission = null;
+			var _local3:MissionView = null;
+			var _local1:int = 635;
+			if(missions.length > 2) {
+				_local1 = 620;
 			}
-			_loc4_ = 0;
-			while (_loc4_ < missions.length)
-			{
-				_loc2_ = missions[_loc4_];
-				_loc3_ = new MissionView(g, _loc2_, _loc1_);
-				missionViews.push(_loc3_);
-				missionsContainer.addChild(_loc3_);
-				_loc3_.init();
-				_loc3_.addEventListener("reload", reload);
-				_loc4_++;
+			_local4 = 0;
+			while(_local4 < missions.length) {
+				_local2 = missions[_local4];
+				_local3 = new MissionView(g,_local2,_local1);
+				missionViews.push(_local3);
+				missionsContainer.addChild(_local3);
+				_local3.init();
+				_local3.addEventListener("reload",reload);
+				_local4++;
 			}
 			positionMissions();
 			trySetMissionsViewed();
 		}
 		
-		private function positionMissions():void
-		{
-			var _loc4_:int = 0;
-			var _loc1_:MissionView = null;
-			var _loc3_:Number = 62;
-			var _loc2_:Number = 23;
-			_loc4_ = 0;
-			while (_loc4_ < missionViews.length)
-			{
-				_loc1_ = missionViews[_loc4_];
-				_loc1_.x = _loc3_;
-				_loc1_.y = _loc2_;
-				_loc2_ += _loc1_.height;
-				_loc4_++;
+		private function positionMissions() : void {
+			var _local4:int = 0;
+			var _local1:MissionView = null;
+			var _local3:Number = 62;
+			var _local2:Number = 23;
+			_local4 = 0;
+			while(_local4 < missionViews.length) {
+				_local1 = missionViews[_local4];
+				_local1.x = _local3;
+				_local1.y = _local2;
+				_local2 += _local1.height;
+				_local4++;
 			}
 		}
 		
-		private function trySetMissionsViewed():void
-		{
-			var _loc1_:Boolean = false;
-			for each (var _loc2_:* in missions)
-			{
-				if (!_loc2_.viewed)
-				{
-					_loc2_.viewed = true;
-					_loc1_ = true;
+		private function trySetMissionsViewed() : void {
+			var _local1:Boolean = false;
+			for each(var _local2 in missions) {
+				if(!_local2.viewed) {
+					_local2.viewed = true;
+					_local1 = true;
 				}
 			}
-			if (_loc1_)
-			{
-				g.rpc("setMissionsViewed", null);
+			if(_local1) {
+				g.rpc("setMissionsViewed",null);
 			}
 			g.hud.missionsButton.hideHintNew();
 		}
 		
-		public function update():void
-		{
-			var _loc2_:int = 0;
-			var _loc1_:MissionView = null;
-			_loc2_ = 0;
-			while (_loc2_ < missionViews.length)
-			{
-				_loc1_ = missionViews[_loc2_];
-				_loc1_.update();
-				_loc2_++;
+		public function update() : void {
+			var _local2:int = 0;
+			var _local1:MissionView = null;
+			_local2 = 0;
+			while(_local2 < missionViews.length) {
+				_local1 = missionViews[_local2];
+				_local1.update();
+				_local2++;
 			}
 		}
 		
-		override public function dispose():void
-		{
-			missionsContainer.removeChildren(0, -1, true);
+		override public function dispose() : void {
+			missionsContainer.removeChildren(0,-1,true);
 			ToolTip.disposeType("missionView");
 			instance = null;
 			super.dispose();
 		}
 	}
 }
+

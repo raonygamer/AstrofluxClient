@@ -1,42 +1,42 @@
 /*
-   Copyright (c) 2009, Adobe Systems Incorporated
-   All rights reserved.
+  Copyright (c) 2009, Adobe Systems Incorporated
+  All rights reserved.
 
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are
-   met:
+  Redistribution and use in source and binary forms, with or without 
+  modification, are permitted provided that the following conditions are
+  met:
 
- * Redistributions of source code must retain the above copyright notice,
-   this list of conditions and the following disclaimer.
+  * Redistributions of source code must retain the above copyright notice, 
+    this list of conditions and the following disclaimer.
+  
+  * Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the 
+    documentation and/or other materials provided with the distribution.
+  
+  * Neither the name of Adobe Systems Incorporated nor the names of its 
+    contributors may be used to endorse or promote products derived from 
+    this software without specific prior written permission.
 
- * Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-
- * Neither the name of Adobe Systems Incorporated nor the names of its
-   contributors may be used to endorse or promote products derived from
-   this software without specific prior written permission.
-
-   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-   IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-   THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-   PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+  IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 package com.adobe.air.crypto
 {
 	import com.adobe.crypto.SHA256;
-	
+
 	import flash.data.EncryptedLocalStore;
 	import flash.utils.ByteArray;
-	
+
 	/**
 	 * The EncryptionKeyGenerator class generates an encryption key value, such as you would use
 	 * to encrypt files or data. For example, the encryption key is suitable to use as
@@ -90,28 +90,28 @@ package com.adobe.air.crypto
 	public class EncryptionKeyGenerator
 	{
 		// ------- Constants -------
-		
+
 		/**
 		 * This constant matches the error ID (3138) of the SQLError error that occurs when
 		 * code that is attempting to open an encrypted database provides the wrong
 		 * encryption key.
 		 */
 		public static const ENCRYPTED_DB_PASSWORD_ERROR_ID:uint = 3138;
-		
+
 		private static const STRONG_PASSWORD_PATTERN:RegExp = /(?=^.{8,32}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
 		private static const SALT_ELS_KEY:String = "com.adobe.air.crypto::EncryptedDBSalt$$$";
-		
+
 		// ------- Constructor -------
-		
+
 		/**
 		 * Creates a new EncryptionKeyGenerator instance.
 		 */
 		public function EncryptionKeyGenerator()
 		{
 		}
-		
+
 		// ------- Public methods -------
-		
+
 		/**
 		 * Checks a password and returns a value indicating whether the password is a "strong"
 		 * password. The criteria for a strong password are:
@@ -135,10 +135,10 @@ package com.adobe.air.crypto
 			{
 				return false;
 			}
-			
+
 			return STRONG_PASSWORD_PATTERN.test(password);
 		}
-		
+
 		/**
 		 * Uses a password to generate a 16-byte encryption key. The return value is suitable
 		 * to use as an encryption key for an encrypted AIR local SQL (SQLite) database.
@@ -194,14 +194,14 @@ package com.adobe.air.crypto
 			{
 				throw new ArgumentError("The password must be a strong password. It must be 8-32 characters long. It must contain at least one uppercase letter, at least one lowercase letter, and at least one number or symbol.");
 			}
-			
+
 			if (overrideSaltELSKey != null && overrideSaltELSKey.length <= 0)
 			{
 				throw new ArgumentError("If an overrideSaltELSKey parameter value is specified, it can't be an empty String.");
 			}
-			
+
 			var concatenatedPassword:String = concatenatePassword(password);
-			
+
 			var saltKey:String;
 			if (overrideSaltELSKey == null)
 			{
@@ -211,66 +211,66 @@ package com.adobe.air.crypto
 			{
 				saltKey = overrideSaltELSKey;
 			}
-			
+
 			var salt:ByteArray = EncryptedLocalStore.getItem(saltKey);
 			if (salt == null)
 			{
 				salt = makeSalt();
 				EncryptedLocalStore.setItem(saltKey, salt);
 			}
-			
+
 			var unhashedKey:ByteArray = xorBytes(concatenatedPassword, salt);
-			
+
 			var hashedKey:String = SHA256.hashBytes(unhashedKey);
-			
+
 			var encryptionKey:ByteArray = generateEncryptionKey(hashedKey);
-			
+
 			return encryptionKey;
 		}
-		
+
 		// ------- Creating encryption key -------
-		
+
 		private function concatenatePassword(pwd:String):String
 		{
 			var len:int = pwd.length;
 			var targetLength:int = 32;
-			
+
 			if (len == targetLength)
 			{
 				return pwd;
 			}
-			
+
 			var repetitions:int = Math.floor(targetLength / len);
 			var excess:int = targetLength % len;
-			
+
 			var result:String = "";
-			
+
 			for (var i:uint = 0; i < repetitions; i++)
 			{
 				result += pwd;
 			}
-			
+
 			result += pwd.substr(0, excess);
-			
+
 			return result;
 		}
-		
+
 		private function makeSalt():ByteArray
 		{
 			var result:ByteArray = new ByteArray;
-			
+
 			for (var i:uint = 0; i < 8; i++)
 			{
 				result.writeUnsignedInt(Math.round(Math.random() * uint.MAX_VALUE));
 			}
-			
+
 			return result;
 		}
-		
+
 		private function xorBytes(passwordString:String, salt:ByteArray):ByteArray
 		{
 			var result:ByteArray = new ByteArray();
-			
+
 			for (var i:uint = 0; i < 32; i += 4)
 			{
 				// Extract 4 bytes from the password string and convert to a uint
@@ -278,21 +278,21 @@ package com.adobe.air.crypto
 				o1 += passwordString.charCodeAt(i + 1) << 16;
 				o1 += passwordString.charCodeAt(i + 2) << 8;
 				o1 += passwordString.charCodeAt(i + 3);
-				
+
 				salt.position = i;
 				var o2:uint = salt.readUnsignedInt();
-				
+
 				var xor:uint = o1 ^ o2;
 				result.writeUnsignedInt(xor);
 			}
-			
+
 			return result;
 		}
-		
+
 		private function generateEncryptionKey(hash:String):ByteArray
 		{
 			var result:ByteArray = new ByteArray();
-			
+
 			// select a range of 128 bits (32 hex characters) from the hash
 			// In this case, we'll use the bits starting from position 17
 			for (var i:uint = 0; i < 32; i += 2)
@@ -302,7 +302,7 @@ package com.adobe.air.crypto
 				var byte:int = parseInt(hex, 16);
 				result.writeByte(byte);
 			}
-			
+
 			return result;
 		}
 	}

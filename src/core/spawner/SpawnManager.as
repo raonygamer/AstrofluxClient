@@ -1,192 +1,153 @@
-package core.spawner
-{
+package core.spawner {
 	import core.scene.Game;
 	import debug.Console;
 	import playerio.Message;
 	
-	public class SpawnManager
-	{
+	public class SpawnManager {
 		public var spawners:Vector.<Spawner>;
-		
 		private var g:Game;
-		
 		private var id:int = 0;
 		
-		public function SpawnManager(param1:Game)
-		{
+		public function SpawnManager(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 			spawners = new Vector.<Spawner>();
 		}
 		
-		public function addMessageHandlers():void
-		{
-			g.addMessageHandler("spawnerUpdate", onSpawnerUpdate);
+		public function addMessageHandlers() : void {
+			g.addMessageHandler("spawnerUpdate",onSpawnerUpdate);
 		}
 		
-		public function addEarlyMessageHandlers():void
-		{
-			g.addMessageHandler("spawnerKilled", killed);
-			g.addMessageHandler("spawnerRebuild", rebuild);
+		public function addEarlyMessageHandlers() : void {
+			g.addMessageHandler("spawnerKilled",killed);
+			g.addMessageHandler("spawnerRebuild",rebuild);
 		}
 		
-		public function syncSpawners(param1:Message, param2:int, param3:int):void
-		{
-			var _loc5_:* = 0;
-			var _loc4_:Spawner = null;
-			_loc5_ = param2;
-			while (_loc5_ < param3)
-			{
-				_loc4_ = getSpawnerByKey(param1.getString(_loc5_));
-				if (_loc4_ == null || _loc4_.isBossUnit)
-				{
+		public function syncSpawners(m:Message, index:int, stopIndex:int) : void {
+			var _local5:* = 0;
+			var _local4:Spawner = null;
+			_local5 = index;
+			while(_local5 < stopIndex) {
+				_local4 = getSpawnerByKey(m.getString(_local5));
+				if(_local4 == null || _local4.isBossUnit) {
 					Console.write("Spawner is null, something went wrong while syncing.");
-				}
-				else
-				{
-					_loc4_.id = param1.getInt(_loc5_ + 1);
-					_loc4_.rotationSpeed = param1.getNumber(_loc5_ + 2);
-					_loc4_.orbitAngle = param1.getNumber(_loc5_ + 3);
-					_loc4_.alive = param1.getBoolean(_loc5_ + 4);
-					if (!_loc4_.hidden)
-					{
-						g.unitManager.add(_loc4_, g.canvasSpawners);
-						if (!_loc4_.alive)
-						{
-							_loc4_.destroy(false);
+				} else {
+					_local4.id = m.getInt(_local5 + 1);
+					_local4.rotationSpeed = m.getNumber(_local5 + 2);
+					_local4.orbitAngle = m.getNumber(_local5 + 3);
+					_local4.alive = m.getBoolean(_local5 + 4);
+					if(!_local4.hidden) {
+						g.unitManager.add(_local4,g.canvasSpawners);
+						if(!_local4.alive) {
+							_local4.destroy(false);
 						}
 					}
 				}
-				_loc5_ += 5;
+				_local5 += 5;
 			}
 		}
 		
-		public function update():void
-		{
+		public function update() : void {
 		}
 		
-		public function getSpawner(param1:String):Spawner
-		{
-			var _loc2_:Spawner = null;
-			if (param1 == "organic")
-			{
-				_loc2_ = new OrganicSpawner(g);
+		public function getSpawner(type:String) : Spawner {
+			var _local2:Spawner = null;
+			if(type == "organic") {
+				_local2 = new OrganicSpawner(g);
+			} else {
+				_local2 = new Spawner(g);
 			}
-			else
-			{
-				_loc2_ = new Spawner(g);
-			}
-			spawners.push(_loc2_);
-			return _loc2_;
+			spawners.push(_local2);
+			return _local2;
 		}
 		
-		public function removeSpawner(param1:Spawner):void
-		{
-			spawners.splice(spawners.indexOf(param1), 1);
+		public function removeSpawner(s:Spawner) : void {
+			spawners.splice(spawners.indexOf(s),1);
 		}
 		
-		public function getSpawnerByKey(param1:String):Spawner
-		{
-			for each (var _loc2_:* in spawners)
-			{
-				if (_loc2_.key == param1)
-				{
-					return _loc2_;
+		public function getSpawnerByKey(key:String) : Spawner {
+			for each(var _local2 in spawners) {
+				if(_local2.key == key) {
+					return _local2;
 				}
 			}
 			return null;
 		}
 		
-		public function getSpawnerById(param1:int):Spawner
-		{
-			for each (var _loc2_:* in spawners)
-			{
-				if (_loc2_.id == param1)
-				{
-					return _loc2_;
+		public function getSpawnerById(id:int) : Spawner {
+			for each(var _local2 in spawners) {
+				if(_local2.id == id) {
+					return _local2;
 				}
 			}
 			return null;
 		}
 		
-		public function damaged(param1:Message, param2:int):void
-		{
-			var _loc7_:String = param1.getString(param2);
-			var _loc6_:Spawner = getSpawnerByKey(_loc7_);
-			if (_loc6_ == null)
-			{
-				Console.write("No spawner to damage by key: " + _loc7_);
+		public function damaged(m:Message, i:int) : void {
+			var _local7:String = m.getString(i);
+			var _local6:Spawner = getSpawnerByKey(_local7);
+			if(_local6 == null) {
+				Console.write("No spawner to damage by key: " + _local7);
 				return;
 			}
-			var _loc3_:int = param1.getInt(param2 + 2);
-			var _loc5_:int = param1.getInt(param2 + 3);
-			var _loc4_:int = param1.getInt(param2 + 4);
-			if (param1.getBoolean(param2 + 5))
-			{
-				_loc6_.doDOTEffect(param1.getInt(param2 + 6), param1.getString(param2 + 7), param1.getInt(param2 + 8));
+			var _local3:int = m.getInt(i + 2);
+			var _local5:int = m.getInt(i + 3);
+			var _local4:int = m.getInt(i + 4);
+			if(m.getBoolean(i + 5)) {
+				_local6.doDOTEffect(m.getInt(i + 6),m.getString(i + 7),m.getInt(i + 8));
 			}
-			_loc6_.takeDamage(_loc3_);
-			_loc6_.shieldHp = _loc5_;
-			if (_loc6_.shieldHp == 0)
-			{
-				if (_loc6_.shieldRegenCounter > -1000)
-				{
-					_loc6_.shieldRegenCounter = -1000;
+			_local6.takeDamage(_local3);
+			_local6.shieldHp = _local5;
+			if(_local6.shieldHp == 0) {
+				if(_local6.shieldRegenCounter > -1000) {
+					_local6.shieldRegenCounter = -1000;
 				}
 			}
-			_loc6_.hp = _loc4_;
+			_local6.hp = _local4;
 		}
 		
-		private function onSpawnerUpdate(param1:Message):void
-		{
-			var _loc4_:int = 0;
-			var _loc3_:String = param1.getString(_loc4_++);
-			var _loc2_:Spawner = getSpawnerByKey(_loc3_);
-			if (_loc2_ == null)
-			{
-				Console.write("No spawner to update, key: " + _loc3_);
+		private function onSpawnerUpdate(m:Message) : void {
+			var _local4:int = 0;
+			var _local3:String = m.getString(_local4++);
+			var _local2:Spawner = getSpawnerByKey(_local3);
+			if(_local2 == null) {
+				Console.write("No spawner to update, key: " + _local3);
 				return;
 			}
-			_loc2_.hp = param1.getInt(_loc4_++);
-			_loc2_.shieldHp = param1.getInt(_loc4_++);
-			if (_loc2_.hp < _loc2_.hpMax || _loc2_.shieldHp < _loc2_.shieldHpMax)
-			{
-				_loc2_.isInjured = true;
+			_local2.hp = m.getInt(_local4++);
+			_local2.shieldHp = m.getInt(_local4++);
+			if(_local2.hp < _local2.hpMax || _local2.shieldHp < _local2.shieldHpMax) {
+				_local2.isInjured = true;
 			}
 		}
 		
-		public function killed(param1:Message, param2:int):void
-		{
-			var _loc4_:String = param1.getString(param2);
-			var _loc3_:Spawner = getSpawnerByKey(_loc4_);
-			if (_loc3_ == null)
-			{
-				Console.write("No spawner to kill by key: " + _loc4_);
+		public function killed(m:Message, i:int) : void {
+			var _local4:String = m.getString(i);
+			var _local3:Spawner = getSpawnerByKey(_local4);
+			if(_local3 == null) {
+				Console.write("No spawner to kill by key: " + _local4);
 				return;
 			}
-			_loc3_.destroy();
+			_local3.destroy();
 		}
 		
-		public function rebuild(param1:Message):void
-		{
-			var _loc3_:String = param1.getString(0);
-			var _loc2_:Spawner = getSpawnerByKey(_loc3_);
-			if (_loc2_ == null)
-			{
-				Console.write("No spawner to rebuild by key: " + _loc3_);
+		public function rebuild(m:Message) : void {
+			var _local3:String = m.getString(0);
+			var _local2:Spawner = getSpawnerByKey(_local3);
+			if(_local2 == null) {
+				Console.write("No spawner to rebuild by key: " + _local3);
 				return;
 			}
-			_loc2_.rebuild();
+			_local2.rebuild();
 		}
 		
-		public function dispose():void
-		{
-			for each (var _loc1_:* in spawners)
-			{
-				_loc1_.reset();
-				_loc1_.removeFromCanvas();
+		public function dispose() : void {
+			for each(var _local1 in spawners) {
+				_local1.reset();
+				_local1.removeFromCanvas();
 			}
 			spawners = null;
 		}
 	}
 }
+

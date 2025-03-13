@@ -1,194 +1,138 @@
-package core.solarSystem
-{
+package core.solarSystem {
 	import core.hud.components.TextBitmap;
 	import core.player.CrewMember;
 	
-	public class Area
-	{
+	public class Area {
 		public static const TOTALSKILLTYPES:int = 3;
-		
 		public static const MINEVENTS:int = 4;
-		
 		public static const TOTALSPECIALTYPES:int = 9;
+		public static const SKILLTYPE:Vector.<String> = Vector.<String>(["Survival","Diplomacy","Combat"]);
+		public static const SKILLTYPEHTML:Vector.<String> = Vector.<String>(["Survival","Diplomacy","Combat"]);
+		public static const REWARD_ACTIONS:Vector.<Array> = Vector.<Array>([["Salvaged","Discovered","Excavated"],["Bribe","Smuggled","Traded"],["Stole","Pillaged","Robbed"]]);
+		public static const SPECIALTYPE:Vector.<String> = Vector.<String>(["Cold","Heat","Radiation","First Contact","Trade","Collaboration","Kinetic Weapons","Energy Weapons","Bio Weapons"]);
+		public static const SPECIALTYPEHTML:Vector.<String> = Vector.<String>(["<FONT COLOR=\'#4682B4\'>" + SPECIALTYPE[0] + "</FONT>","<FONT COLOR=\'#FF2400\'>" + SPECIALTYPE[1] + "</FONT>","<FONT COLOR=\'#9CCB19\'>" + SPECIALTYPE[2] + "</FONT>","<FONT COLOR=\'#8B0000\'>" + SPECIALTYPE[3] + "</FONT>","<FONT COLOR=\'#7B0000\'>" + SPECIALTYPE[4] + "</FONT>","<FONT COLOR=\'#9151ff\'>" + SPECIALTYPE[5] + "</FONT>","<FONT COLOR=\'#ffffff\'>" + SPECIALTYPE[6] + "</FONT>","<FONT COLOR=\'#ffdfdf\'>" + SPECIALTYPE[7] + "</FONT>","<FONT COLOR=\'#23ff23\'>" + SPECIALTYPE[8] + "</FONT>"]);
+		public static const SPECIALCOLORTYPE:Vector.<uint> = Vector.<uint>([4620980,16720896,10275609,9109504,8060928,9523711,0xffffff,0xffdfdf,2359075]);
+		public static const COLORTYPE:Vector.<uint> = Vector.<uint>([0x55ff55,0x5555ff,0xff3333]);
+		public static const COLORTYPESTR:Vector.<String> = Vector.<String>(["#55ff55","#5555ff","#ff3333"]);
+		public static const COLORTYPEFILL:Vector.<uint> = Vector.<uint>([0x22bb22,0x2222bb,0xbb1111]);
+		public static const SIZE:Vector.<String> = Vector.<String>(["Tiny","Small","Small","Medium","Medium","Large","Large","Very Large","Very Large","Gigantic"]);
 		
-		public static const SKILLTYPE:Vector.<String> = Vector.<String>(["Survival", "Diplomacy", "Combat"]);
-		
-		public static const SKILLTYPEHTML:Vector.<String> = Vector.<String>(["Survival", "Diplomacy", "Combat"]);
-		
-		public static const REWARD_ACTIONS:Vector.<Array> = Vector.<Array>([["Salvaged", "Discovered", "Excavated"], ["Bribe", "Smuggled", "Traded"], ["Stole", "Pillaged", "Robbed"]]);
-		
-		public static const SPECIALTYPE:Vector.<String> = Vector.<String>(["Cold", "Heat", "Radiation", "First Contact", "Trade", "Collaboration", "Kinetic Weapons", "Energy Weapons", "Bio Weapons"]);
-		
-		public static const SPECIALTYPEHTML:Vector.<String> = Vector.<String>(["<FONT COLOR='#4682B4'>" + SPECIALTYPE[0] + "</FONT>", "<FONT COLOR='#FF2400'>" + SPECIALTYPE[1] + "</FONT>", "<FONT COLOR='#9CCB19'>" + SPECIALTYPE[2] + "</FONT>", "<FONT COLOR='#8B0000'>" + SPECIALTYPE[3] + "</FONT>", "<FONT COLOR='#7B0000'>" + SPECIALTYPE[4] + "</FONT>", "<FONT COLOR='#9151ff'>" + SPECIALTYPE[5] + "</FONT>", "<FONT COLOR='#ffffff'>" + SPECIALTYPE[6] + "</FONT>", "<FONT COLOR='#ffdfdf'>" + SPECIALTYPE[7] + "</FONT>", "<FONT COLOR='#23ff23'>" + SPECIALTYPE[8] + "</FONT>"]);
-		
-		public static const SPECIALCOLORTYPE:Vector.<uint> = Vector.<uint>([4620980, 16720896, 10275609, 9109504, 8060928, 9523711, 16777215, 16768991, 2359075]);
-		
-		public static const COLORTYPE:Vector.<uint> = Vector.<uint>([5635925, 5592575, 16724787]);
-		
-		public static const COLORTYPESTR:Vector.<String> = Vector.<String>(["#55ff55", "#5555ff", "#ff3333"]);
-		
-		public static const COLORTYPEFILL:Vector.<uint> = Vector.<uint>([2276130, 2237115, 12259601]);
-		
-		public static const SIZE:Vector.<String> = Vector.<String>(["Tiny", "Small", "Small", "Medium", "Medium", "Large", "Large", "Very Large", "Very Large", "Gigantic"]);
-		
-		public function Area()
-		{
+		public function Area() {
 			super();
 		}
 		
-		public static function getSkillType(param1:int):String
-		{
-			return SKILLTYPE[param1];
+		public static function getSkillType(i:int) : String {
+			return SKILLTYPE[i];
 		}
 		
-		public static function getSkillTypeHtml(param1:int):String
-		{
-			return SKILLTYPEHTML[param1];
+		public static function getSkillTypeHtml(i:int) : String {
+			return SKILLTYPEHTML[i];
 		}
 		
-		public static function getRewardAction(param1:int):String
-		{
-			return REWARD_ACTIONS[param1][Math.floor(Math.random() * 3)];
+		public static function getRewardAction(type:int) : String {
+			return REWARD_ACTIONS[type][Math.floor(Math.random() * 3)];
 		}
 		
-		public static function getSpecialIndex(param1:String):int
-		{
-			var _loc2_:int = 0;
-			_loc2_ = 0;
-			while (_loc2_ < SPECIALTYPE.length)
-			{
-				if (SPECIALTYPE[_loc2_] == param1)
-				{
-					return _loc2_;
+		public static function getSpecialIndex(name:String) : int {
+			var _local2:int = 0;
+			_local2 = 0;
+			while(_local2 < SPECIALTYPE.length) {
+				if(SPECIALTYPE[_local2] == name) {
+					return _local2;
 				}
-				_loc2_++;
+				_local2++;
 			}
 			return -1;
 		}
 		
-		public static function getSizeString(param1:int):String
-		{
-			return SIZE[param1 - 1];
+		public static function getSizeString(i:int) : String {
+			return SIZE[i - 1];
 		}
 		
-		public static function getSpecialType(param1:int):String
-		{
-			return SPECIALTYPE[param1];
+		public static function getSpecialType(i:int) : String {
+			return SPECIALTYPE[i];
 		}
 		
-		public static function getSpecialTypeHtml(param1:int):String
-		{
-			return SPECIALTYPEHTML[param1];
+		public static function getSpecialTypeHtml(i:int) : String {
+			return SPECIALTYPEHTML[i];
 		}
 		
-		public static function getTime(param1:int, param2:int, param3:int, param4:Array, param5:int = 0):int
-		{
-			var _loc6_:Number = param2 - param5;
-			if (_loc6_ < -12)
-			{
-				_loc6_ = -12;
+		public static function getTime(size:int, skillLevel:int, rewardLevel:int, types:Array, crewLevel:int = 0) : int {
+			var _local6:Number = skillLevel - crewLevel;
+			if(_local6 < -12) {
+				_local6 = -12;
 			}
-			return (0.2 * param4.length + 1) * (1 + 0.05 * _loc6_ + 0.2 * param3) * (30 * Math.pow(2, param1 - 1));
+			return (0.2 * types.length + 1) * (1 + 0.05 * _local6 + 0.2 * rewardLevel) * (30 * Math.pow(2,size - 1));
 		}
 		
-		public static function getSuccessChance(param1:Number, param2:int, param3:CrewMember, param4:Array):Number
-		{
-			var _loc7_:Number = NaN;
-			var _loc6_:Number = NaN;
-			var _loc5_:Number = Number(param3.skills[param2]);
-			if (_loc5_ >= param1)
-			{
-				_loc7_ = 0.9 + 0.02 * (_loc5_ - param1);
+		public static function getSuccessChance(skillLevel:Number, type:int, crew:CrewMember, types:Array) : Number {
+			var _local7:Number = NaN;
+			var _local6:Number = NaN;
+			var _local5:Number = Number(crew.skills[type]);
+			if(_local5 >= skillLevel) {
+				_local7 = 0.9 + 0.02 * (_local5 - skillLevel);
+			} else if(_local5 > skillLevel - 10) {
+				_local6 = 0.1 * (_local5 - skillLevel + 10);
+				_local7 = Math.acos(1 - 2 * _local6) / 3.141592653589793;
+			} else {
+				_local7 = 0;
 			}
-			else if (_loc5_ > param1 - 10)
-			{
-				_loc6_ = 0.1 * (_loc5_ - param1 + 10);
-				_loc7_ = Math.acos(1 - 2 * _loc6_) / 3.141592653589793;
+			for each(var _local8 in types) {
+				_local7 *= crew.specials[_local8] || 0;
 			}
-			else
-			{
-				_loc7_ = 0;
+			if(_local7 > 1) {
+				_local7 = 1;
 			}
-			for each (var _loc8_:* in param4)
-			{
-				_loc7_ *= param3.specials[_loc8_] || 0;
-			}
-			if (_loc7_ > 1)
-			{
-				_loc7_ = 1;
-			}
-			return _loc7_;
+			return _local7;
 		}
 		
-		public static function injuryRiskText(param1:Number, param2:int, param3:int, param4:CrewMember, param5:Array):TextBitmap
-		{
-			var _loc6_:Number = Number(param4.skills[param2]);
-			var _loc8_:Number = 0;
-			if (_loc6_ > param1)
-			{
-				_loc8_ = 0.01;
+		public static function injuryRiskText(areaLevel:Number, type:int, size:int, crew:CrewMember, types:Array) : TextBitmap {
+			var _local6:Number = Number(crew.skills[type]);
+			var _local8:Number = 0;
+			if(_local6 > areaLevel) {
+				_local8 = 0.01;
+			} else if(_local6 > areaLevel - 46) {
+				_local8 = 0.01 + 0.02 * (areaLevel - _local6);
+			} else {
+				_local8 = 1;
 			}
-			else if (_loc6_ > param1 - 46)
-			{
-				_loc8_ = 0.01 + 0.02 * (param1 - _loc6_);
-			}
-			else
-			{
-				_loc8_ = 1;
-			}
-			var _loc9_:Number = 0;
-			for each (var _loc10_:* in param5)
-			{
-				if (Number(param4.specials[_loc10_]) < 0.5)
-				{
-					_loc9_ += 0.5;
+			var _local9:Number = 0;
+			for each(var _local10 in types) {
+				if(Number(crew.specials[_local10]) < 0.5) {
+					_local9 += 0.5;
 				}
 			}
-			_loc9_ += (param3 - 1) * 0.05;
-			_loc8_ *= 1 + _loc9_;
-			var _loc7_:TextBitmap = new TextBitmap();
-			if (_loc8_ > 0.75)
-			{
-				_loc7_.text = "Extreme";
-				_loc7_.format.color = 16711680;
+			_local9 += (size - 1) * 0.05;
+			_local8 *= 1 + _local9;
+			var _local7:TextBitmap = new TextBitmap();
+			if(_local8 > 0.75) {
+				_local7.text = "Extreme";
+				_local7.format.color = 0xff0000;
+			} else if(_local8 >= 0.25) {
+				_local7.text = "High";
+				_local7.format.color = 0xff0000;
+			} else if(_local8 > 0.18) {
+				_local7.text = "Moderate";
+				_local7.format.color = 0xff3300;
+			} else if(_local8 > 0.1) {
+				_local7.text = "Some";
+				_local7.format.color = 0xff6600;
+			} else if(_local8 > 0.05) {
+				_local7.text = "Low";
+				_local7.format.color = 0xeeee00;
+			} else if(_local8 > 0.01) {
+				_local7.text = "Small";
+				_local7.format.color = 11403055;
+			} else if(_local8 > 0) {
+				_local7.text = "Minimal";
+				_local7.format.color = 11403055;
+			} else {
+				_local7.text = "None";
+				_local7.format.color = 6159370;
 			}
-			else if (_loc8_ >= 0.25)
-			{
-				_loc7_.text = "High";
-				_loc7_.format.color = 16711680;
-			}
-			else if (_loc8_ > 0.18)
-			{
-				_loc7_.text = "Moderate";
-				_loc7_.format.color = 16724736;
-			}
-			else if (_loc8_ > 0.1)
-			{
-				_loc7_.text = "Some";
-				_loc7_.format.color = 16737792;
-			}
-			else if (_loc8_ > 0.05)
-			{
-				_loc7_.text = "Low";
-				_loc7_.format.color = 15658496;
-			}
-			else if (_loc8_ > 0.01)
-			{
-				_loc7_.text = "Small";
-				_loc7_.format.color = 11403055;
-			}
-			else if (_loc8_ > 0)
-			{
-				_loc7_.text = "Minimal";
-				_loc7_.format.color = 11403055;
-			}
-			else
-			{
-				_loc7_.text = "None";
-				_loc7_.format.color = 6159370;
-			}
-			_loc7_.text = _loc7_.text.toLocaleUpperCase();
-			return _loc7_;
+			_local7.text = _local7.text.toLocaleUpperCase();
+			return _local7;
 		}
 	}
 }
+

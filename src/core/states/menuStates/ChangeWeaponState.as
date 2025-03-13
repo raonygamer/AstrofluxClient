@@ -1,5 +1,4 @@
-package core.states.menuStates
-{
+package core.states.menuStates {
 	import core.hud.components.Text;
 	import core.player.Player;
 	import core.scene.Game;
@@ -8,56 +7,44 @@ package core.states.menuStates
 	import starling.display.Image;
 	import starling.events.TouchEvent;
 	
-	public class ChangeWeaponState extends DisplayState
-	{
+	public class ChangeWeaponState extends DisplayState {
 		private var p:Player;
-		
 		private var slot:int;
 		
-		public function ChangeWeaponState(param1:Game, param2:Player, param3:int, param4:Boolean = false)
-		{
-			super(param1, HomeState, param4);
-			this.p = param2;
-			this.slot = param3;
+		public function ChangeWeaponState(g:Game, p:Player, slot:int, isRoot:Boolean = false) {
+			super(g,HomeState,isRoot);
+			this.p = p;
+			this.slot = slot;
 		}
 		
-		override public function enter():void
-		{
+		override public function enter() : void {
 			super.enter();
-			var _loc2_:Text = new Text(60, 80);
-			_loc2_.wordWrap = false;
-			_loc2_.size = 12;
-			_loc2_.color = 16777215;
-			_loc2_.htmlText = "Assign a weapon to slot <FONT COLOR='#fea943'>" + slot + "</FONT>.";
-			addChild(_loc2_);
-			var _loc4_:int = 0;
-			var _loc3_:int = 0;
-			for each (var _loc1_:* in p.ship.weapons)
-			{
-				createWeaponBox(_loc4_, _loc3_, _loc1_);
-				_loc4_++;
-				if (_loc4_ == 10)
-				{
-					_loc3_++;
-					_loc4_ = 0;
+			var _local2:Text = new Text(60,80);
+			_local2.wordWrap = false;
+			_local2.size = 12;
+			_local2.color = 0xffffff;
+			_local2.htmlText = "Assign a weapon to slot <FONT COLOR=\'#fea943\'>" + slot + "</FONT>.";
+			addChild(_local2);
+			var _local4:int = 0;
+			var _local3:int = 0;
+			for each(var _local1 in p.ship.weapons) {
+				createWeaponBox(_local4,_local3,_local1);
+				_local4++;
+				if(_local4 == 10) {
+					_local3++;
+					_local4 = 0;
 				}
 			}
 		}
 		
-		private function createWeaponBox(param1:int, param2:int, param3:Weapon):void
-		{
-			var i:int = param1;
-			var j:int = param2;
-			var w:Weapon = param3;
+		private function createWeaponBox(i:int, j:int, w:Weapon) : void {
 			var weaponBox:Image = new Image(textureManager.getTextureGUIByKey(w.techIconFileName));
 			weaponBox.x = i * 50 + 60;
 			weaponBox.y = j * 50 + 110;
 			weaponBox.useHandCursor = true;
-			weaponBox.addEventListener("touch", function(param1:TouchEvent):void
-			{
-				if (param1.getTouch(weaponBox, "ended"))
-				{
-					g.playerManager.trySetActiveWeapons(p, slot, w.key);
+			weaponBox.addEventListener("touch",function(param1:TouchEvent):void {
+				if(param1.getTouch(weaponBox,"ended")) {
+					g.playerManager.trySetActiveWeapons(p,slot,w.key);
 					g.hud.weaponHotkeys.refresh();
 					sm.revertState();
 				}
@@ -65,14 +52,13 @@ package core.states.menuStates
 			addChild(weaponBox);
 		}
 		
-		override public function execute():void
-		{
+		override public function execute() : void {
 			super.execute();
 		}
 		
-		override public function exit():void
-		{
+		override public function exit() : void {
 			super.exit();
 		}
 	}
 }
+

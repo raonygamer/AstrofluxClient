@@ -1,30 +1,28 @@
-package io
-{
-	
-	public interface IInput
-	{
-		function get isMousePressed():Boolean;
+package io {
+	public interface IInput {
+		function get isMousePressed() : Boolean;
 		
-		function get isMouseRightPressed():Boolean;
+		function get isMouseRightPressed() : Boolean;
 		
-		function isKeyPressed(param1:uint):Boolean;
+		function isKeyPressed(keyCode:uint) : Boolean;
 		
-		function isKeyReleased(param1:uint):Boolean;
+		function isKeyReleased(keyCode:uint) : Boolean;
 		
-		function isKeyDown(param1:uint):Boolean;
+		function isKeyDown(keyCode:uint) : Boolean;
 		
-		function isKeyUp(param1:uint):Boolean;
+		function isKeyUp(keyCode:uint) : Boolean;
 		
-		function listenToKeys(param1:Array, param2:Function):void;
+		function listenToKeys(keys:Array, callback:Function) : void;
 		
-		function stopListenToKeys(param1:Function):void;
+		function stopListenToKeys(callback:Function) : void;
 		
-		function dispose():void;
+		function dispose() : void;
 		
-		function isAnyKeyPressed():Boolean;
+		function isAnyKeyPressed() : Boolean;
 		
-		function hasMouseMoved():Boolean;
+		function hasMouseMoved() : Boolean;
 		
-		function reset():void;
+		function reset() : void;
 	}
 }
+

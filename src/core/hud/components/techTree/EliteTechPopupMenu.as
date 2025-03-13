@@ -1,5 +1,4 @@
-package core.hud.components.techTree
-{
+package core.hud.components.techTree {
 	import core.hud.components.Box;
 	import core.hud.components.Button;
 	import core.player.EliteTechs;
@@ -16,94 +15,71 @@ package core.hud.components.techTree
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class EliteTechPopupMenu extends Sprite
-	{
-		private var container:ScrollContainer;
-		
-		private var box:Box;
-		
+	public class EliteTechPopupMenu extends Sprite {
+		private var container:ScrollContainer = new ScrollContainer();
+		private var box:Box = new Box(460,430,"highlight",1,15);
 		private var closeButton:Button;
-		
 		private var g:Game;
-		
 		private var eti:EliteTechIcon;
-		
 		private var textureManager:ITextureManager;
-		
 		private var dataManager:IDataManager;
+		private var eliteTechs:Vector.<EliteTechBar> = new Vector.<EliteTechBar>();
+		protected var bgr:Quad = new Quad(100,100,0x22000000);
 		
-		private var eliteTechs:Vector.<EliteTechBar>;
-		
-		protected var bgr:Quad;
-		
-		public function EliteTechPopupMenu(param1:Game, param2:EliteTechIcon)
-		{
-			container = new ScrollContainer();
-			box = new Box(460, 430, "highlight", 1, 15);
-			eliteTechs = new Vector.<EliteTechBar>();
-			bgr = new Quad(100, 100, 570425344);
+		public function EliteTechPopupMenu(g:Game, eti:EliteTechIcon) {
 			super();
-			this.g = param1;
-			this.eti = param2;
+			this.g = g;
+			this.eti = eti;
 			bgr.alpha = 0.5;
 			bgr.alpha = 0.5;
 			textureManager = TextureLocator.getService();
 			dataManager = DataLocator.getService();
 			load();
-			addEventListener("addedToStage", stageAddHandler);
+			addEventListener("addedToStage",stageAddHandler);
 		}
 		
-		private function load():void
-		{
-			var _loc3_:int = 0;
-			var _loc2_:TechSkill = eti.techSkill;
-			var _loc4_:Object = dataManager.loadKey(_loc2_.table, _loc2_.tech);
+		private function load() : void {
+			var _local3:int = 0;
+			var _local2:TechSkill = eti.techSkill;
+			var _local4:Object = dataManager.loadKey(_local2.table,_local2.tech);
 			container.width = 450;
 			container.height = 385;
 			container.x = 10;
 			container.y = 10;
 			box.addChild(container);
-			closeButton = new Button(close, "Cancel");
+			closeButton = new Button(close,"Cancel");
 			box.addChild(closeButton);
-			if (_loc4_.hasOwnProperty("eliteTechs"))
-			{
-				eliteTechs = EliteTechs.getEliteTechBarList(g, _loc2_, _loc4_);
+			if(_local4.hasOwnProperty("eliteTechs")) {
+				eliteTechs = EliteTechs.getEliteTechBarList(g,_local2,_local4);
 			}
-			for each (var _loc1_:* in eliteTechs)
-			{
-				_loc1_.y = _loc3_;
-				_loc1_.x = 5;
-				_loc1_.etpm = this;
-				container.addChild(_loc1_);
-				_loc3_ += _loc1_.height + 10;
+			for each(var _local1 in eliteTechs) {
+				_local1.y = _local3;
+				_local1.x = 5;
+				_local1.etpm = this;
+				container.addChild(_local1);
+				_local3 += _local1.height + 10;
 			}
 			addChild(bgr);
 			addChild(box);
 		}
 		
-		public function updateAndClose(param1:Message):void
-		{
-			if (!param1.getBoolean(0))
-			{
+		public function updateAndClose(m:Message) : void {
+			if(!m.getBoolean(0)) {
 				return;
 			}
-			eti.update(param1.getInt(1));
+			eti.update(m.getInt(1));
 			close();
 		}
 		
-		public function disableAll():void
-		{
-			for each (var _loc1_:* in eliteTechs)
-			{
-				_loc1_.touchable = false;
+		public function disableAll() : void {
+			for each(var _local1 in eliteTechs) {
+				_local1.touchable = false;
 			}
 			closeButton.touchable = false;
 		}
 		
-		protected function redraw(param1:Event = null):void
-		{
-			if (stage == null)
-			{
+		protected function redraw(e:Event = null) : void {
+			if(stage == null) {
 				return;
 			}
 			closeButton.y = Math.round(box.height - 50);
@@ -114,27 +90,25 @@ package core.hud.components.techTree
 			bgr.height = stage.stageHeight;
 		}
 		
-		private function stageAddHandler(param1:Event):void
-		{
-			addEventListener("removedFromStage", clean);
-			stage.addEventListener("resize", redraw);
+		private function stageAddHandler(e:Event) : void {
+			addEventListener("removedFromStage",clean);
+			stage.addEventListener("resize",redraw);
 			bgr.width = stage.stageWidth;
 			bgr.height = stage.stageHeight;
 			redraw();
 		}
 		
-		protected function close(param1:TouchEvent = null):void
-		{
+		protected function close(e:TouchEvent = null) : void {
 			dispatchEventWith("close");
 			removeEventListeners();
 		}
 		
-		protected function clean(param1:Event):void
-		{
-			stage.removeEventListener("resize", redraw);
-			removeEventListener("removedFromStage", clean);
-			removeEventListener("addedToStage", stageAddHandler);
+		protected function clean(e:Event) : void {
+			stage.removeEventListener("resize",redraw);
+			removeEventListener("removedFromStage",clean);
+			removeEventListener("addedToStage",stageAddHandler);
 			super.dispose();
 		}
 	}
 }
+

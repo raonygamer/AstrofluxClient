@@ -1,39 +1,38 @@
-package textures
-{
+package textures {
 	import playerio.Client;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	
-	public interface ITextureManager
-	{
-		function loadTextures(param1:Array):void;
+	public interface ITextureManager {
+		function loadTextures(itemsArray:Array) : void;
 		
-		function get percLoaded():int;
+		function get percLoaded() : int;
 		
-		function getTextureMainByKey(param1:String):Texture;
+		function getTextureMainByKey(textureObjKey:String) : Texture;
 		
-		function getTextureGUIByTextureName(param1:String):Texture;
+		function getTextureGUIByTextureName(textureName:String) : Texture;
 		
-		function getTextureGUIByKey(param1:String):Texture;
+		function getTextureGUIByKey(key:String) : Texture;
 		
-		function getTexturesByKey(param1:String, param2:String):Vector.<Texture>;
+		function getTexturesByKey(textureObjKey:String, atlas:String) : Vector.<Texture>;
 		
-		function getTexturesMainByKey(param1:String):Vector.<Texture>;
+		function getTexturesMainByKey(textureObjKey:String) : Vector.<Texture>;
 		
-		function getTexturesMainByTextureName(param1:String):Vector.<Texture>;
+		function getTexturesMainByTextureName(textureName:String) : Vector.<Texture>;
 		
-		function getTextureMainByTextureName(param1:String):Texture;
+		function getTextureMainByTextureName(textureName:String) : Texture;
 		
-		function set client(param1:Client):void;
+		function set client(value:Client) : void;
 		
-		function getTextureByTextureName(param1:String, param2:String):Texture;
+		function getTextureByTextureName(textureName:String, textureAtlas:String) : Texture;
 		
-		function getTextureAtlas(param1:String):TextureAtlas;
+		function getTextureAtlas(atlasName:String) : TextureAtlas;
 		
-		function disposeCustomTextures():void;
+		function disposeCustomTextures() : void;
 		
-		function addEventListener(param1:String, param2:Function):void;
+		function addEventListener(type:String, listener:Function) : void;
 		
-		function removeEventListener(param1:String, param2:Function):void;
+		function removeEventListener(type:String, listener:Function) : void;
 	}
 }
+

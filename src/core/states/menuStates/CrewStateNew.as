@@ -1,5 +1,4 @@
-package core.states.menuStates
-{
+package core.states.menuStates {
 	import core.hud.components.CrewBuySlot;
 	import core.hud.components.CrewDetails;
 	import core.hud.components.CrewDisplayBoxNew;
@@ -10,27 +9,19 @@ package core.states.menuStates
 	import feathers.controls.ScrollContainer;
 	import starling.events.Event;
 	
-	public class CrewStateNew extends DisplayState
-	{
+	public class CrewStateNew extends DisplayState {
 		public static var WIDTH:Number = 698;
-		
 		private var p:Player;
-		
 		private var mainBody:ScrollContainer;
-		
 		private var selectedCrewMember:CrewDetails;
+		private var crew:Vector.<CrewDisplayBoxNew> = new Vector.<CrewDisplayBoxNew>();
 		
-		private var crew:Vector.<CrewDisplayBoxNew>;
-		
-		public function CrewStateNew(param1:Game)
-		{
-			crew = new Vector.<CrewDisplayBoxNew>();
-			super(param1, HomeState);
-			this.p = param1.me;
+		public function CrewStateNew(g:Game) {
+			super(g,HomeState);
+			this.p = g.me;
 		}
 		
-		override public function enter():void
-		{
+		override public function enter() : void {
 			super.enter();
 			mainBody = new ScrollContainer();
 			mainBody.width = WIDTH;
@@ -38,113 +29,96 @@ package core.states.menuStates
 			mainBody.x = 0;
 			mainBody.y = 35;
 			addChild(mainBody);
-			container.addEventListener("reloadDetails", onReloadDetails);
-			container.addEventListener("crewSelected", setActive);
+			container.addEventListener("reloadDetails",onReloadDetails);
+			container.addEventListener("crewSelected",setActive);
 			load();
 		}
 		
-		override public function execute():void
-		{
+		override public function execute() : void {
 		}
 		
-		public function refresh():void
-		{
-			for each (var _loc1_:* in crew)
-			{
-				if (mainBody.contains(_loc1_))
-				{
-					mainBody.removeChild(_loc1_);
+		public function refresh() : void {
+			for each(var _local1 in crew) {
+				if(mainBody.contains(_local1)) {
+					mainBody.removeChild(_local1);
 				}
 			}
 			crew = new Vector.<CrewDisplayBoxNew>();
 			load();
 		}
 		
-		public function setActive(param1:Event):void
-		{
-			var _loc2_:CrewDisplayBoxNew = param1.target as CrewDisplayBoxNew;
-			if (selectedCrewMember != null)
-			{
+		public function setActive(e:Event) : void {
+			var _local2:CrewDisplayBoxNew = e.target as CrewDisplayBoxNew;
+			if(selectedCrewMember != null) {
 				removeChild(selectedCrewMember);
 			}
-			if (_loc2_ == null)
-			{
-				selectedCrewMember = new CrewDetails(g, null);
+			if(_local2 == null) {
+				selectedCrewMember = new CrewDetails(g,null);
 				addChild(selectedCrewMember);
 				selectedCrewMember.x = 350;
 				selectedCrewMember.y = 53;
-			}
-			else
-			{
-				selectedCrewMember = new CrewDetails(g, _loc2_.crewMember, reloadDetails);
+			} else {
+				selectedCrewMember = new CrewDetails(g,_local2.crewMember,reloadDetails);
 				addChild(selectedCrewMember);
 				selectedCrewMember.x = 350;
 				selectedCrewMember.y = 53;
 			}
 		}
 		
-		private function onReloadDetails(param1:Event):void
-		{
+		private function onReloadDetails(e:Event) : void {
 			reloadDetails();
 		}
 		
-		public function reloadDetails(param1:Boolean = false):void
-		{
-			if (!selectedCrewMember)
-			{
+		public function reloadDetails(forceRefresh:Boolean = false) : void {
+			if(!selectedCrewMember) {
 				return;
 			}
-			var _loc2_:CrewDetails = new CrewDetails(g, selectedCrewMember.crewMember, reloadDetails);
-			_loc2_.x = selectedCrewMember.x;
-			_loc2_.y = selectedCrewMember.y;
+			var _local2:CrewDetails = new CrewDetails(g,selectedCrewMember.crewMember,reloadDetails);
+			_local2.x = selectedCrewMember.x;
+			_local2.y = selectedCrewMember.y;
 			removeChild(selectedCrewMember);
-			selectedCrewMember = _loc2_;
+			selectedCrewMember = _local2;
 			addChild(selectedCrewMember);
-			if (!param1)
-			{
+			if(!forceRefresh) {
 				return;
 			}
-			if (selectedCrewMember != null)
-			{
+			if(selectedCrewMember != null) {
 				removeChild(selectedCrewMember);
 			}
 			refresh();
 		}
 		
-		private function load():void
-		{
-			var _loc3_:CrewDisplayBoxNew = null;
-			var _loc2_:CrewBuySlot = null;
-			var _loc4_:Vector.<CrewMember> = g.me.crewMembers;
+		private function load() : void {
+			var _local3:CrewDisplayBoxNew = null;
+			var _local2:CrewBuySlot = null;
+			var _local4:Vector.<CrewMember> = g.me.crewMembers;
 			super.backButton.visible = false;
-			var _loc8_:int = 0;
-			var _loc7_:int = 60;
-			var _loc1_:int = 330;
-			var _loc6_:int = 25;
-			for each (var _loc5_:* in _loc4_)
-			{
-				_loc3_ = new CrewDisplayBoxNew(g, _loc5_, 0);
-				_loc3_.x = _loc7_;
-				_loc3_.y = _loc6_;
-				_loc6_ += _loc3_.height + 10;
-				_loc8_++;
-				mainBody.addChild(_loc3_);
-				crew.push(_loc3_);
+			var _local8:int = 0;
+			var _local7:int = 60;
+			var _local1:int = 330;
+			var _local6:int = 25;
+			for each(var _local5 in _local4) {
+				_local3 = new CrewDisplayBoxNew(g,_local5,0);
+				_local3.x = _local7;
+				_local3.y = _local6;
+				_local6 += _local3.height + 10;
+				_local8++;
+				mainBody.addChild(_local3);
+				crew.push(_local3);
 			}
-			if (_loc4_.length < 4)
-			{
-				_loc2_ = new CrewBuySlot(g);
-				_loc2_.x = _loc7_;
-				_loc2_.y = _loc6_;
-				mainBody.addChild(_loc2_);
+			if(_local4.length < 4) {
+				_local2 = new CrewBuySlot(g);
+				_local2.x = _local7;
+				_local2.y = _local6;
+				mainBody.addChild(_local2);
 			}
 		}
 		
-		override public function exit():void
-		{
-			container.removeEventListener("reloadDetails", onReloadDetails);
-			container.removeEventListener("crewSelected", setActive);
+		override public function exit() : void {
+			container.removeEventListener("reloadDetails",onReloadDetails);
+			container.removeEventListener("crewSelected",setActive);
 			super.exit();
 		}
 	}
 }
+

@@ -1,30 +1,29 @@
-package data
-{
+package data {
 	import core.artifact.Artifact;
 	import playerio.Client;
 	
-	public interface IDataManager
-	{
-		function getArtifacts():Vector.<Artifact>;
+	public interface IDataManager {
+		function getArtifacts() : Vector.<Artifact>;
 		
-		function setClient(param1:Client):void;
+		function setClient(value:Client) : void;
 		
-		function loadKeyFromBigDB(param1:String, param2:String, param3:Function):void;
+		function loadKeyFromBigDB(table:String, key:String, successCallback:Function) : void;
 		
-		function loadRangeFromBigDB(param1:String, param2:String, param3:Array = null, param4:Function = null, param5:int = 1000):void;
+		function loadRangeFromBigDB(table:String, index:String, indexPath:Array = null, callback:Function = null, maxCount:int = 1000) : void;
 		
-		function loadKeysFromBigDB(param1:String, param2:Array, param3:Function = null):void;
+		function loadKeysFromBigDB(table:String, keys:Array, callback:Function = null) : void;
 		
-		function cacheCommonData():void;
+		function cacheCommonData() : void;
 		
-		function loadTable(param1:String):Object;
+		function loadTable(table:String) : Object;
 		
-		function loadKey(param1:String, param2:String):Object;
+		function loadKey(table:String, key:String) : Object;
 		
-		function loadKeys(param1:String, param2:Array):Array;
+		function loadKeys(table:String, keys:Array) : Array;
 		
-		function loadRange(param1:String, param2:String, param3:String):Object;
+		function loadRange(table:String, property:String, compareValue:String) : Object;
 		
-		function loadFirstByProperty(param1:String, param2:String, param3:String):Object;
+		function loadFirstByProperty(table:String, property:String, compareValue:String) : Object;
 	}
 }
+

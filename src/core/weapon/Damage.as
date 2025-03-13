@@ -1,244 +1,186 @@
-package core.weapon
-{
+package core.weapon {
 	import generics.Localize;
 	
-	public class Damage
-	{
+	public class Damage {
 		public static const SINGLETYPES:int = 5;
-		
 		public static const TOTALTYPES:int = 10;
-		
 		public static const KINETIC:int = 0;
-		
 		public static const ENERGY:int = 1;
-		
 		public static const CORROSIVE:int = 2;
-		
 		public static const KINNETICENERGY:int = 3;
-		
 		public static const CORROSIVEKINNETIC:int = 4;
-		
 		public static const ALL:int = 5;
-		
 		public static const HEAL:int = 6;
-		
 		public static const KINNETICENERGYCORROSIVE:int = 7;
-		
 		public static const DONT_SCALE:int = 8;
-		
 		public static const ENERGYCORROSIVE:int = 9;
-		
 		public static const RESISTANCE_CAP:int = 75;
-		
-		public static const TYPE:Vector.<String> = Vector.<String>(["Kinetic", "Energy", "Corrosive", "50% Kinetic + 50% Energy", "50% Corrosive + 50% Kinetic", "", "Health", "33% Energy + 33% Kinetic + 33% Corrosive", "None", "50% Energy + 50% Corrosive"]);
-		
-		public static const TYPE_HTML:Vector.<String> = Vector.<String>(["<FONT COLOR='#00ffff'>Kinetic</FONT>", "<FONT COLOR='#ff030d'>Energy</FONT>", "<FONT COLOR='#009900'>Corrosive</FONT>", "<FONT COLOR='#00ffff'>Kinetic</FONT> + <FONT COLOR='#ff030d'>Energy</FONT>", "<FONT COLOR='#009900'>Corrosive</FONT> + <FONT COLOR='#00ffff'>Kinetic</FONT>", "<FONT COLOR='#ffffff'>All</FONT>", "<FONT COLOR='#00ff00'>Health</FONT>", "<FONT COLOR='#00ffff'>Kinetic</FONT> + <FONT COLOR='#ff030d'>Energy</FONT> + <FONT COLOR='#009900'>Corrosive</FONT>", "<FONT COLOR='#ff0000'>Don't scale</FONT>", "<FONT COLOR='#ff030d'>Energy</FONT> + <FONT COLOR='#009900'>Corrosive</FONT>"]);
-		
-		public static const SINGLETYPE_HTML:Vector.<String> = Vector.<String>(["<FONT COLOR='#00ffff'>Kinetic</FONT>", "<FONT COLOR='#ff030d'>Energy</FONT>", "<FONT COLOR='#009900'>Corrosive</FONT>", "<FONT COLOR='#00ff00'>Health</FONT>", "<FONT COLOR='#ff0000'>Special</FONT>"]);
-		
-		public static const stats:Vector.<Vector.<Number>> = Vector.<Vector.<Number>>([Vector.<Number>([1, 0, 0, 0, 0]), Vector.<Number>([0, 1, 0, 0, 0]), Vector.<Number>([0, 0, 1, 0, 0]), Vector.<Number>([0.5, 0.5, 0, 0, 0]), Vector.<Number>([0.5, 0, 0.5, 0, 0]), Vector.<Number>([1, 1, 1, 0, 0]), Vector.<Number>([0, 0, 0, 1, 0]), Vector.<Number>([0.33, 0.33, 0.33, 0, 0]), Vector.<Number>([0, 0, 0, 0, 1]), Vector.<Number>([0, 0.5, 0.5, 0, 0])]);
-		
+		public static const TYPE:Vector.<String> = Vector.<String>(["Kinetic","Energy","Corrosive","50% Kinetic + 50% Energy","50% Corrosive + 50% Kinetic","","Health","33% Energy + 33% Kinetic + 33% Corrosive","None","50% Energy + 50% Corrosive"]);
+		public static const TYPE_HTML:Vector.<String> = Vector.<String>(["<FONT COLOR=\'#00ffff\'>Kinetic</FONT>","<FONT COLOR=\'#ff030d\'>Energy</FONT>","<FONT COLOR=\'#009900\'>Corrosive</FONT>","<FONT COLOR=\'#00ffff\'>Kinetic</FONT> + <FONT COLOR=\'#ff030d\'>Energy</FONT>","<FONT COLOR=\'#009900\'>Corrosive</FONT> + <FONT COLOR=\'#00ffff\'>Kinetic</FONT>","<FONT COLOR=\'#ffffff\'>All</FONT>","<FONT COLOR=\'#00ff00\'>Health</FONT>","<FONT COLOR=\'#00ffff\'>Kinetic</FONT> + <FONT COLOR=\'#ff030d\'>Energy</FONT> + <FONT COLOR=\'#009900\'>Corrosive</FONT>","<FONT COLOR=\'#ff0000\'>Don\'t scale</FONT>","<FONT COLOR=\'#ff030d\'>Energy</FONT> + <FONT COLOR=\'#009900\'>Corrosive</FONT>"]);
+		public static const SINGLETYPE_HTML:Vector.<String> = Vector.<String>(["<FONT COLOR=\'#00ffff\'>Kinetic</FONT>","<FONT COLOR=\'#ff030d\'>Energy</FONT>","<FONT COLOR=\'#009900\'>Corrosive</FONT>","<FONT COLOR=\'#00ff00\'>Health</FONT>","<FONT COLOR=\'#ff0000\'>Special</FONT>"]);
+		public static const stats:Vector.<Vector.<Number>> = Vector.<Vector.<Number>>([Vector.<Number>([1,0,0,0,0]),Vector.<Number>([0,1,0,0,0]),Vector.<Number>([0,0,1,0,0]),Vector.<Number>([0.5,0.5,0,0,0]),Vector.<Number>([0.5,0,0.5,0,0]),Vector.<Number>([1,1,1,0,0]),Vector.<Number>([0,0,0,1,0]),Vector.<Number>([0.33,0.33,0.33,0,0]),Vector.<Number>([0,0,0,0,1]),Vector.<Number>([0,0.5,0.5,0,0])]);
 		public var type:int;
-		
 		private var damage:Vector.<Number>;
-		
 		private var damageBase:Vector.<Number>;
 		
-		public function Damage(param1:Number, param2:int)
-		{
-			var _loc3_:int = 0;
+		public function Damage(dmg:Number, type:int) {
+			var _local3:int = 0;
 			super();
-			this.type = param2;
+			this.type = type;
 			damage = new Vector.<Number>();
 			damageBase = new Vector.<Number>();
-			_loc3_ = 0;
-			while (_loc3_ < 5)
-			{
-				damageBase.push(param1 * stats[param2][_loc3_]);
-				damage.push(param1 * stats[param2][_loc3_]);
-				_loc3_++;
+			_local3 = 0;
+			while(_local3 < 5) {
+				damageBase.push(dmg * stats[type][_local3]);
+				damage.push(dmg * stats[type][_local3]);
+				_local3++;
 			}
 		}
 		
-		public function dmg():Number
-		{
-			var _loc2_:int = 0;
-			var _loc1_:Number = 0;
-			_loc2_ = 0;
-			while (_loc2_ < 5)
-			{
-				_loc1_ += damage[_loc2_];
-				_loc2_++;
+		public function dmg() : Number {
+			var _local2:int = 0;
+			var _local1:Number = 0;
+			_local2 = 0;
+			while(_local2 < 5) {
+				_local1 += damage[_local2];
+				_local2++;
 			}
-			return _loc1_;
+			return _local1;
 		}
 		
-		public function damageText():String
-		{
-			var _loc2_:int = 0;
-			var _loc1_:String = "";
-			_loc2_ = 0;
-			while (_loc2_ < 3)
-			{
-				if (damage[_loc2_] > 0)
-				{
-					if (_loc1_ == "")
-					{
-						_loc1_ += "Deals: ";
+		public function damageText() : String {
+			var _local2:int = 0;
+			var _local1:String = "";
+			_local2 = 0;
+			while(_local2 < 3) {
+				if(damage[_local2] > 0) {
+					if(_local1 == "") {
+						_local1 += "Deals: ";
+					} else {
+						_local1 += " + ";
 					}
-					else
-					{
-						_loc1_ += " + ";
-					}
-					_loc1_ += "<FONT COLOR='#eeeeee'>" + damage[_loc2_].toFixed(0) + "</FONT> " + Damage.SINGLETYPE_HTML[_loc2_] + " Damage";
+					_local1 += "<FONT COLOR=\'#eeeeee\'>" + damage[_local2].toFixed(0) + "</FONT> " + Damage.SINGLETYPE_HTML[_local2] + " Damage";
 				}
-				_loc2_++;
+				_local2++;
 			}
-			if (damage[_loc2_] > 0)
-			{
-				_loc1_ += "Repairs: <FONT COLOR='#eeeeee'>" + damage[_loc2_].toFixed(0) + "</FONT> " + Damage.SINGLETYPE_HTML[_loc2_];
+			if(damage[_local2] > 0) {
+				_local1 += "Repairs: <FONT COLOR=\'#eeeeee\'>" + damage[_local2].toFixed(0) + "</FONT> " + Damage.SINGLETYPE_HTML[_local2];
 			}
-			if (_loc1_ != "")
-			{
-				_loc1_ += " per hit. \n";
+			if(_local1 != "") {
+				_local1 += " per hit. \n";
 			}
-			return _loc1_;
+			return _local1;
 		}
 		
-		public function debuffdamageText(param1:Number, param2:int, param3:String):String
-		{
-			var _loc5_:int = 0;
-			var _loc4_:String = "";
-			_loc5_ = 0;
-			while (_loc5_ < 3)
-			{
-				if (damage[_loc5_] > 0)
-				{
-					_loc4_ += Localize.t("Deals <FONT COLOR='#eeeeee'>[damage]</FONT> [type] " + param3 + " <FONT COLOR='#eeeeee'>[duration]</FONT> seconds \n").replace("[damage]", Math.ceil(param1 * damage[_loc5_]).toFixed(0)).replace("[type]", Damage.SINGLETYPE_HTML[_loc5_]).replace("[duration]", param2);
+		public function debuffdamageText(debuffMod:Number, debuffDuration:int, s:String) : String {
+			var _local5:int = 0;
+			var _local4:String = "";
+			_local5 = 0;
+			while(_local5 < 3) {
+				if(damage[_local5] > 0) {
+					_local4 += Localize.t("Deals <FONT COLOR=\'#eeeeee\'>[damage]</FONT> [type] " + s + " <FONT COLOR=\'#eeeeee\'>[duration]</FONT> seconds \n").replace("[damage]",Math.ceil(debuffMod * damage[_local5]).toFixed(0)).replace("[type]",Damage.SINGLETYPE_HTML[_local5]).replace("[duration]",debuffDuration);
 				}
-				_loc5_++;
+				_local5++;
 			}
-			if (damage[_loc5_] > 0)
-			{
-				_loc4_ += Localize.t("Repairs <FONT COLOR='#eeeeee'>[damage]</FONT> [type] " + param3 + " <FONT COLOR='#eeeeee'>[duration]</FONT> seconds \n").replace("[damage]", Math.ceil(param1 * damage[_loc5_]).toFixed(0)).replace("[type]", Damage.SINGLETYPE_HTML[_loc5_]).replace("[duration]", param2);
+			if(damage[_local5] > 0) {
+				_local4 += Localize.t("Repairs <FONT COLOR=\'#eeeeee\'>[damage]</FONT> [type] " + s + " <FONT COLOR=\'#eeeeee\'>[duration]</FONT> seconds \n").replace("[damage]",Math.ceil(debuffMod * damage[_local5]).toFixed(0)).replace("[type]",Damage.SINGLETYPE_HTML[_local5]).replace("[duration]",debuffDuration);
 			}
-			return _loc4_;
+			return _local4;
 		}
 		
-		public function setBaseDmg(param1:Number):void
-		{
-			var _loc2_:int = 0;
-			if (type == 8)
-			{
+		public function setBaseDmg(dmg:Number) : void {
+			var _local2:int = 0;
+			if(type == 8) {
 				return;
 			}
-			_loc2_ = 0;
-			while (_loc2_ < 5)
-			{
-				damageBase[_loc2_] = param1 * stats[type][_loc2_];
-				damage[_loc2_] = param1 * stats[type][_loc2_];
-				_loc2_++;
+			_local2 = 0;
+			while(_local2 < 5) {
+				damageBase[_local2] = dmg * stats[type][_local2];
+				damage[_local2] = dmg * stats[type][_local2];
+				_local2++;
 			}
 		}
 		
-		public function addBaseDmg(param1:Number, param2:int = -1):void
-		{
-			var _loc3_:int = 0;
-			if (param2 == 8)
-			{
+		public function addBaseDmg(dmg:Number, type:int = -1) : void {
+			var _local3:int = 0;
+			if(type == 8) {
 				return;
 			}
-			if (param2 == -1)
-			{
-				param2 = this.type;
+			if(type == -1) {
+				type = this.type;
 			}
-			_loc3_ = 0;
-			while (_loc3_ < 5)
-			{
-				var _loc4_:* = _loc3_;
-				var _loc5_:* = damage[_loc4_] + param1 * stats[param2][_loc3_];
-				damage[_loc4_] = _loc5_;
-				damageBase[_loc3_] += param1 * stats[param2][_loc3_];
-				_loc3_++;
+			_local3 = 0;
+			while(_local3 < 5) {
+				var _local4:* = _local3;
+				var _local5:* = damage[_local4] + dmg * stats[type][_local3];
+				damage[_local4] = _local5;
+				damageBase[_local3] += dmg * stats[type][_local3];
+				_local3++;
 			}
 		}
 		
-		public function addBasePercent(param1:Number, param2:int = -1):void
-		{
-			var _loc3_:int = 0;
-			if (param2 == 8)
-			{
+		public function addBasePercent(percent:Number, type:int = -1) : void {
+			var _local3:int = 0;
+			if(type == 8) {
 				return;
 			}
-			if (param2 == -1)
-			{
-				param2 = this.type;
+			if(type == -1) {
+				type = this.type;
 			}
-			_loc3_ = 0;
-			while (_loc3_ < 5)
-			{
-				var _loc4_:* = _loc3_;
-				var _loc5_:* = damage[_loc4_] + damageBase[_loc3_] * param1 * stats[param2][_loc3_] / 100;
-				damage[_loc4_] = _loc5_;
-				damageBase[_loc3_] += damageBase[_loc3_] * param1 * stats[param2][_loc3_] / 100;
-				_loc3_++;
+			_local3 = 0;
+			while(_local3 < 5) {
+				var _local4:* = _local3;
+				var _local5:* = damage[_local4] + damageBase[_local3] * percent * stats[type][_local3] / 100;
+				damage[_local4] = _local5;
+				damageBase[_local3] += damageBase[_local3] * percent * stats[type][_local3] / 100;
+				_local3++;
 			}
 		}
 		
-		public function addDmgInt(param1:int, param2:int = -1):void
-		{
-			var _loc3_:int = 0;
-			if (param2 == -1)
-			{
-				param2 = this.type;
+		public function addDmgInt(dmg:int, type:int = -1) : void {
+			var _local3:int = 0;
+			if(type == -1) {
+				type = this.type;
 			}
-			_loc3_ = 0;
-			while (_loc3_ < 5)
-			{
-				if (damage[_loc3_] > 0)
-				{
-					var _loc4_:* = _loc3_;
-					var _loc5_:* = damage[_loc4_] + param1 * stats[param2][_loc3_];
-					damage[_loc4_] = _loc5_;
+			_local3 = 0;
+			while(_local3 < 5) {
+				if(damage[_local3] > 0) {
+					var _local4:* = _local3;
+					var _local5:* = damage[_local4] + dmg * stats[type][_local3];
+					damage[_local4] = _local5;
 				}
-				_loc3_++;
+				_local3++;
 			}
 		}
 		
-		public function addDmgPercent(param1:Number, param2:int = -1):void
-		{
-			var _loc3_:int = 0;
-			if (param2 == -1)
-			{
-				param2 = this.type;
+		public function addDmgPercent(bonus:Number, type:int = -1) : void {
+			var _local3:int = 0;
+			if(type == -1) {
+				type = this.type;
 			}
-			_loc3_ = 0;
-			while (_loc3_ < 5)
-			{
-				if (stats[param2][_loc3_] > 0)
-				{
-					var _loc4_:* = _loc3_;
-					var _loc5_:* = damage[_loc4_] + damageBase[_loc3_] * param1 / 100;
-					damage[_loc4_] = _loc5_;
+			_local3 = 0;
+			while(_local3 < 5) {
+				if(stats[type][_local3] > 0) {
+					var _local4:* = _local3;
+					var _local5:* = damage[_local4] + damageBase[_local3] * bonus / 100;
+					damage[_local4] = _local5;
 				}
-				_loc3_++;
+				_local3++;
 			}
 		}
 		
-		public function addLevelBonus(param1:int, param2:Number):void
-		{
-			var _loc3_:int = 0;
-			if (type == 8)
-			{
+		public function addLevelBonus(level:int, bonus:Number) : void {
+			var _local3:int = 0;
+			if(type == 8) {
 				return;
 			}
-			_loc3_ = 0;
-			while (_loc3_ < 5)
-			{
-				damage[_loc3_] = damageBase[_loc3_] * (100 + param2 * (param1 - 1)) / 100;
-				damageBase[_loc3_] = damageBase[_loc3_] * (100 + param2 * (param1 - 1)) / 100;
-				_loc3_++;
+			_local3 = 0;
+			while(_local3 < 5) {
+				damage[_local3] = damageBase[_local3] * (100 + bonus * (level - 1)) / 100;
+				damageBase[_local3] = damageBase[_local3] * (100 + bonus * (level - 1)) / 100;
+				_local3++;
 			}
 		}
 	}
 }
+

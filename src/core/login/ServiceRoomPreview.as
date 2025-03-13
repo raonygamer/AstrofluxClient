@@ -1,5 +1,4 @@
-package core.login
-{
+package core.login {
 	import com.greensock.TweenMax;
 	import core.friend.Friend;
 	import core.hud.components.Text;
@@ -11,69 +10,40 @@ package core.login
 	import starling.display.Sprite;
 	import starling.events.TouchEvent;
 	
-	public class ServiceRoomPreview extends Sprite
-	{
+	public class ServiceRoomPreview extends Sprite {
 		public static var WIDTH:int = 300;
-		
-		public static const roomNames:Array = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "beta", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega"];
-		
+		public static const roomNames:Array = ["alpha","beta","gamma","delta","epsilon","zeta","eta","theta","iota","kappa","lambda","mu","beta","nu","xi","omicron","pi","rho","sigma","tau","upsilon","phi","chi","psi","omega"];
 		public var info:RoomInfo;
-		
-		private var _name:Text;
-		
-		private var online:Text;
-		
-		private var friends:Text;
-		
-		private var status:Text;
-		
-		private var level:Text;
-		
-		private var recommended:Text;
-		
+		private var _name:Text = new Text();
+		private var online:Text = new Text();
+		private var friends:Text = new Text();
+		private var status:Text = new Text();
+		private var level:Text = new Text();
+		private var recommended:Text = new Text();
 		private var recommendedBg:Quad;
-		
 		private var connection:Connection;
-		
 		private var selectCallback:Function;
-		
 		public var enabled:Boolean = false;
-		
 		public var even:Boolean = true;
-		
 		private var serviceRoomSelector:ServiceRoomSelector;
-		
 		private var bg:Quad;
-		
 		private var isSupporter:Boolean = false;
-		
 		public var avgLevel:int = -1;
-		
 		public var playerLevel:int = -1;
-		
 		private var onlineFriends:Vector.<Friend>;
-		
 		private var friendsTooltip:Sprite;
-		
 		public var isClosing:Boolean = false;
 		
-		public function ServiceRoomPreview(param1:RoomInfo, param2:Function, param3:ServiceRoomSelector)
-		{
-			_name = new Text();
-			online = new Text();
-			friends = new Text();
-			status = new Text();
-			level = new Text();
-			recommended = new Text();
+		public function ServiceRoomPreview(info:RoomInfo, selectCallback:Function, serviceRoomSelector:ServiceRoomSelector) {
 			super();
-			this.info = param1;
-			this.selectCallback = param2;
-			this.serviceRoomSelector = param3;
-			bg = new Quad(WIDTH, 50, 0);
+			this.info = info;
+			this.selectCallback = selectCallback;
+			this.serviceRoomSelector = serviceRoomSelector;
+			bg = new Quad(WIDTH,50,0);
 			bg.alpha = 0.7;
 			addChild(bg);
-			_name.color = 16777215;
-			online.color = 65280;
+			_name.color = 0xffffff;
+			online.color = 0xff00;
 			friends.color = 10854300;
 			status.color = 10854300;
 			level.color = status.color;
@@ -83,24 +53,23 @@ package core.login
 			_name.text = getName().toUpperCase();
 			_name.size = 12;
 			status.size = 14;
-			online.text = param1.onlineUsers + " ONLINE";
-			if (param1.onlineUsers == 0)
-			{
+			online.text = info.onlineUsers + " ONLINE";
+			if(info.onlineUsers == 0) {
 				online.text = "EMPTY";
 				online.color = 10854300;
 			}
 			online.size = 11;
 			friends.size = 11;
 			recommended.text = "RECOMMENDED";
-			recommendedBg = new Quad(recommended.width - 1, recommended.height - 12, 0);
+			recommendedBg = new Quad(recommended.width - 1,recommended.height - 12,0);
 			recommendedBg.alpha = 0.7;
-			var _loc4_:int = 5;
-			_name.y = online.y = level.y = _loc4_;
+			var _local4:int = 5;
+			_name.y = online.y = level.y = _local4;
 			_name.x = friends.x = 5;
-			online.x = _name.x + _name.width + _loc4_ / 2;
+			online.x = _name.x + _name.width + _local4 / 2;
 			friends.y = _name.y + _name.height;
 			status.y = friends.y;
-			status.x = bg.width - _loc4_;
+			status.x = bg.width - _local4;
 			level.x = status.x;
 			recommended.y = y - recommended.height / 3;
 			recommended.x = width / 2 - recommended.width / 2;
@@ -116,222 +85,179 @@ package core.login
 			addChild(level);
 			addChild(recommendedBg);
 			addChild(recommended);
-			addEventListener("touch", onTouch);
+			addEventListener("touch",onTouch);
 			useHandCursor = true;
-			if (_name.text == "")
-			{
+			if(_name.text == "") {
 				this.enabled = false;
-			}
-			else
-			{
+			} else {
 				join();
 			}
 		}
 		
-		private function onTouch(param1:TouchEvent):void
-		{
-			if (param1.getTouch(this) == null)
-			{
+		private function onTouch(e:TouchEvent) : void {
+			if(e.getTouch(this) == null) {
 				hideFriends();
 			}
-			if (param1.getTouch(this, "hover"))
-			{
+			if(e.getTouch(this,"hover")) {
 				showFriendsTooltip();
 			}
-			if (!enabled)
-			{
+			if(!enabled) {
 				return;
 			}
-			if (param1.getTouch(this, "ended"))
-			{
+			if(e.getTouch(this,"ended")) {
 				enabled = false;
 				selectRoom();
 			}
 		}
 		
-		public function selectRoom():void
-		{
-			selectCallback(this, info.id);
+		public function selectRoom() : void {
+			selectCallback(this,info.id);
 		}
 		
-		private function getName():String
-		{
-			var _loc1_:int = getIndex();
-			if (_loc1_ > roomNames.length - 1)
-			{
+		private function getName() : String {
+			var _local1:int = getIndex();
+			if(_local1 > roomNames.length - 1) {
 				return "n/a";
 			}
-			if (!roomNames[_loc1_])
-			{
+			if(!roomNames[_local1]) {
 				return "";
 			}
-			return roomNames[_loc1_];
+			return roomNames[_local1];
 		}
 		
-		private function getIndex():int
-		{
-			var _loc1_:Number = NaN;
-			var _loc2_:Array = info.id.split("_");
-			if (_loc2_.length == 2)
-			{
-				_loc1_ = Number(_loc2_[1]);
-				if (!isNaN(_loc1_))
-				{
-					return _loc1_;
+		private function getIndex() : int {
+			var _local1:Number = NaN;
+			var _local2:Array = info.id.split("_");
+			if(_local2.length == 2) {
+				_local1 = Number(_local2[1]);
+				if(!isNaN(_local1)) {
+					return _local1;
 				}
 			}
 			return -1;
 		}
 		
-		public function isOpenForAll():Boolean
-		{
+		public function isOpenForAll() : Boolean {
 			return info.onlineUsers < 950;
 		}
 		
-		public function isOpenForSupporters():Boolean
-		{
+		public function isOpenForSupporters() : Boolean {
 			return info.onlineUsers < 1000;
 		}
 		
-		private function validate():Boolean
-		{
-			if (getIndex() < 0)
-			{
+		private function validate() : Boolean {
+			if(getIndex() < 0) {
 				return false;
 			}
-			if (getIndex() > roomNames.length - 1)
-			{
+			if(getIndex() > roomNames.length - 1) {
 				return false;
 			}
 			return true;
 		}
 		
-		private function join():void
-		{
-			if (!validate())
-			{
+		private function join() : void {
+			if(!validate()) {
 				this.visible = false;
 				return;
 			}
-			if (info.onlineUsers == 0)
-			{
+			if(info.onlineUsers == 0) {
 				updateStatus();
 				return;
 			}
 			friends.text = "Looking for friends...";
-			Login.client.multiplayer.joinRoom(info.id, {"client_version": 1379, "preview": "true"}, joined, function(param1:PlayerIOError):void
-			{
-				var _loc2_:String = null;
-				if (param1.errorID != 2)
-				{
-					_loc2_ = param1.message;
-					if (_loc2_.indexOf("The room cannot") > -1)
-					{
+			Login.client.multiplayer.joinRoom(info.id,{
+				"client_version":1379,
+				"preview":"true"
+			},joined,function(param1:PlayerIOError):void {
+				var _local2:String = null;
+				if(param1.errorID != 2) {
+					_local2 = param1.message;
+					if(_local2.indexOf("The room cannot") > -1) {
 						full(true);
-					}
-					else
-					{
+					} else {
 						status.text = "An error occured...";
 					}
-					trace(_loc2_);
-					friends.color = 16711680;
+					trace(_local2);
+					friends.color = 0xff0000;
 				}
 			});
 		}
 		
-		private function joined(param1:Connection):void
-		{
-			var c:Connection = param1;
+		private function joined(c:Connection) : void {
 			connection = c;
-			connection.addMessageHandler("onlineFriends", onOnlineFriends);
-			connection.addMessageHandler("preview", onPreview);
-			connection.addMessageHandler("error", function(param1:Message):void
-			{
+			connection.addMessageHandler("onlineFriends",onOnlineFriends);
+			connection.addMessageHandler("preview",onPreview);
+			connection.addMessageHandler("error",function(param1:Message):void {
 				friends.text = param1.getString(0);
-				friends.color = 16711680;
+				friends.color = 0xff0000;
 			});
 		}
 		
-		private function onPreview(param1:Message):void
-		{
-			isSupporter = param1.getBoolean(0);
+		private function onPreview(m:Message) : void {
+			isSupporter = m.getBoolean(0);
 			ServiceRoomSelector.isSupporter = isSupporter;
-			playerLevel = param1.getInt(1);
+			playerLevel = m.getInt(1);
 			ServiceRoomSelector.playerLevel = playerLevel;
-			avgLevel = param1.getInt(2);
+			avgLevel = m.getInt(2);
 			level.text = "Avg level " + avgLevel;
 			serviceRoomSelector.updateRecommended();
-			if (playerLevel == 0)
-			{
+			if(playerLevel == 0) {
 				serviceRoomSelector.setNewPlayer();
 			}
 		}
 		
-		private function onOnlineFriends(param1:Message):void
-		{
-			var _loc3_:Friend = null;
+		private function onOnlineFriends(m:Message) : void {
+			var _local3:Friend = null;
 			onlineFriends = new Vector.<Friend>();
-			var _loc4_:int = 0;
-			var _loc2_:String = "";
-			while (_loc4_ < param1.length)
-			{
-				_loc3_ = new Friend();
-				_loc4_ = _loc3_.fill(param1, _loc4_);
-				_loc3_.isOnline = true;
-				onlineFriends.push(_loc3_);
-				_loc2_ += _loc3_.name + ", ";
+			var _local4:int = 0;
+			var _local2:String = "";
+			while(_local4 < m.length) {
+				_local3 = new Friend();
+				_local4 = _local3.fill(m,_local4);
+				_local3.isOnline = true;
+				onlineFriends.push(_local3);
+				_local2 += _local3.name + ", ";
 			}
-			_loc2_ = _loc2_.substr(0, _loc2_.length - 2);
-			if (onlineFriends.length > 0)
-			{
+			_local2 = _local2.substr(0,_local2.length - 2);
+			if(onlineFriends.length > 0) {
 				friends.text = onlineFriends.length + " friends online";
-			}
-			else
-			{
+			} else {
 				friends.text = " ";
 			}
 			updateStatus();
 			showFriendsTooltip();
 		}
 		
-		private function showFriendsTooltip():void
-		{
-			var _loc3_:int = 0;
-			var _loc2_:Text = null;
-			if (!onlineFriends)
-			{
+		private function showFriendsTooltip() : void {
+			var _local3:int = 0;
+			var _local2:Text = null;
+			if(!onlineFriends) {
 				return;
 			}
-			if (friendsTooltip != null)
-			{
+			if(friendsTooltip != null) {
 				friendsTooltip.visible = true;
 				return;
 			}
-			if (onlineFriends.length == 0)
-			{
+			if(onlineFriends.length == 0) {
 				return;
 			}
 			friendsTooltip = new Sprite();
-			_loc3_ = 0;
-			while (_loc3_ < onlineFriends.length)
-			{
-				_loc2_ = new Text(3, 3);
-				_loc2_.text = onlineFriends[_loc3_].name;
-				_loc2_.color = 0;
-				_loc2_.y += _loc3_ * (_loc2_.height - 1);
-				_loc2_.size = 10;
-				friendsTooltip.addChild(_loc2_);
-				_loc3_++;
+			_local3 = 0;
+			while(_local3 < onlineFriends.length) {
+				_local2 = new Text(3,3);
+				_local2.text = onlineFriends[_local3].name;
+				_local2.color = 0;
+				_local2.y += _local3 * (_local2.height - 1);
+				_local2.size = 10;
+				friendsTooltip.addChild(_local2);
+				_local3++;
 			}
-			var _loc1_:Quad = new Quad(friendsTooltip.width + 10, friendsTooltip.height + 3, 65280);
-			_loc1_.alpha = 0.3;
-			friendsTooltip.addChildAt(_loc1_, 0);
-			if (even)
-			{
+			var _local1:Quad = new Quad(friendsTooltip.width + 10,friendsTooltip.height + 3,0xff00);
+			_local1.alpha = 0.3;
+			friendsTooltip.addChildAt(_local1,0);
+			if(even) {
 				friendsTooltip.x = 0 - friendsTooltip.width;
-			}
-			else
-			{
+			} else {
 				friendsTooltip.x = width;
 			}
 			friendsTooltip.y = 0;
@@ -339,36 +265,29 @@ package core.login
 			hideFriends();
 		}
 		
-		private function hideFriends():void
-		{
-			if (!friendsTooltip)
-			{
+		private function hideFriends() : void {
+			if(!friendsTooltip) {
 				return;
 			}
 			friendsTooltip.visible = false;
 		}
 		
-		private function updateStatus():void
-		{
-			if (isClosing)
-			{
+		private function updateStatus() : void {
+			if(isClosing) {
 				return;
 			}
-			if (isOpenForAll())
-			{
+			if(isOpenForAll()) {
 				status.text = "JOIN >";
-				status.color = 65280;
+				status.color = 0xff00;
 				enabled = true;
 				return;
 			}
-			if (isOpenForSupporters())
-			{
+			if(isOpenForSupporters()) {
 				status.size = 10;
 				status.text = "OPEN FOR SUPPORTERS >";
 				status.color = 16426240;
 				status.y += 3;
-				if (isSupporter)
-				{
+				if(isSupporter) {
 					enabled = true;
 				}
 				return;
@@ -376,38 +295,32 @@ package core.login
 			full();
 		}
 		
-		public function disable():void
-		{
+		public function disable() : void {
 			enabled = false;
 			this.removeEventListeners();
-			TweenMax.to(this, 0.3, {"alpha": 0});
+			TweenMax.to(this,0.3,{"alpha":0});
 		}
 		
-		public function highlight():void
-		{
-			var _loc1_:Quad = new Quad(bg.width + 4, bg.height + 4, 11150770);
-			_loc1_.x = -2;
-			_loc1_.y = -2;
+		public function highlight() : void {
+			var _local1:Quad = new Quad(bg.width + 4,bg.height + 4,11150770);
+			_local1.x = -2;
+			_local1.y = -2;
 			bg.alpha = 0.9;
-			addChildAt(_loc1_, 0);
+			addChildAt(_local1,0);
 		}
 		
-		private function full(param1:Boolean = false):void
-		{
+		private function full(fromError:Boolean = false) : void {
 			status.text = "FULL";
-			status.color = 16711680;
-			if (param1)
-			{
+			status.color = 0xff0000;
+			if(fromError) {
 				online.text = "1000 online";
 				friends.text = "";
 			}
 		}
 		
-		public function trySetClosing():void
-		{
-			var _loc1_:int = ServiceRoomSelector.totalFree - info.onlineUsers;
-			if (_loc1_ < 950)
-			{
+		public function trySetClosing() : void {
+			var _local1:int = ServiceRoomSelector.totalFree - info.onlineUsers;
+			if(_local1 < 950) {
 				return;
 			}
 			status.text = "CLOSING DOWN";
@@ -420,10 +333,10 @@ package core.login
 			alpha = 0.5;
 		}
 		
-		public function setRecommended(param1:Boolean):void
-		{
-			recommended.visible = param1;
-			recommendedBg.visible = param1;
+		public function setRecommended(v:Boolean) : void {
+			recommended.visible = v;
+			recommendedBg.visible = v;
 		}
 	}
 }
+

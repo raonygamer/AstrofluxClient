@@ -1,5 +1,4 @@
-package core.ship
-{
+package core.ship {
 	import core.particle.EmitterFactory;
 	import core.player.Player;
 	import core.scene.Game;
@@ -25,382 +24,323 @@ package core.ship
 	import movement.Heading;
 	import playerio.Message;
 	
-	public class ShipSync
-	{
+	public class ShipSync {
 		private var g:Game;
 		
-		public function ShipSync(param1:Game)
-		{
+		public function ShipSync(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 		}
 		
-		public function addMessageHandlers():void
-		{
-			g.addMessageHandler("aiCourse", aiCourse);
-			g.addMessageHandler("mirrorCourse", mirrorCourse);
-			g.addMessageHandler("AIStickyStart", aiStickyStart);
-			g.addMessageHandler("AIStickyEnd", aiStickyEnd);
+		public function addMessageHandlers() : void {
+			g.addMessageHandler("aiCourse",aiCourse);
+			g.addMessageHandler("mirrorCourse",mirrorCourse);
+			g.addMessageHandler("AIStickyStart",aiStickyStart);
+			g.addMessageHandler("AIStickyEnd",aiStickyEnd);
 		}
 		
-		public function playerCourse(param1:Message, param2:int = 0):void
-		{
-			var _loc5_:Dictionary = g.playerManager.playersById;
-			var _loc4_:String = param1.getString(param2);
-			var _loc9_:Heading = new Heading();
-			_loc9_.parseMessage(param1, param2 + 1);
-			var _loc6_:Player = _loc5_[_loc4_];
-			if (_loc6_ == null || _loc6_.ship == null)
-			{
+		public function playerCourse(m:Message, i:int = 0) : void {
+			var _local5:Dictionary = g.playerManager.playersById;
+			var _local4:String = m.getString(i);
+			var _local9:Heading = new Heading();
+			_local9.parseMessage(m,i + 1);
+			var _local6:Player = _local5[_local4];
+			if(_local6 == null || _local6.ship == null) {
 				return;
 			}
-			var _loc7_:Ship = _loc6_.ship;
-			if (_loc7_.getConverger() == null || _loc7_.course == null)
-			{
+			var _local7:Ship = _local6.ship;
+			if(_local7.getConverger() == null || _local7.course == null) {
 				return;
 			}
-			var _loc8_:Converger = _loc7_.getConverger();
-			var _loc3_:Heading = _loc7_.course;
-			if (_loc3_ == null)
-			{
+			var _local8:Converger = _local7.getConverger();
+			var _local3:Heading = _local7.course;
+			if(_local3 == null) {
 				return;
 			}
-			if (_loc6_.isMe)
-			{
-				fastforwardMe(_loc7_, _loc9_);
-				if (!_loc3_.almostEqual(_loc9_))
-				{
-					_loc8_.setConvergeTarget(_loc9_);
+			if(_local6.isMe) {
+				fastforwardMe(_local7,_local9);
+				if(!_local3.almostEqual(_local9)) {
+					_local8.setConvergeTarget(_local9);
 				}
-			}
-			else
-			{
-				_loc3_.accelerate = _loc9_.accelerate;
-				_loc3_.rotateLeft = _loc9_.rotateLeft;
-				_loc3_.rotateRight = _loc9_.rotateRight;
-				_loc8_.setConvergeTarget(_loc9_);
+			} else {
+				_local3.accelerate = _local9.accelerate;
+				_local3.rotateLeft = _local9.rotateLeft;
+				_local3.rotateRight = _local9.rotateRight;
+				_local8.setConvergeTarget(_local9);
 			}
 		}
 		
-		public function playerUsedBoost(param1:Message, param2:int):void
-		{
-			var _loc5_:Dictionary = g.playerManager.playersById;
-			var _loc4_:String = param1.getString(param2);
-			var _loc9_:Heading = new Heading();
-			_loc9_.parseMessage(param1, param2 + 1);
-			var _loc6_:Player = _loc5_[_loc4_];
-			if (_loc6_ == null || _loc6_.ship == null)
-			{
+		public function playerUsedBoost(m:Message, i:int) : void {
+			var _local5:Dictionary = g.playerManager.playersById;
+			var _local4:String = m.getString(i);
+			var _local9:Heading = new Heading();
+			_local9.parseMessage(m,i + 1);
+			var _local6:Player = _local5[_local4];
+			if(_local6 == null || _local6.ship == null) {
 				return;
 			}
-			var _loc7_:PlayerShip = _loc6_.ship;
-			var _loc8_:Converger = _loc7_.getConverger();
-			var _loc3_:Heading = _loc7_.course;
-			if (_loc3_ == null || _loc8_ == null)
-			{
+			var _local7:PlayerShip = _local6.ship;
+			var _local8:Converger = _local7.getConverger();
+			var _local3:Heading = _local7.course;
+			if(_local3 == null || _local8 == null) {
 				return;
 			}
-			if (_loc6_.isMe)
-			{
-				fastforwardMe(_loc7_, _loc9_);
-				if (!_loc3_.almostEqual(_loc9_))
-				{
-					_loc8_.setConvergeTarget(_loc9_);
+			if(_local6.isMe) {
+				fastforwardMe(_local7,_local9);
+				if(!_local3.almostEqual(_local9)) {
+					_local8.setConvergeTarget(_local9);
 				}
-			}
-			else
-			{
-				_loc3_.accelerate = true;
-				_loc3_.deaccelerate = false;
-				_loc3_.rotateLeft = false;
-				_loc3_.rotateRight = false;
-				_loc7_.boost();
-				_loc8_.setConvergeTarget(_loc9_);
+			} else {
+				_local3.accelerate = true;
+				_local3.deaccelerate = false;
+				_local3.rotateLeft = false;
+				_local3.rotateRight = false;
+				_local7.boost();
+				_local8.setConvergeTarget(_local9);
 			}
 		}
 		
-		public function aiCourse(param1:Message):void
-		{
-			var _loc9_:int = 0;
-			var _loc11_:int = 0;
-			var _loc15_:Heading = null;
-			var _loc2_:EnemyShip = null;
-			var _loc7_:int = 0;
-			var _loc12_:String = null;
-			var _loc14_:Unit = null;
-			var _loc5_:int = 0;
-			var _loc8_:int = 0;
-			var _loc3_:String = null;
-			var _loc6_:Boolean = false;
-			var _loc4_:Unit = null;
-			var _loc13_:Dictionary = g.shipManager.enemiesById;
-			_loc9_ = 0;
-			while (_loc9_ < param1.length)
-			{
-				_loc11_ = param1.getInt(_loc9_);
-				_loc15_ = new Heading();
-				_loc15_.parseMessage(param1, _loc9_ + 1);
-				_loc2_ = _loc13_[_loc11_];
-				if (_loc2_ == null)
-				{
-					Console.write("Error bad enemy id in course sync: " + _loc11_);
+		public function aiCourse(m:Message) : void {
+			var _local9:int = 0;
+			var _local11:int = 0;
+			var _local15:Heading = null;
+			var _local2:EnemyShip = null;
+			var _local7:int = 0;
+			var _local12:String = null;
+			var _local14:Unit = null;
+			var _local5:int = 0;
+			var _local8:int = 0;
+			var _local3:String = null;
+			var _local6:Boolean = false;
+			var _local4:Unit = null;
+			var _local13:Dictionary = g.shipManager.enemiesById;
+			_local9 = 0;
+			while(_local9 < m.length) {
+				_local11 = m.getInt(_local9);
+				_local15 = new Heading();
+				_local15.parseMessage(m,_local9 + 1);
+				_local2 = _local13[_local11];
+				if(_local2 == null) {
+					Console.write("Error bad enemy id in course sync: " + _local11);
 					return;
 				}
-				if (!_loc2_.aiCloak)
-				{
-					_loc2_.setConvergeTarget(_loc15_);
+				if(!_local2.aiCloak) {
+					_local2.setConvergeTarget(_local15);
 				}
-				_loc7_ = param1.getInt(_loc9_ + 1 + 10);
-				_loc12_ = param1.getString(_loc9_ + 2 + 10);
-				_loc14_ = g.unitManager.getTarget(_loc7_);
-				_loc2_.target = _loc14_;
-				if (!_loc2_.stateMachine.inState(_loc12_))
-				{
-					switch (_loc6_)
-					{
-					case "AIChase": 
-						_loc2_.stateMachine.changeState(new AIChase(g, _loc2_, _loc14_, _loc15_, 0));
-						break;
-					case "AIFollow": 
-						_loc2_.stateMachine.changeState(new AIFollow(g, _loc2_, _loc14_, _loc15_, 0));
-						break;
-					case "AIMelee": 
-						_loc2_.stateMachine.changeState(new AIMelee(g, _loc2_, _loc14_, _loc15_, 0));
+				_local7 = m.getInt(_local9 + 1 + 10);
+				_local12 = m.getString(_local9 + 2 + 10);
+				_local14 = g.unitManager.getTarget(_local7);
+				_local2.target = _local14;
+				if(!_local2.stateMachine.inState(_local12)) {
+					switch(_local6) {
+						case "AIChase":
+							_local2.stateMachine.changeState(new AIChase(g,_local2,_local14,_local15,0));
+							break;
+						case "AIFollow":
+							_local2.stateMachine.changeState(new AIFollow(g,_local2,_local14,_local15,0));
+							break;
+						case "AIMelee":
+							_local2.stateMachine.changeState(new AIMelee(g,_local2,_local14,_local15,0));
 					}
 				}
-				_loc5_ = param1.getInt(_loc9_ + 3 + 10);
-				_loc8_ = 0;
-				while (_loc8_ < _loc5_)
-				{
-					_loc3_ = param1.getString(_loc9_ + _loc8_ * 3 + 4 + 10);
-					_loc6_ = param1.getBoolean(_loc9_ + _loc8_ * 3 + 5 + 10);
-					_loc4_ = g.unitManager.getTarget(param1.getInt(_loc9_ + _loc8_ * 3 + 6 + 10));
-					for each (var _loc10_:* in _loc2_.weapons)
-					{
-						if (_loc10_.name == _loc3_)
-						{
-							_loc10_.fire = _loc6_;
-							_loc10_.target = _loc4_;
+				_local5 = m.getInt(_local9 + 3 + 10);
+				_local8 = 0;
+				while(_local8 < _local5) {
+					_local3 = m.getString(_local9 + _local8 * 3 + 4 + 10);
+					_local6 = m.getBoolean(_local9 + _local8 * 3 + 5 + 10);
+					_local4 = g.unitManager.getTarget(m.getInt(_local9 + _local8 * 3 + 6 + 10));
+					for each(var _local10 in _local2.weapons) {
+						if(_local10.name == _local3) {
+							_local10.fire = _local6;
+							_local10.target = _local4;
 						}
 					}
-					_loc8_++;
+					_local8++;
 				}
-				_loc9_ += _loc5_ * 3;
-				_loc9_ = _loc9_ + (4 + 10);
+				_local9 += _local5 * 3;
+				_local9 = _local9 + (4 + 10);
 			}
 		}
 		
-		public function mirrorCourse(param1:Message):void
-		{
-			var _loc2_:Ship = g.playerManager.me.mirror;
-			if (_loc2_ == null)
-			{
+		public function mirrorCourse(m:Message) : void {
+			var _local2:Ship = g.playerManager.me.mirror;
+			if(_local2 == null) {
 				return;
 			}
-			var _loc3_:Heading = new Heading();
-			_loc3_.parseMessage(param1, 0);
-			_loc2_.course = _loc3_;
+			var _local3:Heading = new Heading();
+			_local3.parseMessage(m,0);
+			_local2.course = _local3;
 		}
 		
-		public function aiStickyStart(param1:Message):void
-		{
-			var _loc4_:Dictionary = g.shipManager.enemiesById;
-			var _loc3_:int = param1.getInt(0);
-			var _loc6_:int = param1.getInt(1);
-			var _loc2_:EnemyShip = _loc4_[_loc3_];
-			var _loc5_:Unit = g.unitManager.getTarget(_loc6_);
-			if (_loc2_ == null || !_loc2_.alive || _loc5_ == null)
-			{
+		public function aiStickyStart(m:Message) : void {
+			var _local4:Dictionary = g.shipManager.enemiesById;
+			var _local3:int = m.getInt(0);
+			var _local6:int = m.getInt(1);
+			var _local2:EnemyShip = _local4[_local3];
+			var _local5:Unit = g.unitManager.getTarget(_local6);
+			if(_local2 == null || !_local2.alive || _local5 == null) {
 				return;
 			}
-			if (_loc2_.meleeChargeEndTime != 0)
-			{
-				_loc2_.meleeChargeEndTime = 1;
+			if(_local2.meleeChargeEndTime != 0) {
+				_local2.meleeChargeEndTime = 1;
 			}
-			_loc2_.target = _loc5_;
-			_loc2_.meleeOffset = new Point(param1.getNumber(2), param1.getNumber(3));
-			_loc2_.meleeTargetStartAngle = param1.getNumber(4);
-			_loc2_.meleeTargetAngleDiff = param1.getNumber(5);
-			_loc2_.meleeStuck = true;
+			_local2.target = _local5;
+			_local2.meleeOffset = new Point(m.getNumber(2),m.getNumber(3));
+			_local2.meleeTargetStartAngle = m.getNumber(4);
+			_local2.meleeTargetAngleDiff = m.getNumber(5);
+			_local2.meleeStuck = true;
 		}
 		
-		public function aiStickyEnd(param1:Message):void
-		{
-			var _loc4_:Dictionary = g.shipManager.enemiesById;
-			var _loc3_:int = param1.getInt(0);
-			var _loc2_:EnemyShip = _loc4_[_loc3_];
-			if (_loc2_ == null || !_loc2_.alive)
-			{
+		public function aiStickyEnd(m:Message) : void {
+			var _local4:Dictionary = g.shipManager.enemiesById;
+			var _local3:int = m.getInt(0);
+			var _local2:EnemyShip = _local4[_local3];
+			if(_local2 == null || !_local2.alive) {
 				return;
 			}
-			_loc2_.meleeStuck = false;
+			_local2.meleeStuck = false;
 		}
 		
-		public function aiCharge(param1:Message, param2:int):void
-		{
-			var _loc5_:Dictionary = g.shipManager.enemiesById;
-			var _loc4_:int = param1.getInt(param2);
-			var _loc3_:EnemyShip = _loc5_[_loc4_];
-			if (_loc3_ == null || !_loc3_.alive)
-			{
+		public function aiCharge(m:Message, i:int) : void {
+			var _local5:Dictionary = g.shipManager.enemiesById;
+			var _local4:int = m.getInt(i);
+			var _local3:EnemyShip = _local5[_local4];
+			if(_local3 == null || !_local3.alive) {
 				return;
 			}
-			_loc3_.meleeChargeEndTime = g.time + _loc3_.meleeChargeDuration;
-			_loc3_.oldSpeed = _loc3_.engine.speed;
-			_loc3_.oldTurningSpeed = _loc3_.engine.rotationSpeed;
-			_loc3_.engine.rotationSpeed = 0;
-			_loc3_.course.rotation = param1.getNumber(param2 + 1);
-			_loc3_.engine.speed = (1 + _loc3_.meleeChargeSpeedBonus) * _loc3_.engine.speed;
-			_loc3_.chargeEffect = EmitterFactory.create("nHVuxJzeyE-JVcn7M-UOwA", g, _loc3_.pos.x, _loc3_.pos.y, _loc3_, true);
+			_local3.meleeChargeEndTime = g.time + _local3.meleeChargeDuration;
+			_local3.oldSpeed = _local3.engine.speed;
+			_local3.oldTurningSpeed = _local3.engine.rotationSpeed;
+			_local3.engine.rotationSpeed = 0;
+			_local3.course.rotation = m.getNumber(i + 1);
+			_local3.engine.speed = (1 + _local3.meleeChargeSpeedBonus) * _local3.engine.speed;
+			_local3.chargeEffect = EmitterFactory.create("nHVuxJzeyE-JVcn7M-UOwA",g,_local3.pos.x,_local3.pos.y,_local3,true);
 		}
 		
-		public function aiStateChanged(param1:Message, param2:int = 0):void
-		{
-			var _loc11_:Dictionary = null;
-			var _loc9_:int = 0;
-			var _loc4_:String = null;
-			var _loc7_:int = 0;
-			var _loc13_:Heading = null;
-			var _loc3_:EnemyShip = null;
-			var _loc5_:int = 0;
-			var _loc12_:Unit = null;
-			var _loc8_:Number = NaN;
-			var _loc10_:Number = NaN;
-			var _loc6_:Point = null;
-			try
-			{
-				_loc11_ = g.shipManager.enemiesById;
-				_loc9_ = param1.getInt(param2);
-				_loc4_ = param1.getString(param2 + 1);
-				_loc7_ = param1.getInt(param2 + 2);
-				_loc13_ = new Heading();
-				param2 = _loc13_.parseMessage(param1, param2 + 3);
-				_loc3_ = _loc11_[_loc9_];
-				if (_loc3_ == null || !_loc3_.alive)
-				{
+		public function aiStateChanged(m:Message, i:int = 0) : void {
+			var _local11:Dictionary = null;
+			var _local9:int = 0;
+			var _local4:String = null;
+			var _local7:int = 0;
+			var _local13:Heading = null;
+			var _local3:EnemyShip = null;
+			var _local5:int = 0;
+			var _local12:Unit = null;
+			var _local8:Number = NaN;
+			var _local10:Number = NaN;
+			var _local6:Point = null;
+			try {
+				_local11 = g.shipManager.enemiesById;
+				_local9 = m.getInt(i);
+				_local4 = m.getString(i + 1);
+				_local7 = m.getInt(i + 2);
+				_local13 = new Heading();
+				i = _local13.parseMessage(m,i + 3);
+				_local3 = _local11[_local9];
+				if(_local3 == null || !_local3.alive) {
 					return;
 				}
-				switch (_loc4_)
-				{
-				case "AICloakStarted": 
-					_loc3_.cloakStart();
-					break;
-				case "AICloakEnded": 
-					_loc3_.cloakEnd(_loc13_);
-					break;
-				case "AIHardenShield": 
-					_loc3_.hardenShield();
-					break;
-				case "AIObserve": 
-					_loc5_ = param1.getInt(param2);
-					_loc12_ = g.unitManager.getTarget(_loc5_);
-					if (_loc12_ != null)
-					{
-						_loc3_.stateMachine.changeState(new AIObserve(g, _loc3_, _loc12_, _loc13_, _loc7_));
-					}
-					else
-					{
-						Console.write("No Ai target: " + _loc5_);
-					}
-					break;
-				case "AIChase": 
-					_loc5_ = param1.getInt(param2);
-					_loc12_ = g.unitManager.getTarget(_loc5_);
-					if (_loc12_ != null)
-					{
-						_loc3_.stateMachine.changeState(new AIChase(g, _loc3_, _loc12_, _loc13_, _loc7_));
-					}
-					else
-					{
-						Console.write("No Ai target: " + _loc5_);
-					}
-					break;
-				case "AIResurect": 
-					_loc3_.stateMachine.changeState(new AIResurect(g, _loc3_));
-				case "AIFollow": 
-					_loc5_ = param1.getInt(param2);
-					_loc12_ = g.unitManager.getTarget(_loc5_);
-					if (_loc12_ != null)
-					{
-						_loc3_.stateMachine.changeState(new AIFollow(g, _loc3_, _loc12_, _loc13_, _loc7_));
-					}
-					else
-					{
-						Console.write("No Ai target: " + _loc5_);
-					}
-					break;
-				case "AIMelee": 
-					_loc5_ = param1.getInt(param2);
-					_loc12_ = g.unitManager.getTarget(_loc5_);
-					if (_loc12_ != null)
-					{
-						_loc3_.stateMachine.changeState(new AIMelee(g, _loc3_, _loc12_, _loc13_, _loc7_));
-					}
-					else
-					{
-						Console.write("No Ai target: " + _loc5_);
-					}
-					break;
-				case "AIOrbit": 
-					_loc3_.stateMachine.changeState(new AIOrbit(g, _loc3_));
-					break;
-				case "AIIdle": 
-					_loc3_.stateMachine.changeState(new AIIdle(g, _loc3_, _loc3_.course));
-					break;
-				case "AIReturn": 
-					_loc8_ = param1.getNumber(param2);
-					_loc10_ = param1.getNumber(param2 + 1);
-					_loc3_.stateMachine.changeState(new AIReturnOrbit(g, _loc3_, _loc8_, _loc10_, _loc13_, _loc7_));
-					break;
-				case "AIKamikaze": 
-					_loc5_ = param1.getInt(param2);
-					_loc12_ = g.unitManager.getTarget(_loc5_);
-					if (_loc12_ != null)
-					{
-						_loc3_.stateMachine.changeState(new AIKamikaze(g, _loc3_, _loc12_, _loc13_, _loc7_));
-					}
-					else
-					{
-						Console.write("No Ai target: " + _loc5_);
-					}
-					break;
-				case "AIFlee": 
-					_loc6_ = new Point(param1.getNumber(param2), param1.getNumber(param2 + 1));
-					_loc3_.stateMachine.changeState(new AIFlee(g, _loc3_, _loc6_, _loc13_, _loc7_));
-					break;
-				case "AITeleport": 
-					_loc3_.stateMachine.changeState(new AITeleport(g, _loc3_, _loc3_.target, _loc7_, param1.getNumber(param2), param1.getNumber(param2 + 1)));
-					break;
-				case "AITeleportExit": 
-					_loc3_.stateMachine.changeState(new AITeleportExit(g, _loc3_));
-					break;
-				case "AIExit": 
-					_loc3_.stateMachine.changeState(new AIExit(g, _loc3_));
+				switch(_local4) {
+					case "AICloakStarted":
+						_local3.cloakStart();
+						break;
+					case "AICloakEnded":
+						_local3.cloakEnd(_local13);
+						break;
+					case "AIHardenShield":
+						_local3.hardenShield();
+						break;
+					case "AIObserve":
+						_local5 = m.getInt(i);
+						_local12 = g.unitManager.getTarget(_local5);
+						if(_local12 != null) {
+							_local3.stateMachine.changeState(new AIObserve(g,_local3,_local12,_local13,_local7));
+						} else {
+							Console.write("No Ai target: " + _local5);
+						}
+						break;
+					case "AIChase":
+						_local5 = m.getInt(i);
+						_local12 = g.unitManager.getTarget(_local5);
+						if(_local12 != null) {
+							_local3.stateMachine.changeState(new AIChase(g,_local3,_local12,_local13,_local7));
+						} else {
+							Console.write("No Ai target: " + _local5);
+						}
+						break;
+					case "AIResurect":
+						_local3.stateMachine.changeState(new AIResurect(g,_local3));
+					case "AIFollow":
+						_local5 = m.getInt(i);
+						_local12 = g.unitManager.getTarget(_local5);
+						if(_local12 != null) {
+							_local3.stateMachine.changeState(new AIFollow(g,_local3,_local12,_local13,_local7));
+						} else {
+							Console.write("No Ai target: " + _local5);
+						}
+						break;
+					case "AIMelee":
+						_local5 = m.getInt(i);
+						_local12 = g.unitManager.getTarget(_local5);
+						if(_local12 != null) {
+							_local3.stateMachine.changeState(new AIMelee(g,_local3,_local12,_local13,_local7));
+						} else {
+							Console.write("No Ai target: " + _local5);
+						}
+						break;
+					case "AIOrbit":
+						_local3.stateMachine.changeState(new AIOrbit(g,_local3));
+						break;
+					case "AIIdle":
+						_local3.stateMachine.changeState(new AIIdle(g,_local3,_local3.course));
+						break;
+					case "AIReturn":
+						_local8 = m.getNumber(i);
+						_local10 = m.getNumber(i + 1);
+						_local3.stateMachine.changeState(new AIReturnOrbit(g,_local3,_local8,_local10,_local13,_local7));
+						break;
+					case "AIKamikaze":
+						_local5 = m.getInt(i);
+						_local12 = g.unitManager.getTarget(_local5);
+						if(_local12 != null) {
+							_local3.stateMachine.changeState(new AIKamikaze(g,_local3,_local12,_local13,_local7));
+						} else {
+							Console.write("No Ai target: " + _local5);
+						}
+						break;
+					case "AIFlee":
+						_local6 = new Point(m.getNumber(i),m.getNumber(i + 1));
+						_local3.stateMachine.changeState(new AIFlee(g,_local3,_local6,_local13,_local7));
+						break;
+					case "AITeleport":
+						_local3.stateMachine.changeState(new AITeleport(g,_local3,_local3.target,_local7,m.getNumber(i),m.getNumber(i + 1)));
+						break;
+					case "AITeleportExit":
+						_local3.stateMachine.changeState(new AITeleportExit(g,_local3));
+						break;
+					case "AIExit":
+						_local3.stateMachine.changeState(new AIExit(g,_local3));
 				}
 			}
-			catch (e:Error)
-			{
-				g.client.errorLog.writeError("MSG PACK: " + e.toString(), "State: " + _loc4_, e.getStackTrace(), {});
+			catch(e:Error) {
+				g.client.errorLog.writeError("MSG PACK: " + e.toString(),"State: " + _local4,e.getStackTrace(),{});
 			}
 		}
 		
-		private function fastforwardMe(param1:Ship, param2:Heading):void
-		{
-			g.commandManager.clearCommands(param2.time);
-			while (param2.time < param1.course.time)
-			{
-				g.commandManager.runCommand(param2, param2.time);
-				param1.convergerUpdateHeading(param2);
+		private function fastforwardMe(myShip:Ship, heading:Heading) : void {
+			g.commandManager.clearCommands(heading.time);
+			while(heading.time < myShip.course.time) {
+				g.commandManager.runCommand(heading,heading.time);
+				myShip.convergerUpdateHeading(heading);
 			}
 		}
 		
-		private function fastforward(param1:Ship, param2:Heading):void
-		{
-			var _loc3_:Heading = param1.course;
-			while (param2.time < _loc3_.time)
-			{
-				param1.convergerUpdateHeading(param2);
+		private function fastforward(ship:Ship, heading:Heading) : void {
+			var _local3:Heading = ship.course;
+			while(heading.time < _local3.time) {
+				ship.convergerUpdateHeading(heading);
 			}
 		}
 	}
 }
+

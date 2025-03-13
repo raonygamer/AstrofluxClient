@@ -1,5 +1,4 @@
-package core.states.exploreStates
-{
+package core.states.exploreStates {
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Back;
 	import core.GameObject;
@@ -25,73 +24,42 @@ package core.states.exploreStates
 	import starling.display.Image;
 	import starling.display.Sprite;
 	
-	public class ControlZoneState extends DisplayState
-	{
+	public class ControlZoneState extends DisplayState {
 		public static var COLOR:uint = 3225899;
-		
 		private static var planetExploreAreas:Dictionary = null;
-		
 		private var min:Number = 0;
-		
 		private var max:Number = 1;
-		
 		private var value:Number = 0;
-		
 		private var _exploring:Boolean = false;
-		
 		private var exploreEffect:Vector.<Emitter>;
-		
 		private var effectBackground:Bitmap;
-		
 		private var effectContainer:Bitmap;
-		
 		private var effectTarget:GameObject;
-		
 		private var hasDrawnBody:Boolean = false;
-		
 		private var exploreText:Text;
-		
 		private var closeButton:ButtonExpandableHud;
-		
-		private var timer:Timer;
-		
+		private var timer:Timer = new Timer(1000,1);
 		private var startTime:Number = 0;
-		
 		private var finishTime:Number = 0;
-		
-		private var areaTypes:Dictionary;
-		
+		private var areaTypes:Dictionary = new Dictionary();
 		private var areas:Vector.<ExploreArea>;
-		
 		private var planetGfx:Image;
-		
 		private var areaBox:Sprite;
-		
 		private var areasText:Text;
-		
 		private var exploreMap:ExploreMap;
-		
 		private var b:Body;
-		
 		private var hasCollectedReward:Boolean = false;
-		
 		private var bodyAreas:Array;
-		
 		private var exploredAreas:Array;
-		
 		private var message:Message;
 		
-		public function ControlZoneState(param1:Game, param2:Body, param3:Message = null)
-		{
-			timer = new Timer(1000, 1);
-			areaTypes = new Dictionary();
-			super(param1, ControlZoneState);
-			this.b = param2;
-			this.message = param3;
+		public function ControlZoneState(g:Game, b:Body, message:Message = null) {
+			super(g,ControlZoneState);
+			this.b = b;
+			this.message = message;
 		}
 		
-		override public function enter():void
-		{
+		override public function enter() : void {
 			var level:int;
 			var troons:int;
 			var troonsBonus:int;
@@ -127,26 +95,30 @@ package core.states.exploreStates
 			delay = 0;
 			delayInc = 0.2;
 			yPos = 150;
-			header = new TextBitmap(380, yPos, "Control Gained", 40);
+			header = new TextBitmap(380,yPos,"Control Gained",40);
 			header.center();
 			header.format.color = Style.COLOR_LIGHT_GREEN;
 			header.alpha = 0;
 			addChild(header);
-			TweenMax.to(header, 0.3, {"delay": delay, "alpha": 1});
+			TweenMax.to(header,0.3,{
+				"delay":delay,
+				"alpha":1
+			});
 			yPos += 50;
-			planetReward = new TextBitmap(430, yPos, "Instant reward:", 26);
+			planetReward = new TextBitmap(430,yPos,"Instant reward:",26);
 			planetReward.alignRight();
 			planetReward.format.color = Style.COLOR_GRAY_TEXT;
 			addChild(planetReward);
 			planetReward.alpha = 0;
 			delay += delayInc;
-			TweenMax.to(planetReward, 0.3, {"delay": delay, "alpha": 1});
-			planetRewardAmount = new TextBitmapNumberAnimation(planetReward.x + 100, planetReward.y, "", 26);
+			TweenMax.to(planetReward,0.3,{
+				"delay":delay,
+				"alpha":1
+			});
+			planetRewardAmount = new TextBitmapNumberAnimation(planetReward.x + 100,planetReward.y,"",26);
 			increaseAnimationTime = troons * 1.5;
-			TweenMax.delayedCall(delay, function():void
-			{
-				planetRewardAmount.animate(0, troons, troons * 1.5, function():void
-				{
+			TweenMax.delayedCall(delay,function():void {
+				planetRewardAmount.animate(0,troons,troons * 1.5,function():void {
 					planetRewardAmount.format.color = Style.COLOR_YELLOW;
 					troonImg.alpha = 1;
 				});
@@ -154,28 +126,32 @@ package core.states.exploreStates
 			planetRewardAmount.alignRight();
 			addChild(planetRewardAmount);
 			planetRewardAmount.alpha = 0;
-			TweenMax.to(planetRewardAmount, 0.3, {"delay": delay, "alpha": 1});
+			TweenMax.to(planetRewardAmount,0.3,{
+				"delay":delay,
+				"alpha":1
+			});
 			yPos += 40;
-			levelBonus = new TextBitmap(430, yPos, "Level bonus:", 26);
+			levelBonus = new TextBitmap(430,yPos,"Level bonus:",26);
 			levelBonus.alignRight();
 			levelBonus.format.color = Style.COLOR_GRAY_TEXT;
 			addChild(levelBonus);
 			levelBonus.alpha = 0;
 			delay += increaseAnimationTime / 1000 - delayInc;
-			TweenMax.to(levelBonus, 0.3, {"delay": delay, "alpha": 1, "onStart": function():void
-			{
-			}});
+			TweenMax.to(levelBonus,0.3,{
+				"delay":delay,
+				"alpha":1,
+				"onStart":function():void {
+				}
+			});
 			troonImg = new Image(textureManager.getTextureGUIByTextureName("troon.png"));
 			troonImg.x = planetRewardAmount.x + 20;
 			troonImg.y = planetRewardAmount.y + 5;
 			addChild(troonImg);
 			troonImg.alpha = 0;
-			levelBonusAmount = new TextBitmapNumberAnimation(planetReward.x + 100, levelBonus.y, "", 26);
+			levelBonusAmount = new TextBitmapNumberAnimation(planetReward.x + 100,levelBonus.y,"",26);
 			increaseAnimationTime = troonsBonus * 1.5;
-			TweenMax.delayedCall(delay, function():void
-			{
-				levelBonusAmount.animate(0, troonsBonus, troonsBonus * 1.5, function():void
-				{
+			TweenMax.delayedCall(delay,function():void {
+				levelBonusAmount.animate(0,troonsBonus,troonsBonus * 1.5,function():void {
 					levelBonusAmount.format.color = Style.COLOR_YELLOW;
 					troonImg2.alpha = 1;
 				});
@@ -184,7 +160,10 @@ package core.states.exploreStates
 			addChild(levelBonusAmount);
 			levelBonusAmount.alpha = 0;
 			delay += delayInc;
-			TweenMax.to(levelBonusAmount, 0.3, {"delay": delay, "alpha": 1});
+			TweenMax.to(levelBonusAmount,0.3,{
+				"delay":delay,
+				"alpha":1
+			});
 			troonImg2 = new Image(textureManager.getTextureGUIByTextureName("troon.png"));
 			troonImg2.x = levelBonusAmount.x + 20;
 			troonImg2.y = levelBonusAmount.y + 5;
@@ -192,18 +171,19 @@ package core.states.exploreStates
 			troonImg2.alpha = 0;
 			yPos += 40;
 			delay += delayInc;
-			planetTroonsPerMinute = new TextBitmap(430, yPos, "Troons / min:", 26);
+			planetTroonsPerMinute = new TextBitmap(430,yPos,"Troons / min:",26);
 			planetTroonsPerMinute.alignRight();
 			planetTroonsPerMinute.format.color = Style.COLOR_GRAY_TEXT;
 			addChild(planetTroonsPerMinute);
 			planetTroonsPerMinute.alpha = 0;
-			TweenMax.to(planetTroonsPerMinute, 0.3, {"delay": delay, "alpha": 1});
-			planetTroonsPerMinuteAmount = new TextBitmapNumberAnimation(planetTroonsPerMinute.x + 100, planetTroonsPerMinute.y, "", 26);
+			TweenMax.to(planetTroonsPerMinute,0.3,{
+				"delay":delay,
+				"alpha":1
+			});
+			planetTroonsPerMinuteAmount = new TextBitmapNumberAnimation(planetTroonsPerMinute.x + 100,planetTroonsPerMinute.y,"",26);
 			increaseAnimationTime = troonsPerMinuteValue * 150;
-			TweenMax.delayedCall(delay, function():void
-			{
-				planetTroonsPerMinuteAmount.animate(0, troonsPerMinuteValue, troonsPerMinuteValue * 150, function():void
-				{
+			TweenMax.delayedCall(delay,function():void {
+				planetTroonsPerMinuteAmount.animate(0,troonsPerMinuteValue,troonsPerMinuteValue * 150,function():void {
 					planetTroonsPerMinuteAmount.format.color = Style.COLOR_YELLOW;
 					troonImg3.alpha = 1;
 				});
@@ -217,7 +197,10 @@ package core.states.exploreStates
 			addChild(troonImg3);
 			troonImg3.alpha = 0;
 			delay += delayInc;
-			TweenMax.to(planetTroonsPerMinuteAmount, 0.3, {"delay": delay, "alpha": 1});
+			TweenMax.to(planetTroonsPerMinuteAmount,0.3,{
+				"delay":delay,
+				"alpha":1
+			});
 			yPos += 100;
 			delay += delayInc * 2 + increaseAnimationTime / 1000;
 			ct = new ControlTime(time + timeBonus);
@@ -229,35 +212,41 @@ package core.states.exploreStates
 			ct.scaleY = 0;
 			ct.alpha = 0;
 			addChild(ct);
-			TweenMax.to(ct, 0.8, {"delay": delay, "alpha": 1, "scaleX": 1, "scaleY": 1, "ease": Back.easeOut});
+			TweenMax.to(ct,0.8,{
+				"delay":delay,
+				"alpha":1,
+				"scaleX":1,
+				"scaleY":1,
+				"ease":Back.easeOut
+			});
 			yPos += 80;
-			nextButton = new Button(function():void
-			{
-				sm.changeState(new ExploreState(g, b));
-			}, "Next", "reward");
+			nextButton = new Button(function():void {
+				sm.changeState(new ExploreState(g,b));
+			},"Next","reward");
 			nextButton.x = 350;
 			nextButton.y = yPos;
 			addChild(nextButton);
 			nextButton.alpha = 0;
 			delay += delayInc + 0.8;
-			TweenMax.to(nextButton, 0.3, {"delay": delay, "alpha": 1});
+			TweenMax.to(nextButton,0.3,{
+				"delay":delay,
+				"alpha":1
+			});
 			addPlanetData();
 		}
 		
-		private function addPlanetData():void
-		{
-			var _loc2_:Number = NaN;
-			var _loc3_:TextBitmap = new TextBitmap(140, 44, b.name, 26);
-			addChild(_loc3_);
-			var _loc1_:TextBitmap = new TextBitmap(_loc3_.x, _loc3_.y + _loc3_.height, "Planet overview");
-			_loc1_.format.color = 6710886;
-			addChild(_loc1_);
-			if (b.texture != null)
-			{
-				_loc2_ = 50 / b.texture.width;
+		private function addPlanetData() : void {
+			var _local2:Number = NaN;
+			var _local3:TextBitmap = new TextBitmap(140,44,b.name,26);
+			addChild(_local3);
+			var _local1:TextBitmap = new TextBitmap(_local3.x,_local3.y + _local3.height,"Planet overview");
+			_local1.format.color = 0x666666;
+			addChild(_local1);
+			if(b.texture != null) {
+				_local2 = 50 / b.texture.width;
 				planetGfx = new Image(b.texture);
-				planetGfx.scaleX = _loc2_;
-				planetGfx.scaleY = _loc2_;
+				planetGfx.scaleX = _local2;
+				planetGfx.scaleY = _local2;
 				planetGfx.x = 80;
 				planetGfx.y = 45;
 				addChild(planetGfx);
@@ -265,14 +254,12 @@ package core.states.exploreStates
 			}
 		}
 		
-		override public function get type():String
-		{
+		override public function get type() : String {
 			return "ControlZoneState";
 		}
 		
-		override public function exit():void
-		{
-			removeChild(areaBox, true);
+		override public function exit() : void {
+			removeChild(areaBox,true);
 			PixelHitArea.dispose();
 			ToolTip.disposeType("skill");
 			super.exit();
@@ -284,16 +271,14 @@ import core.hud.components.Style;
 import core.hud.components.TextBitmap;
 import starling.display.Sprite;
 
-class ControlTime extends Sprite
-{
-	public function ControlTime(param1:int)
-	{
+class ControlTime extends Sprite {
+	public function ControlTime(time:int) {
 		super();
-		var _loc2_:TextBitmap = new TextBitmap(0, 0, "Control time:", 32);
-		_loc2_.format.color = Style.COLOR_GRAY_TEXT;
-		addChild(_loc2_);
-		var _loc3_:TextBitmap = new TextBitmap(_loc2_.x + _loc2_.width + 20, 0, param1 + " minutes", 32);
-		_loc3_.format.color = Style.COLOR_HIGHLIGHT;
-		addChild(_loc3_);
+		var _local2:TextBitmap = new TextBitmap(0,0,"Control time:",32);
+		_local2.format.color = Style.COLOR_GRAY_TEXT;
+		addChild(_local2);
+		var _local3:TextBitmap = new TextBitmap(_local2.x + _local2.width + 20,0,time + " minutes",32);
+		_local3.format.color = Style.COLOR_HIGHLIGHT;
+		addChild(_local3);
 	}
 }

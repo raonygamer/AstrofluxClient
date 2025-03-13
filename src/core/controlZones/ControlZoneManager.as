@@ -1,173 +1,142 @@
-package core.controlZones
-{
+package core.controlZones {
 	import core.scene.Game;
 	import flash.utils.Dictionary;
 	import playerio.DatabaseObject;
 	import playerio.Message;
 	
-	public class ControlZoneManager
-	{
+	public class ControlZoneManager {
 		public static var claimData:Message;
-		
 		private var g:Game;
+		public var controlZones:Vector.<ControlZone> = new Vector.<ControlZone>();
 		
-		public var controlZones:Vector.<ControlZone>;
-		
-		public function ControlZoneManager(param1:Game)
-		{
-			controlZones = new Vector.<ControlZone>();
+		public function ControlZoneManager(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 		}
 		
-		private function onZoneClaimed(param1:Message):void
-		{
-			claimData = param1;
+		private function onZoneClaimed(m:Message) : void {
+			claimData = m;
 		}
 		
-		public function init():void
-		{
-			if (!g.isSystemTypeHostile())
-			{
+		public function init() : void {
+			if(!g.isSystemTypeHostile()) {
 				return;
 			}
-			if (g.me.clanId == "")
-			{
+			if(g.me.clanId == "") {
 				return;
 			}
 			load();
 		}
 		
-		public function load(param1:Function = null):void
-		{
-			var callback:Function = param1;
-			if (controlZones.length > 0)
-			{
-				if (Boolean(callback))
-				{
+		public function load(callback:Function = null) : void {
+			if(controlZones.length > 0) {
+				if(Boolean(callback)) {
 					callback();
 					return;
 				}
 				return;
 			}
-			g.dataManager.loadRangeFromBigDB("ControlZones", "ByPlayer", null, function(param1:Array):void
-			{
+			g.dataManager.loadRangeFromBigDB("ControlZones","ByPlayer",null,function(param1:Array):void {
 				onGetControlZones(param1);
-				if (Boolean(callback))
-				{
+				if(Boolean(callback)) {
 					callback();
 				}
 			});
 		}
 		
-		public function addMessageHandlers():void
-		{
-			g.addMessageHandler("updateControlZones", onUpdateControlZones);
-			g.addMessageHandler("zoneClaimed", onZoneClaimed);
-			g.addServiceMessageHandler("updateClaimedZone", onUpdateClaimedZone);
+		public function addMessageHandlers() : void {
+			g.addMessageHandler("updateControlZones",onUpdateControlZones);
+			g.addMessageHandler("zoneClaimed",onZoneClaimed);
+			g.addServiceMessageHandler("updateClaimedZone",onUpdateClaimedZone);
 		}
 		
-		private function onGetControlZones(param1:Array):void
-		{
-			var _loc5_:int = 0;
-			var _loc4_:DatabaseObject = null;
-			var _loc2_:ControlZone = null;
+		private function onGetControlZones(zonesArray:Array) : void {
+			var _local5:int = 0;
+			var _local4:DatabaseObject = null;
+			var _local2:ControlZone = null;
 			controlZones.length = 0;
-			var _loc3_:int = int(param1.length);
-			_loc5_ = 0;
-			while (_loc5_ < _loc3_)
-			{
-				_loc4_ = param1[_loc5_];
-				_loc2_ = new ControlZone();
-				_loc2_.key = _loc4_.key;
-				_loc2_.claimTime = _loc4_.claimTime;
-				_loc2_.releaseTime = _loc4_.releaseTime;
-				_loc2_.playerKey = _loc4_.player;
-				_loc2_.clanKey = _loc4_.clan;
-				_loc2_.clanName = _loc4_.clanName;
-				_loc2_.clanLogo = _loc4_.clanLogo;
-				_loc2_.clanColor = _loc4_.clanColor;
-				_loc2_.solarSystemKey = _loc4_.solarSystem;
-				_loc2_.troonsPerMinute = _loc4_.troonsPerMinute;
-				controlZones.push(_loc2_);
-				_loc5_++;
+			var _local3:int = int(zonesArray.length);
+			_local5 = 0;
+			while(_local5 < _local3) {
+				_local4 = zonesArray[_local5];
+				_local2 = new ControlZone();
+				_local2.key = _local4.key;
+				_local2.claimTime = _local4.claimTime;
+				_local2.releaseTime = _local4.releaseTime;
+				_local2.playerKey = _local4.player;
+				_local2.clanKey = _local4.clan;
+				_local2.clanName = _local4.clanName;
+				_local2.clanLogo = _local4.clanLogo;
+				_local2.clanColor = _local4.clanColor;
+				_local2.solarSystemKey = _local4.solarSystem;
+				_local2.troonsPerMinute = _local4.troonsPerMinute;
+				controlZones.push(_local2);
+				_local5++;
 			}
 		}
 		
-		public function onUpdateControlZones(param1:Message):void
-		{
+		public function onUpdateControlZones(m:Message) : void {
 			g.sendToServiceRoom("updateControlZones");
 		}
 		
-		public function onUpdateClaimedZone(param1:Message):void
-		{
-			var _loc3_:String = param1.getString(0);
-			var _loc4_:ControlZone = getZoneByKey(_loc3_);
-			if (_loc4_ != null)
-			{
-				controlZones.splice(controlZones.indexOf(_loc4_), 1);
+		public function onUpdateClaimedZone(m:Message) : void {
+			var _local3:String = m.getString(0);
+			var _local4:ControlZone = getZoneByKey(_local3);
+			if(_local4 != null) {
+				controlZones.splice(controlZones.indexOf(_local4),1);
 			}
-			var _loc5_:int = 1;
-			var _loc2_:ControlZone = new ControlZone();
-			_loc2_.key = _loc3_;
-			_loc2_.claimTime = param1.getNumber(_loc5_++);
-			_loc2_.releaseTime = param1.getNumber(_loc5_++);
-			_loc2_.playerKey = param1.getString(_loc5_++);
-			_loc2_.clanKey = param1.getString(_loc5_++);
-			_loc2_.clanName = param1.getString(_loc5_++);
-			_loc2_.clanLogo = param1.getString(_loc5_++);
-			_loc2_.clanColor = param1.getUInt(_loc5_++);
-			_loc2_.solarSystemKey = param1.getString(_loc5_++);
-			_loc2_.troonsPerMinute = param1.getInt(_loc5_++);
-			controlZones.push(_loc2_);
+			var _local5:int = 1;
+			var _local2:ControlZone = new ControlZone();
+			_local2.key = _local3;
+			_local2.claimTime = m.getNumber(_local5++);
+			_local2.releaseTime = m.getNumber(_local5++);
+			_local2.playerKey = m.getString(_local5++);
+			_local2.clanKey = m.getString(_local5++);
+			_local2.clanName = m.getString(_local5++);
+			_local2.clanLogo = m.getString(_local5++);
+			_local2.clanColor = m.getUInt(_local5++);
+			_local2.solarSystemKey = m.getString(_local5++);
+			_local2.troonsPerMinute = m.getInt(_local5++);
+			controlZones.push(_local2);
 			g.hud.clanButton.updateTroons();
 		}
 		
-		public function getZoneByKey(param1:String):ControlZone
-		{
-			var _loc3_:int = 0;
-			var _loc2_:ControlZone = null;
-			_loc3_ = 0;
-			while (_loc3_ < controlZones.length)
-			{
-				_loc2_ = controlZones[_loc3_];
-				if (_loc2_.key == param1)
-				{
-					return _loc2_;
+		public function getZoneByKey(key:String) : ControlZone {
+			var _local3:int = 0;
+			var _local2:ControlZone = null;
+			_local3 = 0;
+			while(_local3 < controlZones.length) {
+				_local2 = controlZones[_local3];
+				if(_local2.key == key) {
+					return _local2;
 				}
-				_loc3_++;
+				_local3++;
 			}
 			return null;
 		}
 		
-		public function getTotalTroonsPerMinute(param1:String):int
-		{
-			var _loc4_:int = 0;
-			var _loc2_:ControlZone = null;
-			var _loc3_:int = 0;
-			_loc4_ = 0;
-			while (_loc4_ < controlZones.length)
-			{
-				_loc2_ = controlZones[_loc4_];
-				if (param1 == _loc2_.clanKey)
-				{
-					_loc3_ += _loc2_.troonsPerMinute;
+		public function getTotalTroonsPerMinute(clanKey:String) : int {
+			var _local4:int = 0;
+			var _local2:ControlZone = null;
+			var _local3:int = 0;
+			_local4 = 0;
+			while(_local4 < controlZones.length) {
+				_local2 = controlZones[_local4];
+				if(clanKey == _local2.clanKey) {
+					_local3 += _local2.troonsPerMinute;
 				}
-				_loc4_++;
+				_local4++;
 			}
-			return _loc3_;
+			return _local3;
 		}
 		
-		public function getTopTroonsPerMinuteClans():Vector.<Object>
-		{
+		public function getTopTroonsPerMinuteClans() : Vector.<Object> {
 			var controlZone:ControlZone;
 			var sortedArray:Vector.<Object>;
 			var prop:String;
 			var topTroonsPerMinuteDict:Dictionary = new Dictionary();
-			for each (controlZone in controlZones)
-			{
-				if (topTroonsPerMinuteDict[controlZone.clanKey] == null)
-				{
+			for each(controlZone in controlZones) {
+				if(topTroonsPerMinuteDict[controlZone.clanKey] == null) {
 					topTroonsPerMinuteDict[controlZone.clanKey] = {};
 					topTroonsPerMinuteDict[controlZone.clanKey].key = controlZone.clanKey;
 					topTroonsPerMinuteDict[controlZone.clanKey].name = controlZone.clanName;
@@ -178,15 +147,14 @@ package core.controlZones
 				topTroonsPerMinuteDict[controlZone.clanKey].troons += controlZone.troonsPerMinute;
 			}
 			sortedArray = new Vector.<Object>();
-			for (prop in topTroonsPerMinuteDict)
-			{
+			for(prop in topTroonsPerMinuteDict) {
 				sortedArray.push(topTroonsPerMinuteDict[prop]);
 			}
-			sortedArray.sort(function(param1:Object, param2:Object):int
-			{
+			sortedArray.sort(function(param1:Object, param2:Object):int {
 				return param2.troons - param1.troons;
 			});
 			return sortedArray;
 		}
 	}
 }
+

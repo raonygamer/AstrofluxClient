@@ -1,5 +1,4 @@
-package core.hud.components.techTree
-{
+package core.hud.components.techTree {
 	import core.hud.components.Box;
 	import core.hud.components.Text;
 	import core.player.EliteTechSkill;
@@ -12,52 +11,40 @@ package core.hud.components.techTree
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class EliteTechBar extends Sprite
-	{
+	public class EliteTechBar extends Sprite {
 		private var g:Game;
-		
 		private var icon:Image;
-		
 		private var _name:Text;
-		
 		private var desc:Text;
-		
 		private var level:Text;
-		
-		private var box:Box;
-		
+		private var box:Box = new Box(7 * 60,2 * 60,"light",1,2);
 		private var techSkill:TechSkill;
-		
 		private var eliteTech:String;
-		
 		public var etpm:EliteTechPopupMenu = null;
-		
 		private var textureManager:ITextureManager;
 		
-		public function EliteTechBar(param1:Game, param2:String, param3:String, param4:String, param5:int, param6:String, param7:TechSkill)
-		{
-			box = new Box(420, 120, "light", 1, 2);
+		public function EliteTechBar(g:Game, nameText:String, descText:String, iconName:String, lvl:int, eliteTech:String, techSkill:TechSkill) {
 			super();
-			this.g = param1;
-			this.techSkill = param7;
-			this.eliteTech = param6;
+			this.g = g;
+			this.techSkill = techSkill;
+			this.eliteTech = eliteTech;
 			textureManager = TextureLocator.getService();
-			icon = new Image(textureManager.getTextureGUIByTextureName(param4 + ".png"));
+			icon = new Image(textureManager.getTextureGUIByTextureName(iconName + ".png"));
 			_name = new Text();
 			desc = new Text();
 			level = new Text();
-			_name.color = 16755268;
+			_name.color = 0xffaa44;
 			_name.font = "Verdana";
 			_name.size = 12;
 			_name.alignLeft();
 			desc.color = 978670;
-			desc.width = 360;
+			desc.width = 6 * 60;
 			desc.size = 10;
 			desc.font = "Verdana";
 			desc.alignLeft();
 			desc.wordWrap = true;
-			level.color = 16755268;
-			level.width = 360;
+			level.color = 0xffaa44;
+			level.width = 6 * 60;
 			level.size = 12;
 			level.font = "Verdana";
 			level.alignRight();
@@ -67,15 +54,12 @@ package core.hud.components.techTree
 			_name.y = 15;
 			desc.x = 20;
 			desc.y = icon.height + 15;
-			_name.htmlText = param2;
-			desc.htmlText = param3;
-			if (param5 < 1)
-			{
+			_name.htmlText = nameText;
+			desc.htmlText = descText;
+			if(lvl < 1) {
 				level.htmlText = "level: 1 / 100";
-			}
-			else
-			{
-				level.htmlText = "level: " + param5 + " / 100";
+			} else {
+				level.htmlText = "level: " + lvl + " / 100";
 			}
 			level.y = 15;
 			level.x = 410;
@@ -86,70 +70,57 @@ package core.hud.components.techTree
 			box.addChild(desc);
 			box.addChild(level);
 			addChild(box);
-			this.addEventListener("touch", onTouch);
+			this.addEventListener("touch",onTouch);
 		}
 		
-		private function mouseOver(param1:TouchEvent):void
-		{
+		private function mouseOver(e:TouchEvent) : void {
 			box.alpha = 1;
 			box.useHandCursor = true;
 		}
 		
-		private function mouseOut(param1:TouchEvent):void
-		{
+		private function mouseOut(e:TouchEvent) : void {
 			box.alpha = 0.5;
 			box.useHandCursor = false;
 		}
 		
-		private function mouseClick(param1:TouchEvent):void
-		{
-			var _loc2_:Boolean = false;
+		private function mouseClick(e:TouchEvent) : void {
+			var _local2:Boolean = false;
 			touchable = false;
-			for each (var _loc3_:* in techSkill.eliteTechs)
-			{
-				if (_loc3_.eliteTech == eliteTech)
-				{
-					techSkill.activeEliteTech = _loc3_.eliteTech;
-					techSkill.activeEliteTechLevel = _loc3_.eliteTechLevel;
-					_loc2_ = true;
+			for each(var _local3 in techSkill.eliteTechs) {
+				if(_local3.eliteTech == eliteTech) {
+					techSkill.activeEliteTech = _local3.eliteTech;
+					techSkill.activeEliteTechLevel = _local3.eliteTechLevel;
+					_local2 = true;
 					break;
 				}
 			}
-			if (!_loc2_)
-			{
+			if(!_local2) {
 				techSkill.activeEliteTech = eliteTech;
 				techSkill.activeEliteTechLevel = 1;
-				techSkill.eliteTechs.push(new EliteTechSkill(eliteTech, 1));
+				techSkill.eliteTechs.push(new EliteTechSkill(eliteTech,1));
 			}
-			g.rpc("selectActiveEliteTech", updateAndClose, techSkill.table, techSkill.tech, eliteTech);
+			g.rpc("selectActiveEliteTech",updateAndClose,techSkill.table,techSkill.tech,eliteTech);
 			etpm.disableAll();
 		}
 		
-		private function updateAndClose(param1:Message):void
-		{
-			etpm.updateAndClose(param1);
+		private function updateAndClose(m:Message) : void {
+			etpm.updateAndClose(m);
 		}
 		
-		private function onTouch(param1:TouchEvent):void
-		{
-			if (param1.getTouch(this, "ended"))
-			{
-				mouseClick(param1);
-			}
-			else if (param1.interactsWith(this))
-			{
-				mouseOver(param1);
-			}
-			else
-			{
-				mouseOut(param1);
+		private function onTouch(e:TouchEvent) : void {
+			if(e.getTouch(this,"ended")) {
+				mouseClick(e);
+			} else if(e.interactsWith(this)) {
+				mouseOver(e);
+			} else {
+				mouseOut(e);
 			}
 		}
 		
-		override public function dispose():void
-		{
+		override public function dispose() : void {
 			removeEventListeners();
 			super.dispose();
 		}
 	}
 }
+

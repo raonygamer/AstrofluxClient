@@ -1,5 +1,4 @@
-package core.hud.components.hotkeys
-{
+package core.hud.components.hotkeys {
 	import core.hud.components.ToolTip;
 	import core.player.TechSkill;
 	import core.scene.Game;
@@ -15,171 +14,126 @@ package core.hud.components.hotkeys
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class Abilities extends Sprite
-	{
-		private var hotkeys:Vector.<AbilityHotkey>;
-		
+	public class Abilities extends Sprite {
+		private var hotkeys:Vector.<AbilityHotkey> = new Vector.<AbilityHotkey>();
 		private var g:Game;
-		
 		private var dataManager:IDataManager;
-		
 		private var textureManager:ITextureManager;
-		
 		private var keyBinds:KeyBinds;
 		
-		public function Abilities(param1:Game)
-		{
-			hotkeys = new Vector.<AbilityHotkey>();
+		public function Abilities(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 			dataManager = DataLocator.getService();
 			textureManager = TextureLocator.getService();
 		}
 		
-		public function load():void
-		{
-			var _loc8_:Object = null;
-			var _loc7_:String = null;
-			var _loc2_:Boolean = false;
-			var _loc6_:Function = null;
-			var _loc3_:String = null;
-			var _loc5_:int = 0;
-			var _loc1_:Object = null;
-			var _loc10_:AbilityHotkey = null;
+		public function load() : void {
+			var _local8:Object = null;
+			var _local7:String = null;
+			var _local2:Boolean = false;
+			var _local6:Function = null;
+			var _local3:String = null;
+			var _local5:int = 0;
+			var _local1:Object = null;
+			var _local10:AbilityHotkey = null;
 			keyBinds = SceneBase.settings.keybinds;
-			var _loc4_:PlayerShip = g.me.ship;
-			if (_loc4_ == null)
-			{
+			var _local4:PlayerShip = g.me.ship;
+			if(_local4 == null) {
 				Console.write("No ship for weapon hotkeys.");
 				return;
 			}
-			var _loc11_:int = 0;
-			for each (var _loc9_:* in g.me.techSkills)
-			{
-				if (_loc9_.tech == "m4yG1IRPIUeyRQHrC3h5kQ" || _loc9_.tech == "QgKEEj8a-0yzYAJ06eSLqA" || _loc9_.tech == "rSr1sn-_oUOY6E0hpAhh0Q" || _loc9_.tech == "kwlCdExeJk-oEJZopIz5kg")
-				{
-					_loc8_ = dataManager.loadKey(_loc9_.table, _loc9_.tech);
-					_loc7_ = "";
-					_loc2_ = false;
-					_loc6_ = null;
-					_loc3_ = "";
-					_loc5_ = 0;
-					if (_loc8_.name == "Engine")
-					{
-						_loc6_ = g.commandManager.addBoostCommand;
-						_loc7_ = "E";
-						_loc2_ = _loc4_.hasBoost;
-						if (_loc4_.aritfact_cooldownReduction > 0.4)
-						{
-							_loc5_ = _loc4_.boostCD * 0.6;
+			var _local11:int = 0;
+			for each(var _local9 in g.me.techSkills) {
+				if(_local9.tech == "m4yG1IRPIUeyRQHrC3h5kQ" || _local9.tech == "QgKEEj8a-0yzYAJ06eSLqA" || _local9.tech == "rSr1sn-_oUOY6E0hpAhh0Q" || _local9.tech == "kwlCdExeJk-oEJZopIz5kg") {
+					_local8 = dataManager.loadKey(_local9.table,_local9.tech);
+					_local7 = "";
+					_local2 = false;
+					_local6 = null;
+					_local3 = "";
+					_local5 = 0;
+					if(_local8.name == "Engine") {
+						_local6 = g.commandManager.addBoostCommand;
+						_local7 = "E";
+						_local2 = _local4.hasBoost;
+						if(_local4.aritfact_cooldownReduction > 0.4) {
+							_local5 = _local4.boostCD * 0.6;
+						} else {
+							_local5 = _local4.boostCD * (1 - _local4.aritfact_cooldownReduction);
 						}
-						else
-						{
-							_loc5_ = _loc4_.boostCD * (1 - _loc4_.aritfact_cooldownReduction);
+						_local3 = Localize.t("Boost your engine with <FONT COLOR=\'#ffffff\'>[boostBonus]%</FONT> over <FONT COLOR=\'#ffffff\'>[duration]</FONT> seconds.").replace("[boostBonus]",_local4.boostBonus).replace("[duration]",_local4.boostDuration / 1000);
+					} else if(_local8.name == "Shield") {
+						_local6 = g.commandManager.addHardenedShieldCommand;
+						_local7 = "Q";
+						_local2 = _local4.hasHardenedShield;
+						if(_local4.aritfact_cooldownReduction > 0.4) {
+							_local5 = _local4.hardenCD * 0.6;
+						} else {
+							_local5 = _local4.hardenCD * (1 - _local4.aritfact_cooldownReduction);
 						}
-						_loc3_ = Localize.t("Boost your engine with <FONT COLOR='#ffffff'>[boostBonus]%</FONT> over <FONT COLOR='#ffffff'>[duration]</FONT> seconds.").replace("[boostBonus]", _loc4_.boostBonus).replace("[duration]", _loc4_.boostDuration / 1000);
+						_local3 = Localize.t("Creates a hardened shield that protects you from all damage over <FONT COLOR=\'#ffffff\'>[duration]</FONT> seconds.").replace("[duration]",_local4.hardenDuration / 1000);
+					} else if(_local8.name == "Armor") {
+						_local6 = g.commandManager.addShieldConvertCommand;
+						_local7 = "F";
+						_local2 = _local4.hasArmorConverter;
+						if(_local4.aritfact_cooldownReduction > 0.4) {
+							_local5 = _local4.convCD * 0.6;
+						} else {
+							_local5 = _local4.convCD * (1 - _local4.aritfact_cooldownReduction);
+						}
+						_local3 = Localize.t("Use <FONT COLOR=\'#ffffff\'>[convCost]%</FONT> of your shield energy to repair ship with <FONT COLOR=\'#ffffff\'>[convGain]%</FONT> of the energy consumed.").replace("[convCost]",_local4.convCost).replace("[convGain]",_local4.convGain);
+					} else if(_local8.name == "Power") {
+						_local6 = g.commandManager.addDmgBoostCommand;
+						_local7 = "R";
+						_local2 = _local4.hasDmgBoost;
+						if(_local4.aritfact_cooldownReduction > 0.4) {
+							_local5 = _local4.dmgBoostCD * 0.6;
+						} else {
+							_local5 = _local4.dmgBoostCD * (1 - _local4.aritfact_cooldownReduction);
+						}
+						_local3 = Localize.t("Damage is increased by <FONT COLOR=\'#ffffff\'>[damage]%</FONT> but power consumtion is increased by <FONT COLOR=\'#ffffff\'>[cost]%</FONT> over <FONT COLOR=\'#ffffff\'>[duration]</FONT> seconds.").replace("[damage]",_local4.dmgBoostBonus * 100).replace("[cost]",_local4.dmgBoostCost * 100).replace("[duration]",_local4.dmgBoostDuration / 1000);
 					}
-					else if (_loc8_.name == "Shield")
-					{
-						_loc6_ = g.commandManager.addHardenedShieldCommand;
-						_loc7_ = "Q";
-						_loc2_ = _loc4_.hasHardenedShield;
-						if (_loc4_.aritfact_cooldownReduction > 0.4)
-						{
-							_loc5_ = _loc4_.hardenCD * 0.6;
-						}
-						else
-						{
-							_loc5_ = _loc4_.hardenCD * (1 - _loc4_.aritfact_cooldownReduction);
-						}
-						_loc3_ = Localize.t("Creates a hardened shield that protects you from all damage over <FONT COLOR='#ffffff'>[duration]</FONT> seconds.").replace("[duration]", _loc4_.hardenDuration / 1000);
-					}
-					else if (_loc8_.name == "Armor")
-					{
-						_loc6_ = g.commandManager.addShieldConvertCommand;
-						_loc7_ = "F";
-						_loc2_ = _loc4_.hasArmorConverter;
-						if (_loc4_.aritfact_cooldownReduction > 0.4)
-						{
-							_loc5_ = _loc4_.convCD * 0.6;
-						}
-						else
-						{
-							_loc5_ = _loc4_.convCD * (1 - _loc4_.aritfact_cooldownReduction);
-						}
-						_loc3_ = Localize.t("Use <FONT COLOR='#ffffff'>[convCost]%</FONT> of your shield energy to repair ship with <FONT COLOR='#ffffff'>[convGain]%</FONT> of the energy consumed.").replace("[convCost]", _loc4_.convCost).replace("[convGain]", _loc4_.convGain);
-					}
-					else if (_loc8_.name == "Power")
-					{
-						_loc6_ = g.commandManager.addDmgBoostCommand;
-						_loc7_ = "R";
-						_loc2_ = _loc4_.hasDmgBoost;
-						if (_loc4_.aritfact_cooldownReduction > 0.4)
-						{
-							_loc5_ = _loc4_.dmgBoostCD * 0.6;
-						}
-						else
-						{
-							_loc5_ = _loc4_.dmgBoostCD * (1 - _loc4_.aritfact_cooldownReduction);
-						}
-						_loc3_ = Localize.t("Damage is increased by <FONT COLOR='#ffffff'>[damage]%</FONT> but power consumtion is increased by <FONT COLOR='#ffffff'>[cost]%</FONT> over <FONT COLOR='#ffffff'>[duration]</FONT> seconds.").replace("[damage]", _loc4_.dmgBoostBonus * 100).replace("[cost]", _loc4_.dmgBoostCost * 100).replace("[duration]", _loc4_.dmgBoostDuration / 1000);
-					}
-					_loc1_ = dataManager.loadKey("Images", _loc8_.techIcon);
-					_loc10_ = new AbilityHotkey(_loc6_, textureManager.getTextureGUIByTextureName(_loc1_.textureName), textureManager.getTextureGUIByTextureName(_loc1_.textureName + "_inactive"), textureManager.getTextureGUIByTextureName(_loc1_.textureName + "_cooldown"), _loc7_);
-					_loc10_.cooldownTime = _loc5_;
-					_loc10_.obj = _loc8_;
-					_loc10_.y = 50 * _loc11_;
-					_loc10_.visible = _loc2_;
-					hotkeys.push(_loc10_);
-					new ToolTip(g, _loc10_, _loc3_, null, "abilities");
-					addChild(_loc10_);
-					_loc11_++;
+					_local1 = dataManager.loadKey("Images",_local8.techIcon);
+					_local10 = new AbilityHotkey(_local6,textureManager.getTextureGUIByTextureName(_local1.textureName),textureManager.getTextureGUIByTextureName(_local1.textureName + "_inactive"),textureManager.getTextureGUIByTextureName(_local1.textureName + "_cooldown"),_local7);
+					_local10.cooldownTime = _local5;
+					_local10.obj = _local8;
+					_local10.y = 50 * _local11;
+					_local10.visible = _local2;
+					hotkeys.push(_local10);
+					new ToolTip(g,_local10,_local3,null,"abilities");
+					addChild(_local10);
+					_local11++;
 				}
 			}
 		}
 		
-		public function update():void
-		{
-			for each (var _loc1_:* in hotkeys)
-			{
-				_loc1_.update();
+		public function update() : void {
+			for each(var _local1 in hotkeys) {
+				_local1.update();
 			}
 		}
 		
-		private function createHotkey(param1:Object, param2:Boolean, param3:Function, param4:int, param5:String, param6:String, param7:int):Function
-		{
-			var obj:Object = param1;
-			var visible:Boolean = param2;
-			var command:Function = param3;
-			var level:int = param4;
-			var caption:String = param5;
-			var toolTip:String = param6;
-			var i:int = param7;
-			return function(param1:Texture):void
-			{
+		private function createHotkey(obj:Object, visible:Boolean, command:Function, level:int, caption:String, toolTip:String, i:int) : Function {
+			return function(param1:Texture):void {
 			};
 		}
 		
-		public function initiateCooldown(param1:String):void
-		{
-			for each (var _loc2_:* in hotkeys)
-			{
-				if (_loc2_.obj.name == param1)
-				{
-					_loc2_.initiateCooldown();
+		public function initiateCooldown(name:String) : void {
+			for each(var _local2 in hotkeys) {
+				if(_local2.obj.name == name) {
+					_local2.initiateCooldown();
 				}
 			}
 		}
 		
-		public function refresh():void
-		{
-			for each (var _loc1_:* in hotkeys)
-			{
-				removeChild(_loc1_);
+		public function refresh() : void {
+			for each(var _local1 in hotkeys) {
+				removeChild(_local1);
 				ToolTip.disposeType("abiltites");
 			}
-			hotkeys.splice(0, hotkeys.length);
+			hotkeys.splice(0,hotkeys.length);
 			load();
 		}
 	}
 }
+

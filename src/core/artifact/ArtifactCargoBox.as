@@ -1,5 +1,4 @@
-package core.artifact
-{
+package core.artifact {
 	import core.hud.components.ToolTip;
 	import core.player.CrewMember;
 	import core.player.Player;
@@ -12,64 +11,43 @@ package core.artifact
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class ArtifactCargoBox extends Sprite
-	{
+	public class ArtifactCargoBox extends Sprite {
 		private static const COLOR_ACTIVE:uint = 16777215;
-		
 		private static const COLOR_SELECTED_RECYCLE:uint = 12203572;
-		
 		private static const COLOR_SELECTED_UPGRADE:uint = 8978312;
-		
 		private var p:Player;
-		
 		private var g:Game;
-		
 		public var hint:Boolean = false;
-		
 		public var a:Artifact;
-		
 		private var recycleMode:Boolean;
-		
 		private var upgradeMode:Boolean;
-		
 		private var isInSetup:Boolean;
-		
 		private var textureManager:ITextureManager;
-		
 		private var frame:Image;
-		
 		private var toolTip:ToolTip;
-		
 		private var COLOR_NORMAL:uint = 6513507;
-		
 		protected var hintNewContainer:Image;
-		
 		private var lock:Image;
-		
 		private var artifactImage:Image;
-		
 		private var upgradingImage:Image;
 		
-		public function ArtifactCargoBox(param1:Game, param2:Artifact)
-		{
+		public function ArtifactCargoBox(g:Game, a:Artifact) {
 			super();
-			this.g = param1;
-			this.p = param1.me;
-			this.a = param2;
-			toolTip = new ToolTip(param1, this, "", null, "artifactBox");
+			this.g = g;
+			this.p = g.me;
+			this.a = a;
+			toolTip = new ToolTip(g,this,"",null,"artifactBox");
 			textureManager = TextureLocator.getService();
 			update();
 		}
 		
-		public function update():void
-		{
+		public function update() : void {
 			removeChildren();
 			drawFrame();
 			toolTip.text = "";
 			useHandCursor = false;
-			removeEventListener("touch", onTouch);
-			if (a != null)
-			{
+			removeEventListener("touch",onTouch);
+			if(a != null) {
 				addImages();
 				addTouch();
 				addToolTip();
@@ -78,17 +56,13 @@ package core.artifact
 			}
 		}
 		
-		private function addImages():void
-		{
-			if (!a.revealed)
-			{
+		private function addImages() : void {
+			if(!a.revealed) {
 				lock = new Image(textureManager.getTextureGUIByTextureName("new_artifact"));
 				lock.x = Math.round(frame.width / 2 - lock.width / 2);
 				lock.y = Math.round(frame.height / 2 - lock.width / 2);
 				addChild(lock);
-			}
-			else
-			{
+			} else {
 				artifactImage = new Image(textureManager.getTextureGUIByKey(a.bitmap));
 				artifactImage.scaleX = artifactImage.scaleY = 0.25;
 				artifactImage.x = Math.round(frame.width / 2 - artifactImage.width / 2);
@@ -97,10 +71,8 @@ package core.artifact
 			}
 		}
 		
-		private function addHint():void
-		{
-			if (hint)
-			{
+		private function addHint() : void {
+			if(hint) {
 				hintNewContainer = new Image(textureManager.getTextureGUIByTextureName("notification.png"));
 				hintNewContainer.x = 0;
 				hintNewContainer.y = -4;
@@ -109,302 +81,224 @@ package core.artifact
 			}
 		}
 		
-		private function addUpgradeIcon():void
-		{
-			if (a.upgrading)
-			{
+		private function addUpgradeIcon() : void {
+			if(a.upgrading) {
 				upgradingImage = new Image(textureManager.getTextureGUIByTextureName("upgrading"));
-			}
-			else if (a.upgraded >= 10)
-			{
+			} else if(a.upgraded >= 10) {
 				upgradingImage = new Image(textureManager.getTextureGUIByTextureName("upgraded_max"));
-			}
-			else if (a.upgraded > 6)
-			{
+			} else if(a.upgraded > 6) {
 				upgradingImage = new Image(textureManager.getTextureGUIByTextureName("upgraded3"));
-			}
-			else if (a.upgraded > 3)
-			{
+			} else if(a.upgraded > 3) {
 				upgradingImage = new Image(textureManager.getTextureGUIByTextureName("upgraded2"));
-			}
-			else if (a.upgraded > 0)
-			{
+			} else if(a.upgraded > 0) {
 				upgradingImage = new Image(textureManager.getTextureGUIByTextureName("upgraded"));
 			}
-			if (upgradingImage != null)
-			{
+			if(upgradingImage != null) {
 				upgradingImage.x = 20;
 				addChild(upgradingImage);
 			}
 		}
 		
-		public function showHint():void
-		{
+		public function showHint() : void {
 			hint = true;
 			update();
 		}
 		
-		public function hideHint():void
-		{
+		public function hideHint() : void {
 			hint = false;
 			update();
 		}
 		
-		private function drawFrame():void
-		{
+		private function drawFrame() : void {
 			frame = new Image(textureManager.getTextureGUIByTextureName("artifact_box_small"));
 			frame.color = COLOR_NORMAL;
 			addChild(frame);
-			if (a == null)
-			{
+			if(a == null) {
 				return;
 			}
-			var _loc1_:Boolean = p.isActiveArtifact(a);
-			if (_loc1_)
-			{
+			var _local1:Boolean = p.isActiveArtifact(a);
+			if(_local1) {
 				setFrameColor(16777215);
 			}
 		}
 		
-		private function addToolTip():void
-		{
-			var _loc4_:int = 0;
-			var _loc3_:CrewMember = null;
-			if (!a.revealed && recycleMode)
-			{
-				toolTip.text = Localize.t("You can't reveal in recycle mode!");
+		private function addToolTip() : void {
+			var _local4:int = 0;
+			var _local3:CrewMember = null;
+			if(!a.revealed && recycleMode) {
+				toolTip.text = Localize.t("You can\'t reveal in recycle mode!");
 				return;
 			}
-			if (!a.revealed)
-			{
+			if(!a.revealed) {
 				toolTip.text = Localize.t("Click to reveal!");
 				return;
 			}
-			_loc4_ = 0;
-			while (_loc4_ < p.crewMembers.length)
-			{
-				_loc3_ = p.crewMembers[_loc4_];
-				if (_loc3_.artifact == a.id)
-				{
-					a.upgradeTime = _loc3_.artifactEnd;
+			_local4 = 0;
+			while(_local4 < p.crewMembers.length) {
+				_local3 = p.crewMembers[_local4];
+				if(_local3.artifact == a.id) {
+					a.upgradeTime = _local3.artifactEnd;
 				}
-				_loc4_++;
+				_local4++;
 			}
-			var _loc2_:String = "<font color='#ffaa44'>" + a.name + "</font><br>";
-			if (a.revealed && a.isRestricted)
-			{
-				_loc2_ += Localize.t("<font color='#ff0000'>Requires level [level]</font>").replace("[level]", a.requiredPlayerLevel) + "<br><br>";
+			var _local2:String = "<font color=\'#ffaa44\'>" + a.name + "</font><br>";
+			if(a.revealed && a.isRestricted) {
+				_local2 += Localize.t("<font color=\'#ff0000\'>Requires level [level]</font>").replace("[level]",a.requiredPlayerLevel) + "<br><br>";
 			}
-			_loc2_ += Localize.t("Level [potential], strength [level]").replace("[level]", a.level).replace("[potential]", a.levelPotential) + "<br>";
-			if (a.upgraded >= 10)
-			{
-				_loc2_ += Localize.t("Max Upgraded") + "<br>";
+			_local2 += Localize.t("Level [potential], strength [level]").replace("[level]",a.level).replace("[potential]",a.levelPotential) + "<br>";
+			if(a.upgraded >= 10) {
+				_local2 += Localize.t("Max Upgraded") + "<br>";
+			} else if(a.upgraded > 0) {
+				_local2 += Localize.t("[nr] upgrades").replace("[nr]",a.upgraded) + "<br>";
 			}
-			else if (a.upgraded > 0)
-			{
-				_loc2_ += Localize.t("[nr] upgrades").replace("[nr]", a.upgraded) + "<br>";
+			if(a.upgrading) {
+				_local2 += Localize.t("Upgrading") + ": " + Util.getFormattedTime(a.upgradeTime - g.time) + "<br>";
 			}
-			if (a.upgrading)
-			{
-				_loc2_ += Localize.t("Upgrading") + ": " + Util.getFormattedTime(a.upgradeTime - g.time) + "<br>";
+			for each(var _local1 in a.stats) {
+				_local2 += ArtifactStat.parseTextFromStatType(_local1.type,_local1.value) + "<br>";
 			}
-			for each (var _loc1_:* in a.stats)
-			{
-				_loc2_ += ArtifactStat.parseTextFromStatType(_loc1_.type, _loc1_.value) + "<br>";
-			}
-			toolTip.text = _loc2_;
+			toolTip.text = _local2;
 			toolTip.color = a.getColor();
 		}
 		
-		private function addTouch():void
-		{
-			if (a.revealed && a.isRestricted && !recycleMode && !upgradeMode)
-			{
-				if (artifactImage != null)
-				{
+		private function addTouch() : void {
+			if(a.revealed && a.isRestricted && !recycleMode && !upgradeMode) {
+				if(artifactImage != null) {
 					artifactImage.alpha = 0.5;
 				}
-				if (lock != null)
-				{
+				if(lock != null) {
 					lock.alpha = 0.5;
 				}
-				if (hintNewContainer != null)
-				{
+				if(hintNewContainer != null) {
 					hintNewContainer.alpha = 0.5;
 				}
 				return;
 			}
 			useHandCursor = true;
-			addEventListener("touch", onTouch);
+			addEventListener("touch",onTouch);
 		}
 		
-		private function removeTouch():void
-		{
-			if (hasEventListener("touch", onTouch))
-			{
-				removeEventListener("touch", onTouch);
+		private function removeTouch() : void {
+			if(hasEventListener("touch",onTouch)) {
+				removeEventListener("touch",onTouch);
 				useHandCursor = false;
 			}
-			if (artifactImage != null)
-			{
+			if(artifactImage != null) {
 				artifactImage.alpha = 1;
 			}
-			if (lock != null)
-			{
+			if(lock != null) {
 				lock.alpha = 1;
 			}
-			if (hintNewContainer != null)
-			{
+			if(hintNewContainer != null) {
 				hintNewContainer.alpha = 1;
 			}
 		}
 		
-		private function onTouch(param1:TouchEvent):void
-		{
-			if (param1.getTouch(this, "ended"))
-			{
-				onClick(param1);
-			}
-			else if (param1.interactsWith(this))
-			{
+		private function onTouch(e:TouchEvent) : void {
+			if(e.getTouch(this,"ended")) {
+				onClick(e);
+			} else if(e.interactsWith(this)) {
 				addToolTip();
-				if (hint)
-				{
+				if(hint) {
 					hideHint();
 				}
 			}
 		}
 		
-		private function onClick(param1:TouchEvent):void
-		{
-			if (!a.revealed && !recycleMode)
-			{
+		private function onClick(e:TouchEvent) : void {
+			if(!a.revealed && !recycleMode) {
 				a.revealed = true;
-				g.send("revealArtifact", a.id);
+				g.send("revealArtifact",a.id);
 				update();
 				return;
 			}
-			if (!g.me.isLanded && !g.me.inSafeZone && !recycleMode)
-			{
+			if(!g.me.isLanded && !g.me.inSafeZone && !recycleMode) {
 				g.showErrorDialog(Localize.t("Artifacts can only be changed inside the safe zones."));
 				return;
 			}
-			if (!recycleMode && !upgradeMode)
-			{
-				dispatchEventWith("artifactSelected", true);
+			if(!recycleMode && !upgradeMode) {
+				dispatchEventWith("artifactSelected",true);
 				return;
 			}
-			if (upgradeMode)
-			{
-				if (a.upgrading)
-				{
+			if(upgradeMode) {
+				if(a.upgrading) {
 					return;
 				}
-				if (a.upgraded >= 10)
-				{
-					g.showMessageDialog(Localize.t("This artifact has already been upgraded [times] times.").replace("[times]", 10));
+				if(a.upgraded >= 10) {
+					g.showMessageDialog(Localize.t("This artifact has already been upgraded [times] times.").replace("[times]",10));
 					return;
 				}
 				toggleUpgrade();
-				dispatchEventWith("artifactUpgradeSelected", true);
+				dispatchEventWith("artifactUpgradeSelected",true);
 				return;
 			}
-			if (a.upgrading)
-			{
+			if(a.upgrading) {
 				return;
 			}
-			if (isInSetup)
-			{
+			if(isInSetup) {
 				return;
 			}
 			toggleRecycle();
-			dispatchEventWith("artifactRecycleSelected", true);
+			dispatchEventWith("artifactRecycleSelected",true);
 		}
 		
-		public function isUsedInSetup():Boolean
-		{
+		public function isUsedInSetup() : Boolean {
 			return isInSetup;
 		}
 		
-		public function setSelectedForRecycle():void
-		{
-			if (a == null)
-			{
+		public function setSelectedForRecycle() : void {
+			if(a == null) {
 				return;
 			}
 			setFrameColor(12203572);
 		}
 		
-		public function setNotSelected():void
-		{
-			if (a == null)
-			{
+		public function setNotSelected() : void {
+			if(a == null) {
 				return;
 			}
-			if (isInSetup)
-			{
+			if(isInSetup) {
 				setFrameColor(16777215);
-			}
-			else
-			{
+			} else {
 				setFrameColor(COLOR_NORMAL);
 			}
 		}
 		
-		public function toggleUpgrade():void
-		{
-			if (a == null)
-			{
+		public function toggleUpgrade() : void {
+			if(a == null) {
 				return;
 			}
-			if (frame.color == COLOR_NORMAL)
-			{
+			if(frame.color == COLOR_NORMAL) {
 				setFrameColor(8978312);
-			}
-			else if (frame.color == 16777215)
-			{
+			} else if(frame.color == 16777215) {
 				setFrameColor(8978312);
-			}
-			else if (isInSetup)
-			{
+			} else if(isInSetup) {
 				setFrameColor(16777215);
-			}
-			else
-			{
+			} else {
 				setFrameColor(COLOR_NORMAL);
 			}
 		}
 		
-		public function toggleRecycle():void
-		{
-			if (a == null)
-			{
+		public function toggleRecycle() : void {
+			if(a == null) {
 				return;
 			}
-			if (frame.color == COLOR_NORMAL)
-			{
+			if(frame.color == COLOR_NORMAL) {
 				setFrameColor(12203572);
-			}
-			else
-			{
+			} else {
 				setFrameColor(COLOR_NORMAL);
 			}
 		}
 		
-		public function setUpgradeState():void
-		{
+		public function setUpgradeState() : void {
 			upgradeMode = true;
-			if (a == null)
-			{
+			if(a == null) {
 				return;
 			}
 			isInSetup = p.isArtifactInSetup(a);
-			if (isInSetup)
-			{
+			if(isInSetup) {
 				setFrameColor(16777215);
-			}
-			else
-			{
+			} else {
 				setFrameColor(COLOR_NORMAL);
 			}
 			removeTouch();
@@ -412,21 +306,16 @@ package core.artifact
 			update();
 		}
 		
-		public function removeUpgradeState():void
-		{
+		public function removeUpgradeState() : void {
 			upgradeMode = false;
-			if (a == null)
-			{
+			if(a == null) {
 				setFrameColor(COLOR_NORMAL);
 				return;
 			}
-			var _loc1_:Boolean = p.isActiveArtifact(a);
-			if (_loc1_)
-			{
+			var _local1:Boolean = p.isActiveArtifact(a);
+			if(_local1) {
 				setFrameColor(16777215);
-			}
-			else
-			{
+			} else {
 				setFrameColor(COLOR_NORMAL);
 			}
 			removeTouch();
@@ -434,20 +323,15 @@ package core.artifact
 			update();
 		}
 		
-		public function setRecycleState():void
-		{
+		public function setRecycleState() : void {
 			recycleMode = true;
-			if (a == null)
-			{
+			if(a == null) {
 				return;
 			}
 			isInSetup = p.isArtifactInSetup(a);
-			if (isInSetup)
-			{
+			if(isInSetup) {
 				setFrameColor(16777215);
-			}
-			else
-			{
+			} else {
 				setFrameColor(COLOR_NORMAL);
 			}
 			removeTouch();
@@ -455,21 +339,16 @@ package core.artifact
 			update();
 		}
 		
-		public function removeRecycleState():void
-		{
+		public function removeRecycleState() : void {
 			recycleMode = false;
-			if (a == null)
-			{
+			if(a == null) {
 				setFrameColor(COLOR_NORMAL);
 				return;
 			}
-			var _loc1_:Boolean = p.isActiveArtifact(a);
-			if (_loc1_)
-			{
+			var _local1:Boolean = p.isActiveArtifact(a);
+			if(_local1) {
 				setFrameColor(16777215);
-			}
-			else
-			{
+			} else {
 				setFrameColor(COLOR_NORMAL);
 			}
 			removeTouch();
@@ -477,38 +356,32 @@ package core.artifact
 			update();
 		}
 		
-		public function stateNormal():void
-		{
+		public function stateNormal() : void {
 			setFrameColor(COLOR_NORMAL);
 		}
 		
-		public function updateSetupChange():void
-		{
+		public function updateSetupChange() : void {
 			frame.color = COLOR_NORMAL;
-			if (a == null)
-			{
+			if(a == null) {
 				return;
 			}
-			var _loc1_:Boolean = p.isActiveArtifact(a);
-			if (_loc1_)
-			{
+			var _local1:Boolean = p.isActiveArtifact(a);
+			if(_local1) {
 				setFrameColor(16777215);
 			}
 		}
 		
-		private function setFrameColor(param1:uint):void
-		{
-			if (frame.color === param1)
-			{
+		private function setFrameColor(color:uint) : void {
+			if(frame.color === color) {
 				return;
 			}
-			frame.color = param1;
+			frame.color = color;
 		}
 		
-		public function setEmpty():void
-		{
+		public function setEmpty() : void {
 			a = null;
 			update();
 		}
 	}
 }
+

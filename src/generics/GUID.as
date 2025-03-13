@@ -1,150 +1,128 @@
-package generics
-{
+package generics {
 	import flash.system.Capabilities;
 	
-	public class GUID
-	{
+	public class GUID {
 		private static var counter:Number = 0;
 		
-		public function GUID()
-		{
+		public function GUID() {
 			super();
 		}
 		
-		public static function create():String
-		{
-			var _loc1_:Date = new Date();
-			var _loc3_:Number = Number(_loc1_.getTime());
-			var _loc2_:Number = Math.random() * 1.7976931348623157e+308;
-			var _loc6_:String = Capabilities.serverString;
-			var _loc4_:String = calculate(_loc3_ + _loc6_ + _loc2_ + counter++).toUpperCase();
-			return _loc4_.substring(0, 8) + "-" + _loc4_.substring(8, 12) + "-" + _loc4_.substring(12, 16) + "-" + _loc4_.substring(16, 20) + "-" + _loc4_.substring(20, 32);
+		public static function create() : String {
+			var _local1:Date = new Date();
+			var _local3:Number = Number(_local1.getTime());
+			var _local2:Number = Math.random() * 1.7976931348623157e+308;
+			var _local6:String = Capabilities.serverString;
+			var _local4:String = calculate(_local3 + _local6 + _local2 + counter++).toUpperCase();
+			return _local4.substring(0,8) + "-" + _local4.substring(8,12) + "-" + _local4.substring(12,16) + "-" + _local4.substring(16,20) + "-" + _local4.substring(20,32);
 		}
 		
-		private static function calculate(param1:String):String
-		{
-			return hex_sha1(param1);
+		private static function calculate(src:String) : String {
+			return hex_sha1(src);
 		}
 		
-		private static function hex_sha1(param1:String):String
-		{
-			return binb2hex(core_sha1(str2binb(param1), param1.length * 8));
+		private static function hex_sha1(src:String) : String {
+			return binb2hex(core_sha1(str2binb(src),src.length * 8));
 		}
 		
-		private static function core_sha1(param1:Array, param2:Number):Array
-		{
-			var _loc9_:Number = NaN;
-			var _loc16_:* = NaN;
-			var _loc14_:* = NaN;
-			var _loc8_:Number = NaN;
-			var _loc13_:Number = NaN;
-			param1[param2 >> 5] |= 128 << 24 - param2 % 32;
-			param1[(param2 + 64 >> 9 << 4) + 15] = param2;
-			var _loc10_:Array = new Array(80);
-			var _loc7_:* = 1732584193;
-			var _loc5_:* = -271733879;
-			var _loc6_:Number = -1732584194;
-			var _loc3_:* = 271733878;
-			var _loc4_:* = -1009589776;
-			_loc9_ = 0;
-			while (_loc9_ < param1.length)
-			{
-				_loc16_ = _loc7_;
-				var _loc15_:* = _loc5_;
-				_loc14_ = _loc6_;
-				var _loc12_:* = _loc3_;
-				var _loc11_:* = _loc4_;
-				_loc8_ = 0;
-				while (_loc8_ < 80)
-				{
-					if (_loc8_ < 16)
-					{
-						_loc10_[_loc8_] = param1[_loc9_ + _loc8_];
+		private static function core_sha1(x:Array, len:Number) : Array {
+			var _local9:Number = NaN;
+			var _local16:* = NaN;
+			var _local14:* = NaN;
+			var _local8:Number = NaN;
+			var _local13:Number = NaN;
+			x[len >> 5] |= 128 << 24 - len % 32;
+			x[(len + 64 >> 9 << 4) + 15] = len;
+			var _local10:Array = new Array(80);
+			var _local7:* = 1732584193;
+			var _local5:* = -271733879;
+			var _local6:Number = -1732584194;
+			var _local3:* = 271733878;
+			var _local4:* = -1009589776;
+			_local9 = 0;
+			while(_local9 < x.length) {
+				_local16 = _local7;
+				var _local15:* = _local5;
+				_local14 = _local6;
+				var _local12:* = _local3;
+				var _local11:* = _local4;
+				_local8 = 0;
+				while(_local8 < 80) {
+					if(_local8 < 16) {
+						_local10[_local8] = x[_local9 + _local8];
+					} else {
+						_local10[_local8] = rol(_local10[_local8 - 3] ^ _local10[_local8 - 8] ^ _local10[_local8 - 14] ^ _local10[_local8 - 16],1);
 					}
-					else
-					{
-						_loc10_[_loc8_] = rol(_loc10_[_loc8_ - 3] ^ _loc10_[_loc8_ - 8] ^ _loc10_[_loc8_ - 14] ^ _loc10_[_loc8_ - 16], 1);
-					}
-					_loc13_ = safe_add(safe_add(rol(_loc7_, 5), sha1_ft(_loc8_, _loc5_, _loc6_, _loc3_)), safe_add(safe_add(_loc4_, _loc10_[_loc8_]), sha1_kt(_loc8_)));
-					_loc4_ = _loc3_;
-					_loc3_ = _loc6_;
-					_loc6_ = rol(_loc5_, 30);
-					_loc5_ = _loc7_;
-					_loc7_ = _loc13_;
-					_loc8_++;
+					_local13 = safe_add(safe_add(rol(_local7,5),sha1_ft(_local8,_local5,_local6,_local3)),safe_add(safe_add(_local4,_local10[_local8]),sha1_kt(_local8)));
+					_local4 = _local3;
+					_local3 = _local6;
+					_local6 = rol(_local5,30);
+					_local5 = _local7;
+					_local7 = _local13;
+					_local8++;
 				}
-				_loc7_ = safe_add(_loc7_, _loc16_);
-				_loc5_ = safe_add(_loc5_, _loc15_);
-				_loc6_ = safe_add(_loc6_, _loc14_);
-				_loc3_ = safe_add(_loc3_, _loc12_);
-				_loc4_ = safe_add(_loc4_, _loc11_);
-				_loc9_ += 16;
+				_local7 = safe_add(_local7,_local16);
+				_local5 = safe_add(_local5,_local15);
+				_local6 = safe_add(_local6,_local14);
+				_local3 = safe_add(_local3,_local12);
+				_local4 = safe_add(_local4,_local11);
+				_local9 += 16;
 			}
-			return new Array(_loc7_, _loc5_, _loc6_, _loc3_, _loc4_);
+			return new Array(_local7,_local5,_local6,_local3,_local4);
 		}
 		
-		private static function sha1_ft(param1:Number, param2:Number, param3:Number, param4:Number):Number
-		{
-			if (param1 < 20)
-			{
-				return param2 & param3 | ~param2 & param4;
+		private static function sha1_ft(t:Number, b:Number, c:Number, d:Number) : Number {
+			if(t < 20) {
+				return b & c | ~b & d;
 			}
-			if (param1 < 40)
-			{
-				return param2 ^ param3 ^ param4;
+			if(t < 40) {
+				return b ^ c ^ d;
 			}
-			if (param1 < 60)
-			{
-				return param2 & param3 | param2 & param4 | param3 & param4;
+			if(t < 60) {
+				return b & c | b & d | c & d;
 			}
-			return param2 ^ param3 ^ param4;
+			return b ^ c ^ d;
 		}
 		
-		private static function sha1_kt(param1:Number):Number
-		{
-			return param1 < 20 ? 1518500249 : (param1 < 40 ? 1859775393 : (param1 < 60 ? -1894007588 : -899497514));
+		private static function sha1_kt(t:Number) : Number {
+			return t < 20 ? 1518500249 : (t < 40 ? 1859775393 : (t < 60 ? -1894007588 : -899497514));
 		}
 		
-		private static function safe_add(param1:Number, param2:Number):Number
-		{
-			var _loc3_:Number = (param1 & 0xFFFF) + (param2 & 0xFFFF);
-			var _loc4_:Number = (param1 >> 16) + (param2 >> 16) + (_loc3_ >> 16);
-			return _loc4_ << 16 | _loc3_ & 0xFFFF;
+		private static function safe_add(x:Number, y:Number) : Number {
+			var _local3:Number = (x & 0xFFFF) + (y & 0xFFFF);
+			var _local4:Number = (x >> 16) + (y >> 16) + (_local3 >> 16);
+			return _local4 << 16 | _local3 & 0xFFFF;
 		}
 		
-		private static function rol(param1:Number, param2:Number):Number
-		{
-			return param1 << param2 | param1 >>> 32 - param2;
+		private static function rol(num:Number, cnt:Number) : Number {
+			return num << cnt | num >>> 32 - cnt;
 		}
 		
-		private static function str2binb(param1:String):Array
-		{
-			var _loc4_:Number = NaN;
-			var _loc3_:Array = [];
-			var _loc2_:Number = 255;
-			_loc4_ = 0;
-			while (_loc4_ < param1.length * 8)
-			{
-				var _loc5_:* = _loc4_ >> 5;
-				var _loc6_:* = _loc3_[_loc5_] | (param1.charCodeAt(_loc4_ / 8) & _loc2_) << 24 - _loc4_ % 32;
-				_loc3_[_loc5_] = _loc6_;
-				_loc4_ += 8;
+		private static function str2binb(str:String) : Array {
+			var _local4:Number = NaN;
+			var _local3:Array = [];
+			var _local2:Number = 255;
+			_local4 = 0;
+			while(_local4 < str.length * 8) {
+				var _local5:* = _local4 >> 5;
+				var _local6:* = _local3[_local5] | (str.charCodeAt(_local4 / 8) & _local2) << 24 - _local4 % 32;
+				_local3[_local5] = _local6;
+				_local4 += 8;
 			}
-			return _loc3_;
+			return _local3;
 		}
 		
-		private static function binb2hex(param1:Array):String
-		{
-			var _loc4_:Number = NaN;
-			var _loc2_:String = new String("");
-			var _loc3_:String = new String("0123456789abcdef");
-			_loc4_ = 0;
-			while (_loc4_ < param1.length * 4)
-			{
-				_loc2_ += _loc3_.charAt(param1[_loc4_ >> 2] >> (3 - _loc4_ % 4) * 8 + 4 & 0x0F) + _loc3_.charAt(param1[_loc4_ >> 2] >> (3 - _loc4_ % 4) * 8 & 0x0F);
-				_loc4_++;
+		private static function binb2hex(binarray:Array) : String {
+			var _local4:Number = NaN;
+			var _local2:String = new String("");
+			var _local3:String = new String("0123456789abcdef");
+			_local4 = 0;
+			while(_local4 < binarray.length * 4) {
+				_local2 += _local3.charAt(binarray[_local4 >> 2] >> (3 - _local4 % 4) * 8 + 4 & 0x0F) + _local3.charAt(binarray[_local4 >> 2] >> (3 - _local4 % 4) * 8 & 0x0F);
+				_local4++;
 			}
-			return _loc2_;
+			return _local2;
 		}
 	}
 }
+

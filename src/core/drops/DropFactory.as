@@ -1,5 +1,4 @@
-package core.drops
-{
+package core.drops {
 	import core.particle.*;
 	import core.scene.Game;
 	import data.*;
@@ -7,47 +6,41 @@ package core.drops
 	import sound.SoundLocator;
 	import textures.*;
 	
-	public class DropFactory
-	{
-		public function DropFactory()
-		{
+	public class DropFactory {
+		public function DropFactory() {
 			super();
 		}
 		
-		public static function createDrop(param1:String, param2:Game):Drop
-		{
-			var _loc4_:IDataManager = DataLocator.getService();
-			var _loc3_:Object = _loc4_.loadKey("Drops", param1);
-			return setDropProps(param2, _loc3_, param1);
+		public static function createDrop(key:String, g:Game) : Drop {
+			var _local4:IDataManager = DataLocator.getService();
+			var _local3:Object = _local4.loadKey("Drops",key);
+			return setDropProps(g,_local3,key);
 		}
 		
-		public static function createDropFromCargo(param1:String, param2:Game):Drop
-		{
-			var _loc4_:Object = null;
-			var _loc6_:IDataManager = DataLocator.getService();
-			var _loc3_:Object = _loc6_.loadRange("Drops", "name", param1);
-			for (var _loc5_:* in _loc3_)
-			{
-				_loc4_ = _loc3_[_loc5_];
-				if (_loc4_.name == param1)
-				{
-					return setDropProps(param2, _loc4_, _loc5_.toString());
+		public static function createDropFromCargo(name:String, g:Game) : Drop {
+			var _local4:Object = null;
+			var _local6:IDataManager = DataLocator.getService();
+			var _local3:Object = _local6.loadRange("Drops","name",name);
+			for(var _local5 in _local3) {
+				_local4 = _local3[_local5];
+				if(_local4.name == name) {
+					return setDropProps(g,_local4,_local5.toString());
 				}
 			}
 			return null;
 		}
 		
-		public static function setDropProps(param1:Game, param2:Object, param3:String):Drop
-		{
-			var _loc4_:Drop = param1.dropManager.getDrop();
-			_loc4_.obj = param2;
-			_loc4_.name = param2.name;
-			_loc4_.key = param3;
-			_loc4_.collisionRadius = param2.collisionRadius;
-			_loc4_.switchTexturesByObj(param2);
-			var _loc5_:ISound = SoundLocator.getService();
-			_loc5_.preCacheSound("05TMoG1kxEiXVZJ_OPhD_A", null);
-			return _loc4_;
+		public static function setDropProps(g:Game, obj:Object, key:String) : Drop {
+			var _local4:Drop = g.dropManager.getDrop();
+			_local4.obj = obj;
+			_local4.name = obj.name;
+			_local4.key = key;
+			_local4.collisionRadius = obj.collisionRadius;
+			_local4.switchTexturesByObj(obj);
+			var _local5:ISound = SoundLocator.getService();
+			_local5.preCacheSound("05TMoG1kxEiXVZJ_OPhD_A",null);
+			return _local4;
 		}
 	}
 }
+

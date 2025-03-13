@@ -1,28 +1,22 @@
-package core.credits
-{
-	
-	public class SaleEvent
-	{
+package core.credits {
+	public class SaleEvent {
 		public var start:Date;
-		
 		public var end:Date;
 		
-		public function SaleEvent(param1:int, param2:int, param3:int, param4:int, param5:int)
-		{
+		public function SaleEvent(year:int, month:int, day:int, hour:int, duration:int) {
 			super();
-			start = new Date(param1, param2 - 1, param3, param4, 0, 0, 0);
-			end = new Date(start.valueOf() + param5 * 60 * 60 * 1000);
+			start = new Date(year,month - 1,day,hour,0,0,0);
+			end = new Date(start.valueOf() + duration * (60) * (60) * 1000);
 		}
 		
-		public function isNow():Boolean
-		{
-			var _loc1_:Date = new Date();
-			_loc1_ = new Date(_loc1_.fullYearUTC, _loc1_.monthUTC, _loc1_.dateUTC, _loc1_.hoursUTC, _loc1_.minutesUTC, _loc1_.secondsUTC, _loc1_.millisecondsUTC);
-			if (start.valueOf() < _loc1_.valueOf() && end.valueOf() > _loc1_.valueOf())
-			{
+		public function isNow() : Boolean {
+			var _local1:Date = new Date();
+			_local1 = new Date(_local1.fullYearUTC,_local1.monthUTC,_local1.dateUTC,_local1.hoursUTC,_local1.minutesUTC,_local1.secondsUTC,_local1.millisecondsUTC);
+			if(start.valueOf() < _local1.valueOf() && end.valueOf() > _local1.valueOf()) {
 				return true;
 			}
 			return false;
 		}
 	}
 }
+

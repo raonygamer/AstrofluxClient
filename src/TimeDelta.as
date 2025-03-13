@@ -1,17 +1,13 @@
-package
-{
-	
-	public class TimeDelta
-	{
+package {
+	public class TimeDelta {
 		public var latency:Number;
-		
 		public var timeSyncDelta:Number;
 		
-		public function TimeDelta(param1:Number, param2:Number)
-		{
+		public function TimeDelta(latency:Number, timeSyncDelta:Number) {
 			super();
-			this.latency = param1;
-			this.timeSyncDelta = param2;
+			this.latency = latency;
+			this.timeSyncDelta = timeSyncDelta;
 		}
 	}
 }
+

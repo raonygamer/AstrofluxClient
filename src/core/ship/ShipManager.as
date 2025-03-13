@@ -1,5 +1,4 @@
-package core.ship
-{
+package core.ship {
 	import core.scene.Game;
 	import core.spawner.Spawner;
 	import core.states.AIStates.AIChase;
@@ -23,29 +22,20 @@ package core.ship
 	import movement.Heading;
 	import playerio.Message;
 	
-	public class ShipManager
-	{
+	public class ShipManager {
 		private var g:Game;
-		
 		public var shipSync:ShipSync;
-		
 		public var ships:Vector.<Ship>;
-		
 		public var players:Vector.<PlayerShip>;
-		
 		private var inactivePlayers:Vector.<PlayerShip>;
-		
 		public var enemies:Vector.<EnemyShip>;
-		
 		private var inactiveEnemies:Vector.<EnemyShip>;
-		
 		public var enemiesById:Dictionary;
 		
-		public function ShipManager(param1:Game)
-		{
-			var _loc4_:int = 0;
-			var _loc3_:PlayerShip = null;
-			var _loc2_:EnemyShip = null;
+		public function ShipManager(g:Game) {
+			var _local4:int = 0;
+			var _local3:PlayerShip = null;
+			var _local2:EnemyShip = null;
 			ships = new Vector.<Ship>();
 			players = new Vector.<PlayerShip>();
 			inactivePlayers = new Vector.<PlayerShip>();
@@ -53,477 +43,404 @@ package core.ship
 			inactiveEnemies = new Vector.<EnemyShip>();
 			enemiesById = new Dictionary();
 			super();
-			this.g = param1;
-			shipSync = new ShipSync(param1);
-			_loc4_ = 0;
-			while (_loc4_ < 4)
-			{
-				_loc3_ = new PlayerShip(param1);
-				inactivePlayers.push(_loc3_);
-				_loc4_++;
+			this.g = g;
+			shipSync = new ShipSync(g);
+			_local4 = 0;
+			while(_local4 < 4) {
+				_local3 = new PlayerShip(g);
+				inactivePlayers.push(_local3);
+				_local4++;
 			}
-			_loc4_ = 0;
-			while (_loc4_ < 20)
-			{
-				_loc2_ = new EnemyShip(param1);
-				inactiveEnemies.push(_loc2_);
-				_loc4_++;
+			_local4 = 0;
+			while(_local4 < 20) {
+				_local2 = new EnemyShip(g);
+				inactiveEnemies.push(_local2);
+				_local4++;
 			}
 		}
 		
-		public function addMessageHandlers():void
-		{
+		public function addMessageHandlers() : void {
 			shipSync.addMessageHandlers();
-			g.addMessageHandler("enemyUpdate", onEnemyUpdate);
+			g.addMessageHandler("enemyUpdate",onEnemyUpdate);
 		}
 		
-		public function addEarlyMessageHandlers():void
-		{
-			g.addMessageHandler("spawnEnemy", onSpawnEnemy);
+		public function addEarlyMessageHandlers() : void {
+			g.addMessageHandler("spawnEnemy",onSpawnEnemy);
 		}
 		
-		public function update():void
-		{
-			var _loc2_:int = 0;
-			var _loc1_:Ship = null;
-			_loc2_ = ships.length - 1;
-			while (_loc2_ > -1)
-			{
-				_loc1_ = ships[_loc2_];
-				if (_loc1_.alive)
-				{
-					_loc1_.update();
+		public function update() : void {
+			var _local2:int = 0;
+			var _local1:Ship = null;
+			_local2 = ships.length - 1;
+			while(_local2 > -1) {
+				_local1 = ships[_local2];
+				if(_local1.alive) {
+					_local1.update();
+				} else {
+					removeShip(_local1,_local2);
 				}
-				else
-				{
-					removeShip(_loc1_, _loc2_);
-				}
-				_loc2_--;
+				_local2--;
 			}
 		}
 		
-		public function getPlayerShip():PlayerShip
-		{
-			var _loc1_:PlayerShip = null;
-			if (inactivePlayers.length > 0)
-			{
-				_loc1_ = inactivePlayers.pop();
+		public function getPlayerShip() : PlayerShip {
+			var _local1:PlayerShip = null;
+			if(inactivePlayers.length > 0) {
+				_local1 = inactivePlayers.pop();
+			} else {
+				_local1 = new PlayerShip(g);
 			}
-			else
-			{
-				_loc1_ = new PlayerShip(g);
-			}
-			_loc1_.reset();
-			return _loc1_;
+			_local1.reset();
+			return _local1;
 		}
 		
-		public function activatePlayerShip(param1:PlayerShip):void
-		{
-			g.unitManager.add(param1, g.canvasPlayerShips);
-			ships.push(param1);
-			players.push(param1);
-			param1.alive = true;
+		public function activatePlayerShip(s:PlayerShip) : void {
+			g.unitManager.add(s,g.canvasPlayerShips);
+			ships.push(s);
+			players.push(s);
+			s.alive = true;
 		}
 		
-		public function getEnemyShip():EnemyShip
-		{
-			var _loc1_:EnemyShip = null;
-			if (inactiveEnemies.length > 0)
-			{
-				_loc1_ = inactiveEnemies.pop();
+		public function getEnemyShip() : EnemyShip {
+			var _local1:EnemyShip = null;
+			if(inactiveEnemies.length > 0) {
+				_local1 = inactiveEnemies.pop();
+			} else {
+				_local1 = new EnemyShip(g);
 			}
-			else
-			{
-				_loc1_ = new EnemyShip(g);
-			}
-			_loc1_.reset();
-			return _loc1_;
+			_local1.reset();
+			return _local1;
 		}
 		
-		public function activateEnemyShip(param1:EnemyShip):void
-		{
-			g.unitManager.add(param1, g.canvasEnemyShips);
-			ships.push(param1);
-			enemies.push(param1);
-			param1.alive = true;
+		public function activateEnemyShip(s:EnemyShip) : void {
+			g.unitManager.add(s,g.canvasEnemyShips);
+			ships.push(s);
+			enemies.push(s);
+			s.alive = true;
 		}
 		
-		public function removeShip(param1:Ship, param2:int):void
-		{
-			ships.splice(param2, 1);
-			var _loc3_:int = 0;
-			if (param1 is PlayerShip)
-			{
-				_loc3_ = int(players.indexOf(PlayerShip(param1)));
-				players.splice(_loc3_, 1);
-				inactivePlayers.push(param1);
-			}
-			else if (param1 is EnemyShip)
-			{
-				_loc3_ = int(enemies.indexOf(EnemyShip(param1)));
-				enemies.splice(_loc3_, 1);
-				inactiveEnemies.push(param1);
-				if (param1.id.toString() in enemiesById)
-				{
-					delete enemiesById[param1.id];
+		public function removeShip(s:Ship, index:int) : void {
+			ships.splice(index,1);
+			var _local3:int = 0;
+			if(s is PlayerShip) {
+				_local3 = int(players.indexOf(PlayerShip(s)));
+				players.splice(_local3,1);
+				inactivePlayers.push(s);
+			} else if(s is EnemyShip) {
+				_local3 = int(enemies.indexOf(EnemyShip(s)));
+				enemies.splice(_local3,1);
+				inactiveEnemies.push(s);
+				if(s.id.toString() in enemiesById) {
+					delete enemiesById[s.id];
 				}
 			}
-			g.unitManager.remove(param1);
+			g.unitManager.remove(s);
 		}
 		
-		private function onSpawnEnemy(param1:Message):void
-		{
-			spawnEnemy(param1);
+		private function onSpawnEnemy(m:Message) : void {
+			spawnEnemy(m);
 		}
 		
-		public function spawnEnemy(param1:Message, param2:int = 0, param3:int = 0):void
-		{
-			var _loc4_:int = 0;
-			var _loc25_:int = 0;
-			var _loc26_:* = 0;
-			var _loc17_:String = null;
-			var _loc9_:int = 0;
-			var _loc16_:int = 0;
-			var _loc12_:String = null;
-			var _loc8_:Number = NaN;
-			var _loc19_:Number = NaN;
-			var _loc14_:Number = NaN;
-			var _loc7_:Number = NaN;
-			var _loc23_:Number = NaN;
-			var _loc11_:Number = NaN;
-			var _loc21_:Boolean = false;
-			var _loc28_:Boolean = false;
-			var _loc29_:Spawner = null;
-			var _loc10_:Heading = null;
-			var _loc18_:EnemyShip = null;
-			var _loc20_:Number = NaN;
-			var _loc24_:int = 0;
-			var _loc22_:int = 0;
-			var _loc6_:Number = NaN;
-			var _loc30_:int = 0;
-			var _loc5_:int = 0;
-			var _loc13_:Unit = null;
-			var _loc15_:int = 21;
-			if (param3 != 0)
-			{
-				_loc4_ = param3 - param2;
-				_loc25_ = _loc4_ / _loc15_;
+		public function spawnEnemy(m:Message, startIndex:int = 0, endIndex:int = 0) : void {
+			var _local4:int = 0;
+			var _local25:int = 0;
+			var _local26:* = 0;
+			var _local17:String = null;
+			var _local9:int = 0;
+			var _local16:int = 0;
+			var _local12:String = null;
+			var _local8:Number = NaN;
+			var _local19:Number = NaN;
+			var _local14:Number = NaN;
+			var _local7:Number = NaN;
+			var _local23:Number = NaN;
+			var _local11:Number = NaN;
+			var _local21:Boolean = false;
+			var _local28:Boolean = false;
+			var _local29:Spawner = null;
+			var _local10:Heading = null;
+			var _local18:EnemyShip = null;
+			var _local20:Number = NaN;
+			var _local24:int = 0;
+			var _local22:int = 0;
+			var _local6:Number = NaN;
+			var _local30:int = 0;
+			var _local5:int = 0;
+			var _local13:Unit = null;
+			var _local15:int = 21;
+			if(endIndex != 0) {
+				_local4 = endIndex - startIndex;
+				_local25 = _local4 / _local15;
+			} else {
+				_local25 = m.length / _local15;
+				endIndex = m.length;
 			}
-			else
-			{
-				_loc25_ = param1.length / _loc15_;
-				param3 = param1.length;
-			}
-			if (_loc25_ == 0)
-			{
+			if(_local25 == 0) {
 				return;
 			}
-			_loc26_ = param2;
-			while (_loc26_ < param3)
-			{
-				_loc17_ = param1.getString(_loc26_++);
-				_loc9_ = param1.getInt(_loc26_++);
-				_loc16_ = param1.getInt(_loc26_++);
-				_loc12_ = param1.getString(_loc26_++);
-				_loc8_ = param1.getNumber(_loc26_++);
-				_loc19_ = param1.getNumber(_loc26_++);
-				_loc14_ = param1.getNumber(_loc26_++);
-				_loc7_ = param1.getNumber(_loc26_++);
-				_loc23_ = param1.getNumber(_loc26_++);
-				_loc11_ = param1.getNumber(_loc26_++);
-				_loc21_ = param1.getBoolean(_loc26_++);
-				_loc28_ = param1.getBoolean(_loc26_++);
-				_loc29_ = g.spawnManager.getSpawnerByKey(_loc12_);
-				_loc10_ = new Heading();
-				_loc26_ = _loc10_.parseMessage(param1, _loc26_);
-				if (_loc29_ != null)
-				{
-					_loc29_.initialHardenedShield = false;
+			_local26 = startIndex;
+			while(_local26 < endIndex) {
+				_local17 = m.getString(_local26++);
+				_local9 = m.getInt(_local26++);
+				_local16 = m.getInt(_local26++);
+				_local12 = m.getString(_local26++);
+				_local8 = m.getNumber(_local26++);
+				_local19 = m.getNumber(_local26++);
+				_local14 = m.getNumber(_local26++);
+				_local7 = m.getNumber(_local26++);
+				_local23 = m.getNumber(_local26++);
+				_local11 = m.getNumber(_local26++);
+				_local21 = m.getBoolean(_local26++);
+				_local28 = m.getBoolean(_local26++);
+				_local29 = g.spawnManager.getSpawnerByKey(_local12);
+				_local10 = new Heading();
+				_local26 = _local10.parseMessage(m,_local26);
+				if(_local29 != null) {
+					_local29.initialHardenedShield = false;
 				}
-				_loc18_ = ShipFactory.createEnemy(g, _loc17_, _loc16_);
-				createSetEnemy(_loc18_, _loc9_, _loc10_, _loc25_, _loc8_, _loc29_, _loc19_, _loc14_, _loc7_, _loc23_, _loc11_, _loc21_);
-				if (_loc16_ == 6)
-				{
-					_loc18_.hp = param1.getInt(_loc26_++);
-					_loc18_.hpMax = _loc18_.hp;
-					_loc18_.shieldHp = param1.getInt(_loc26_++);
-					_loc18_.shieldHpMax = _loc18_.shieldHp;
-					_loc18_.shieldRegen = param1.getInt(_loc26_++);
-					_loc18_.engine.speed = param1.getNumber(_loc26_++);
-					_loc18_.engine.acceleration = param1.getNumber(_loc26_++);
-					_loc20_ = param1.getNumber(_loc26_++);
-					_loc24_ = param1.getInt(_loc26_++);
-					_loc22_ = param1.getInt(_loc26_++);
-					_loc6_ = param1.getNumber(_loc26_++);
-					_loc30_ = param1.getInt(_loc26_++);
-					for each (var _loc27_:* in _loc18_.weapons)
-					{
-						_loc27_.speed = _loc20_;
-						_loc27_.ttl = _loc24_;
-						_loc27_.numberOfHits = _loc22_;
-						_loc27_.reloadTime = _loc6_;
-						_loc27_.multiNrOfP = _loc30_;
+				_local18 = ShipFactory.createEnemy(g,_local17,_local16);
+				createSetEnemy(_local18,_local9,_local10,_local25,_local8,_local29,_local19,_local14,_local7,_local23,_local11,_local21);
+				if(_local16 == 6) {
+					_local18.hp = m.getInt(_local26++);
+					_local18.hpMax = _local18.hp;
+					_local18.shieldHp = m.getInt(_local26++);
+					_local18.shieldHpMax = _local18.shieldHp;
+					_local18.shieldRegen = m.getInt(_local26++);
+					_local18.engine.speed = m.getNumber(_local26++);
+					_local18.engine.acceleration = m.getNumber(_local26++);
+					_local20 = m.getNumber(_local26++);
+					_local24 = m.getInt(_local26++);
+					_local22 = m.getInt(_local26++);
+					_local6 = m.getNumber(_local26++);
+					_local30 = m.getInt(_local26++);
+					for each(var _local27 in _local18.weapons) {
+						_local27.speed = _local20;
+						_local27.ttl = _local24;
+						_local27.numberOfHits = _local22;
+						_local27.reloadTime = _local6;
+						_local27.multiNrOfP = _local30;
 					}
-					_loc18_.name = param1.getString(_loc26_++);
-					_loc5_ = param1.getInt(_loc26_++);
-					_loc13_ = g.unitManager.getTarget(_loc5_);
-					_loc18_.owner = _loc13_ as PlayerShip;
+					_local18.name = m.getString(_local26++);
+					_local5 = m.getInt(_local26++);
+					_local13 = g.unitManager.getTarget(_local5);
+					_local18.owner = _local13 as PlayerShip;
 				}
-				if (_loc28_ == true)
-				{
-					_loc18_.cloakStart();
+				if(_local28 == true) {
+					_local18.cloakStart();
 				}
-				_loc26_;
+				_local26;
 			}
 		}
 		
-		private function createSetEnemy(param1:EnemyShip, param2:int, param3:Heading, param4:int, param5:Number, param6:Spawner, param7:Number, param8:Number, param9:Number, param10:Number, param11:Number, param12:Boolean = false):void
-		{
-			param1.id = param2;
-			randomizeSpeed(param1);
-			param1.initCourse(param3);
-			param1.engine.pos.x = param1.pos.x;
-			param1.engine.pos.y = param1.pos.y;
-			if (enemiesById[param1.id] != null)
-			{
-				Console.write("ERROR: enemy alrdy in use with id: " + param1.id);
+		private function createSetEnemy(enemy:EnemyShip, id:int, course:Heading, enemyCount:int, startTime:Number, s:Spawner, orbitAngle:Number, orbitRadius:Number, ellipseAlpha:Number, ellipseFactor:Number, angleVelocity:Number, spawnInOrbit:Boolean = false) : void {
+			enemy.id = id;
+			randomizeSpeed(enemy);
+			enemy.initCourse(course);
+			enemy.engine.pos.x = enemy.pos.x;
+			enemy.engine.pos.y = enemy.pos.y;
+			if(enemiesById[enemy.id] != null) {
+				Console.write("ERROR: enemy alrdy in use with id: " + enemy.id);
 			}
-			enemiesById[param1.id] = param1;
-			if (param1.orbitSpawner && param6 != null)
-			{
-				param1.spawner = param6;
-				param1.orbitAngle = param7;
-				param1.orbitRadius = param8;
-				param1.ellipseFactor = param10;
-				param1.ellipseAlpha = param9;
-				param1.angleVelocity = param11;
-				param1.orbitStartTime = param5;
-				if (param12)
-				{
-					param1.stateMachine.changeState(new AIOrbit(g, param1));
+			enemiesById[enemy.id] = enemy;
+			if(enemy.orbitSpawner && s != null) {
+				enemy.spawner = s;
+				enemy.orbitAngle = orbitAngle;
+				enemy.orbitRadius = orbitRadius;
+				enemy.ellipseFactor = ellipseFactor;
+				enemy.ellipseAlpha = ellipseAlpha;
+				enemy.angleVelocity = angleVelocity;
+				enemy.orbitStartTime = startTime;
+				if(spawnInOrbit) {
+					enemy.stateMachine.changeState(new AIOrbit(g,enemy));
+				} else {
+					enemy.stateMachine.changeState(new AIReturnOrbit(g,enemy,ellipseAlpha,startTime,course,0));
 				}
-				else
-				{
-					param1.stateMachine.changeState(new AIReturnOrbit(g, param1, param9, param5, param3, 0));
-				}
-			}
-			else if (param1.teleport)
-			{
-				param1.stateMachine.changeState(new AITeleportEntry(g, param1, param3));
-			}
-			else
-			{
-				param1.stateMachine.changeState(new AIIdle(g, param1, param3));
+			} else if(enemy.teleport) {
+				enemy.stateMachine.changeState(new AITeleportEntry(g,enemy,course));
+			} else {
+				enemy.stateMachine.changeState(new AIIdle(g,enemy,course));
 			}
 		}
 		
-		private function randomizeSpeed(param1:EnemyShip):void
-		{
-			var _loc2_:Random = new Random(1 / param1.id);
-			_loc2_.stepTo(1);
-			param1.engine.speed *= 0.8 + 0.001 * _loc2_.random(201);
-			param1.engine.rotationSpeed *= 0.6 + 0.002 * _loc2_.random(201);
+		private function randomizeSpeed(enemy:EnemyShip) : void {
+			var _local2:Random = new Random(1 / enemy.id);
+			_local2.stepTo(1);
+			enemy.engine.speed *= 0.8 + 0.001 * _local2.random(201);
+			enemy.engine.rotationSpeed *= 0.6 + 0.002 * _local2.random(201);
 		}
 		
-		public function getShipFromId(param1:int):Ship
-		{
-			for each (var _loc2_:* in ships)
-			{
-				if (_loc2_.id == param1)
-				{
-					return _loc2_;
+		public function getShipFromId(id:int) : Ship {
+			for each(var _local2 in ships) {
+				if(_local2.id == id) {
+					return _local2;
 				}
 			}
 			return null;
 		}
 		
-		public function enemyFire(param1:Message, param2:int = 0):void
-		{
-			var _loc8_:int = 0;
-			var _loc5_:Weapon = null;
-			var _loc3_:int = param1.getInt(param2);
-			var _loc7_:int = param1.getInt(param2 + 1);
-			var _loc9_:Boolean = param1.getBoolean(param2 + 2);
-			var _loc4_:Ship = getShipFromId(_loc3_);
-			var _loc6_:Unit = null;
-			if (param1.length > 3)
-			{
-				_loc8_ = param1.getInt(param2 + 3);
-				_loc6_ = g.unitManager.getTarget(_loc8_);
+		public function enemyFire(m:Message, i:int = 0) : void {
+			var _local8:int = 0;
+			var _local5:Weapon = null;
+			var _local3:int = m.getInt(i);
+			var _local7:int = m.getInt(i + 1);
+			var _local9:Boolean = m.getBoolean(i + 2);
+			var _local4:Ship = getShipFromId(_local3);
+			var _local6:Unit = null;
+			if(m.length > 3) {
+				_local8 = m.getInt(i + 3);
+				_local6 = g.unitManager.getTarget(_local8);
 			}
-			if (_loc4_ != null)
-			{
-				_loc5_ = _loc4_.weapons[_loc7_];
-				_loc5_.fire = _loc9_;
-				_loc5_.target = _loc6_;
+			if(_local4 != null) {
+				_local5 = _local4.weapons[_local7];
+				_local5.fire = _local9;
+				_local5.target = _local6;
 			}
 		}
 		
-		public function damaged(param1:Message, param2:int):void
-		{
-			var _loc5_:int = 0;
-			var _loc4_:int = param1.getInt(param2 + 1);
-			var _loc3_:EnemyShip = enemiesById[_loc4_];
-			if (_loc3_ != null)
-			{
-				_loc5_ = param1.getInt(param2 + 2);
-				_loc3_.takeDamage(_loc5_);
-				_loc3_.shieldHp = param1.getInt(param2 + 3);
-				if (_loc3_.shieldHp == 0)
-				{
-					if (_loc3_.shieldRegenCounter > -1000)
-					{
-						_loc3_.shieldRegenCounter = -1000;
+		public function damaged(m:Message, i:int) : void {
+			var _local5:int = 0;
+			var _local4:int = m.getInt(i + 1);
+			var _local3:EnemyShip = enemiesById[_local4];
+			if(_local3 != null) {
+				_local5 = m.getInt(i + 2);
+				_local3.takeDamage(_local5);
+				_local3.shieldHp = m.getInt(i + 3);
+				if(_local3.shieldHp == 0) {
+					if(_local3.shieldRegenCounter > -1000) {
+						_local3.shieldRegenCounter = -1000;
 					}
 				}
-				_loc3_.hp = param1.getInt(param2 + 4);
-				if (param1.getBoolean(param2 + 5))
-				{
-					_loc3_.doDOTEffect(param1.getInt(param2 + 6), param1.getString(param2 + 7), param1.getInt(param2 + 8));
+				_local3.hp = m.getInt(i + 4);
+				if(m.getBoolean(i + 5)) {
+					_local3.doDOTEffect(m.getInt(i + 6),m.getString(i + 7),m.getInt(i + 8));
 				}
 			}
 		}
 		
-		public function killed(param1:Message, param2:int):void
-		{
-			var _loc5_:int = param1.getInt(param2);
-			var _loc4_:Boolean = param1.getBoolean(param2 + 1);
-			var _loc3_:EnemyShip = enemiesById[_loc5_];
-			if (_loc3_ != null)
-			{
-				_loc3_.destroy(_loc4_);
+		public function killed(m:Message, i:int) : void {
+			var _local5:int = m.getInt(i);
+			var _local4:Boolean = m.getBoolean(i + 1);
+			var _local3:EnemyShip = enemiesById[_local5];
+			if(_local3 != null) {
+				_local3.destroy(_local4);
 			}
 		}
 		
-		private function syncEnemyTarget(param1:Message, param2:int):void
-		{
-			var _loc7_:* = 0;
-			var _loc3_:EnemyShip = null;
-			var _loc5_:String = null;
-			var _loc4_:Unit = null;
-			var _loc6_:int = 0;
-			_loc7_ = param2;
-			while (_loc7_ < param1.length - 1)
-			{
-				_loc3_ = g.shipManager.enemiesById[param1.getInt(_loc7_)];
-				_loc5_ = param1.getString(_loc7_ + 1);
-				_loc4_ = g.unitManager.getTarget(param1.getInt(_loc7_ + 2));
-				if (_loc3_ != null)
-				{
-					if (!_loc3_.stateMachine.inState(_loc5_))
-					{
-						switch (_loc5_)
-						{
-						case "AIObserve": 
-							_loc3_.stateMachine.changeState(new AIObserve(g, _loc3_, _loc4_, _loc3_.course, 0));
-							break;
-						case "AIChase": 
-							_loc3_.stateMachine.changeState(new AIChase(g, _loc3_, _loc4_, _loc3_.course, 0));
-							break;
-						case "AIResurect": 
-							_loc3_.stateMachine.changeState(new AIResurect(g, _loc3_));
-							break;
-						case "AIFollow": 
-							_loc3_.stateMachine.changeState(new AIFollow(g, _loc3_, _loc4_, _loc3_.course, 0));
-							break;
-						case "AIMelee": 
-							_loc3_.stateMachine.changeState(new AIMelee(g, _loc3_, _loc4_, _loc3_.course, 0));
-							break;
-						case "AIOrbit": 
-							_loc3_.stateMachine.changeState(new AIOrbit(g, _loc3_));
-							break;
-						case "AIIdle": 
-							_loc3_.stateMachine.changeState(new AIIdle(g, _loc3_, _loc3_.course));
-							break;
-						case "AIKamikaze": 
-							_loc3_.stateMachine.changeState(new AIKamikaze(g, _loc3_, _loc4_, _loc3_.course, 0));
-							break;
-						case "AITeleport": 
-							_loc3_.stateMachine.changeState(new AITeleport(g, _loc3_, _loc4_));
-							break;
-						case "AITeleportExit": 
-							_loc3_.stateMachine.changeState(new AITeleportExit(g, _loc3_));
-							break;
-						case "AIExit": 
-							_loc3_.stateMachine.changeState(new AIExit(g, _loc3_));
+		private function syncEnemyTarget(m:Message, startIndex:int) : void {
+			var _local7:* = 0;
+			var _local3:EnemyShip = null;
+			var _local5:String = null;
+			var _local4:Unit = null;
+			var _local6:int = 0;
+			_local7 = startIndex;
+			while(_local7 < m.length - 1) {
+				_local3 = g.shipManager.enemiesById[m.getInt(_local7)];
+				_local5 = m.getString(_local7 + 1);
+				_local4 = g.unitManager.getTarget(m.getInt(_local7 + 2));
+				if(_local3 != null) {
+					if(!_local3.stateMachine.inState(_local5)) {
+						switch(_local5) {
+							case "AIObserve":
+								_local3.stateMachine.changeState(new AIObserve(g,_local3,_local4,_local3.course,0));
+								break;
+							case "AIChase":
+								_local3.stateMachine.changeState(new AIChase(g,_local3,_local4,_local3.course,0));
+								break;
+							case "AIResurect":
+								_local3.stateMachine.changeState(new AIResurect(g,_local3));
+								break;
+							case "AIFollow":
+								_local3.stateMachine.changeState(new AIFollow(g,_local3,_local4,_local3.course,0));
+								break;
+							case "AIMelee":
+								_local3.stateMachine.changeState(new AIMelee(g,_local3,_local4,_local3.course,0));
+								break;
+							case "AIOrbit":
+								_local3.stateMachine.changeState(new AIOrbit(g,_local3));
+								break;
+							case "AIIdle":
+								_local3.stateMachine.changeState(new AIIdle(g,_local3,_local3.course));
+								break;
+							case "AIKamikaze":
+								_local3.stateMachine.changeState(new AIKamikaze(g,_local3,_local4,_local3.course,0));
+								break;
+							case "AITeleport":
+								_local3.stateMachine.changeState(new AITeleport(g,_local3,_local4));
+								break;
+							case "AITeleportExit":
+								_local3.stateMachine.changeState(new AITeleportExit(g,_local3));
+								break;
+							case "AIExit":
+								_local3.stateMachine.changeState(new AIExit(g,_local3));
 						}
 					}
-					_loc6_ = 0;
-					while (_loc6_ < _loc3_.weapons.length)
-					{
-						_loc7_++;
-						_loc3_.weapons[_loc6_].target = _loc4_;
-						_loc3_.weapons[_loc6_].fire = param1.getBoolean(_loc7_ + 3);
-						_loc6_++;
+					_local6 = 0;
+					while(_local6 < _local3.weapons.length) {
+						_local7++;
+						_local3.weapons[_local6].target = _local4;
+						_local3.weapons[_local6].fire = m.getBoolean(_local7 + 3);
+						_local6++;
 					}
 				}
-				_loc7_ += 4;
+				_local7 += 4;
 			}
 		}
 		
-		public function initSyncEnemies(param1:Message):void
-		{
-			var _loc2_:* = 1;
-			var _loc3_:int = _loc2_ + param1.getInt(0);
-			g.turretManager.syncTurretTarget(param1, _loc2_, _loc3_);
-			_loc2_ = _loc3_ + 1;
-			_loc3_ = _loc2_ + param1.getInt(_loc3_);
-			g.projectileManager.addInitProjectiles(param1, _loc2_, _loc3_);
-			_loc2_ = _loc3_;
-			syncEnemyTarget(param1, _loc2_);
+		public function initSyncEnemies(m:Message) : void {
+			var _local2:* = 1;
+			var _local3:int = _local2 + m.getInt(0);
+			g.turretManager.syncTurretTarget(m,_local2,_local3);
+			_local2 = _local3 + 1;
+			_local3 = _local2 + m.getInt(_local3);
+			g.projectileManager.addInitProjectiles(m,_local2,_local3);
+			_local2 = _local3;
+			syncEnemyTarget(m,_local2);
 		}
 		
-		public function initEnemies(param1:Message):void
-		{
+		public function initEnemies(m:Message) : void {
 			Console.write("running spawnEnemy");
-			spawnEnemy(param1, 0, 0);
+			spawnEnemy(m,0,0);
 		}
 		
-		private function onEnemyUpdate(param1:Message):void
-		{
-			var _loc4_:int = 0;
-			var _loc5_:Boolean = false;
-			var _loc6_:int = 0;
-			var _loc2_:EnemyShip = g.shipManager.enemiesById[param1.getInt(_loc6_++)];
-			if (_loc2_ == null)
-			{
+		private function onEnemyUpdate(m:Message) : void {
+			var _local4:int = 0;
+			var _local5:Boolean = false;
+			var _local6:int = 0;
+			var _local2:EnemyShip = g.shipManager.enemiesById[m.getInt(_local6++)];
+			if(_local2 == null) {
 				return;
 			}
-			_loc2_.hp = param1.getInt(_loc6_++);
-			_loc2_.shieldHp = param1.getInt(_loc6_++);
-			if (_loc2_.hp < _loc2_.hpMax || _loc2_.shieldHp < _loc2_.shieldHpMax)
-			{
-				_loc2_.isInjured = true;
+			_local2.hp = m.getInt(_local6++);
+			_local2.shieldHp = m.getInt(_local6++);
+			if(_local2.hp < _local2.hpMax || _local2.shieldHp < _local2.shieldHpMax) {
+				_local2.isInjured = true;
 			}
-			var _loc3_:Ship = g.shipManager.getShipFromId(param1.getInt(_loc6_++));
-			_loc4_ = 0;
-			while (_loc4_ < _loc2_.weapons.length)
-			{
-				_loc5_ = param1.getBoolean(_loc6_++);
-				_loc2_.weapons[_loc4_].fire = _loc5_;
-				_loc2_.weapons[_loc4_].target = _loc5_ ? _loc3_ : null;
-				_loc4_++;
+			var _local3:Ship = g.shipManager.getShipFromId(m.getInt(_local6++));
+			_local4 = 0;
+			while(_local4 < _local2.weapons.length) {
+				_local5 = m.getBoolean(_local6++);
+				_local2.weapons[_local4].fire = _local5;
+				_local2.weapons[_local4].target = _local5 ? _local3 : null;
+				_local4++;
 			}
 		}
 		
-		public function dispose():void
-		{
-			var _loc1_:* = null;
-			for each (_loc1_ in enemies)
-			{
-				_loc1_.removeFromCanvas();
-				_loc1_.reset();
+		public function dispose() : void {
+			var _local1:* = null;
+			for each(_local1 in enemies) {
+				_local1.removeFromCanvas();
+				_local1.reset();
 			}
-			g.removeMessageHandler("spawnEnemy", onSpawnEnemy);
+			g.removeMessageHandler("spawnEnemy",onSpawnEnemy);
 			enemies = null;
 			inactiveEnemies = null;
-			for each (_loc1_ in players)
-			{
-				_loc1_.removeFromCanvas();
-				_loc1_.reset();
+			for each(_local1 in players) {
+				_local1.removeFromCanvas();
+				_local1.reset();
 			}
 			players = null;
 			inactivePlayers = null;
 		}
 	}
 }
+

@@ -1,5 +1,4 @@
-package core.projectile
-{
+package core.projectile {
 	import core.player.Player;
 	import core.scene.Game;
 	import core.ship.EnemyShip;
@@ -18,489 +17,400 @@ package core.projectile
 	import playerio.Message;
 	import starling.display.MeshBatch;
 	
-	public class ProjectileManager
-	{
+	public class ProjectileManager {
 		public var inactiveProjectiles:Vector.<Projectile>;
-		
 		public var projectiles:Vector.<Projectile>;
-		
 		public var projectilesById:Dictionary;
-		
 		private var TARGET_TYPE_SHIP:String = "ship";
-		
 		private var TARGET_TYPE_SPAWNER:String = "spawner";
-		
 		private var g:Game;
-		
 		private var meshBatch:MeshBatch;
 		
-		public function ProjectileManager(param1:Game)
-		{
-			var _loc3_:int = 0;
-			var _loc2_:Projectile = null;
+		public function ProjectileManager(g:Game) {
+			var _local3:int = 0;
+			var _local2:Projectile = null;
 			inactiveProjectiles = new Vector.<Projectile>();
 			projectiles = new Vector.<Projectile>();
 			projectilesById = new Dictionary();
 			meshBatch = new MeshBatch();
 			super();
-			this.g = param1;
-			_loc3_ = 0;
-			while (_loc3_ < 100)
-			{
-				_loc2_ = new Projectile(param1);
-				inactiveProjectiles.push(_loc2_);
-				_loc3_++;
+			this.g = g;
+			_local3 = 0;
+			while(_local3 < 100) {
+				_local2 = new Projectile(g);
+				inactiveProjectiles.push(_local2);
+				_local3++;
 			}
 		}
 		
-		public function addMessageHandlers():void
-		{
-			g.addMessageHandler("projectileAddEnemy", addEnemyProjectile);
-			g.addMessageHandler("projectileAddPlayer", addPlayerProjectile);
-			g.addMessageHandler("projectileCourse", updateCourse);
-			g.addMessageHandler("killProjectile", killProjectile);
-			g.addMessageHandler("killStuckProjectiles", killStuckProjectiles);
+		public function addMessageHandlers() : void {
+			g.addMessageHandler("projectileAddEnemy",addEnemyProjectile);
+			g.addMessageHandler("projectileAddPlayer",addPlayerProjectile);
+			g.addMessageHandler("projectileCourse",updateCourse);
+			g.addMessageHandler("killProjectile",killProjectile);
+			g.addMessageHandler("killStuckProjectiles",killStuckProjectiles);
 			g.canvasProjectiles.addChild(meshBatch);
 		}
 		
-		public function update():void
-		{
-			var _loc3_:int = 0;
-			var _loc1_:Projectile = null;
+		public function update() : void {
+			var _local3:int = 0;
+			var _local1:Projectile = null;
 			meshBatch.clear();
-			var _loc2_:int = int(projectiles.length);
-			_loc3_ = _loc2_ - 1;
-			while (_loc3_ > -1)
-			{
-				_loc1_ = projectiles[_loc3_];
-				if (_loc1_.alive)
-				{
-					_loc1_.update();
-					if (_loc1_.hasImage && _loc1_.isVisible)
-					{
-						meshBatch.addMesh(_loc1_.movieClip);
+			var _local2:int = int(projectiles.length);
+			_local3 = _local2 - 1;
+			while(_local3 > -1) {
+				_local1 = projectiles[_local3];
+				if(_local1.alive) {
+					_local1.update();
+					if(_local1.hasImage && _local1.isVisible) {
+						meshBatch.addMesh(_local1.movieClip);
 					}
+				} else {
+					remove(_local1,_local3);
 				}
-				else
-				{
-					remove(_loc1_, _loc3_);
-				}
-				_loc3_--;
+				_local3--;
 			}
 		}
 		
-		public function getProjectile():Projectile
-		{
-			var _loc1_:Projectile = null;
-			if (inactiveProjectiles.length > 0)
-			{
-				_loc1_ = inactiveProjectiles.pop();
+		public function getProjectile() : Projectile {
+			var _local1:Projectile = null;
+			if(inactiveProjectiles.length > 0) {
+				_local1 = inactiveProjectiles.pop();
+			} else {
+				_local1 = new Projectile(g);
 			}
-			else
-			{
-				_loc1_ = new Projectile(g);
-			}
-			_loc1_.reset();
-			return _loc1_;
+			_local1.reset();
+			return _local1;
 		}
 		
-		public function handleBouncing(param1:Message, param2:int):void
-		{
-			var _loc3_:int = param1.getInt(param2);
-			var _loc5_:int = param1.getInt(param2 + 1);
-			var _loc4_:Projectile = projectilesById[_loc3_];
-			if (_loc4_ == null)
-			{
+		public function handleBouncing(m:Message, i:int) : void {
+			var _local3:int = m.getInt(i);
+			var _local5:int = m.getInt(i + 1);
+			var _local4:Projectile = projectilesById[_local3];
+			if(_local4 == null) {
 				return;
 			}
-			_loc4_.target = g.unitManager.getTarget(_loc5_);
+			_local4.target = g.unitManager.getTarget(_local5);
 		}
 		
-		public function activateProjectile(param1:Projectile):void
-		{
-			param1.x = param1.course.pos.x;
-			param1.y = param1.course.pos.y;
-			if (param1.randomAngle)
-			{
-				param1.rotation = Math.random() * 3.141592653589793 * 2;
+		public function activateProjectile(p:Projectile) : void {
+			p.x = p.course.pos.x;
+			p.y = p.course.pos.y;
+			if(p.randomAngle) {
+				p.rotation = Math.random() * 3.141592653589793 * 2;
+			} else {
+				p.rotation = p.course.rotation;
 			}
-			else
-			{
-				param1.rotation = param1.course.rotation;
+			projectiles.push(p);
+			p.addToCanvas();
+			p.tryAddRibbonTrail();
+			if(projectilesById[p.id] != null) {
+				Console.write("error: p.id: " + p.id);
 			}
-			projectiles.push(param1);
-			param1.addToCanvas();
-			param1.tryAddRibbonTrail();
-			if (projectilesById[param1.id] != null)
-			{
-				Console.write("error: p.id: " + param1.id);
-			}
-			if (param1.id != 0)
-			{
-				projectilesById[param1.id] = param1;
+			if(p.id != 0) {
+				projectilesById[p.id] = p;
 			}
 		}
 		
-		public function addEnemyProjectile(param1:Message):void
-		{
-			var _loc7_:int = 0;
-			var _loc8_:int = 0;
-			var _loc2_:int = 0;
-			var _loc5_:int = 0;
-			var _loc9_:Heading = null;
-			var _loc13_:int = 0;
-			var _loc4_:int = 0;
-			var _loc14_:int = 0;
-			var _loc12_:Number = NaN;
-			var _loc3_:EnemyShip = null;
-			var _loc10_:Weapon = null;
-			var _loc6_:Turret = null;
-			var _loc11_:Dictionary = g.shipManager.enemiesById;
-			_loc7_ = 0;
-			while (_loc7_ < param1.length - 6)
-			{
-				_loc8_ = param1.getInt(_loc7_);
-				_loc2_ = param1.getInt(_loc7_ + 1);
-				_loc5_ = param1.getInt(_loc7_ + 2);
-				_loc9_ = new Heading();
-				_loc9_.parseMessage(param1, _loc7_ + 3);
-				_loc13_ = param1.getInt(_loc7_ + 3 + 10);
-				_loc4_ = param1.getInt(_loc7_ + 4 + 10);
-				_loc14_ = param1.getInt(_loc7_ + 5 + 10);
-				_loc12_ = param1.getNumber(_loc7_ + 6 + 10);
-				_loc3_ = _loc11_[_loc2_];
-				if (_loc3_ != null && _loc3_.weapons.length > _loc5_ && _loc3_.weapons[_loc5_] != null)
-				{
-					_loc10_ = _loc3_.weapons[_loc5_];
-					createSetProjectile(ProjectileFactory.create(_loc10_.projectileFunction, g, _loc3_, _loc10_, _loc9_), _loc8_, _loc3_, _loc9_, _loc13_, _loc4_, _loc14_, _loc12_);
-				}
-				else
-				{
-					_loc6_ = g.turretManager.getTurretById(_loc2_);
-					if (_loc6_ != null && _loc6_.weapon != null)
-					{
-						_loc10_ = _loc6_.weapon;
-						createSetProjectile(ProjectileFactory.create(_loc10_.projectileFunction, g, _loc6_, _loc10_), _loc8_, _loc6_, _loc9_, _loc13_, _loc4_, _loc14_, _loc12_);
+		public function addEnemyProjectile(m:Message) : void {
+			var _local7:int = 0;
+			var _local8:int = 0;
+			var _local2:int = 0;
+			var _local5:int = 0;
+			var _local9:Heading = null;
+			var _local13:int = 0;
+			var _local4:int = 0;
+			var _local14:int = 0;
+			var _local12:Number = NaN;
+			var _local3:EnemyShip = null;
+			var _local10:Weapon = null;
+			var _local6:Turret = null;
+			var _local11:Dictionary = g.shipManager.enemiesById;
+			_local7 = 0;
+			while(_local7 < m.length - 6) {
+				_local8 = m.getInt(_local7);
+				_local2 = m.getInt(_local7 + 1);
+				_local5 = m.getInt(_local7 + 2);
+				_local9 = new Heading();
+				_local9.parseMessage(m,_local7 + 3);
+				_local13 = m.getInt(_local7 + 3 + 10);
+				_local4 = m.getInt(_local7 + 4 + 10);
+				_local14 = m.getInt(_local7 + 5 + 10);
+				_local12 = m.getNumber(_local7 + 6 + 10);
+				_local3 = _local11[_local2];
+				if(_local3 != null && _local3.weapons.length > _local5 && _local3.weapons[_local5] != null) {
+					_local10 = _local3.weapons[_local5];
+					createSetProjectile(ProjectileFactory.create(_local10.projectileFunction,g,_local3,_local10,_local9),_local8,_local3,_local9,_local13,_local4,_local14,_local12);
+				} else {
+					_local6 = g.turretManager.getTurretById(_local2);
+					if(_local6 != null && _local6.weapon != null) {
+						_local10 = _local6.weapon;
+						createSetProjectile(ProjectileFactory.create(_local10.projectileFunction,g,_local6,_local10),_local8,_local6,_local9,_local13,_local4,_local14,_local12);
 					}
 				}
-				_loc7_ += 7 + 10;
+				_local7 += 7 + 10;
 			}
 		}
 		
-		public function addInitProjectiles(param1:Message, param2:int, param3:int):void
-		{
-			var _loc11_:* = 0;
-			var _loc7_:int = 0;
-			var _loc6_:int = 0;
-			var _loc10_:int = 0;
-			var _loc8_:Ship = null;
-			var _loc5_:Heading = null;
-			var _loc9_:int = 0;
-			var _loc4_:Weapon = null;
-			_loc11_ = param2;
-			while (_loc11_ < param3 - 4)
-			{
-				_loc7_ = param1.getInt(_loc11_);
-				_loc6_ = param1.getInt(_loc11_ + 1);
-				_loc10_ = param1.getInt(_loc11_ + 2);
-				_loc8_ = g.unitManager.getTarget(_loc6_) as Ship;
-				_loc5_ = new Heading();
-				_loc5_.pos.x = param1.getNumber(_loc11_ + 3);
-				_loc5_.pos.y = param1.getNumber(_loc11_ + 4);
-				_loc9_ = param1.getNumber(_loc11_ + 5);
-				if (_loc8_ != null && _loc10_ > 0 && _loc10_ < _loc8_.weapons.length)
-				{
-					_loc4_ = _loc8_.weapons[_loc10_];
-					createSetProjectile(ProjectileFactory.create(_loc4_.projectileFunction, g, _loc8_, _loc4_), _loc7_, _loc8_, _loc5_, _loc9_);
+		public function addInitProjectiles(m:Message, startIndex:int, endIndex:int) : void {
+			var _local11:* = 0;
+			var _local7:int = 0;
+			var _local6:int = 0;
+			var _local10:int = 0;
+			var _local8:Ship = null;
+			var _local5:Heading = null;
+			var _local9:int = 0;
+			var _local4:Weapon = null;
+			_local11 = startIndex;
+			while(_local11 < endIndex - 4) {
+				_local7 = m.getInt(_local11);
+				_local6 = m.getInt(_local11 + 1);
+				_local10 = m.getInt(_local11 + 2);
+				_local8 = g.unitManager.getTarget(_local6) as Ship;
+				_local5 = new Heading();
+				_local5.pos.x = m.getNumber(_local11 + 3);
+				_local5.pos.y = m.getNumber(_local11 + 4);
+				_local9 = m.getNumber(_local11 + 5);
+				if(_local8 != null && _local10 > 0 && _local10 < _local8.weapons.length) {
+					_local4 = _local8.weapons[_local10];
+					createSetProjectile(ProjectileFactory.create(_local4.projectileFunction,g,_local8,_local4),_local7,_local8,_local5,_local9);
 				}
-				_loc11_ += 6;
+				_local11 += 6;
 			}
 		}
 		
-		public function addPlayerProjectile(param1:Message):void
-		{
-			var _loc6_:int = 0;
-			var _loc8_:int = 0;
-			var _loc10_:String = null;
-			var _loc4_:int = 0;
-			var _loc5_:int = 0;
-			var _loc14_:Heading = null;
-			var _loc13_:int = 0;
-			var _loc3_:int = 0;
-			var _loc15_:int = 0;
-			var _loc11_:Number = NaN;
-			var _loc2_:Player = null;
-			var _loc9_:PlayerShip = null;
-			var _loc7_:ProjectileGun = null;
-			var _loc12_:Unit = null;
-			_loc6_ = 0;
-			while (_loc6_ < param1.length - 8 - 10)
-			{
-				if (param1.length < 6 + 10)
-				{
+		public function addPlayerProjectile(m:Message) : void {
+			var _local6:int = 0;
+			var _local8:int = 0;
+			var _local10:String = null;
+			var _local4:int = 0;
+			var _local5:int = 0;
+			var _local14:Heading = null;
+			var _local13:int = 0;
+			var _local3:int = 0;
+			var _local15:int = 0;
+			var _local11:Number = NaN;
+			var _local2:Player = null;
+			var _local9:PlayerShip = null;
+			var _local7:ProjectileGun = null;
+			var _local12:Unit = null;
+			_local6 = 0;
+			while(_local6 < m.length - 8 - 10) {
+				if(m.length < 6 + 10) {
 					return;
 				}
-				_loc8_ = param1.getInt(_loc6_);
-				_loc10_ = param1.getString(_loc6_ + 1);
-				_loc4_ = param1.getInt(_loc6_ + 2);
-				_loc5_ = param1.getInt(_loc6_ + 3);
-				_loc14_ = new Heading();
-				_loc14_.parseMessage(param1, _loc6_ + 5);
-				_loc13_ = param1.getInt(_loc6_ + 5 + 10);
-				_loc3_ = param1.getInt(_loc6_ + 6 + 10);
-				_loc15_ = param1.getInt(_loc6_ + 7 + 10);
-				_loc11_ = param1.getNumber(_loc6_ + 8 + 10);
-				_loc2_ = g.playerManager.playersById[_loc10_];
-				if (_loc2_ == null)
-				{
+				_local8 = m.getInt(_local6);
+				_local10 = m.getString(_local6 + 1);
+				_local4 = m.getInt(_local6 + 2);
+				_local5 = m.getInt(_local6 + 3);
+				_local14 = new Heading();
+				_local14.parseMessage(m,_local6 + 5);
+				_local13 = m.getInt(_local6 + 5 + 10);
+				_local3 = m.getInt(_local6 + 6 + 10);
+				_local15 = m.getInt(_local6 + 7 + 10);
+				_local11 = m.getNumber(_local6 + 8 + 10);
+				_local2 = g.playerManager.playersById[_local10];
+				if(_local2 == null) {
 					return;
 				}
-				_loc9_ = _loc2_.ship;
-				if (_loc9_ == null || _loc9_.weapons == null)
-				{
+				_local9 = _local2.ship;
+				if(_local9 == null || _local9.weapons == null) {
 					return;
 				}
-				if (!(_loc4_ > -1 && _loc4_ < _loc2_.ship.weapons.length))
-				{
+				if(!(_local4 > -1 && _local4 < _local2.ship.weapons.length)) {
 					return;
 				}
-				_loc2_.selectedWeaponIndex = _loc4_;
-				if (_loc9_.weapon != null && _loc9_.weapon is ProjectileGun)
-				{
-					_loc7_ = _loc9_.weapon as ProjectileGun;
-					_loc12_ = null;
-					if (_loc5_ != -1)
-					{
-						_loc12_ = g.unitManager.getTarget(_loc5_);
+				_local2.selectedWeaponIndex = _local4;
+				if(_local9.weapon != null && _local9.weapon is ProjectileGun) {
+					_local7 = _local9.weapon as ProjectileGun;
+					_local12 = null;
+					if(_local5 != -1) {
+						_local12 = g.unitManager.getTarget(_local5);
 					}
-					_loc7_.shootSyncedProjectile(_loc8_, _loc12_, _loc14_, _loc13_, param1.getNumber(_loc6_ + 4), _loc3_, _loc15_, _loc11_);
+					_local7.shootSyncedProjectile(_local8,_local12,_local14,_local13,m.getNumber(_local6 + 4),_local3,_local15,_local11);
 				}
-				_loc6_ += 9 + 10;
+				_local6 += 9 + 10;
 			}
 		}
 		
-		private function createSetProjectile(param1:Projectile, param2:int, param3:Unit, param4:Heading, param5:int, param6:int = 0, param7:int = 0, param8:Number = 0):void
-		{
-			var _loc10_:Point = null;
-			var _loc13_:Number = NaN;
-			var _loc11_:Number = NaN;
-			var _loc9_:Number = NaN;
-			var _loc15_:Number = NaN;
-			var _loc12_:Number = NaN;
-			if (param1 == null)
-			{
+		private function createSetProjectile(p:Projectile, id:int, enemy:Unit, course:Heading, multiPid:int, xRandOffset:int = 0, yRandOffset:int = 0, maxSpeed:Number = 0) : void {
+			var _local10:Point = null;
+			var _local13:Number = NaN;
+			var _local11:Number = NaN;
+			var _local9:Number = NaN;
+			var _local15:Number = NaN;
+			var _local12:Number = NaN;
+			if(p == null) {
 				return;
 			}
-			var _loc14_:Weapon = param1.weapon;
-			param1.id = param2;
-			if (param8 != 0)
-			{
-				param1.speedMax = param8;
+			var _local14:Weapon = p.weapon;
+			p.id = id;
+			if(maxSpeed != 0) {
+				p.speedMax = maxSpeed;
 			}
-			if (param1.speedMax != 0)
-			{
-				_loc10_ = new Point();
-				if (param5 > -1)
-				{
-					_loc13_ = _loc14_.multiNrOfP;
-					_loc11_ = param3.weaponPos.y + _loc14_.multiOffset * (param5 - 0.5 * (_loc13_ - 1)) / _loc13_;
+			if(p.speedMax != 0) {
+				_local10 = new Point();
+				if(multiPid > -1) {
+					_local13 = _local14.multiNrOfP;
+					_local11 = enemy.weaponPos.y + _local14.multiOffset * (multiPid - 0.5 * (_local13 - 1)) / _local13;
+				} else {
+					_local11 = enemy.weaponPos.y;
 				}
-				else
-				{
-					_loc11_ = param3.weaponPos.y;
+				_local9 = enemy.weaponPos.x + _local14.positionOffsetX;
+				_local15 = new Point(_local9,_local11).length;
+				_local12 = Math.atan2(_local11,_local9);
+				_local10.x = enemy.pos.x + Math.cos(enemy.rotation + _local12) * _local15 + xRandOffset;
+				_local10.y = enemy.pos.y + Math.sin(enemy.rotation + _local12) * _local15 + yRandOffset;
+				p.unit = enemy;
+				p.course = course;
+				p.rotation = course.rotation;
+				p.fastforward();
+				p.x = course.pos.x;
+				p.y = course.pos.y;
+				p.collisionRadius = 0.5 * p.collisionRadius;
+				p.error = new Point(-p.course.pos.x + _local10.x,-p.course.pos.y + _local10.y);
+				p.convergenceCounter = 0;
+				p.course = course;
+				p.convergenceTime = 151.51515151515153;
+				if(p.error.length > 1000) {
+					p.error.x = 0;
+					p.error.y = 0;
 				}
-				_loc9_ = param3.weaponPos.x + _loc14_.positionOffsetX;
-				_loc15_ = new Point(_loc9_, _loc11_).length;
-				_loc12_ = Math.atan2(_loc11_, _loc9_);
-				_loc10_.x = param3.pos.x + Math.cos(param3.rotation + _loc12_) * _loc15_ + param6;
-				_loc10_.y = param3.pos.y + Math.sin(param3.rotation + _loc12_) * _loc15_ + param7;
-				param1.unit = param3;
-				param1.course = param4;
-				param1.rotation = param4.rotation;
-				param1.fastforward();
-				param1.x = param4.pos.x;
-				param1.y = param4.pos.y;
-				param1.collisionRadius = 0.5 * param1.collisionRadius;
-				param1.error = new Point(-param1.course.pos.x + _loc10_.x, -param1.course.pos.y + _loc10_.y);
-				param1.convergenceCounter = 0;
-				param1.course = param4;
-				param1.convergenceTime = 151.51515151515153;
-				if (param1.error.length > 1000)
-				{
-					param1.error.x = 0;
-					param1.error.y = 0;
-				}
-				if (param8 != 0)
-				{
-					if (param1.stateMachine.inState("Instant"))
-					{
-						param1.range = param8;
-						param1.speedMax = 10000;
-					}
-					else
-					{
-						param1.speedMax = param8;
+				if(maxSpeed != 0) {
+					if(p.stateMachine.inState("Instant")) {
+						p.range = maxSpeed;
+						p.speedMax = 10000;
+					} else {
+						p.speedMax = maxSpeed;
 					}
 				}
+			} else {
+				p.course = course;
+				p.x = course.pos.x;
+				p.y = course.pos.y;
 			}
-			else
-			{
-				param1.course = param4;
-				param1.x = param4.pos.x;
-				param1.y = param4.pos.y;
-			}
-			activateProjectile(param1);
-			_loc14_.playFireSound();
+			activateProjectile(p);
+			_local14.playFireSound();
 		}
 		
-		private function updateCourse(param1:Message):void
-		{
-			var _loc9_:int = 0;
-			var _loc2_:int = 0;
-			var _loc7_:int = 0;
-			var _loc5_:Projectile = null;
-			var _loc6_:int = 0;
-			var _loc3_:Number = NaN;
-			var _loc8_:Heading = null;
-			var _loc4_:Dictionary = g.shipManager.enemiesById;
-			_loc9_ = 0;
-			while (_loc9_ < param1.length)
-			{
-				_loc2_ = param1.getInt(_loc9_);
-				_loc7_ = param1.getInt(_loc9_ + 1);
-				_loc5_ = projectilesById[_loc2_];
-				if (_loc5_ == null)
-				{
+		private function updateCourse(m:Message) : void {
+			var _local9:int = 0;
+			var _local2:int = 0;
+			var _local7:int = 0;
+			var _local5:Projectile = null;
+			var _local6:int = 0;
+			var _local3:Number = NaN;
+			var _local8:Heading = null;
+			var _local4:Dictionary = g.shipManager.enemiesById;
+			_local9 = 0;
+			while(_local9 < m.length) {
+				_local2 = m.getInt(_local9);
+				_local7 = m.getInt(_local9 + 1);
+				_local5 = projectilesById[_local2];
+				if(_local5 == null) {
 					return;
 				}
-				_loc6_ = param1.getInt(_loc9_ + 2);
-				if (_loc7_ == 0)
-				{
-					_loc5_.direction = _loc6_;
-					if (_loc5_.direction > 0)
-					{
-						_loc5_.boomerangReturning = true;
-						_loc5_.rotationSpeedMax = param1.getNumber(_loc9_ + 3);
+				_local6 = m.getInt(_local9 + 2);
+				if(_local7 == 0) {
+					_local5.direction = _local6;
+					if(_local5.direction > 0) {
+						_local5.boomerangReturning = true;
+						_local5.rotationSpeedMax = m.getNumber(_local9 + 3);
 					}
-					if (_loc6_ == 3)
-					{
-						_loc5_.course.rotation = Util.clampRadians(_loc5_.course.rotation + 3.141592653589793);
+					if(_local6 == 3) {
+						_local5.course.rotation = Util.clampRadians(_local5.course.rotation + 3.141592653589793);
 					}
-				}
-				else if (_loc7_ == 1)
-				{
-					_loc5_.target = g.unitManager.getTarget(_loc6_);
-					_loc5_.targetProjectile = null;
-					_loc3_ = param1.getNumber(_loc9_ + 3);
-					if (_loc3_ > 0)
-					{
-						_loc5_.aiStuck = true;
-						_loc5_.aiStuckDuration = _loc3_;
+				} else if(_local7 == 1) {
+					_local5.target = g.unitManager.getTarget(_local6);
+					_local5.targetProjectile = null;
+					_local3 = m.getNumber(_local9 + 3);
+					if(_local3 > 0) {
+						_local5.aiStuck = true;
+						_local5.aiStuckDuration = _local3;
 					}
-				}
-				else if (_loc7_ == 2)
-				{
-					_loc5_.aiStuck = false;
-					_loc5_.target = null;
-					_loc5_.targetProjectile = projectilesById[_loc6_];
-				}
-				else if (_loc7_ == 3)
-				{
-					_loc5_.aiStuck = false;
-					_loc5_.target = null;
-					_loc5_.targetProjectile = null;
-					_loc8_ = new Heading();
-					_loc8_.parseMessage(param1, _loc9_ + 4);
-					_loc5_.error = new Point(_loc5_.course.pos.x - _loc8_.pos.x, _loc5_.course.pos.y - _loc8_.pos.y);
-					_loc5_.errorRot = Util.clampRadians(_loc5_.course.rotation - _loc8_.rotation);
-					if (_loc5_.errorRot > 3.141592653589793)
-					{
-						_loc5_.errorRot -= 2 * 3.141592653589793;
+				} else if(_local7 == 2) {
+					_local5.aiStuck = false;
+					_local5.target = null;
+					_local5.targetProjectile = projectilesById[_local6];
+				} else if(_local7 == 3) {
+					_local5.aiStuck = false;
+					_local5.target = null;
+					_local5.targetProjectile = null;
+					_local8 = new Heading();
+					_local8.parseMessage(m,_local9 + 4);
+					_local5.error = new Point(_local5.course.pos.x - _local8.pos.x,_local5.course.pos.y - _local8.pos.y);
+					_local5.errorRot = Util.clampRadians(_local5.course.rotation - _local8.rotation);
+					if(_local5.errorRot > 3.141592653589793) {
+						_local5.errorRot -= 2 * 3.141592653589793;
 					}
-					_loc5_.convergenceCounter = 0;
-					_loc5_.course = _loc8_;
-					_loc5_.convergenceTime = 500 / 33;
-				}
-				else
-				{
-					_loc8_ = new Heading();
-					_loc8_.parseMessage(param1, _loc9_ + 4);
-					while (_loc8_.time < _loc5_.course.time)
-					{
-						_loc5_.updateHeading(_loc8_);
+					_local5.convergenceCounter = 0;
+					_local5.course = _local8;
+					_local5.convergenceTime = 500 / 33;
+				} else {
+					_local8 = new Heading();
+					_local8.parseMessage(m,_local9 + 4);
+					while(_local8.time < _local5.course.time) {
+						_local5.updateHeading(_local8);
 					}
-					_loc5_.course = _loc8_;
+					_local5.course = _local8;
 				}
-				_loc9_ += 4 + 10;
+				_local9 += 4 + 10;
 			}
 		}
 		
-		private function killProjectile(param1:Message):void
-		{
-			var _loc4_:int = 0;
-			var _loc2_:int = 0;
-			var _loc3_:Projectile = null;
-			_loc4_ = 0;
-			while (_loc4_ < param1.length)
-			{
-				_loc2_ = param1.getInt(_loc4_);
-				_loc3_ = projectilesById[_loc2_];
-				if (_loc3_ != null)
-				{
-					_loc3_.destroy();
+		private function killProjectile(m:Message) : void {
+			var _local4:int = 0;
+			var _local2:int = 0;
+			var _local3:Projectile = null;
+			_local4 = 0;
+			while(_local4 < m.length) {
+				_local2 = m.getInt(_local4);
+				_local3 = projectilesById[_local2];
+				if(_local3 != null) {
+					_local3.destroy();
 				}
-				_loc4_++;
+				_local4++;
 			}
 		}
 		
-		private function killStuckProjectiles(param1:Message):void
-		{
-			var _loc2_:int = param1.getInt(0);
-			var _loc3_:Unit = g.unitManager.getTarget(_loc2_);
-			if (_loc3_ == null)
-			{
+		private function killStuckProjectiles(m:Message) : void {
+			var _local2:int = m.getInt(0);
+			var _local3:Unit = g.unitManager.getTarget(_local2);
+			if(_local3 == null) {
 				return;
 			}
-			for each (var _loc4_:* in projectiles)
-			{
-				if (_loc4_.stateMachine.inState(ProjectileStuck) && _loc4_.target == _loc3_)
-				{
-					_loc4_.destroy(true);
+			for each(var _local4 in projectiles) {
+				if(_local4.stateMachine.inState(ProjectileStuck) && _local4.target == _local3) {
+					_local4.destroy(true);
 				}
 			}
 		}
 		
-		public function remove(param1:Projectile, param2:int):void
-		{
-			projectiles.splice(param2, 1);
-			inactiveProjectiles.push(param1);
-			if (param1.id != 0)
-			{
-				delete projectilesById[param1.id];
+		public function remove(p:Projectile, index:int) : void {
+			projectiles.splice(index,1);
+			inactiveProjectiles.push(p);
+			if(p.id != 0) {
+				delete projectilesById[p.id];
 			}
-			param1.removeFromCanvas();
-			param1.reset();
+			p.removeFromCanvas();
+			p.reset();
 		}
 		
-		public function forceUpdate():void
-		{
-			var _loc1_:Projectile = null;
-			var _loc2_:int = 0;
-			_loc2_ = 0;
-			while (_loc2_ < projectiles.length)
-			{
-				_loc1_ = projectiles[_loc2_];
-				_loc1_.nextDistanceCalculation = -1;
-				_loc2_++;
+		public function forceUpdate() : void {
+			var _local1:Projectile = null;
+			var _local2:int = 0;
+			_local2 = 0;
+			while(_local2 < projectiles.length) {
+				_local1 = projectiles[_local2];
+				_local1.nextDistanceCalculation = -1;
+				_local2++;
 			}
 		}
 		
-		public function dispose():void
-		{
-			for each (var _loc1_:* in projectiles)
-			{
-				_loc1_.removeFromCanvas();
-				_loc1_.reset();
+		public function dispose() : void {
+			for each(var _local1 in projectiles) {
+				_local1.removeFromCanvas();
+				_local1.reset();
 			}
 			projectiles = null;
 			projectilesById = null;
@@ -508,3 +418,4 @@ package core.projectile
 		}
 	}
 }
+

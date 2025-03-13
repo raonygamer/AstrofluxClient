@@ -1,5 +1,4 @@
-package core.hud.components.playerList
-{
+package core.hud.components.playerList {
 	import core.clan.PlayerClanLogo;
 	import core.credits.CreditManager;
 	import core.group.Group;
@@ -25,34 +24,21 @@ package core.hud.components.playerList
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class PlayerListItem extends Sprite
-	{
+	public class PlayerListItem extends Sprite {
 		public var player:Player;
-		
 		private var inviteButton:Button;
-		
 		private var leaveButton:Button;
-		
 		private var joinButton:Button;
-		
 		private var declineButton:Button;
-		
 		private var addFriendButton:Button;
-		
 		private var acceptFriendButton:Button;
-		
 		private var teleportToFriendButton:Button;
-		
 		private var _width:Number = 0;
-		
 		private var _height:Number = 0;
-		
 		private var clanLogo:Image;
-		
 		private var g:Game;
 		
-		public function PlayerListItem(param1:Game, param2:Player, param3:Number, param4:Number)
-		{
+		public function PlayerListItem(g:Game, player:Player, width:Number, height:Number) {
 			var textureManager:ITextureManager;
 			var dataManager:IDataManager;
 			var bgr:Quad;
@@ -77,10 +63,6 @@ package core.hud.components.playerList
 			var ratingImg:Image;
 			var rank:TextBitmap;
 			var buttonWidth:int;
-			var g:Game = param1;
-			var player:Player = param2;
-			var width:Number = param3;
-			var height:Number = param4;
 			super();
 			this.g = g;
 			this.player = player;
@@ -88,42 +70,36 @@ package core.hud.components.playerList
 			dataManager = DataLocator.getService();
 			_width = width;
 			_height = height;
-			bgr = new Quad(640, 40, 921102);
+			bgr = new Quad(640,40,0xe0e0e);
 			bgr.alpha = 0;
 			addChild(bgr);
-			clanLogo = new PlayerClanLogo(g, player, function(param1:Boolean = true):void
-			{
-				var _loc2_:TextBitmap = new TextBitmap(50, 12, Localize.t("Freelancer"), 13);
-				_loc2_.x = playerName.x;
-				_loc2_.y = playerName.y + 24;
-				if (param1)
-				{
-					_loc2_.text = Localize.t("[rank] in [clan]").replace("[rank]", player.clanRankName).replace("[clan]", player.clanName);
-					_loc2_.format.color = player.clanLogoColor;
+			clanLogo = new PlayerClanLogo(g,player,function(param1:Boolean = true):void {
+				var _local2:TextBitmap = new TextBitmap(50,12,Localize.t("Freelancer"),13);
+				_local2.x = playerName.x;
+				_local2.y = playerName.y + 24;
+				if(param1) {
+					_local2.text = Localize.t("[rank] in [clan]").replace("[rank]",player.clanRankName).replace("[clan]",player.clanName);
+					_local2.format.color = player.clanLogoColor;
+				} else {
+					_local2.format.color = 0xffffff;
+					_local2.alpha = 0.5;
 				}
-				else
-				{
-					_loc2_.format.color = 16777215;
-					_loc2_.alpha = 0.5;
+				while(_local2.width > 200) {
+					_local2.size--;
 				}
-				while (_loc2_.width > 200)
-				{
-					_loc2_.size--;
-				}
-				addChild(_loc2_);
+				addChild(_local2);
 			});
 			clanLogo.x = 8;
 			clanLogo.y = 8;
 			addChild(clanLogo);
-			skinObj = dataManager.loadKey("Skins", player.activeSkin);
-			obj = dataManager.loadKey("Ships", skinObj.ship);
-			obj2 = dataManager.loadKey("Images", obj.bitmap);
+			skinObj = dataManager.loadKey("Skins",player.activeSkin);
+			obj = dataManager.loadKey("Ships",skinObj.ship);
+			obj2 = dataManager.loadKey("Images",obj.bitmap);
 			fleetObj = player.getActiveFleetObj();
 			preview = new MovieClip(textureManager.getTexturesMainByKey(obj.bitmap));
 			preview.pivotX = preview.width / 2;
 			preview.pivotY = preview.height / 2;
-			if (preview.width > 40)
-			{
+			if(preview.width > 40) {
 				preview.scaleX = preview.scaleY = 40 / preview.width;
 			}
 			preview.x = 40 + preview.width / 2;
@@ -132,23 +108,20 @@ package core.hud.components.playerList
 			shipHue = !!fleetObj.shipHue ? fleetObj.shipHue : 0;
 			shipBrightness = !!fleetObj.shipBrightness ? fleetObj.shipBrightness : 0;
 			engineHue = !!fleetObj.engineHue ? fleetObj.engineHue : 0;
-			if (shipHue != 0 || shipBrightness != 0)
-			{
+			if(shipHue != 0 || shipBrightness != 0) {
 				preview.filter = ShipFactory.createPlayerShipColorMatrixFilter(fleetObj);
 			}
 			xx = 80;
-			if (player.hasSupporter())
-			{
+			if(player.hasSupporter()) {
 				supporterImage = new Image(textureManager.getTextureGUIByTextureName("icon_supporter.png"));
 				supporterImage.x = preview.x + preview.width / 2 + 5;
 				supporterImage.y = 8;
 				addChild(supporterImage);
 				xx = 95;
 			}
-			playerName = new TextBitmap(xx, 2, player.name, 20);
-			playerName.format.color = player.isHostile ? Style.COLOR_HOSTILE : 16777215;
-			while (playerName.width > 220)
-			{
+			playerName = new TextBitmap(xx,2,player.name,20);
+			playerName.format.color = player.isHostile ? Style.COLOR_HOSTILE : 0xffffff;
+			while(playerName.width > 220) {
 				playerName.size -= 1;
 			}
 			addChild(playerName);
@@ -160,19 +133,16 @@ package core.hud.components.playerList
 			troons.format.color = 15985920;
 			addChild(troons);
 			levelString = Localize.t("lvl") + " " + player.level.toString();
-			level = new TextBitmap(50, 12, levelString, 13);
-			level.format.color = 16777215;
+			level = new TextBitmap(50,12,levelString,13);
+			level.format.color = 0xffffff;
 			level.x = troons.x;
 			level.y = troons.y + 24;
-			if (player.isDeveloper)
-			{
+			if(player.isDeveloper) {
 				level.text = Localize.t("developer");
 				level.format.color = 14129151;
-			}
-			else if (player.isModerator)
-			{
+			} else if(player.isModerator) {
 				level.text = Localize.t("mod") + " " + level.text;
-				level.format.color = 16755268;
+				level.format.color = 0xffaa44;
 			}
 			level.alpha = 0.5;
 			addChild(level);
@@ -180,215 +150,176 @@ package core.hud.components.playerList
 			troonImg.x = troons.x + troons.width + 10;
 			troonImg.y = troons.y - 1;
 			addChild(troonImg);
-			tooltipText = Localize.t("Troons give bonus stats to your ship if its above <FONT COLOR='#FFFFFF'>200 000</FONT>.");
-			new ToolTip(g, troonImg, tooltipText, null, "playerListItem");
+			tooltipText = Localize.t("Troons give bonus stats to your ship if its above <FONT COLOR=\'#FFFFFF\'>200 000</FONT>.");
+			new ToolTip(g,troonImg,tooltipText,null,"playerListItem");
 			rating = new TextBitmap();
 			rating.text = Util.formatAmount(player.rating);
-			rating.x = troons.x + 120;
+			rating.x = troons.x + 2 * 60;
 			rating.y = 2;
 			rating.size = 20;
 			rating.format.color = 15985920;
 			addChild(rating);
 			ratingImg = new Image(textureManager.getTextureGUIByTextureName("clan_logo3.png"));
 			ratingImg.y = y + 21;
-			ratingImg.color = 16711680;
+			ratingImg.color = 0xff0000;
 			ratingImg.x = rating.x + rating.width + 10;
 			ratingImg.scaleX = ratingImg.scaleY = 0.25;
 			ratingImg.rotation = -0.5 * 3.141592653589793;
 			addChild(ratingImg);
-			rank = new TextBitmap(50, 12, "Rank " + player.ranking.toString(), 13);
-			rank.format.color = 16777215;
+			rank = new TextBitmap(50,12,"Rank " + player.ranking.toString(),13);
+			rank.format.color = 0xffffff;
 			rank.x = rating.x;
 			rank.y = rating.y + 24;
 			addChild(rank);
 			buttonWidth = 140;
-			inviteButton = new Button(function():void
-			{
+			inviteButton = new Button(function():void {
 				inviteButton.enabled = false;
 				g.groupManager.invitePlayer(player);
-			}, Localize.t("add to group"));
+			},Localize.t("add to group"));
 			inviteButton.scaleX = inviteButton.scaleY = 0.9;
 			inviteButton.x = 530;
 			inviteButton.y = -2;
 			inviteButton.width = buttonWidth;
-			leaveButton = new Button(function():void
-			{
+			leaveButton = new Button(function():void {
 				g.groupManager.leaveGroup();
-			}, Localize.t("leave group"));
+			},Localize.t("leave group"));
 			leaveButton.scaleX = leaveButton.scaleY = 0.9;
 			leaveButton.x = 530;
 			leaveButton.y = inviteButton.y;
 			leaveButton.width = buttonWidth;
-			joinButton = new Button(function():void
-			{
+			joinButton = new Button(function():void {
 				toggleFriendButtons(true);
-				var _loc1_:Invite = g.groupManager.findInvite(player.group.id, g.me);
+				var _local1:Invite = g.groupManager.findInvite(player.group.id,g.me);
 				joinButton.visible = false;
 				declineButton.visible = false;
-				if (!_loc1_)
-				{
+				if(!_local1) {
 					return;
 				}
-				g.groupManager.acceptGroupInvite(_loc1_.id);
-			}, Localize.t("join group"), "positive");
+				g.groupManager.acceptGroupInvite(_local1.id);
+			},Localize.t("join group"),"positive");
 			joinButton.scaleX = joinButton.scaleY = 0.9;
 			joinButton.x = 530;
 			joinButton.y = inviteButton.y;
 			joinButton.width = buttonWidth;
-			addFriendButton = new Button(function():void
-			{
+			addFriendButton = new Button(function():void {
 				addFriendButton.enabled = false;
 				g.friendManager.sendFriendRequest(player);
-			}, Localize.t("add friend"));
+			},Localize.t("add friend"));
 			addFriendButton.scaleX = addFriendButton.scaleY = 0.9;
 			addFriendButton.x = 530;
 			addFriendButton.y = inviteButton.y + inviteButton.height + 5;
 			addFriendButton.width = buttonWidth;
-			declineButton = new Button(function():void
-			{
+			declineButton = new Button(function():void {
 				toggleFriendButtons(true);
 				joinButton.visible = false;
 				declineButton.visible = false;
 				addChild(inviteButton);
-				var _loc1_:Invite = g.groupManager.findInvite(player.group.id, g.me);
-				if (!_loc1_)
-				{
+				var _local1:Invite = g.groupManager.findInvite(player.group.id,g.me);
+				if(!_local1) {
 					return;
 				}
-				g.groupManager.cancelGroupInvite(_loc1_.id);
-			}, Localize.t("decline"), "negative");
+				g.groupManager.cancelGroupInvite(_local1.id);
+			},Localize.t("decline"),"negative");
 			declineButton.scaleX = declineButton.scaleY = 0.9;
 			declineButton.x = 530;
 			declineButton.y = addFriendButton.y;
 			declineButton.width = buttonWidth;
-			acceptFriendButton = new Button(function():void
-			{
+			acceptFriendButton = new Button(function():void {
 				acceptFriendButton.enabled = false;
 				g.friendManager.sendFriendConfirm(player);
-			}, Localize.t("accept request"), "positive");
+			},Localize.t("accept request"),"positive");
 			acceptFriendButton.scaleX = acceptFriendButton.scaleY = 0.9;
 			acceptFriendButton.x = 530;
 			acceptFriendButton.y = addFriendButton.y;
 			acceptFriendButton.width = buttonWidth;
-			teleportToFriendButton = new Button(function():void
-			{
-				g.creditManager.refresh(function():void
-				{
-					var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g, CreditManager.getCostTeleportToFriend(), Localize.t("Are you sure you want to teleport to [playerName]?").replace("[playerName]", player.name));
+			teleportToFriendButton = new Button(function():void {
+				g.creditManager.refresh(function():void {
+					var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g,CreditManager.getCostTeleportToFriend(),Localize.t("Are you sure you want to teleport to [playerName]?").replace("[playerName]",player.name));
 					g.addChildToOverlay(confirmBuyWithFlux);
-					confirmBuyWithFlux.addEventListener("accept", function():void
-					{
-						g.rpc("buyTeleportToFriend", teleport, player.id);
+					confirmBuyWithFlux.addEventListener("accept",function():void {
+						g.rpc("buyTeleportToFriend",teleport,player.id);
 						confirmBuyWithFlux.removeEventListeners();
-						g.removeChildFromOverlay(confirmBuyWithFlux, true);
+						g.removeChildFromOverlay(confirmBuyWithFlux,true);
 					});
-					confirmBuyWithFlux.addEventListener("close", function():void
-					{
+					confirmBuyWithFlux.addEventListener("close",function():void {
 						teleportToFriendButton.enabled = true;
 						confirmBuyWithFlux.removeEventListeners();
-						g.removeChildFromOverlay(confirmBuyWithFlux, true);
+						g.removeChildFromOverlay(confirmBuyWithFlux,true);
 					});
 				});
-			}, Localize.t("teleport"), "buy");
+			},Localize.t("teleport"),"buy");
 			teleportToFriendButton.scaleX = teleportToFriendButton.scaleY = 0.9;
 			teleportToFriendButton.x = 530;
 			teleportToFriendButton.y = addFriendButton.y;
-			if (player.isMe)
-			{
+			if(player.isMe) {
 				addChild(leaveButton);
-			}
-			else
-			{
-				if (g.friendManager.pendingRequest(player))
-				{
+			} else {
+				if(g.friendManager.pendingRequest(player)) {
 					addChild(acceptFriendButton);
-				}
-				else if (!g.me.isFriendWith(player))
-				{
+				} else if(!g.me.isFriendWith(player)) {
 					addChild(addFriendButton);
-				}
-				else if (g.solarSystem.type != "pvp")
-				{
+				} else if(g.solarSystem.type != "pvp") {
 					addChild(teleportToFriendButton);
 				}
-				if (g.groupManager.findInvite(player.group.id, g.me) != null)
-				{
+				if(g.groupManager.findInvite(player.group.id,g.me) != null) {
 					addChild(joinButton);
 					addChild(declineButton);
 					toggleFriendButtons(false);
-				}
-				else
-				{
+				} else {
 					addChild(inviteButton);
 				}
 			}
 			update();
 		}
 		
-		private function toggleFriendButtons(param1:Boolean):void
-		{
-			addFriendButton.visible = param1;
-			acceptFriendButton.visible = param1;
+		private function toggleFriendButtons(on:Boolean) : void {
+			addFriendButton.visible = on;
+			acceptFriendButton.visible = on;
 		}
 		
-		private function teleport(param1:Message):void
-		{
-			if (param1.getBoolean(0))
-			{
+		private function teleport(m:Message) : void {
+			if(m.getBoolean(0)) {
 				teleportToFriendButton.enabled = false;
-				dispatchEventWith("close", true);
-				Game.trackEvent("used flux", "teleport", "teleport to friend", CreditManager.getCostTeleportToFriend());
-			}
-			else
-			{
+				dispatchEventWith("close",true);
+				Game.trackEvent("used flux","teleport","teleport to friend",CreditManager.getCostTeleportToFriend());
+			} else {
 				teleportToFriendButton.enabled = true;
-				g.showErrorDialog(param1.getString(1));
+				g.showErrorDialog(m.getString(1));
 			}
 		}
 		
-		public function update():void
-		{
-			var _loc3_:* = 0;
-			var _loc2_:* = 0;
-			if (g.me == null)
-			{
+		public function update() : void {
+			var _local3:* = 0;
+			var _local2:* = 0;
+			if(g.me == null) {
 				return;
 			}
-			var _loc4_:Group = player.group;
-			var _loc1_:Group = g.me.group;
-			if (_loc1_ == _loc4_ || _loc4_.length > 1)
-			{
+			var _local4:Group = player.group;
+			var _local1:Group = g.me.group;
+			if(_local1 == _local4 || _local4.length > 1) {
 				inviteButton.visible = false;
 			}
-			if (_loc1_.length > 1 && player.isMe)
-			{
+			if(_local1.length > 1 && player.isMe) {
 				leaveButton.visible = true;
-			}
-			else
-			{
+			} else {
 				leaveButton.visible = false;
 			}
-			if (_loc1_ == _loc4_)
-			{
-				_loc3_ = Style.COLOR_GROUP;
-				_loc2_ = 11206570;
-			}
-			else if (player.isHostile)
-			{
-				_loc3_ = Style.COLOR_HOSTILE;
-				_loc2_ = 16755370;
-			}
-			else
-			{
-				_loc3_ = Style.COLOR_FRIENDLY;
-				_loc2_ = 11206570;
+			if(_local1 == _local4) {
+				_local3 = Style.COLOR_GROUP;
+				_local2 = 0xaaffaa;
+			} else if(player.isHostile) {
+				_local3 = Style.COLOR_HOSTILE;
+				_local2 = 0xffaaaa;
+			} else {
+				_local3 = Style.COLOR_FRIENDLY;
+				_local2 = 0xaaffaa;
 			}
 		}
 		
-		override public function dispose():void
-		{
+		override public function dispose() : void {
 			ToolTip.disposeType("playerListItem");
-			this.removeChildren(0, -1, true);
+			this.removeChildren(0,-1,true);
 		}
 	}
 }
+

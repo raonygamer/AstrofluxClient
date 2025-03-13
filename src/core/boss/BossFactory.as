@@ -1,5 +1,4 @@
-package core.boss
-{
+package core.boss {
 	import core.particle.EmitterFactory;
 	import core.scene.Game;
 	import core.solarSystem.Body;
@@ -12,367 +11,310 @@ package core.boss
 	import flash.geom.Point;
 	import generics.Util;
 	
-	public class BossFactory
-	{
-		public function BossFactory()
-		{
+	public class BossFactory {
+		public function BossFactory() {
 			super();
 		}
 		
-		public static function createBoss(param1:String, param2:Body, param3:Array, param4:String, param5:Game):Boss
-		{
-			var _loc9_:Number = NaN;
-			var _loc10_:IDataManager = DataLocator.getService();
-			var _loc7_:Object = _loc10_.loadKey("Bosses", param1);
-			var _loc6_:Boss = new Boss(param5);
-			_loc6_.name = _loc7_.name;
-			_loc6_.parentBody = param2;
-			_loc6_.key = param1;
-			_loc6_.alive = true;
-			_loc6_.isHostile = true;
-			_loc6_.awaitingActivation = true;
-			_loc6_.xp = _loc7_.xp;
-			_loc6_.level = _loc7_.level;
-			_loc6_.layer = _loc7_.layer;
-			_loc6_.hp = 0;
-			_loc6_.hpMax = 1;
-			_loc6_.resetTime = _loc7_.resetTime;
-			_loc6_.respawnTime = _loc7_.respawnTime;
-			_loc6_.speed = _loc7_.speed;
-			_loc6_.rotationSpeed = _loc7_.rotationSpeed;
-			_loc6_.rotationForced = _loc7_.rotationForced;
-			_loc6_.acceleration = _loc7_.acceleration;
-			_loc6_.holonomic = _loc7_.holonomic;
-			if (_loc7_.hasOwnProperty("AIFaction1") && _loc7_.AIFaction1 != "")
-			{
-				_loc6_.factions.push(_loc7_.AIFaction1);
+		public static function createBoss(key:String, body:Body, wpArray:Array, parentKey:String, g:Game) : Boss {
+			var _local9:Number = NaN;
+			var _local10:IDataManager = DataLocator.getService();
+			var _local7:Object = _local10.loadKey("Bosses",key);
+			var _local6:Boss = new Boss(g);
+			_local6.name = _local7.name;
+			_local6.parentBody = body;
+			_local6.key = key;
+			_local6.alive = true;
+			_local6.isHostile = true;
+			_local6.awaitingActivation = true;
+			_local6.xp = _local7.xp;
+			_local6.level = _local7.level;
+			_local6.layer = _local7.layer;
+			_local6.hp = 0;
+			_local6.hpMax = 1;
+			_local6.resetTime = _local7.resetTime;
+			_local6.respawnTime = _local7.respawnTime;
+			_local6.speed = _local7.speed;
+			_local6.rotationSpeed = _local7.rotationSpeed;
+			_local6.rotationForced = _local7.rotationForced;
+			_local6.acceleration = _local7.acceleration;
+			_local6.holonomic = _local7.holonomic;
+			if(_local7.hasOwnProperty("AIFaction1") && _local7.AIFaction1 != "") {
+				_local6.factions.push(_local7.AIFaction1);
 			}
-			if (_loc7_.hasOwnProperty("AIFaction2") && _loc7_.AIFaction2 != "")
-			{
-				_loc6_.factions.push(_loc7_.AIFaction2);
+			if(_local7.hasOwnProperty("AIFaction2") && _local7.AIFaction2 != "") {
+				_local6.factions.push(_local7.AIFaction2);
 			}
-			if (_loc7_.hasOwnProperty("regen"))
-			{
-				_loc6_.hpRegen = _loc7_.regen;
+			if(_local7.hasOwnProperty("regen")) {
+				_local6.hpRegen = _local7.regen;
+			} else {
+				_local6.hpRegen = 0;
 			}
-			else
-			{
-				_loc6_.hpRegen = 0;
+			_local6.targetRange = _local7.targetRange;
+			_local6.orbitOrign = new Point();
+			_local6.bossRadius = _local7.radius;
+			for each(var _local8 in wpArray) {
+				_local6.waypoints.push(new Waypoint(g,_local8.body,_local8.xpos,_local8.ypos,_local8.id));
 			}
-			_loc6_.targetRange = _loc7_.targetRange;
-			_loc6_.orbitOrign = new Point();
-			_loc6_.bossRadius = _loc7_.radius;
-			for each (var _loc8_:* in param3)
-			{
-				_loc6_.waypoints.push(new Waypoint(param5, _loc8_.body, _loc8_.xpos, _loc8_.ypos, _loc8_.id));
+			_local6.waypoints.push(new Waypoint(g,parentKey,0,0,1));
+			if(_local7.hasOwnProperty("explosionSound")) {
+				_local6.explosionSound = _local7.explosionSound;
+			} else {
+				_local6.explosionSound = "";
 			}
-			_loc6_.waypoints.push(new Waypoint(param5, param4, 0, 0, 1));
-			if (_loc7_.hasOwnProperty("explosionSound"))
-			{
-				_loc6_.explosionSound = _loc7_.explosionSound;
+			if(_local7.hasOwnProperty("explosionEffect")) {
+				_local6.explosionEffect = _local7.explosionEffect;
+			} else {
+				_local6.explosionEffect = "";
 			}
-			else
-			{
-				_loc6_.explosionSound = "";
-			}
-			if (_loc7_.hasOwnProperty("explosionEffect"))
-			{
-				_loc6_.explosionEffect = _loc7_.explosionEffect;
-			}
-			else
-			{
-				_loc6_.explosionEffect = "";
-			}
-			_loc6_.switchTexturesByObj(_loc7_);
-			if (param5.isSystemTypeSurvival())
-			{
-				if (_loc6_.name == "Tefat")
-				{
-					_loc6_.level = 6;
-				}
-				else
-				{
-					if (_loc6_.name == "Mandrom")
-					{
-						_loc6_.level = 12;
+			_local6.switchTexturesByObj(_local7);
+			if(g.isSystemTypeSurvival()) {
+				if(_local6.name == "Tefat") {
+					_local6.level = 6;
+				} else {
+					if(_local6.name == "Mandrom") {
+						_local6.level = 12;
 					}
-					if (_loc6_.name == "Rotator")
-					{
-						_loc6_.level = 15;
+					if(_local6.name == "Rotator") {
+						_local6.level = 15;
 					}
-					if (_loc6_.name == "Dominator")
-					{
-						_loc6_.level = 7;
+					if(_local6.name == "Dominator") {
+						_local6.level = 7;
 					}
-					if (_loc6_.name == "Chelonidron")
-					{
-						_loc6_.level = 94;
+					if(_local6.name == "Chelonidron") {
+						_local6.level = 94;
 					}
-					if (_loc6_.name == "Motherbrain")
-					{
-						_loc6_.level = 54;
+					if(_local6.name == "Motherbrain") {
+						_local6.level = 54;
 					}
-					if (param5.hud.uberStats.uberRank == 1)
-					{
-						_loc6_.level = 7;
+					if(g.hud.uberStats.uberRank == 1) {
+						_local6.level = 7;
 					}
 				}
 			}
-			addTurrets(_loc7_, param5, _loc6_);
-			addSpawners(_loc7_, param5, _loc6_);
-			addBossComponents(_loc7_, param5, _loc6_);
-			if (param5.isSystemTypeSurvival() && _loc6_.level < param5.hud.uberStats.uberLevel)
-			{
-				_loc9_ = param5.hud.uberStats.CalculateUberRankFromLevel(_loc6_.level);
-				_loc6_.uberDifficulty = param5.hud.uberStats.CalculateUberDifficultyFromRank(param5.hud.uberStats.uberRank - _loc9_, _loc6_.level);
-				_loc6_.uberLevelFactor = 1 + (param5.hud.uberStats.uberLevel - _loc6_.level) / 100;
-				_loc6_.xp *= _loc6_.uberLevelFactor;
-				_loc6_.level = param5.hud.uberStats.uberLevel;
-				_loc6_.speed *= _loc6_.uberLevelFactor;
-				if (_loc6_.speed > 380)
-				{
-					_loc6_.speed = 380;
+			addTurrets(_local7,g,_local6);
+			addSpawners(_local7,g,_local6);
+			addBossComponents(_local7,g,_local6);
+			if(g.isSystemTypeSurvival() && _local6.level < g.hud.uberStats.uberLevel) {
+				_local9 = g.hud.uberStats.CalculateUberRankFromLevel(_local6.level);
+				_local6.uberDifficulty = g.hud.uberStats.CalculateUberDifficultyFromRank(g.hud.uberStats.uberRank - _local9,_local6.level);
+				_local6.uberLevelFactor = 1 + (g.hud.uberStats.uberLevel - _local6.level) / 100;
+				_local6.xp *= _local6.uberLevelFactor;
+				_local6.level = g.hud.uberStats.uberLevel;
+				_local6.speed *= _local6.uberLevelFactor;
+				if(_local6.speed > 380) {
+					_local6.speed = 380;
 				}
+			} else if(_local6.name == "Chelonidron") {
+				_local6.level = 54;
 			}
-			else if (_loc6_.name == "Chelonidron")
-			{
-				_loc6_.level = 54;
-			}
-			_loc6_.addFactions();
-			sortComponents(param5, _loc6_);
-			_loc6_.calcHpMax();
-			_loc6_.stateMachine.changeState(new AIBoss(param5, _loc6_));
-			return _loc6_;
+			_local6.addFactions();
+			sortComponents(g,_local6);
+			_local6.calcHpMax();
+			_local6.stateMachine.changeState(new AIBoss(g,_local6));
+			return _local6;
 		}
 		
-		private static function addTurrets(param1:Object, param2:Game, param3:Boss):void
-		{
-			var _loc4_:Array = param1.turrets;
-			for each (var _loc5_:* in _loc4_)
-			{
-				createTurret(_loc5_, param3, param2);
+		private static function addTurrets(obj:Object, g:Game, b:Boss) : void {
+			var _local4:Array = obj.turrets;
+			for each(var _local5 in _local4) {
+				createTurret(_local5,b,g);
 			}
 		}
 		
-		private static function createTurret(param1:Object, param2:Boss, param3:Game):void
-		{
-			var _loc4_:Turret = TurretFactory.createTurret(param1, param1.turret, param3, param2);
-			_loc4_.offset = new Point(param1.xpos, param1.ypos);
-			_loc4_.startAngle = Util.degreesToRadians(param1.angle);
-			_loc4_.syncId = param1.id;
-			_loc4_.parentObj = param2;
-			_loc4_.alive = true;
-			_loc4_.name = param1.name;
-			_loc4_.rotation = _loc4_.startAngle;
-			_loc4_.hideIfInactive = param1.hideIfInactive;
-			_loc4_.essential = param1.essential;
-			_loc4_.active = param1.active;
-			_loc4_.invulnerable = param1.invulnerable;
-			_loc4_.triggersToActivte = param1.triggersToActivte;
-			_loc4_.triggers = getTriggers(param1, param3);
-			_loc4_.layer = param1.layer;
-			param2.turrets.push(_loc4_);
-			param2.allComponents.push(_loc4_);
-			_loc4_.stateMachine.changeState(new AITurret(param3, _loc4_));
+		private static function createTurret(turretObj:Object, b:Boss, g:Game) : void {
+			var _local4:Turret = TurretFactory.createTurret(turretObj,turretObj.turret,g,b);
+			_local4.offset = new Point(turretObj.xpos,turretObj.ypos);
+			_local4.startAngle = Util.degreesToRadians(turretObj.angle);
+			_local4.syncId = turretObj.id;
+			_local4.parentObj = b;
+			_local4.alive = true;
+			_local4.name = turretObj.name;
+			_local4.rotation = _local4.startAngle;
+			_local4.hideIfInactive = turretObj.hideIfInactive;
+			_local4.essential = turretObj.essential;
+			_local4.active = turretObj.active;
+			_local4.invulnerable = turretObj.invulnerable;
+			_local4.triggersToActivte = turretObj.triggersToActivte;
+			_local4.triggers = getTriggers(turretObj,g);
+			_local4.layer = turretObj.layer;
+			b.turrets.push(_local4);
+			b.allComponents.push(_local4);
+			_local4.stateMachine.changeState(new AITurret(g,_local4));
 		}
 		
-		private static function addSpawners(param1:Object, param2:Game, param3:Boss):void
-		{
-			var _loc5_:Object = null;
-			var _loc7_:IDataManager = DataLocator.getService();
-			var _loc4_:Array = param1.spawners;
-			if (_loc4_.length == 0)
-			{
+		private static function addSpawners(obj:Object, g:Game, b:Boss) : void {
+			var _local5:Object = null;
+			var _local7:IDataManager = DataLocator.getService();
+			var _local4:Array = obj.spawners;
+			if(_local4.length == 0) {
 				return;
 			}
-			for (var _loc6_:* in _loc4_)
-			{
-				_loc5_ = _loc4_[_loc6_];
-				createSpawner(_loc5_, _loc6_.toString(), param3, param2);
+			for(var _local6 in _local4) {
+				_local5 = _local4[_local6];
+				createSpawner(_local5,_local6.toString(),b,g);
 			}
 		}
 		
-		private static function createSpawner(param1:Object, param2:String, param3:Boss, param4:Game):void
-		{
-			var _loc6_:Object = DataLocator.getService().loadKey("Spawners", param1.spawner);
-			var _loc5_:Spawner = SpawnFactory.createSpawner(_loc6_, "bossSpawner_" + param3.key + "_" + param2, param4, param3);
-			_loc5_.parentObj = param3;
-			_loc5_.offset = new Point(param1.xpos, param1.ypos);
-			_loc5_.imageOffset = new Point(param1.imageOffsetX, param1.imageOffsetY);
-			_loc5_.syncId = param1.id;
-			_loc5_.alive = true;
-			_loc5_.rotation = param1.angle / 180 * 3.141592653589793;
-			_loc5_.angleOffset = _loc5_.parentObj.rotation - _loc5_.rotation;
-			_loc5_.name = param1.name;
-			_loc5_.hideIfInactive = param1.hideIfInactive;
-			_loc5_.essential = param1.essential;
-			_loc5_.active = param1.active;
-			_loc5_.invulnerable = param1.invulnerable;
-			_loc5_.triggersToActivte = param1.triggersToActivte;
-			_loc5_.triggers = getTriggers(param1, param4);
-			_loc5_.orbitRadius = 0;
-			_loc5_.orbitAngle = 0;
-			_loc5_.offset = new Point(param1.xpos, param1.ypos);
-			_loc5_.imageOffset = new Point(param1.imageOffsetX, param1.imageOffsetY);
-			_loc5_.layer = param1.layer;
-			param3.spawners.push(_loc5_);
-			param3.allComponents.push(_loc5_);
+		private static function createSpawner(bossSpawnObj:Object, key:String, b:Boss, g:Game) : void {
+			var _local6:Object = DataLocator.getService().loadKey("Spawners",bossSpawnObj.spawner);
+			var _local5:Spawner = SpawnFactory.createSpawner(_local6,"bossSpawner_" + b.key + "_" + key,g,b);
+			_local5.parentObj = b;
+			_local5.offset = new Point(bossSpawnObj.xpos,bossSpawnObj.ypos);
+			_local5.imageOffset = new Point(bossSpawnObj.imageOffsetX,bossSpawnObj.imageOffsetY);
+			_local5.syncId = bossSpawnObj.id;
+			_local5.alive = true;
+			_local5.rotation = bossSpawnObj.angle / (3 * 60) * 3.141592653589793;
+			_local5.angleOffset = _local5.parentObj.rotation - _local5.rotation;
+			_local5.name = bossSpawnObj.name;
+			_local5.hideIfInactive = bossSpawnObj.hideIfInactive;
+			_local5.essential = bossSpawnObj.essential;
+			_local5.active = bossSpawnObj.active;
+			_local5.invulnerable = bossSpawnObj.invulnerable;
+			_local5.triggersToActivte = bossSpawnObj.triggersToActivte;
+			_local5.triggers = getTriggers(bossSpawnObj,g);
+			_local5.orbitRadius = 0;
+			_local5.orbitAngle = 0;
+			_local5.offset = new Point(bossSpawnObj.xpos,bossSpawnObj.ypos);
+			_local5.imageOffset = new Point(bossSpawnObj.imageOffsetX,bossSpawnObj.imageOffsetY);
+			_local5.layer = bossSpawnObj.layer;
+			b.spawners.push(_local5);
+			b.allComponents.push(_local5);
 		}
 		
-		private static function addBossComponents(param1:Object, param2:Game, param3:Boss):void
-		{
-			var _loc4_:Array = param1.basicObjs;
-			for each (var _loc5_:* in _loc4_)
-			{
-				createBossComponent(_loc5_, param3, param2);
+		private static function addBossComponents(obj:Object, g:Game, b:Boss) : void {
+			var _local4:Array = obj.basicObjs;
+			for each(var _local5 in _local4) {
+				createBossComponent(_local5,b,g);
 			}
 		}
 		
-		private static function createBossComponent(param1:Object, param2:Boss, param3:Game):void
-		{
-			var _loc5_:Number = NaN;
-			var _loc4_:BossComponent = new BossComponent(param3);
-			_loc4_.switchTexturesByObj(param1);
-			_loc4_.parentObj = param2;
-			_loc4_.offset = new Point(param1.xpos, param1.ypos);
-			_loc4_.imageOffset = new Point(param1.imageOffsetX, param1.imageOffsetY);
-			_loc4_.syncId = param1.id;
-			_loc4_.parentObj = param2;
-			_loc4_.hp = param1.hp;
-			_loc4_.hpMax = param1.hp;
-			_loc4_.shieldHp = 0;
-			_loc4_.shieldHpMax = 0;
-			_loc4_.xp = param1.xp;
-			_loc4_.level = param1.level;
-			_loc4_.essential = param1.essential;
-			if (param3.isSystemTypeSurvival() && param2 != null)
-			{
-				_loc4_.level = param2.level;
+		private static function createBossComponent(compObj:Object, b:Boss, g:Game) : void {
+			var _local5:Number = NaN;
+			var _local4:BossComponent = new BossComponent(g);
+			_local4.switchTexturesByObj(compObj);
+			_local4.parentObj = b;
+			_local4.offset = new Point(compObj.xpos,compObj.ypos);
+			_local4.imageOffset = new Point(compObj.imageOffsetX,compObj.imageOffsetY);
+			_local4.syncId = compObj.id;
+			_local4.parentObj = b;
+			_local4.hp = compObj.hp;
+			_local4.hpMax = compObj.hp;
+			_local4.shieldHp = 0;
+			_local4.shieldHpMax = 0;
+			_local4.xp = compObj.xp;
+			_local4.level = compObj.level;
+			_local4.essential = compObj.essential;
+			if(g.isSystemTypeSurvival() && b != null) {
+				_local4.level = b.level;
 			}
-			if (param3.isSystemTypeSurvival() && _loc4_.level < param3.hud.uberStats.uberLevel && _loc4_.essential)
-			{
-				_loc5_ = param3.hud.uberStats.CalculateUberRankFromLevel(_loc4_.level);
-				_loc4_.uberDifficulty = param3.hud.uberStats.CalculateUberDifficultyFromRank(param3.hud.uberStats.uberRank - _loc5_, _loc4_.level);
-				_loc4_.uberLevelFactor = 1 + (param3.hud.uberStats.uberLevel - _loc4_.level) / 100;
-				if (param2 != null)
-				{
-					_loc4_.uberDifficulty *= param3.hud.uberStats.uberRank / 2 + 1;
+			if(g.isSystemTypeSurvival() && _local4.level < g.hud.uberStats.uberLevel && _local4.essential) {
+				_local5 = g.hud.uberStats.CalculateUberRankFromLevel(_local4.level);
+				_local4.uberDifficulty = g.hud.uberStats.CalculateUberDifficultyFromRank(g.hud.uberStats.uberRank - _local5,_local4.level);
+				_local4.uberLevelFactor = 1 + (g.hud.uberStats.uberLevel - _local4.level) / 100;
+				if(b != null) {
+					_local4.uberDifficulty *= g.hud.uberStats.uberRank / 2 + 1;
 				}
-				_loc4_.xp *= _loc4_.uberLevelFactor;
-				_loc4_.level = param3.hud.uberStats.uberLevel;
-				_loc4_.hp = _loc4_.hpMax = _loc4_.hpMax * _loc4_.uberDifficulty;
-				_loc4_.shieldHp = _loc4_.shieldHpMax = _loc4_.shieldHpMax * _loc4_.uberDifficulty;
+				_local4.xp *= _local4.uberLevelFactor;
+				_local4.level = g.hud.uberStats.uberLevel;
+				_local4.hp = _local4.hpMax = _local4.hpMax * _local4.uberDifficulty;
+				_local4.shieldHp = _local4.shieldHpMax = _local4.shieldHpMax * _local4.uberDifficulty;
 			}
-			_loc4_.alive = true;
-			_loc4_.imageAngle = Util.degreesToRadians(param1.angle);
-			_loc4_.name = param1.name;
-			_loc4_.imageScale = param1.scale;
-			_loc4_.imageRotationSpeed = param1.rotationSpeed;
-			_loc4_.imageRotationMax = param1.maxAngle;
-			_loc4_.imageRotationMin = param1.minAngle;
-			_loc4_.imagePivotPoint = new Point(param1.pivotPointX, param1.pivotPointY);
-			_loc4_.hideIfInactive = param1.hideIfInactive;
-			_loc4_.active = param1.active;
-			_loc4_.invulnerable = param1.invulnerable;
-			_loc4_.triggersToActivte = param1.triggersToActivte;
-			_loc4_.triggers = getTriggers(param1, param3);
-			_loc4_.isHostile = true;
-			_loc4_.collisionRadius = param1.collisionRadius;
-			_loc4_.layer = param1.layer;
-			param2.allComponents.push(_loc4_);
-			param2.bossComponents.push(_loc4_);
-			if (param1.hasOwnProperty("explosionEffect"))
-			{
-				_loc4_.explosionEffect = param1.explosionEffect;
+			_local4.alive = true;
+			_local4.imageAngle = Util.degreesToRadians(compObj.angle);
+			_local4.name = compObj.name;
+			_local4.imageScale = compObj.scale;
+			_local4.imageRotationSpeed = compObj.rotationSpeed;
+			_local4.imageRotationMax = compObj.maxAngle;
+			_local4.imageRotationMin = compObj.minAngle;
+			_local4.imagePivotPoint = new Point(compObj.pivotPointX,compObj.pivotPointY);
+			_local4.hideIfInactive = compObj.hideIfInactive;
+			_local4.active = compObj.active;
+			_local4.invulnerable = compObj.invulnerable;
+			_local4.triggersToActivte = compObj.triggersToActivte;
+			_local4.triggers = getTriggers(compObj,g);
+			_local4.isHostile = true;
+			_local4.collisionRadius = compObj.collisionRadius;
+			_local4.layer = compObj.layer;
+			b.allComponents.push(_local4);
+			b.bossComponents.push(_local4);
+			if(compObj.hasOwnProperty("explosionEffect")) {
+				_local4.explosionEffect = compObj.explosionEffect;
 			}
-			if (param1.hasOwnProperty("effect"))
-			{
-				_loc4_.effectX = param1.effectX;
-				_loc4_.effectY = param1.effectY;
-				_loc4_.effect = EmitterFactory.create(param1.effect, param3, 0, 0, _loc4_.effectTarget, true);
+			if(compObj.hasOwnProperty("effect")) {
+				_local4.effectX = compObj.effectX;
+				_local4.effectY = compObj.effectY;
+				_local4.effect = EmitterFactory.create(compObj.effect,g,0,0,_local4.effectTarget,true);
 			}
 		}
 		
-		private static function getTriggers(param1:Object, param2:Game):Vector.<Trigger>
-		{
-			var _loc7_:int = 0;
-			var _loc3_:Object = null;
-			var _loc4_:Trigger = null;
-			var _loc6_:Vector.<Trigger> = new Vector.<Trigger>();
-			var _loc5_:Array = param1.triggers;
-			if (_loc5_ == null)
-			{
-				return _loc6_;
+		private static function getTriggers(obj:Object, g:Game) : Vector.<Trigger> {
+			var _local7:int = 0;
+			var _local3:Object = null;
+			var _local4:Trigger = null;
+			var _local6:Vector.<Trigger> = new Vector.<Trigger>();
+			var _local5:Array = obj.triggers;
+			if(_local5 == null) {
+				return _local6;
 			}
-			_loc7_ = 0;
-			while (_loc7_ < _loc5_.length)
-			{
-				_loc3_ = _loc5_[_loc7_];
-				_loc4_ = new Trigger(param2);
-				_loc4_.id = _loc3_.id;
-				_loc4_.target = _loc3_.target;
-				_loc4_.delay = _loc3_.delay;
-				_loc4_.activate = _loc3_.activte;
-				_loc4_.inactivate = _loc3_.inactivte;
-				_loc4_.vulnerable = _loc3_.vulnerable;
-				_loc4_.invulnerable = _loc3_.invulnerable;
-				_loc4_.kill = _loc3_.kill;
-				_loc4_.threshhold = Number(_loc3_.threshhold) / 100;
-				_loc4_.inactivateSelf = _loc3_.inactivateSelf;
-				if (_loc3_.hasOwnProperty("sound"))
-				{
-					_loc4_.soundName = _loc3_.sound;
+			_local7 = 0;
+			while(_local7 < _local5.length) {
+				_local3 = _local5[_local7];
+				_local4 = new Trigger(g);
+				_local4.id = _local3.id;
+				_local4.target = _local3.target;
+				_local4.delay = _local3.delay;
+				_local4.activate = _local3.activte;
+				_local4.inactivate = _local3.inactivte;
+				_local4.vulnerable = _local3.vulnerable;
+				_local4.invulnerable = _local3.invulnerable;
+				_local4.kill = _local3.kill;
+				_local4.threshhold = Number(_local3.threshhold) / 100;
+				_local4.inactivateSelf = _local3.inactivateSelf;
+				if(_local3.hasOwnProperty("sound")) {
+					_local4.soundName = _local3.sound;
+				} else {
+					_local4.soundName = "";
 				}
-				else
-				{
-					_loc4_.soundName = "";
+				if(_local3.hasOwnProperty("explosionEffect")) {
+					_local4.explosionEffect = _local3.explosionEffect;
+					_local4.xpos = _local3.xpos;
+					_local4.ypos = _local3.ypos;
+				} else {
+					_local4.explosionEffect = "";
+					_local4.xpos = 0;
+					_local4.ypos = 0;
 				}
-				if (_loc3_.hasOwnProperty("explosionEffect"))
-				{
-					_loc4_.explosionEffect = _loc3_.explosionEffect;
-					_loc4_.xpos = _loc3_.xpos;
-					_loc4_.ypos = _loc3_.ypos;
-				}
-				else
-				{
-					_loc4_.explosionEffect = "";
-					_loc4_.xpos = 0;
-					_loc4_.ypos = 0;
-				}
-				_loc4_.editBase = _loc3_.editBase;
-				_loc4_.speed = _loc3_.speed;
-				_loc4_.acceleration = _loc3_.acceleration;
-				_loc4_.rotationForced = _loc3_.rotationForced;
-				_loc4_.rotationSpeed = _loc3_.rotationSpeed;
-				_loc4_.targetRange = _loc3_.targetRange;
-				_loc6_.push(_loc4_);
-				_loc7_++;
+				_local4.editBase = _local3.editBase;
+				_local4.speed = _local3.speed;
+				_local4.acceleration = _local3.acceleration;
+				_local4.rotationForced = _local3.rotationForced;
+				_local4.rotationSpeed = _local3.rotationSpeed;
+				_local4.targetRange = _local3.targetRange;
+				_local6.push(_local4);
+				_local7++;
 			}
-			return _loc6_;
+			return _local6;
 		}
 		
-		private static function sortComponents(param1:Game, param2:Boss):void
-		{
-			param2.allComponents.sort(compareFunction);
-			for each (var _loc3_:* in param2.allComponents)
-			{
-				_loc3_.isBossUnit = true;
-				_loc3_.distanceToCamera = 0;
-				param1.unitManager.add(_loc3_, param1.canvasBosses, false);
+		private static function sortComponents(g:Game, b:Boss) : void {
+			b.allComponents.sort(compareFunction);
+			for each(var _local3 in b.allComponents) {
+				_local3.isBossUnit = true;
+				_local3.distanceToCamera = 0;
+				g.unitManager.add(_local3,g.canvasBosses,false);
 			}
 		}
 		
-		private static function compareFunction(param1:Unit, param2:Unit):int
-		{
-			if (param1.layer < param2.layer)
-			{
+		private static function compareFunction(u1:Unit, u2:Unit) : int {
+			if(u1.layer < u2.layer) {
 				return -1;
 			}
-			if (param1.layer > param2.layer)
-			{
+			if(u1.layer > u2.layer) {
 				return 1;
 			}
 			return 0;
 		}
 	}
 }
+

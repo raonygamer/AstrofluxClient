@@ -1,68 +1,60 @@
-package core.login
-{
+package core.login {
 	import com.greensock.TweenMax;
 	import core.hud.components.Text;
 	import starling.display.Sprite;
 	
-	public class ConnectStatus extends Sprite
-	{
+	public class ConnectStatus extends Sprite {
 		private var connectTween:TweenMax;
+		private var connectText:Text = new Text();
+		private var connectSubText:Text = new Text();
 		
-		private var connectText:Text;
-		
-		private var connectSubText:Text;
-		
-		public function ConnectStatus()
-		{
-			connectText = new Text();
-			connectSubText = new Text();
+		public function ConnectStatus() {
 			super();
 			this.visible = false;
 			connectText.text = "Connecting...";
-			connectText.color = 16777215;
+			connectText.color = 0xffffff;
 			connectText.size = 18;
 			connectText.x = 175;
 			connectText.y = 10;
 			connectText.center();
 			this.addChild(connectText);
 			connectSubText.text = "";
-			connectSubText.color = 8947848;
+			connectSubText.color = 0x888888;
 			connectSubText.size = 11;
 			connectSubText.x = 175;
 			connectSubText.y = connectText.y + connectText.height;
 			connectSubText.center();
 			this.addChild(connectSubText);
-			connectTween = TweenMax.fromTo(connectText, 1, {"alpha": 1}, {"alpha": 0.5, "yoyo": true, "repeat": -1});
+			connectTween = TweenMax.fromTo(connectText,1,{"alpha":1},{
+				"alpha":0.5,
+				"yoyo":true,
+				"repeat":-1
+			});
 		}
 		
-		public function clean():void
-		{
+		public function clean() : void {
 			connectTween.kill();
 		}
 		
-		public function set text(param1:String):void
-		{
-			connectText.text = param1;
+		public function set text(value:String) : void {
+			connectText.text = value;
 		}
 		
-		public function set subText(param1:String):void
-		{
-			if (param1 != "")
-			{
-				connectSubText.text = param1;
+		public function set subText(value:String) : void {
+			if(value != "") {
+				connectSubText.text = value;
 			}
 		}
 		
-		public function update(param1:ConnectEvent):void
-		{
-			if (param1.message == "")
-			{
+		public function update(e:ConnectEvent) : void {
+			if(e.message == "") {
 				this.visible = false;
 				return;
 			}
 			this.visible = true;
-			connectText.text = param1.message;
-			subText = param1.subMessage;
+			connectText.text = e.message;
+			subText = e.subMessage;
 		}
 	}
 }
+

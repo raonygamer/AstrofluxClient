@@ -1,102 +1,75 @@
-package core.hud.components.techTree
-{
+package core.hud.components.techTree {
 	import core.player.Player;
 	import core.player.TechSkill;
 	import core.scene.Game;
 	import starling.display.Sprite;
 	
-	public class TechBar extends Sprite
-	{
+	public class TechBar extends Sprite {
 		private var maxLevel:int;
-		
 		public var tech:String;
-		
 		public var table:String;
-		
 		public var eti:EliteTechIcon;
-		
 		private var _playerLevel:int;
-		
 		private var techIcons:Vector.<TechLevelIcon>;
-		
 		private var eliteTechIcon:EliteTechIcon;
-		
 		private var me:Player;
-		
 		private var _selectedTechLevelIcon:TechLevelIcon;
 		
-		public function TechBar(param1:Game, param2:TechSkill, param3:Player, param4:Boolean = true, param5:Boolean = false, param6:int = -1)
-		{
-			var _loc12_:int = 0;
-			var _loc8_:int = 0;
-			var _loc10_:TechLevelIcon = null;
+		public function TechBar(g:Game, techSkill:TechSkill, me:Player, showCanBeUpgraded:Boolean = true, showTooltip:Boolean = false, overrideSkinLevel:int = -1) {
+			var _local12:int = 0;
+			var _local8:int = 0;
+			var _local10:TechLevelIcon = null;
 			super();
-			this.me = param3;
+			this.me = me;
 			maxLevel = 6;
 			techIcons = new Vector.<TechLevelIcon>();
-			_playerLevel = param2.level;
-			table = param2.table;
-			tech = param2.tech;
-			var _loc7_:int = param6 == -1 ? Player.getSkinTechLevel(tech, param3.activeSkin) : param6;
-			var _loc9_:String = "";
-			_loc9_ = "upgraded";
-			var _loc11_:TechLevelIcon = new TechLevelIcon(this, _loc9_, 0, param2, param4);
-			_loc11_.x = TechLevelIcon.ICON_WIDTH / 2;
-			_loc11_.y = TechLevelIcon.ICON_WIDTH / 2;
-			_loc11_.pivotX = TechLevelIcon.ICON_WIDTH / 2;
-			_loc11_.pivotY = TechLevelIcon.ICON_WIDTH / 2;
-			techIcons.push(_loc11_);
-			addChild(_loc11_);
-			_loc12_ = 0;
-			while (_loc12_ < maxLevel)
-			{
-				_loc8_ = _loc12_ + 1;
-				if (_loc8_ <= _playerLevel)
-				{
-					_loc9_ = "upgraded";
+			_playerLevel = techSkill.level;
+			table = techSkill.table;
+			tech = techSkill.tech;
+			var _local7:int = overrideSkinLevel == -1 ? Player.getSkinTechLevel(tech,me.activeSkin) : overrideSkinLevel;
+			var _local9:String = "";
+			_local9 = "upgraded";
+			var _local11:TechLevelIcon = new TechLevelIcon(this,_local9,0,techSkill,showCanBeUpgraded);
+			_local11.x = TechLevelIcon.ICON_WIDTH / 2;
+			_local11.y = TechLevelIcon.ICON_WIDTH / 2;
+			_local11.pivotX = TechLevelIcon.ICON_WIDTH / 2;
+			_local11.pivotY = TechLevelIcon.ICON_WIDTH / 2;
+			techIcons.push(_local11);
+			addChild(_local11);
+			_local12 = 0;
+			while(_local12 < maxLevel) {
+				_local8 = _local12 + 1;
+				if(_local8 <= _playerLevel) {
+					_local9 = "upgraded";
+				} else if(!TechTree.hasRequiredLevel(_local8,me.level) && showCanBeUpgraded) {
+					_local9 = "locked";
+				} else if(_local8 == _playerLevel + 1 && showCanBeUpgraded) {
+					_local9 = "can be upgraded";
+				} else if(_local8 > _playerLevel) {
+					_local9 = "can\'t be upgraded";
 				}
-				else if (!TechTree.hasRequiredLevel(_loc8_, param3.level) && param4)
-				{
-					_loc9_ = "locked";
+				if(_local7 >= _local8) {
+					_local9 = "skin locked";
 				}
-				else if (_loc8_ == _playerLevel + 1 && param4)
-				{
-					_loc9_ = "can be upgraded";
-				}
-				else if (_loc8_ > _playerLevel)
-				{
-					_loc9_ = "can't be upgraded";
-				}
-				if (_loc7_ >= _loc8_)
-				{
-					_loc9_ = "skin locked";
-				}
-				_loc10_ = new TechLevelIcon(this, _loc9_, _loc8_, param2, param5);
-				_loc10_.x = TechLevelIcon.ICON_WIDTH + TechLevelIcon.ICON_PADDING + TechLevelIcon.ICON_WIDTH / 2 + _loc12_ * (TechLevelIcon.ICON_WIDTH + TechLevelIcon.ICON_PADDING);
-				_loc10_.y = TechLevelIcon.ICON_WIDTH / 2;
-				_loc10_.pivotX = TechLevelIcon.ICON_WIDTH / 2;
-				_loc10_.pivotY = TechLevelIcon.ICON_WIDTH / 2;
-				techIcons.push(_loc10_);
-				addChild(_loc10_);
-				_loc12_++;
+				_local10 = new TechLevelIcon(this,_local9,_local8,techSkill,showTooltip);
+				_local10.x = TechLevelIcon.ICON_WIDTH + TechLevelIcon.ICON_PADDING + TechLevelIcon.ICON_WIDTH / 2 + _local12 * (TechLevelIcon.ICON_WIDTH + TechLevelIcon.ICON_PADDING);
+				_local10.y = TechLevelIcon.ICON_WIDTH / 2;
+				_local10.pivotX = TechLevelIcon.ICON_WIDTH / 2;
+				_local10.pivotY = TechLevelIcon.ICON_WIDTH / 2;
+				techIcons.push(_local10);
+				addChild(_local10);
+				_local12++;
 			}
-			if (param2.level < 6)
-			{
-				_loc9_ = "locked";
+			if(techSkill.level < 6) {
+				_local9 = "locked";
+			} else if(techSkill.activeEliteTech == "") {
+				_local9 = "no special selected";
+			} else if(techSkill.activeEliteTechLevel < 100) {
+				_local9 = "special selected and can be upgraded";
+			} else {
+				_local9 = "fully upgraded";
 			}
-			else if (param2.activeEliteTech == "")
-			{
-				_loc9_ = "no special selected";
-			}
-			else if (param2.activeEliteTechLevel < 100)
-			{
-				_loc9_ = "special selected and can be upgraded";
-			}
-			else
-			{
-				_loc9_ = "fully upgraded";
-			}
-			eti = new EliteTechIcon(param1, this, _loc9_, param2, param5, param4);
+			eti = new EliteTechIcon(g,this,_local9,techSkill,showTooltip,showCanBeUpgraded);
 			eti.x = TechLevelIcon.ICON_WIDTH + TechLevelIcon.ICON_PADDING + TechLevelIcon.ICON_WIDTH / 2 + 6 * (TechLevelIcon.ICON_WIDTH + TechLevelIcon.ICON_PADDING);
 			eti.y = EliteTechIcon.ICON_WIDTH / 2;
 			eti.pivotX = EliteTechIcon.ICON_WIDTH / 2;
@@ -105,87 +78,69 @@ package core.hud.components.techTree
 			addChild(eliteTechIcon);
 		}
 		
-		public function reset():void
-		{
-			var _loc3_:int = 0;
-			var _loc2_:TechLevelIcon = null;
-			var _loc1_:int = Player.getSkinTechLevel(tech, me.activeSkin);
-			_playerLevel = _loc1_;
+		public function reset() : void {
+			var _local3:int = 0;
+			var _local2:TechLevelIcon = null;
+			var _local1:int = Player.getSkinTechLevel(tech,me.activeSkin);
+			_playerLevel = _local1;
 			eliteTechIcon.level = -1;
 			eliteTechIcon.updateState("locked");
-			_loc3_ = 0;
-			while (_loc3_ < techIcons.length)
-			{
-				_loc2_ = techIcons[_loc3_];
-				_loc2_.playerLevel = _loc1_;
-				if (_loc3_ != 0)
-				{
-					if (!TechTree.hasRequiredLevel(_loc3_, me.level))
-					{
-						_loc2_.updateState("locked");
+			_local3 = 0;
+			while(_local3 < techIcons.length) {
+				_local2 = techIcons[_local3];
+				_local2.playerLevel = _local1;
+				if(_local3 != 0) {
+					if(!TechTree.hasRequiredLevel(_local3,me.level)) {
+						_local2.updateState("locked");
+					} else if(_local3 == _local1 + 1) {
+						_local2.updateState("can be upgraded");
+					} else {
+						_local2.updateState("can\'t be upgraded");
 					}
-					else if (_loc3_ == _loc1_ + 1)
-					{
-						_loc2_.updateState("can be upgraded");
-					}
-					else
-					{
-						_loc2_.updateState("can't be upgraded");
-					}
-					_loc2_.visible = true;
-					if (_loc1_ >= _loc2_.level)
-					{
-						_loc2_.updateState("skin locked");
+					_local2.visible = true;
+					if(_local1 >= _local2.level) {
+						_local2.updateState("skin locked");
 					}
 				}
-				_loc3_++;
+				_local3++;
 			}
 		}
 		
-		override public function dispose():void
-		{
-			for each (var _loc1_:* in techIcons)
-			{
-				_loc1_.dispose();
+		override public function dispose() : void {
+			for each(var _local1 in techIcons) {
+				_local1.dispose();
 			}
 			removeEventListeners();
 			super.dispose();
 		}
 		
-		override public function set touchable(param1:Boolean):void
-		{
-			for each (var _loc2_:* in techIcons)
-			{
-				_loc2_.touchable = param1;
+		override public function set touchable(value:Boolean) : void {
+			for each(var _local2 in techIcons) {
+				_local2.touchable = value;
 			}
-			eliteTechIcon.touchable = param1;
+			eliteTechIcon.touchable = value;
 		}
 		
-		private function getUpgradeByLevel(param1:int):TechLevelIcon
-		{
-			for each (var _loc2_:* in techIcons)
-			{
-				if (_loc2_.level == param1)
-				{
-					return _loc2_;
+		private function getUpgradeByLevel(level:int) : TechLevelIcon {
+			for each(var _local2 in techIcons) {
+				if(_local2.level == level) {
+					return _local2;
 				}
 			}
 			return null;
 		}
 		
-		public function upgrade(param1:TechLevelIcon):void
-		{
-			param1.updateState("upgraded");
-			var _loc2_:TechLevelIcon = getUpgradeByLevel(param1.level + 1);
-			if (param1.level == 6)
-			{
+		public function upgrade(tli:TechLevelIcon) : void {
+			tli.updateState("upgraded");
+			var _local2:TechLevelIcon = getUpgradeByLevel(tli.level + 1);
+			if(tli.level == 6) {
 				eliteTechIcon.updateState("no special selected");
 			}
-			if (_loc2_ != null && TechTree.hasRequiredLevel(_loc2_.level, me.level))
-			{
-				_loc2_.updateState("can be upgraded");
-				_loc2_.playerLevel = param1.level;
+			if(_local2 != null && TechTree.hasRequiredLevel(_local2.level,me.level)) {
+				_local2.updateState("can be upgraded");
+				_local2.playerLevel = tli.level;
 			}
 		}
 	}
 }
+

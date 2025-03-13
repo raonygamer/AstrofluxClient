@@ -1,5 +1,4 @@
-package core.states.AIStates
-{
+package core.states.AIStates {
 	import core.scene.Game;
 	import core.ship.EnemyShip;
 	import core.states.IState;
@@ -7,43 +6,32 @@ package core.states.AIStates
 	import core.unit.Unit;
 	import movement.Heading;
 	
-	public class AIObserve implements IState
-	{
+	public class AIObserve implements IState {
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
 		
-		public function AIObserve(param1:Game, param2:EnemyShip, param3:Unit, param4:Heading, param5:int)
-		{
+		public function AIObserve(g:Game, s:EnemyShip, t:Unit, target:Heading, nextTurnDirection:int) {
 			super();
-			param2.target = param3;
-			if (!param2.aiCloak)
-			{
-				param2.setConvergeTarget(param4);
+			s.target = t;
+			if(!s.aiCloak) {
+				s.setConvergeTarget(target);
 			}
-			param2.setNextTurnDirection(param5);
-			this.g = param1;
-			this.s = param2;
+			s.setNextTurnDirection(nextTurnDirection);
+			this.g = g;
+			this.s = s;
 		}
 		
-		public function enter():void
-		{
+		public function enter() : void {
 		}
 		
-		public function execute():void
-		{
-			if (s.target != null && SqrRange(s.target) < s.visionRange * s.visionRange)
-			{
+		public function execute() : void {
+			if(s.target != null && SqrRange(s.target) < s.visionRange * s.visionRange) {
 				s.setAngleTargetPos(s.target.pos);
-			}
-			else
-			{
+			} else {
 				s.setAngleTargetPos(null);
 			}
-			if (!s.aiCloak)
-			{
+			if(!s.aiCloak) {
 				s.runConverger();
 			}
 			s.regenerateShield();
@@ -52,25 +40,22 @@ package core.states.AIStates
 			s.updateWeapons();
 		}
 		
-		private function SqrRange(param1:Unit):Number
-		{
-			var _loc2_:Number = s.pos.x - param1.pos.x;
-			var _loc3_:Number = s.pos.y - param1.pos.y;
-			return _loc2_ * _loc2_ + _loc3_ * _loc3_;
+		private function SqrRange(target:Unit) : Number {
+			var _local2:Number = s.pos.x - target.pos.x;
+			var _local3:Number = s.pos.y - target.pos.y;
+			return _local2 * _local2 + _local3 * _local3;
 		}
 		
-		public function exit():void
-		{
+		public function exit() : void {
 		}
 		
-		public function set stateMachine(param1:StateMachine):void
-		{
-			this.sm = param1;
+		public function set stateMachine(sm:StateMachine) : void {
+			this.sm = sm;
 		}
 		
-		public function get type():String
-		{
+		public function get type() : String {
 			return "AIObserve";
 		}
 	}
 }
+

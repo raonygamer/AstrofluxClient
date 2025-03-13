@@ -1,5 +1,4 @@
-package core.projectile
-{
+package core.projectile {
 	import core.particle.EmitterFactory;
 	import core.scene.Game;
 	import core.ship.EnemyShip;
@@ -16,164 +15,136 @@ package core.projectile
 	import sound.SoundLocator;
 	import textures.TextureLocator;
 	
-	public class ProjectileFactory
-	{
-		public function ProjectileFactory()
-		{
+	public class ProjectileFactory {
+		public function ProjectileFactory() {
 			super();
 		}
 		
-		public static function create(param1:String, param2:Game, param3:Unit, param4:Weapon, param5:Heading = null):Projectile
-		{
-			var _loc7_:Point = null;
-			var _loc12_:Number = NaN;
-			var _loc9_:Number = NaN;
-			var _loc13_:Number = NaN;
-			var _loc6_:ISound = null;
-			if (param3 == null)
-			{
+		public static function create(key:String, g:Game, u:Unit, w:Weapon, course:Heading = null) : Projectile {
+			var _local7:Point = null;
+			var _local12:Number = NaN;
+			var _local9:Number = NaN;
+			var _local13:Number = NaN;
+			var _local6:ISound = null;
+			if(u == null) {
 				return null;
 			}
-			if (param4 == null)
-			{
+			if(w == null) {
 				return null;
 			}
-			if (param2.me.ship == null && param4.ttl < 2000)
-			{
+			if(g.me.ship == null && w.ttl < 2000) {
 				return null;
 			}
-			if (param3.movieClip != param2.camera.focusTarget)
-			{
-				if (isNaN(param3.pos.x))
-				{
+			if(u.movieClip != g.camera.focusTarget) {
+				if(isNaN(u.pos.x)) {
 					return null;
 				}
-				if (param5 != null)
-				{
-					_loc7_ = param2.camera.getCameraCenter().subtract(param5.pos);
+				if(course != null) {
+					_local7 = g.camera.getCameraCenter().subtract(course.pos);
+				} else {
+					_local7 = g.camera.getCameraCenter().subtract(u.pos);
 				}
-				else
-				{
-					_loc7_ = param2.camera.getCameraCenter().subtract(param3.pos);
-				}
-				_loc12_ = _loc7_.x * _loc7_.x + _loc7_.y * _loc7_.y;
-				_loc9_ = 450;
-				if (param4.global && _loc12_ > 36000000)
-				{
+				_local12 = _local7.x * _local7.x + _local7.y * _local7.y;
+				_local9 = 450;
+				if(w.global && _local12 > 10 * 60 * 60 * 1000) {
 					return null;
 				}
-				_loc13_ = 0;
-				if (param4.type == "instant")
-				{
-					_loc13_ = param4.range;
+				_local13 = 0;
+				if(w.type == "instant") {
+					_local13 = w.range;
+				} else {
+					_local13 = (Math.abs(w.speed) + _local9) * 0.001 * w.ttl + 500;
 				}
-				else
-				{
-					_loc13_ = (Math.abs(param4.speed) + _loc9_) * 0.001 * param4.ttl + 500;
-				}
-				if (_loc12_ > _loc13_ * _loc13_)
-				{
+				if(_local12 > _local13 * _local13) {
 					return null;
 				}
 			}
-			var _loc14_:IDataManager = DataLocator.getService();
-			var _loc11_:Object = _loc14_.loadKey("Projectiles", param1);
-			var _loc10_:Projectile = param2.projectileManager.getProjectile();
-			if (param4.maxProjectiles > 0)
-			{
-				param4.projectiles.push(_loc10_);
-				if (param4.projectiles.length > param4.maxProjectiles)
-				{
-					param4.projectiles[0].destroy(false);
+			var _local14:IDataManager = DataLocator.getService();
+			var _local11:Object = _local14.loadKey("Projectiles",key);
+			var _local10:Projectile = g.projectileManager.getProjectile();
+			if(w.maxProjectiles > 0) {
+				w.projectiles.push(_local10);
+				if(w.projectiles.length > w.maxProjectiles) {
+					w.projectiles[0].destroy(false);
 				}
 			}
-			_loc10_.name = _loc11_.name;
-			_loc10_.useShipSystem = param4.useShipSystem;
-			_loc10_.unit = param3;
-			if (param3 is EnemyShip || param3 is Turret)
-			{
-				_loc10_.isEnemy = true;
+			_local10.name = _local11.name;
+			_local10.useShipSystem = w.useShipSystem;
+			_local10.unit = u;
+			if(u is EnemyShip || u is Turret) {
+				_local10.isEnemy = true;
+			} else if(u is PlayerShip) {
+				_local10.ps = u as PlayerShip;
 			}
-			else if (param3 is PlayerShip)
-			{
-				_loc10_.ps = param3 as PlayerShip;
+			_local10.weapon = w;
+			if(w.dmg.type == 6) {
+				_local10.isHeal = true;
+			} else {
+				_local10.isHeal = false;
 			}
-			_loc10_.weapon = param4;
-			if (param4.dmg.type == 6)
-			{
-				_loc10_.isHeal = true;
+			_local10.debuffType = w.debuffType;
+			_local10.collisionRadius = _local11.collisionRadius;
+			_local10.ttl = w.ttl;
+			_local10.ttlMax = w.ttl;
+			_local10.numberOfHits = w.numberOfHits;
+			_local10.speedMax = w.speed;
+			_local10.rotationSpeedMax = w.rotationSpeed;
+			_local10.acceleration = w.acceleration;
+			_local10.dmgRadius = w.dmgRadius;
+			_local10.course.speed.x = u.speed.x;
+			_local10.course.speed.y = u.speed.y;
+			_local10.alive = true;
+			_local10.randomAngle = w.randomAngle;
+			_local10.wave = _local11.wave;
+			w.waveDirection = w.waveDirection == 1 ? -1 : 1;
+			_local10.waveDirection = w.waveDirection;
+			_local10.waveAmplitude = _local11.waveAmplitude;
+			_local10.waveFrequency = _local11.waveFrequency;
+			_local10.boomerangReturnTime = _local11.boomerangReturnTime;
+			_local10.boomerangReturning = false;
+			_local10.clusterProjectile = _local11.clusterProjectile;
+			_local10.clusterNrOfProjectiles = _local11.clusterNrOfProjectiles;
+			_local10.clusterNrOfSplits = _local11.clusterNrOfSplits;
+			_local10.clusterAngle = _local11.clusterAngle;
+			_local10.aiDelayedAcceleration = _local11.aiDelayedAcceleration;
+			_local10.aiDelayedAccelerationTime = _local11.aiDelayedAccelerationTime;
+			_local10.switchTexturesByObj(_local11);
+			_local10.blendMode = _local11.blendMode;
+			if(_local11.hasOwnProperty("aiAlwaysExplode")) {
+				_local10.aiAlwaysExplode = _local11.aiAlwaysExplode;
 			}
-			else
-			{
-				_loc10_.isHeal = false;
+			if(_local11.ribbonTrail) {
+				_local10.ribbonTrail = g.ribbonTrailPool.getRibbonTrail();
+				_local10.hasRibbonTrail = true;
+				_local10.ribbonTrail.color = _local11.ribbonColor;
+				_local10.ribbonTrail.movingRatio = _local11.ribbonSpeed;
+				_local10.ribbonTrail.alphaRatio = _local11.ribbonAlpha;
+				_local10.ribbonThickness = _local11.ribbonThickness;
+				_local10.ribbonTrail.blendMode = "add";
+				_local10.ribbonTrail.texture = TextureLocator.getService().getTextureMainByTextureName(_local11.ribbonTexture || "ribbon_trail");
+				_local10.ribbonTrail.followTrailSegmentsLine(_local10.followingRibbonSegmentLine);
+				_local10.ribbonTrail.isPlaying = false;
+				_local10.ribbonTrail.visible = false;
+				_local10.useRibbonOffset = _local11.useRibbonOffset;
 			}
-			_loc10_.debuffType = param4.debuffType;
-			_loc10_.collisionRadius = _loc11_.collisionRadius;
-			_loc10_.ttl = param4.ttl;
-			_loc10_.ttlMax = param4.ttl;
-			_loc10_.numberOfHits = param4.numberOfHits;
-			_loc10_.speedMax = param4.speed;
-			_loc10_.rotationSpeedMax = param4.rotationSpeed;
-			_loc10_.acceleration = param4.acceleration;
-			_loc10_.dmgRadius = param4.dmgRadius;
-			_loc10_.course.speed.x = param3.speed.x;
-			_loc10_.course.speed.y = param3.speed.y;
-			_loc10_.alive = true;
-			_loc10_.randomAngle = param4.randomAngle;
-			_loc10_.wave = _loc11_.wave;
-			param4.waveDirection = param4.waveDirection == 1 ? -1 : 1;
-			_loc10_.waveDirection = param4.waveDirection;
-			_loc10_.waveAmplitude = _loc11_.waveAmplitude;
-			_loc10_.waveFrequency = _loc11_.waveFrequency;
-			_loc10_.boomerangReturnTime = _loc11_.boomerangReturnTime;
-			_loc10_.boomerangReturning = false;
-			_loc10_.clusterProjectile = _loc11_.clusterProjectile;
-			_loc10_.clusterNrOfProjectiles = _loc11_.clusterNrOfProjectiles;
-			_loc10_.clusterNrOfSplits = _loc11_.clusterNrOfSplits;
-			_loc10_.clusterAngle = _loc11_.clusterAngle;
-			_loc10_.aiDelayedAcceleration = _loc11_.aiDelayedAcceleration;
-			_loc10_.aiDelayedAccelerationTime = _loc11_.aiDelayedAccelerationTime;
-			_loc10_.switchTexturesByObj(_loc11_);
-			_loc10_.blendMode = _loc11_.blendMode;
-			if (_loc11_.hasOwnProperty("aiAlwaysExplode"))
-			{
-				_loc10_.aiAlwaysExplode = _loc11_.aiAlwaysExplode;
+			var _local8:Boolean = w.reloadTime < 60 && Math.random() < 0.4;
+			if(_local11.thrustEffect != null && !_local8) {
+				_local10.thrustEmitters = EmitterFactory.create(_local11.thrustEffect,g,u.pos.x,u.pos.y,_local10,true);
 			}
-			if (_loc11_.ribbonTrail)
-			{
-				_loc10_.ribbonTrail = param2.ribbonTrailPool.getRibbonTrail();
-				_loc10_.hasRibbonTrail = true;
-				_loc10_.ribbonTrail.color = _loc11_.ribbonColor;
-				_loc10_.ribbonTrail.movingRatio = _loc11_.ribbonSpeed;
-				_loc10_.ribbonTrail.alphaRatio = _loc11_.ribbonAlpha;
-				_loc10_.ribbonThickness = _loc11_.ribbonThickness;
-				_loc10_.ribbonTrail.blendMode = "add";
-				_loc10_.ribbonTrail.texture = TextureLocator.getService().getTextureMainByTextureName(_loc11_.ribbonTexture || "ribbon_trail");
-				_loc10_.ribbonTrail.followTrailSegmentsLine(_loc10_.followingRibbonSegmentLine);
-				_loc10_.ribbonTrail.isPlaying = false;
-				_loc10_.ribbonTrail.visible = false;
-				_loc10_.useRibbonOffset = _loc11_.useRibbonOffset;
+			_local10.forcedRotation = _local11.forcedRotation;
+			if(_local10.forcedRotation) {
+				_local10.forcedRotationAngle = Math.random() * 2 * 3.141592653589793 - 3.141592653589793;
+				_local10.forcedRotationSpeed = _local11.forcedRotationSpeed;
 			}
-			var _loc8_:Boolean = param4.reloadTime < 60 && Math.random() < 0.4;
-			if (_loc11_.thrustEffect != null && !_loc8_)
-			{
-				_loc10_.thrustEmitters = EmitterFactory.create(_loc11_.thrustEffect, param2, param3.pos.x, param3.pos.y, _loc10_, true);
+			_local10.explosionSound = _local11.explosionSound;
+			if(_local11.explosionSound != null) {
+				_local6 = SoundLocator.getService();
+				_local6.preCacheSound(_local11.explosionSound);
 			}
-			_loc10_.forcedRotation = _loc11_.forcedRotation;
-			if (_loc10_.forcedRotation)
-			{
-				_loc10_.forcedRotationAngle = Math.random() * 2 * 3.141592653589793 - 3.141592653589793;
-				_loc10_.forcedRotationSpeed = _loc11_.forcedRotationSpeed;
-			}
-			_loc10_.explosionSound = _loc11_.explosionSound;
-			if (_loc11_.explosionSound != null)
-			{
-				_loc6_ = SoundLocator.getService();
-				_loc6_.preCacheSound(_loc11_.explosionSound);
-			}
-			_loc10_.explosionEffect = _loc11_.explosionEffect;
-			_loc10_.stateMachine.changeState(AIStateFactory.createProjectileAI(_loc11_, param2, _loc10_));
-			return _loc10_;
+			_local10.explosionEffect = _local11.explosionEffect;
+			_local10.stateMachine.changeState(AIStateFactory.createProjectileAI(_local11,g,_local10));
+			return _local10;
 		}
 	}
 }
+

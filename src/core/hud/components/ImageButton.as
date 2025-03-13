@@ -1,82 +1,66 @@
-package core.hud.components
-{
+package core.hud.components {
 	import starling.events.TouchEvent;
 	import starling.filters.ColorMatrixFilter;
 	import starling.textures.Texture;
 	
-	public class ImageButton extends InteractiveImage
-	{
+	public class ImageButton extends InteractiveImage {
 		private var callback:Function;
-		
 		protected var disabledSource:Texture;
-		
 		protected var toggleSource:Texture;
 		
-		public function ImageButton(param1:Function, param2:Texture = null, param3:Texture = null, param4:Texture = null, param5:Texture = null, param6:String = null, param7:Boolean = false)
-		{
-			disabledSource = param4;
-			toggleSource = param5;
-			super(param2, param3, param6, param7);
+		public function ImageButton(callback:Function, bd:Texture = null, hoverBd:Texture = null, disabledBd:Texture = null, toggleBd:Texture = null, caption:String = null, alwaysShowCaption:Boolean = false) {
+			disabledSource = disabledBd;
+			toggleSource = toggleBd;
+			super(bd,hoverBd,caption,alwaysShowCaption);
 			captionPosition = Position.INNER_RIGHT;
-			this.callback = param1;
+			this.callback = callback;
 		}
 		
-		override public function set texture(param1:Texture):void
-		{
-			if (disabledSource == null)
-			{
-				disabledSource = param1;
+		override public function set texture(bd:Texture) : void {
+			if(disabledSource == null) {
+				disabledSource = bd;
 			}
-			if (toggleSource == null)
-			{
-				toggleSource = param1;
+			if(toggleSource == null) {
+				toggleSource = bd;
 			}
-			super.texture = param1;
+			super.texture = bd;
 		}
 		
-		public function set disabledBitmapData(param1:Texture):void
-		{
-			disabledSource = param1;
+		public function set disabledBitmapData(bd:Texture) : void {
+			disabledSource = bd;
 		}
 		
-		override public function set enabled(param1:Boolean):void
-		{
-			var _loc2_:ColorMatrixFilter = null;
-			if (disabledSource == null)
-			{
+		override public function set enabled(value:Boolean) : void {
+			var _local2:ColorMatrixFilter = null;
+			if(disabledSource == null) {
 				disabledSource = source;
 			}
-			if (!_enabled && param1)
-			{
+			if(!_enabled && value) {
 				useHandCursor = true;
-				if (layer.filter)
-				{
+				if(layer.filter) {
 					layer.filter.dispose();
 					layer.filter = null;
 				}
 				layer.texture = source;
-			}
-			else if (_enabled && !param1)
-			{
+			} else if(_enabled && !value) {
 				useHandCursor = false;
-				if (disabledSource == source)
-				{
-					_loc2_ = new ColorMatrixFilter();
-					_loc2_.adjustSaturation(-1);
-					layer.filter = _loc2_;
+				if(disabledSource == source) {
+					_local2 = new ColorMatrixFilter();
+					_local2.adjustSaturation(-1);
+					layer.filter = _local2;
 				}
 				layer.texture = disabledSource;
 			}
-			super.enabled = param1;
+			super.enabled = value;
 		}
 		
-		override protected function onClick(param1:TouchEvent):void
-		{
+		override protected function onClick(e:TouchEvent) : void {
 			layer.texture = toggleSource;
-			var _loc2_:Texture = source;
+			var _local2:Texture = source;
 			source = toggleSource;
-			toggleSource = _loc2_;
+			toggleSource = _local2;
 			callback(this);
 		}
 	}
 }
+

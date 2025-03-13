@@ -1,23 +1,22 @@
-package joinRoom
-{
+package joinRoom {
 	import core.player.Player;
 	
-	public interface IJoinRoomManager
-	{
-		function init():void;
+	public interface IJoinRoomManager {
+		function init() : void;
 		
-		function joinServiceRoom(param1:String):void;
+		function joinServiceRoom(id:String) : void;
 		
-		function joinGame(param1:String, param2:Object):void;
+		function joinGame(solarSystemKey:String, joinData:Object) : void;
 		
-		function tryWarpJumpToFriend(param1:Player, param2:String, param3:Function, param4:Function):void;
+		function tryWarpJumpToFriend(player:Player, destination:String, successCallback:Function, failCallback:Function) : void;
 		
-		function set desiredRoomId(param1:String):void;
+		function set desiredRoomId(value:String) : void;
 		
-		function get desiredRoomId():String;
+		function get desiredRoomId() : String;
 		
-		function set desiredSystemType(param1:String):void;
+		function set desiredSystemType(value:String) : void;
 		
-		function get desiredSystemType():String;
+		function get desiredSystemType() : String;
 	}
 }
+

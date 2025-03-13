@@ -1,5 +1,4 @@
-package core.hud.components
-{
+package core.hud.components {
 	import generics.Util;
 	import playerio.Message;
 	import starling.display.Image;
@@ -8,102 +7,92 @@ package core.hud.components
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class TopPvPPlayersList extends Sprite
-	{
+	public class TopPvPPlayersList extends Sprite {
 		private static var topPvpPlayersList:Array;
-		
 		private var textureManager:ITextureManager;
 		
-		public function TopPvPPlayersList()
-		{
+		public function TopPvPPlayersList() {
 			super();
 			textureManager = TextureLocator.getService();
 		}
 		
-		public function showHighscore(param1:Message):void
-		{
-			var _loc3_:int = 0;
-			var _loc2_:Object = null;
+		public function showHighscore(m:Message) : void {
+			var _local3:int = 0;
+			var _local2:Object = null;
 			topPvpPlayersList = [];
-			_loc3_ = 0;
-			while (_loc3_ < param1.length)
-			{
-				_loc2_ = {};
-				_loc2_.rank = param1.getInt(_loc3_);
-				_loc2_.name = param1.getString(_loc3_ + 1);
-				_loc2_.key = param1.getString(_loc3_ + 2);
-				_loc2_.level = param1.getInt(_loc3_ + 3);
-				_loc2_.clan = param1.getString(_loc3_ + 4);
-				_loc2_.value = param1.getNumber(_loc3_ + 5);
-				topPvpPlayersList.push(_loc2_);
-				_loc3_ += 6;
+			_local3 = 0;
+			while(_local3 < m.length) {
+				_local2 = {};
+				_local2.rank = m.getInt(_local3);
+				_local2.name = m.getString(_local3 + 1);
+				_local2.key = m.getString(_local3 + 2);
+				_local2.level = m.getInt(_local3 + 3);
+				_local2.clan = m.getString(_local3 + 4);
+				_local2.value = m.getNumber(_local3 + 5);
+				topPvpPlayersList.push(_local2);
+				_local3 += 6;
 			}
 			drawTopPvpPlayers();
 		}
 		
-		private function drawTopPvpPlayers():void
-		{
-			var _loc2_:int = 0;
-			var _loc1_:int = 0;
-			_loc2_ = 0;
-			while (_loc2_ < topPvpPlayersList.length)
-			{
-				drawPlayerObject(topPvpPlayersList[_loc2_], _loc2_, this);
-				_loc1_ = int(topPvpPlayersList[_loc2_].rank);
-				_loc2_++;
+		private function drawTopPvpPlayers() : void {
+			var _local2:int = 0;
+			var _local1:int = 0;
+			_local2 = 0;
+			while(_local2 < topPvpPlayersList.length) {
+				drawPlayerObject(topPvpPlayersList[_local2],_local2,this);
+				_local1 = int(topPvpPlayersList[_local2].rank);
+				_local2++;
 			}
 		}
 		
-		private function drawPlayerObject(param1:Object, param2:int, param3:Sprite):void
-		{
-			var _loc6_:Quad = null;
-			var _loc8_:Image = null;
-			var _loc10_:int = param2 * 45;
-			if (Login.client.connectUserId == param1.key)
-			{
-				_loc6_ = new Quad(670, 40, 4342338);
+		private function drawPlayerObject(player:Object, i:int, canvas:Sprite) : void {
+			var _local6:Quad = null;
+			var _local8:Image = null;
+			var _local10:int = i * 45;
+			if(Login.client.connectUserId == player.key) {
+				_local6 = new Quad(670,40,0x424242);
+			} else {
+				_local6 = new Quad(670,40,0x212121);
 			}
-			else
-			{
-				_loc6_ = new Quad(670, 40, 2171169);
-			}
-			_loc6_.y = _loc10_;
-			_loc10_ += 10;
-			var _loc4_:TextBitmap = new TextBitmap();
-			_loc4_.text = topPvpPlayersList[param2].rank;
-			_loc4_.size = 14;
-			_loc4_.y = _loc10_;
-			_loc4_.x = 10;
-			var _loc7_:TextBitmap = new TextBitmap();
-			_loc7_.text = param1.name;
-			_loc7_.y = _loc10_;
-			_loc7_.size = 14;
-			_loc7_.format.color = 16729156;
-			_loc7_.x = _loc4_.x + _loc4_.width + 10;
-			var _loc5_:TextBitmap = new TextBitmap();
-			_loc5_.text = "(Lv. " + param1.level + ")";
-			_loc5_.y = _loc10_;
-			_loc5_.size = 14;
-			_loc5_.format.color = 16729156;
-			_loc5_.x = _loc7_.x + _loc7_.width + 10;
-			var _loc9_:TextBitmap = new TextBitmap();
-			_loc9_.text = Util.formatAmount(Math.floor(param1.value));
-			_loc9_.y = _loc10_;
-			_loc9_.size = 14;
-			_loc9_.format.color = Style.COLOR_YELLOW;
-			_loc9_.x = 610 - _loc9_.width - 10;
-			_loc8_ = new Image(textureManager.getTextureGUIByTextureName("clan_logo3.png"));
-			_loc8_.y = _loc10_ + 20;
-			_loc8_.color = 16711680;
-			_loc8_.x = _loc9_.x + _loc9_.width + 10;
-			_loc8_.scaleX = _loc8_.scaleY = 0.25;
-			_loc8_.rotation = -0.5 * 3.141592653589793;
-			param3.addChild(_loc6_);
-			param3.addChild(_loc4_);
-			param3.addChild(_loc7_);
-			param3.addChild(_loc5_);
-			param3.addChild(_loc9_);
-			param3.addChild(_loc8_);
+			_local6.y = _local10;
+			_local10 += 10;
+			var _local4:TextBitmap = new TextBitmap();
+			_local4.text = topPvpPlayersList[i].rank;
+			_local4.size = 14;
+			_local4.y = _local10;
+			_local4.x = 10;
+			var _local7:TextBitmap = new TextBitmap();
+			_local7.text = player.name;
+			_local7.y = _local10;
+			_local7.size = 14;
+			_local7.format.color = 0xff4444;
+			_local7.x = _local4.x + _local4.width + 10;
+			var _local5:TextBitmap = new TextBitmap();
+			_local5.text = "(Lv. " + player.level + ")";
+			_local5.y = _local10;
+			_local5.size = 14;
+			_local5.format.color = 0xff4444;
+			_local5.x = _local7.x + _local7.width + 10;
+			var _local9:TextBitmap = new TextBitmap();
+			_local9.text = Util.formatAmount(Math.floor(player.value));
+			_local9.y = _local10;
+			_local9.size = 14;
+			_local9.format.color = Style.COLOR_YELLOW;
+			_local9.x = 610 - _local9.width - 10;
+			_local8 = new Image(textureManager.getTextureGUIByTextureName("clan_logo3.png"));
+			_local8.y = _local10 + 20;
+			_local8.color = 0xff0000;
+			_local8.x = _local9.x + _local9.width + 10;
+			_local8.scaleX = _local8.scaleY = 0.25;
+			_local8.rotation = -0.5 * 3.141592653589793;
+			canvas.addChild(_local6);
+			canvas.addChild(_local4);
+			canvas.addChild(_local7);
+			canvas.addChild(_local5);
+			canvas.addChild(_local9);
+			canvas.addChild(_local8);
 		}
 	}
 }
+

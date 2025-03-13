@@ -1,74 +1,64 @@
-package core.weapon
-{
+package core.weapon {
 	import core.scene.Game;
 	
-	public class WeaponManager
-	{
-		public var weapons:Vector.<Weapon>;
-		
+	public class WeaponManager {
+		public var weapons:Vector.<Weapon> = new Vector.<Weapon>();
 		private var g:Game;
 		
-		public function WeaponManager(param1:Game)
-		{
-			weapons = new Vector.<Weapon>();
+		public function WeaponManager(g:Game) {
 			super();
-			this.g = param1;
+			this.g = g;
 		}
 		
-		public function update():void
-		{
-			var _loc3_:int = 0;
-			var _loc1_:Weapon = null;
-			var _loc2_:int = int(weapons.length);
-			_loc3_ = _loc2_ - 1;
-			while (_loc3_ > -1)
-			{
-				_loc1_ = weapons[_loc3_];
-				if (!_loc1_.alive)
-				{
-					removeWeapon(_loc3_);
+		public function update() : void {
+			var _local3:int = 0;
+			var _local1:Weapon = null;
+			var _local2:int = int(weapons.length);
+			_local3 = _local2 - 1;
+			while(_local3 > -1) {
+				_local1 = weapons[_local3];
+				if(!_local1.alive) {
+					removeWeapon(_local3);
 				}
-				_loc3_--;
+				_local3--;
 			}
 		}
 		
-		public function getWeapon(param1:String):Weapon
-		{
-			var _loc2_:Weapon = null;
-			switch (param1)
-			{
-			case "blaster": 
-				_loc2_ = new Blaster(g);
-				break;
-			case "instant": 
-				_loc2_ = new Instant(g);
-				break;
-			case "beam": 
-				_loc2_ = new Beam(g);
-				break;
-			case "smartGun": 
-				_loc2_ = new SmartGun(g);
-				break;
-			case "teleport": 
-				_loc2_ = new Teleport(g);
-				break;
-			case "cloak": 
-				_loc2_ = new Cloak(g);
-				break;
-			case "petSpawner": 
-				_loc2_ = new PetSpawner(g);
-				break;
-			default: 
-				_loc2_ = new ProjectileGun(g);
+		public function getWeapon(type:String) : Weapon {
+			var _local2:Weapon = null;
+			switch(type) {
+				case "blaster":
+					_local2 = new Blaster(g);
+					break;
+				case "instant":
+					_local2 = new Instant(g);
+					break;
+				case "beam":
+					_local2 = new Beam(g);
+					break;
+				case "smartGun":
+					_local2 = new SmartGun(g);
+					break;
+				case "teleport":
+					_local2 = new Teleport(g);
+					break;
+				case "cloak":
+					_local2 = new Cloak(g);
+					break;
+				case "petSpawner":
+					_local2 = new PetSpawner(g);
+					break;
+				default:
+					_local2 = new ProjectileGun(g);
 			}
-			_loc2_.reset();
-			weapons.push(_loc2_);
-			return _loc2_;
+			_local2.reset();
+			weapons.push(_local2);
+			return _local2;
 		}
 		
-		private function removeWeapon(param1:int):void
-		{
-			weapons.splice(param1, 1);
+		private function removeWeapon(index:int) : void {
+			weapons.splice(index,1);
 		}
 	}
 }
+

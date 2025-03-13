@@ -1,5 +1,4 @@
-package core.states.gameStates
-{
+package core.states.gameStates {
 	import core.credits.CreditManager;
 	import core.hud.components.ShopItemBar;
 	import core.hud.components.Text;
@@ -12,31 +11,21 @@ package core.states.gameStates
 	import starling.events.Event;
 	import starling.events.TouchEvent;
 	
-	public class LandedWeaponFactory extends LandedState
-	{
-		private var shopItemBars:Vector.<ShopItemBar>;
-		
+	public class LandedWeaponFactory extends LandedState {
+		private var shopItemBars:Vector.<ShopItemBar> = new Vector.<ShopItemBar>();
 		private var myCargo:Cargo;
-		
 		private var container:ScrollContainer;
-		
-		private var infoContainer:Sprite;
-		
+		private var infoContainer:Sprite = new Sprite();
 		private var hasBought:Boolean = false;
-		
 		private var fluxCost:int;
 		
-		public function LandedWeaponFactory(param1:Game, param2:Body, param3:Boolean = true)
-		{
-			shopItemBars = new Vector.<ShopItemBar>();
-			infoContainer = new Sprite();
-			super(param1, param2, param2.name);
-			fluxCost = CreditManager.getCostWeaponFactory(param2.obj.payVaultItem);
-			myCargo = param1.myCargo;
+		public function LandedWeaponFactory(g:Game, body:Body, startMusic:Boolean = true) {
+			super(g,body,body.name);
+			fluxCost = CreditManager.getCostWeaponFactory(body.obj.payVaultItem);
+			myCargo = g.myCargo;
 		}
 		
-		override public function enter():void
-		{
+		override public function enter() : void {
 			super.enter();
 			container = new ScrollContainer();
 			container.width = 640;
@@ -47,96 +36,84 @@ package core.states.gameStates
 			infoContainer.x = 380;
 			infoContainer.y = 140;
 			addChild(infoContainer);
-			var _loc2_:Text = new Text();
-			_loc2_.text = body.name;
-			_loc2_.size = 26;
-			_loc2_.x = 60;
-			_loc2_.y = 50;
-			addChild(_loc2_);
-			var _loc1_:Text = new Text();
-			_loc1_.text = Localize.t("Produce a weapon with minerals or Flux.");
-			_loc1_.color = 11184810;
-			_loc1_.x = 60;
-			_loc1_.y = _loc2_.y + _loc2_.height + 10;
-			addChild(_loc1_);
+			var _local2:Text = new Text();
+			_local2.text = body.name;
+			_local2.size = 26;
+			_local2.x = 60;
+			_local2.y = 50;
+			addChild(_local2);
+			var _local1:Text = new Text();
+			_local1.text = Localize.t("Produce a weapon with minerals or Flux.");
+			_local1.color = 0xaaaaaa;
+			_local1.x = 60;
+			_local1.y = _local2.y + _local2.height + 10;
+			addChild(_local1);
 			cargoRecieved();
 		}
 		
-		override public function execute():void
-		{
+		override public function execute() : void {
 			super.execute();
 		}
 		
-		private function cargoRecieved():void
-		{
-			var _loc7_:int = 0;
-			var _loc4_:Object = null;
-			var _loc3_:String = null;
-			var _loc5_:String = null;
-			var _loc1_:ShopItemBar = null;
-			var _loc2_:Array = body.obj.shopItems;
-			if (_loc2_ == null || _loc2_.length == 0)
-			{
+		private function cargoRecieved() : void {
+			var _local7:int = 0;
+			var _local4:Object = null;
+			var _local3:String = null;
+			var _local5:String = null;
+			var _local1:ShopItemBar = null;
+			var _local2:Array = body.obj.shopItems;
+			if(_local2 == null || _local2.length == 0) {
 				g.showErrorDialog(Localize.t("This weapon factory is not operational."));
 				return;
 			}
-			var _loc6_:int = 0;
-			_loc7_ = 0;
-			while (_loc7_ < _loc2_.length)
-			{
-				_loc4_ = _loc2_[_loc7_];
-				_loc3_ = _loc4_.item;
-				_loc5_ = _loc4_.table;
-				if (_loc4_.available)
-				{
-					_loc1_ = new ShopItemBar(g, infoContainer, _loc4_, fluxCost);
-					_loc1_.x = 0;
-					_loc1_.y = 60 * _loc6_;
-					_loc1_.addEventListener("select", onSelect);
-					_loc1_.addEventListener("bought", bought);
-					shopItemBars.push(_loc1_);
-					container.addChild(_loc1_);
-					_loc6_++;
+			var _local6:int = 0;
+			_local7 = 0;
+			while(_local7 < _local2.length) {
+				_local4 = _local2[_local7];
+				_local3 = _local4.item;
+				_local5 = _local4.table;
+				if(_local4.available) {
+					_local1 = new ShopItemBar(g,infoContainer,_local4,fluxCost);
+					_local1.x = 0;
+					_local1.y = 60 * _local6;
+					_local1.addEventListener("select",onSelect);
+					_local1.addEventListener("bought",bought);
+					shopItemBars.push(_local1);
+					container.addChild(_local1);
+					_local6++;
 				}
-				_loc7_++;
+				_local7++;
 			}
 			loadCompleted();
 			g.tutorial.showShopAdvice();
 		}
 		
-		private function onSelect(param1:TouchEvent):void
-		{
-			var _loc2_:ShopItemBar = param1.target as ShopItemBar;
-			for each (var _loc3_:* in shopItemBars)
-			{
-				if (_loc3_ != _loc2_)
-				{
-					_loc3_.deselect();
+		private function onSelect(e:TouchEvent) : void {
+			var _local2:ShopItemBar = e.target as ShopItemBar;
+			for each(var _local3 in shopItemBars) {
+				if(_local3 != _local2) {
+					_local3.deselect();
 				}
 			}
 		}
 		
-		private function bought(param1:Event):void
-		{
-			for each (var _loc2_:* in shopItemBars)
-			{
-				_loc2_.update();
+		private function bought(e:Event) : void {
+			for each(var _local2 in shopItemBars) {
+				_local2.update();
 			}
 			hasBought = true;
 		}
 		
-		override public function exit(param1:Function):void
-		{
-			if (hasBought)
-			{
+		override public function exit(callback:Function) : void {
+			if(hasBought) {
 				g.tutorial.showChangeWeapon();
 			}
-			for each (var _loc2_:* in shopItemBars)
-			{
-				_loc2_.removeEventListener("bought", bought);
-				_loc2_.removeEventListener("select", onSelect);
+			for each(var _local2 in shopItemBars) {
+				_local2.removeEventListener("bought",bought);
+				_local2.removeEventListener("select",onSelect);
 			}
-			super.exit(param1);
+			super.exit(callback);
 		}
 	}
 }
+

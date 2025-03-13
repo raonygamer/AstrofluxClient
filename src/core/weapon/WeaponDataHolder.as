@@ -1,17 +1,13 @@
-package core.weapon
-{
-	
-	public class WeaponDataHolder
-	{
+package core.weapon {
+	public class WeaponDataHolder {
 		public var desc:String;
-		
 		public var key:String;
 		
-		public function WeaponDataHolder(param1:*, param2:*)
-		{
+		public function WeaponDataHolder(key:*, desc:*) {
 			super();
-			this.key = param1;
-			this.desc = param2;
+			this.key = key;
+			this.desc = desc;
 		}
 	}
 }
+

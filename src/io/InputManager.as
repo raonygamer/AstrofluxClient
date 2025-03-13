@@ -1,5 +1,4 @@
-package io
-{
+package io {
 	import core.scene.Game;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -9,217 +8,169 @@ package io
 	import starling.events.Event;
 	import starling.events.TouchEvent;
 	
-	public class InputManager implements IInput
-	{
+	public class InputManager implements IInput {
 		private var _isMousePressed:Boolean;
-		
 		private var _isRightMousePressed:Boolean = false;
-		
 		private var downKeys:Dictionary;
-		
 		private var pressedKeys:Dictionary;
-		
 		private var releasedKeys:Dictionary;
-		
 		private var mouseHasMoved:Boolean;
-		
 		private var prevMouseX:Number;
-		
 		private var prevMouseY:Number;
-		
 		private var stage:Stage;
+		private var listedListenerKeys:Array = [];
 		
-		private var listedListenerKeys:Array;
-		
-		public function InputManager(param1:Stage)
-		{
-			listedListenerKeys = [];
+		public function InputManager(stage:Stage) {
 			super();
-			this.stage = param1;
+			this.stage = stage;
 			pressedKeys = new Dictionary();
 			releasedKeys = new Dictionary();
 			downKeys = new Dictionary();
-			Starling.current.nativeStage.addEventListener("keyDown", keyDown, false, 10000);
-			Starling.current.nativeStage.addEventListener("keyUp", keyUp, false, 10000);
-			param1.addEventListener("touch", onTouch);
-			Starling.current.nativeStage.addEventListener("mouseFocusChange", focusChange);
-			Starling.current.nativeStage.addEventListener("keyFocusChange", focusChange);
-			param1.addEventListener("rightClickDown", rightMouseDown);
-			param1.addEventListener("rightClickUp", rightMouseUp);
+			Starling.current.nativeStage.addEventListener("keyDown",keyDown,false,10000);
+			Starling.current.nativeStage.addEventListener("keyUp",keyUp,false,10000);
+			stage.addEventListener("touch",onTouch);
+			Starling.current.nativeStage.addEventListener("mouseFocusChange",focusChange);
+			Starling.current.nativeStage.addEventListener("keyFocusChange",focusChange);
+			stage.addEventListener("rightClickDown",rightMouseDown);
+			stage.addEventListener("rightClickUp",rightMouseUp);
 		}
 		
-		public function reset():void
-		{
-			for (var _loc1_:* in releasedKeys)
-			{
-				releasedKeys[_loc1_] = false;
+		public function reset() : void {
+			for(var _local1 in releasedKeys) {
+				releasedKeys[_local1] = false;
 			}
-			for (_loc1_ in pressedKeys)
-			{
-				pressedKeys[_loc1_] = false;
+			for(_local1 in pressedKeys) {
+				pressedKeys[_local1] = false;
 			}
 		}
 		
-		private function focusChange(param1:FocusEvent):void
-		{
-			param1.preventDefault();
+		private function focusChange(e:FocusEvent) : void {
+			e.preventDefault();
 		}
 		
-		private function rightMouseDown(param1:Event):void
-		{
+		private function rightMouseDown(e:Event) : void {
 			Game.playerPerformedAction();
 			_isRightMousePressed = true;
 		}
 		
-		private function rightMouseUp(param1:Event):void
-		{
+		private function rightMouseUp(e:Event) : void {
 			_isRightMousePressed = false;
 		}
 		
-		private function mouseDown(param1:TouchEvent):void
-		{
+		private function mouseDown(e:TouchEvent) : void {
 			Game.playerPerformedAction();
-			if (param1.target is Stage)
-			{
+			if(e.target is Stage) {
 				_isMousePressed = true;
 			}
 		}
 		
-		private function mouseUp(param1:TouchEvent):void
-		{
+		private function mouseUp(e:TouchEvent) : void {
 			_isMousePressed = false;
 		}
 		
-		private function onTouch(param1:TouchEvent):void
-		{
+		private function onTouch(e:TouchEvent) : void {
 			Game.playerPerformedAction();
-			if (param1.getTouch(stage, "began"))
-			{
-				mouseDown(param1);
+			if(e.getTouch(stage,"began")) {
+				mouseDown(e);
+			} else if(e.getTouch(stage,"ended")) {
+				mouseUp(e);
 			}
-			else if (param1.getTouch(stage, "ended"))
-			{
-				mouseUp(param1);
-			}
-			mouseHasMoved = !!param1.getTouch(stage, "moved") ? true : false;
+			mouseHasMoved = !!e.getTouch(stage,"moved") ? true : false;
 		}
 		
-		private function keyDown(param1:KeyboardEvent):void
-		{
-			var _loc2_:Array = null;
+		private function keyDown(e:KeyboardEvent) : void {
+			var _local2:Array = null;
 			Game.playerPerformedAction();
-			if (!isKeyDown(param1.keyCode))
-			{
-				downKeys[param1.keyCode] = true;
-				pressedKeys[param1.keyCode] = true;
-				for each (var _loc3_:* in listedListenerKeys)
-				{
-					_loc2_ = _loc3_[0];
-					for each (var _loc4_:* in _loc2_)
-					{
-						if (_loc4_ == param1.keyCode)
-						{
-							_loc3_[1]();
-							listedListenerKeys.splice(listedListenerKeys.indexOf(_loc3_), 1);
+			if(!isKeyDown(e.keyCode)) {
+				downKeys[e.keyCode] = true;
+				pressedKeys[e.keyCode] = true;
+				for each(var _local3 in listedListenerKeys) {
+					_local2 = _local3[0];
+					for each(var _local4 in _local2) {
+						if(_local4 == e.keyCode) {
+							_local3[1]();
+							listedListenerKeys.splice(listedListenerKeys.indexOf(_local3),1);
 							return;
 						}
 					}
 				}
 			}
-			param1.stopPropagation();
+			e.stopPropagation();
 		}
 		
-		private function keyUp(param1:KeyboardEvent):void
-		{
-			downKeys[param1.keyCode] = false;
-			releasedKeys[param1.keyCode] = true;
-			param1.stopPropagation();
+		private function keyUp(e:KeyboardEvent) : void {
+			downKeys[e.keyCode] = false;
+			releasedKeys[e.keyCode] = true;
+			e.stopPropagation();
 		}
 		
-		public function get isMousePressed():Boolean
-		{
+		public function get isMousePressed() : Boolean {
 			return _isMousePressed;
 		}
 		
-		public function get isMouseRightPressed():Boolean
-		{
+		public function get isMouseRightPressed() : Boolean {
 			return _isRightMousePressed;
 		}
 		
-		public function isAnyKeyPressed():Boolean
-		{
-			for (var _loc1_:* in pressedKeys)
-			{
-				if (pressedKeys[_loc1_])
-				{
+		public function isAnyKeyPressed() : Boolean {
+			for(var _local1 in pressedKeys) {
+				if(pressedKeys[_local1]) {
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		public function hasMouseMoved():Boolean
-		{
+		public function hasMouseMoved() : Boolean {
 			return mouseHasMoved;
 		}
 		
-		public function isKeyPressed(param1:uint):Boolean
-		{
-			return pressedKeys[param1];
+		public function isKeyPressed(keyCode:uint) : Boolean {
+			return pressedKeys[keyCode];
 		}
 		
-		public function isKeyReleased(param1:uint):Boolean
-		{
-			return releasedKeys[param1];
+		public function isKeyReleased(keyCode:uint) : Boolean {
+			return releasedKeys[keyCode];
 		}
 		
-		public function isKeyDown(param1:uint):Boolean
-		{
-			return downKeys[param1];
+		public function isKeyDown(keyCode:uint) : Boolean {
+			return downKeys[keyCode];
 		}
 		
-		public function isKeyUp(param1:uint):Boolean
-		{
-			return !isKeyDown(param1);
+		public function isKeyUp(keyCode:uint) : Boolean {
+			return !isKeyDown(keyCode);
 		}
 		
-		public function listenToKeys(param1:Array, param2:Function):void
-		{
-			if (param2 == null)
-			{
+		public function listenToKeys(keys:Array, callback:Function) : void {
+			if(callback == null) {
 				return;
 			}
-			if (param1 == null || param1.length == 0)
-			{
+			if(keys == null || keys.length == 0) {
 				return;
 			}
-			listedListenerKeys.push([param1, param2]);
+			listedListenerKeys.push([keys,callback]);
 		}
 		
-		public function stopListenToKeys(param1:Function):void
-		{
-			var _loc4_:int = 0;
-			var _loc2_:Array = null;
-			if (param1 == null)
-			{
+		public function stopListenToKeys(callback:Function) : void {
+			var _local4:int = 0;
+			var _local2:Array = null;
+			if(callback == null) {
 				return;
 			}
-			var _loc3_:int = int(listedListenerKeys.length);
-			_loc4_ = _loc3_ - 1;
-			while (_loc4_ > -1)
-			{
-				_loc2_ = listedListenerKeys[_loc4_];
-				if (_loc2_[1] == param1)
-				{
-					listedListenerKeys.splice(listedListenerKeys.indexOf(_loc2_), 1);
+			var _local3:int = int(listedListenerKeys.length);
+			_local4 = _local3 - 1;
+			while(_local4 > -1) {
+				_local2 = listedListenerKeys[_local4];
+				if(_local2[1] == callback) {
+					listedListenerKeys.splice(listedListenerKeys.indexOf(_local2),1);
 				}
-				_loc4_--;
+				_local4--;
 			}
 		}
 		
-		public function dispose():void
-		{
+		public function dispose() : void {
 			listedListenerKeys = [];
 		}
 	}
 }
+

@@ -1,5 +1,4 @@
-package core.ship
-{
+package core.ship {
 	import core.engine.EngineFactory;
 	import core.player.EliteTechs;
 	import core.player.FleetObj;
@@ -17,650 +16,543 @@ package core.ship
 	import sound.SoundLocator;
 	import starling.filters.ColorMatrixFilter;
 	
-	public class ShipFactory
-	{
-		public function ShipFactory()
-		{
+	public class ShipFactory {
+		public function ShipFactory() {
 			super();
 		}
 		
-		public static function createPlayer(param1:Game, param2:Player, param3:PlayerShip, param4:Array):PlayerShip
-		{
-			var _loc5_:ColorMatrixFilter = null;
-			var _loc11_:IDataManager = DataLocator.getService();
-			var _loc10_:Object = _loc11_.loadKey("Skins", param2.activeSkin);
-			var _loc7_:FleetObj = param2.getActiveFleetObj();
-			param3.hideShadow = _loc10_.hideShadow;
-			createBody(_loc10_.ship, param1, param3);
-			param3 = PlayerShip(param3);
-			param3.name = param2.name;
-			param3.setIsHostile(param2.isHostile);
-			param3.group = param2.group;
-			param3.factions = param2.factions;
-			param3.hpBase = param3.hpMax;
-			param3.shieldHpBase = param3.shieldHpMax;
-			param3.activeWeapons = 0;
-			param3.unlockedWeaponSlots = param2.unlockedWeaponSlots;
-			param3.player = param2;
-			param3.aritfact_convAmount = 0;
-			param3.aritfact_cooldownReduction = 0;
-			param3.aritfact_speed = 0;
-			param3.aritfact_poweReg = 0;
-			param3.aritfact_powerMax = 0;
-			param3.aritfact_refire = 0;
-			var _loc8_:Number = !!_loc7_.shipHue ? _loc7_.shipHue : 0;
-			var _loc9_:Number = !!_loc7_.shipBrightness ? _loc7_.shipBrightness : 0;
-			if (_loc8_ != 0 || _loc9_ != 0)
-			{
-				_loc5_ = createPlayerShipColorMatrixFilter(_loc7_);
-				param3.movieClip.filter = _loc5_;
-				param3.originalFilter = _loc5_;
+		public static function createPlayer(g:Game, player:Player, ship:PlayerShip, weapons:Array) : PlayerShip {
+			var _local5:ColorMatrixFilter = null;
+			var _local11:IDataManager = DataLocator.getService();
+			var _local10:Object = _local11.loadKey("Skins",player.activeSkin);
+			var _local7:FleetObj = player.getActiveFleetObj();
+			ship.hideShadow = _local10.hideShadow;
+			createBody(_local10.ship,g,ship);
+			ship = PlayerShip(ship);
+			ship.name = player.name;
+			ship.setIsHostile(player.isHostile);
+			ship.group = player.group;
+			ship.factions = player.factions;
+			ship.hpBase = ship.hpMax;
+			ship.shieldHpBase = ship.shieldHpMax;
+			ship.activeWeapons = 0;
+			ship.unlockedWeaponSlots = player.unlockedWeaponSlots;
+			ship.player = player;
+			ship.aritfact_convAmount = 0;
+			ship.aritfact_cooldownReduction = 0;
+			ship.aritfact_speed = 0;
+			ship.aritfact_poweReg = 0;
+			ship.aritfact_powerMax = 0;
+			ship.aritfact_refire = 0;
+			var _local8:Number = !!_local7.shipHue ? _local7.shipHue : 0;
+			var _local9:Number = !!_local7.shipBrightness ? _local7.shipBrightness : 0;
+			if(_local8 != 0 || _local9 != 0) {
+				_local5 = createPlayerShipColorMatrixFilter(_local7);
+				ship.movieClip.filter = _local5;
+				ship.originalFilter = _local5;
 			}
-			param3.engine = EngineFactory.create(_loc10_.engine, param1, param3);
-			var _loc6_:Number = !!_loc7_.engineHue ? _loc7_.engineHue : 0;
-			addEngineTechToShip(param2, param3);
-			param3.engine.colorHue = _loc6_;
-			CreatePlayerShipWeapon(param1, param2, 0, param4, param3);
-			addArmorTechToShip(param2, param3);
-			addShieldTechToShip(param2, param3);
-			addPowerTechToShip(param2, param3);
-			addLevelBonusToShip(param1, param2.level, param3);
-			param3.hp = param3.hpMax;
-			param3.shieldHp = param3.shieldHpMax;
-			return param3;
+			ship.engine = EngineFactory.create(_local10.engine,g,ship);
+			var _local6:Number = !!_local7.engineHue ? _local7.engineHue : 0;
+			addEngineTechToShip(player,ship);
+			ship.engine.colorHue = _local6;
+			CreatePlayerShipWeapon(g,player,0,weapons,ship);
+			addArmorTechToShip(player,ship);
+			addShieldTechToShip(player,ship);
+			addPowerTechToShip(player,ship);
+			addLevelBonusToShip(g,player.level,ship);
+			ship.hp = ship.hpMax;
+			ship.shieldHp = ship.shieldHpMax;
+			return ship;
 		}
 		
-		public static function createPlayerShipColorMatrixFilter(param1:FleetObj):ColorMatrixFilter
-		{
-			if (RymdenRunt.isBuggedFlashVersion)
-			{
+		public static function createPlayerShipColorMatrixFilter(fleetObj:FleetObj) : ColorMatrixFilter {
+			if(RymdenRunt.isBuggedFlashVersion) {
 				return null;
 			}
-			var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
-			var _loc5_:Number = !!param1.shipHue ? param1.shipHue : 0;
-			var _loc6_:Number = !!param1.shipBrightness ? param1.shipBrightness : 0;
-			var _loc4_:Number = !!param1.shipSaturation ? param1.shipSaturation : 0;
-			var _loc3_:Number = !!param1.shipContrast ? param1.shipContrast : 0;
-			_loc2_.resolution = 2;
-			_loc2_.adjustHue(_loc5_);
-			_loc2_.adjustBrightness(_loc6_);
-			_loc2_.adjustSaturation(_loc4_);
-			_loc2_.adjustContrast(_loc3_);
-			return _loc2_;
+			var _local2:ColorMatrixFilter = new ColorMatrixFilter();
+			var _local5:Number = !!fleetObj.shipHue ? fleetObj.shipHue : 0;
+			var _local6:Number = !!fleetObj.shipBrightness ? fleetObj.shipBrightness : 0;
+			var _local4:Number = !!fleetObj.shipSaturation ? fleetObj.shipSaturation : 0;
+			var _local3:Number = !!fleetObj.shipContrast ? fleetObj.shipContrast : 0;
+			_local2.resolution = 2;
+			_local2.adjustHue(_local5);
+			_local2.adjustBrightness(_local6);
+			_local2.adjustSaturation(_local4);
+			_local2.adjustContrast(_local3);
+			return _local2;
 		}
 		
-		public static function CreatePlayerShipWeapon(param1:Game, param2:Player, param3:int, param4:Array, param5:PlayerShip):void
-		{
-			var _loc8_:int = 0;
-			var _loc10_:TechSkill = null;
-			var _loc9_:Weapon = null;
-			var _loc7_:Object = param4[param3];
-			var _loc6_:int = 0;
-			var _loc12_:int = -1;
-			var _loc13_:String = "";
-			if (param2 != null && param2.techSkills != null && _loc7_ != null)
-			{
-				_loc8_ = 0;
-				while (_loc8_ < param2.techSkills.length)
-				{
-					_loc10_ = param2.techSkills[_loc8_];
-					if (_loc10_.tech == _loc7_.weapon)
-					{
-						_loc6_ = _loc10_.level;
-						_loc12_ = _loc10_.activeEliteTechLevel;
-						_loc13_ = _loc10_.activeEliteTech;
+		public static function CreatePlayerShipWeapon(g:Game, player:Player, i:int, weapons:Array, ship:PlayerShip) : void {
+			var _local8:int = 0;
+			var _local10:TechSkill = null;
+			var _local9:Weapon = null;
+			var _local7:Object = weapons[i];
+			var _local6:int = 0;
+			var _local12:int = -1;
+			var _local13:String = "";
+			if(player != null && player.techSkills != null && _local7 != null) {
+				_local8 = 0;
+				while(_local8 < player.techSkills.length) {
+					_local10 = player.techSkills[_local8];
+					if(_local10.tech == _local7.weapon) {
+						_local6 = _local10.level;
+						_local12 = _local10.activeEliteTechLevel;
+						_local13 = _local10.activeEliteTech;
 					}
-					_loc8_++;
+					_local8++;
 				}
 			}
-			var _loc11_:Weapon = WeaponFactory.create(_loc7_.weapon, param1, param5, _loc6_, _loc12_, _loc13_);
-			_loc11_.setActive(param5, param2.weaponsState[param3]);
-			_loc11_.hotkey = param2.weaponsHotkeys[param3];
-			addLevelBonusToWeapon(param1, param2.level, _loc11_, param2);
-			if (param3 < param5.weapons.length)
-			{
-				_loc9_ = param5.weapons[param3];
-				param5.weapons[param3] = _loc11_;
-				_loc9_.destroy();
+			var _local11:Weapon = WeaponFactory.create(_local7.weapon,g,ship,_local6,_local12,_local13);
+			_local11.setActive(ship,player.weaponsState[i]);
+			_local11.hotkey = player.weaponsHotkeys[i];
+			addLevelBonusToWeapon(g,player.level,_local11,player);
+			if(i < ship.weapons.length) {
+				_local9 = ship.weapons[i];
+				ship.weapons[i] = _local11;
+				_local9.destroy();
+			} else {
+				ship.weapons.push(_local11);
 			}
-			else
-			{
-				param5.weapons.push(_loc11_);
-			}
-			if (param3 == param4.length - 1)
-			{
-				param2.saveWeaponData(param5.weapons);
-			}
-			else
-			{
-				param3 += 1;
-				CreatePlayerShipWeapon(param1, param2, param3, param4, param5);
+			if(i == weapons.length - 1) {
+				player.saveWeaponData(ship.weapons);
+			} else {
+				i += 1;
+				CreatePlayerShipWeapon(g,player,i,weapons,ship);
 			}
 		}
 		
-		private static function addArmorTechToShip(param1:Player, param2:PlayerShip):void
-		{
-			var _loc5_:int = 0;
-			var _loc7_:TechSkill = null;
-			var _loc6_:Object = null;
-			var _loc10_:int = 0;
-			_loc5_ = 0;
-			while (_loc5_ < param1.techSkills.length)
-			{
-				_loc7_ = param1.techSkills[_loc5_];
-				if (_loc7_.tech == "m4yG1IRPIUeyRQHrC3h5kQ")
-				{
+		private static function addArmorTechToShip(player:Player, s:PlayerShip) : void {
+			var _local5:int = 0;
+			var _local7:TechSkill = null;
+			var _local6:Object = null;
+			var _local10:int = 0;
+			_local5 = 0;
+			while(_local5 < player.techSkills.length) {
+				_local7 = player.techSkills[_local5];
+				if(_local7.tech == "m4yG1IRPIUeyRQHrC3h5kQ") {
 					break;
 				}
-				_loc5_++;
+				_local5++;
 			}
-			var _loc11_:IDataManager = DataLocator.getService();
-			var _loc4_:Object = _loc11_.loadKey("BasicTechs", _loc7_.tech);
-			var _loc3_:int = _loc7_.level;
-			_loc10_ = 0;
-			while (_loc10_ < _loc3_)
-			{
-				_loc6_ = _loc4_.techLevels[_loc10_];
-				param2.armorThreshold += _loc6_.dmgThreshold;
-				param2.armorThresholdBase += _loc6_.dmgThreshold;
-				param2.hpBase += _loc6_.hpBonus;
-				if (_loc10_ == _loc3_ - 1)
-				{
-					if (_loc6_.armorConvGain > 0)
-					{
-						param2.hasArmorConverter = true;
-						param2.convCD = _loc6_.cooldown * 1000;
-						param2.convCost = _loc6_.armorConvCost;
-						param2.convGain = _loc6_.armorConvGain;
+			var _local11:IDataManager = DataLocator.getService();
+			var _local4:Object = _local11.loadKey("BasicTechs",_local7.tech);
+			var _local3:int = _local7.level;
+			_local10 = 0;
+			while(_local10 < _local3) {
+				_local6 = _local4.techLevels[_local10];
+				s.armorThreshold += _local6.dmgThreshold;
+				s.armorThresholdBase += _local6.dmgThreshold;
+				s.hpBase += _local6.hpBonus;
+				if(_local10 == _local3 - 1) {
+					if(_local6.armorConvGain > 0) {
+						s.hasArmorConverter = true;
+						s.convCD = _local6.cooldown * 1000;
+						s.convCost = _local6.armorConvCost;
+						s.convGain = _local6.armorConvGain;
 					}
 				}
-				_loc10_++;
+				_local10++;
 			}
-			param2.hpMax = param2.hpBase;
-			var _loc9_:int = -1;
-			var _loc8_:String = "";
-			_loc9_ = _loc7_.activeEliteTechLevel;
-			_loc8_ = _loc7_.activeEliteTech;
-			EliteTechs.addEliteTechs(param2, _loc4_, _loc9_, _loc8_);
+			s.hpMax = s.hpBase;
+			var _local9:int = -1;
+			var _local8:String = "";
+			_local9 = _local7.activeEliteTechLevel;
+			_local8 = _local7.activeEliteTech;
+			EliteTechs.addEliteTechs(s,_local4,_local9,_local8);
 		}
 		
-		private static function addShieldTechToShip(param1:Player, param2:PlayerShip):void
-		{
-			var _loc5_:int = 0;
-			var _loc7_:TechSkill = null;
-			var _loc6_:Object = null;
-			var _loc10_:int = 0;
-			_loc5_ = 0;
-			while (_loc5_ < param1.techSkills.length)
-			{
-				_loc7_ = param1.techSkills[_loc5_];
-				if (_loc7_.tech == "QgKEEj8a-0yzYAJ06eSLqA")
-				{
+		private static function addShieldTechToShip(player:Player, s:PlayerShip) : void {
+			var _local5:int = 0;
+			var _local7:TechSkill = null;
+			var _local6:Object = null;
+			var _local10:int = 0;
+			_local5 = 0;
+			while(_local5 < player.techSkills.length) {
+				_local7 = player.techSkills[_local5];
+				if(_local7.tech == "QgKEEj8a-0yzYAJ06eSLqA") {
 					break;
 				}
-				_loc5_++;
+				_local5++;
 			}
-			var _loc11_:IDataManager = DataLocator.getService();
-			var _loc4_:Object = _loc11_.loadKey("BasicTechs", _loc7_.tech);
-			var _loc3_:int = _loc7_.level;
-			_loc10_ = 0;
-			while (_loc10_ < _loc3_)
-			{
-				_loc6_ = _loc4_.techLevels[_loc10_];
-				param2.shieldHpBase += _loc6_.hpBonus;
-				param2.shieldRegenBase += _loc6_.regen;
-				if (_loc10_ == _loc3_ - 1)
-				{
-					if (_loc6_.hardenMaxDmg > 0)
-					{
-						param2.hasHardenedShield = true;
-						param2.hardenMaxDmg = _loc6_.hardenMaxDmg;
-						param2.hardenCD = _loc6_.cooldown * 1000;
-						param2.hardenDuration = _loc6_.duration * 1000;
+			var _local11:IDataManager = DataLocator.getService();
+			var _local4:Object = _local11.loadKey("BasicTechs",_local7.tech);
+			var _local3:int = _local7.level;
+			_local10 = 0;
+			while(_local10 < _local3) {
+				_local6 = _local4.techLevels[_local10];
+				s.shieldHpBase += _local6.hpBonus;
+				s.shieldRegenBase += _local6.regen;
+				if(_local10 == _local3 - 1) {
+					if(_local6.hardenMaxDmg > 0) {
+						s.hasHardenedShield = true;
+						s.hardenMaxDmg = _local6.hardenMaxDmg;
+						s.hardenCD = _local6.cooldown * 1000;
+						s.hardenDuration = _local6.duration * 1000;
 					}
 				}
-				_loc10_++;
+				_local10++;
 			}
-			param2.shieldRegen = param2.shieldRegenBase;
-			param2.shieldHpMax = param2.shieldHpBase;
-			var _loc9_:int = -1;
-			var _loc8_:String = "";
-			_loc9_ = _loc7_.activeEliteTechLevel;
-			_loc8_ = _loc7_.activeEliteTech;
-			EliteTechs.addEliteTechs(param2, _loc4_, _loc9_, _loc8_);
+			s.shieldRegen = s.shieldRegenBase;
+			s.shieldHpMax = s.shieldHpBase;
+			var _local9:int = -1;
+			var _local8:String = "";
+			_local9 = _local7.activeEliteTechLevel;
+			_local8 = _local7.activeEliteTech;
+			EliteTechs.addEliteTechs(s,_local4,_local9,_local8);
 		}
 		
-		private static function addEngineTechToShip(param1:Player, param2:PlayerShip):void
-		{
-			var _loc6_:int = 0;
-			var _loc7_:TechSkill = null;
-			var _loc10_:Object = null;
-			var _loc8_:int = 0;
-			_loc6_ = 0;
-			while (_loc6_ < param1.techSkills.length)
-			{
-				_loc7_ = param1.techSkills[_loc6_];
-				if (_loc7_.tech == "rSr1sn-_oUOY6E0hpAhh0Q")
-				{
+		private static function addEngineTechToShip(player:Player, s:PlayerShip) : void {
+			var _local6:int = 0;
+			var _local7:TechSkill = null;
+			var _local10:Object = null;
+			var _local8:int = 0;
+			_local6 = 0;
+			while(_local6 < player.techSkills.length) {
+				_local7 = player.techSkills[_local6];
+				if(_local7.tech == "rSr1sn-_oUOY6E0hpAhh0Q") {
 					break;
 				}
-				_loc6_++;
+				_local6++;
 			}
-			var _loc11_:IDataManager = DataLocator.getService();
-			var _loc9_:Object = _loc11_.loadKey("BasicTechs", _loc7_.tech);
-			var _loc4_:int = _loc7_.level;
-			var _loc3_:int = 100;
-			var _loc5_:int = 100;
-			_loc8_ = 0;
-			while (_loc8_ < _loc4_)
-			{
-				_loc10_ = _loc9_.techLevels[_loc8_];
-				_loc3_ += _loc10_.acceleration;
-				_loc5_ += _loc10_.maxSpeed;
-				if (_loc8_ == _loc4_ - 1)
-				{
-					if (_loc10_.boost > 0)
-					{
-						param2.hasBoost = true;
-						param2.boostBonus = _loc10_.boost;
-						param2.boostCD = _loc10_.cooldown * 1000;
-						param2.boostDuration = _loc10_.duration * 1000;
-						param2.totalTicksOfBoost = param2.boostDuration / 33;
-						param2.ticksOfBoost = 0;
+			var _local11:IDataManager = DataLocator.getService();
+			var _local9:Object = _local11.loadKey("BasicTechs",_local7.tech);
+			var _local4:int = _local7.level;
+			var _local3:int = 100;
+			var _local5:int = 100;
+			_local8 = 0;
+			while(_local8 < _local4) {
+				_local10 = _local9.techLevels[_local8];
+				_local3 += _local10.acceleration;
+				_local5 += _local10.maxSpeed;
+				if(_local8 == _local4 - 1) {
+					if(_local10.boost > 0) {
+						s.hasBoost = true;
+						s.boostBonus = _local10.boost;
+						s.boostCD = _local10.cooldown * 1000;
+						s.boostDuration = _local10.duration * 1000;
+						s.totalTicksOfBoost = s.boostDuration / 33;
+						s.ticksOfBoost = 0;
 					}
 				}
-				_loc8_++;
+				_local8++;
 			}
-			param2.engine.acceleration = param2.engine.acceleration * _loc3_ / 100;
-			param2.engine.speed = param2.engine.speed * _loc5_ / 100;
-			var _loc12_:int = -1;
-			var _loc13_:String = "";
-			_loc12_ = _loc7_.activeEliteTechLevel;
-			_loc13_ = _loc7_.activeEliteTech;
-			EliteTechs.addEliteTechs(param2, _loc9_, _loc12_, _loc13_);
+			s.engine.acceleration = s.engine.acceleration * _local3 / 100;
+			s.engine.speed = s.engine.speed * _local5 / 100;
+			var _local12:int = -1;
+			var _local13:String = "";
+			_local12 = _local7.activeEliteTechLevel;
+			_local13 = _local7.activeEliteTech;
+			EliteTechs.addEliteTechs(s,_local9,_local12,_local13);
 		}
 		
-		private static function addPowerTechToShip(param1:Player, param2:PlayerShip):void
-		{
-			var _loc5_:int = 0;
-			var _loc7_:TechSkill = null;
-			var _loc6_:Object = null;
-			var _loc10_:int = 0;
-			_loc5_ = 0;
-			while (_loc5_ < param1.techSkills.length)
-			{
-				_loc7_ = param1.techSkills[_loc5_];
-				if (_loc7_.tech == "kwlCdExeJk-oEJZopIz5kg")
-				{
+		private static function addPowerTechToShip(player:Player, s:PlayerShip) : void {
+			var _local5:int = 0;
+			var _local7:TechSkill = null;
+			var _local6:Object = null;
+			var _local10:int = 0;
+			_local5 = 0;
+			while(_local5 < player.techSkills.length) {
+				_local7 = player.techSkills[_local5];
+				if(_local7.tech == "kwlCdExeJk-oEJZopIz5kg") {
 					break;
 				}
-				_loc5_++;
+				_local5++;
 			}
-			var _loc11_:IDataManager = DataLocator.getService();
-			var _loc4_:Object = _loc11_.loadKey("BasicTechs", _loc7_.tech);
-			var _loc3_:int = _loc7_.level;
-			param2.maxPower = 1;
-			param2.powerRegBonus = 1;
-			_loc10_ = 0;
-			while (_loc10_ < _loc3_)
-			{
-				_loc6_ = _loc4_.techLevels[_loc10_];
-				param2.maxPower += 0.01 * Number(_loc6_.maxPower);
-				param2.powerRegBonus += 0.01 * Number(_loc6_.powerReg);
-				if (_loc10_ == _loc3_ - 1)
-				{
-					if (_loc6_.boost > 0)
-					{
-						param2.hasDmgBoost = true;
-						param2.dmgBoostCD = _loc6_.cooldown * 1000;
-						param2.dmgBoostDuration = _loc6_.duration * 1000;
-						param2.dmgBoostCost = 0.01 * Number(_loc6_.boostCost);
-						param2.dmgBoostBonus = 0.01 * Number(_loc6_.boost);
-						param2.totalTicksOfBoost = param2.boostDuration / 33;
-						param2.ticksOfBoost = 0;
+			var _local11:IDataManager = DataLocator.getService();
+			var _local4:Object = _local11.loadKey("BasicTechs",_local7.tech);
+			var _local3:int = _local7.level;
+			s.maxPower = 1;
+			s.powerRegBonus = 1;
+			_local10 = 0;
+			while(_local10 < _local3) {
+				_local6 = _local4.techLevels[_local10];
+				s.maxPower += 0.01 * Number(_local6.maxPower);
+				s.powerRegBonus += 0.01 * Number(_local6.powerReg);
+				if(_local10 == _local3 - 1) {
+					if(_local6.boost > 0) {
+						s.hasDmgBoost = true;
+						s.dmgBoostCD = _local6.cooldown * 1000;
+						s.dmgBoostDuration = _local6.duration * 1000;
+						s.dmgBoostCost = 0.01 * Number(_local6.boostCost);
+						s.dmgBoostBonus = 0.01 * Number(_local6.boost);
+						s.totalTicksOfBoost = s.boostDuration / 33;
+						s.ticksOfBoost = 0;
 					}
 				}
-				_loc10_++;
+				_local10++;
 			}
-			param2.weaponHeat.setBonuses(param2.maxPower, param2.powerRegBonus);
-			var _loc9_:int = -1;
-			var _loc8_:String = "";
-			_loc9_ = _loc7_.activeEliteTechLevel;
-			_loc8_ = _loc7_.activeEliteTech;
-			EliteTechs.addEliteTechs(param2, _loc4_, _loc9_, _loc8_);
+			s.weaponHeat.setBonuses(s.maxPower,s.powerRegBonus);
+			var _local9:int = -1;
+			var _local8:String = "";
+			_local9 = _local7.activeEliteTechLevel;
+			_local8 = _local7.activeEliteTech;
+			EliteTechs.addEliteTechs(s,_local4,_local9,_local8);
 		}
 		
-		private static function addLevelBonusToShip(param1:Game, param2:Number, param3:PlayerShip):void
-		{
-			if (param1.solarSystem.isPvpSystemInEditor)
-			{
-				param2 = 100;
+		private static function addLevelBonusToShip(g:Game, level:Number, s:PlayerShip) : void {
+			if(g.solarSystem.isPvpSystemInEditor) {
+				level = 100;
 			}
-			var _loc4_:Number = param3.player.troons;
-			var _loc5_:Number = _loc4_ / 200000;
-			param2 += _loc5_;
-			param3.hpBase = param3.hpBase * (100 + 8 * (param2 - 1)) / 100;
-			param3.hpMax = param3.hpBase;
-			param3.hp = param3.hpMax;
-			param3.armorThresholdBase = param3.armorThresholdBase * (100 + 2.5 * 8 * (param2 - 1)) / 100;
-			param3.shieldHpBase = param3.shieldHpBase * (100 + 8 * (param2 - 1)) / 100;
-			param3.armorThreshold = param3.armorThresholdBase;
-			param3.shieldHpMax = param3.shieldHpBase;
-			param3.shieldHp = param3.shieldHpMax;
-			param3.shieldRegenBase = param3.shieldRegenBase * (100 + 1 * (param2 - 1)) / 100;
-			param3.shieldRegen = param3.shieldRegenBase;
+			var _local4:Number = s.player.troons;
+			var _local5:Number = _local4 / 200000;
+			level += _local5;
+			s.hpBase = s.hpBase * (100 + 8 * (level - 1)) / 100;
+			s.hpMax = s.hpBase;
+			s.hp = s.hpMax;
+			s.armorThresholdBase = s.armorThresholdBase * (100 + 2.5 * 8 * (level - 1)) / 100;
+			s.shieldHpBase = s.shieldHpBase * (100 + 8 * (level - 1)) / 100;
+			s.armorThreshold = s.armorThresholdBase;
+			s.shieldHpMax = s.shieldHpBase;
+			s.shieldHp = s.shieldHpMax;
+			s.shieldRegenBase = s.shieldRegenBase * (100 + 1 * (level - 1)) / 100;
+			s.shieldRegen = s.shieldRegenBase;
 		}
 		
-		private static function addLevelBonusToWeapon(param1:Game, param2:Number, param3:Weapon, param4:Player):void
-		{
-			if (param1.solarSystem.isPvpSystemInEditor)
-			{
-				param2 = 100;
+		private static function addLevelBonusToWeapon(g:Game, level:Number, w:Weapon, p:Player) : void {
+			if(g.solarSystem.isPvpSystemInEditor) {
+				level = 100;
 			}
-			var _loc5_:Number = param4.troons;
-			var _loc6_:Number = _loc5_ / 200000;
-			param2 += _loc6_;
-			param3.dmg.addLevelBonus(param2, 8);
-			if (param3.debuffValue != null)
-			{
-				param3.debuffValue.addLevelBonus(param2, 8);
-				param3.debuffValue2.addLevelBonus(param2, 8);
+			var _local5:Number = p.troons;
+			var _local6:Number = _local5 / 200000;
+			level += _local6;
+			w.dmg.addLevelBonus(level,8);
+			if(w.debuffValue != null) {
+				w.debuffValue.addLevelBonus(level,8);
+				w.debuffValue2.addLevelBonus(level,8);
 			}
 		}
 		
-		public static function createEnemy(param1:Game, param2:String, param3:int = 0):EnemyShip
-		{
-			var _loc7_:Number = NaN;
-			var _loc6_:Random = null;
-			var _loc8_:IDataManager = DataLocator.getService();
-			var _loc5_:Object = _loc8_.loadKey("Enemies", param2);
-			if (param1.isLeaving)
-			{
+		public static function createEnemy(g:Game, key:String, rareType:int = 0) : EnemyShip {
+			var _local7:Number = NaN;
+			var _local6:Random = null;
+			var _local8:IDataManager = DataLocator.getService();
+			var _local5:Object = _local8.loadKey("Enemies",key);
+			if(g.isLeaving) {
 				return null;
 			}
-			var _loc4_:EnemyShip = param1.shipManager.getEnemyShip();
-			_loc4_.name = _loc5_.name;
-			_loc4_.xp = _loc5_.xp;
-			_loc4_.level = _loc5_.level;
-			_loc4_.rareType = param3;
-			_loc4_.aggroRange = _loc5_.aggroRange;
-			_loc4_.chaseRange = _loc5_.chaseRange;
-			_loc4_.observer = _loc5_.observer;
-			if (_loc4_.observer)
-			{
-				_loc4_.visionRange = _loc5_.visionRange;
+			var _local4:EnemyShip = g.shipManager.getEnemyShip();
+			_local4.name = _local5.name;
+			_local4.xp = _local5.xp;
+			_local4.level = _local5.level;
+			_local4.rareType = rareType;
+			_local4.aggroRange = _local5.aggroRange;
+			_local4.chaseRange = _local5.chaseRange;
+			_local4.observer = _local5.observer;
+			if(_local4.observer) {
+				_local4.visionRange = _local5.visionRange;
+			} else {
+				_local4.visionRange = _local4.aggroRange;
 			}
-			else
-			{
-				_loc4_.visionRange = _loc4_.aggroRange;
-			}
-			if (param1.isSystemTypeSurvival() && _loc4_.level < param1.hud.uberStats.uberLevel)
-			{
-				_loc7_ = param1.hud.uberStats.CalculateUberRankFromLevel(_loc4_.level);
-				_loc4_.uberDifficulty = param1.hud.uberStats.CalculateUberDifficultyFromRank(param1.hud.uberStats.uberRank - _loc7_, _loc4_.level);
-				_loc4_.uberLevelFactor = 1 + (param1.hud.uberStats.uberLevel - _loc4_.level) / 100;
-				_loc4_.aggroRange *= _loc4_.uberLevelFactor;
-				_loc4_.chaseRange *= _loc4_.uberLevelFactor;
-				_loc4_.visionRange *= _loc4_.uberLevelFactor;
-				_loc6_ = new Random(_loc4_.id);
-				if (_loc4_.aggroRange > 2000)
-				{
-					_loc4_.aggroRange = 10000;
+			if(g.isSystemTypeSurvival() && _local4.level < g.hud.uberStats.uberLevel) {
+				_local7 = g.hud.uberStats.CalculateUberRankFromLevel(_local4.level);
+				_local4.uberDifficulty = g.hud.uberStats.CalculateUberDifficultyFromRank(g.hud.uberStats.uberRank - _local7,_local4.level);
+				_local4.uberLevelFactor = 1 + (g.hud.uberStats.uberLevel - _local4.level) / 100;
+				_local4.aggroRange *= _local4.uberLevelFactor;
+				_local4.chaseRange *= _local4.uberLevelFactor;
+				_local4.visionRange *= _local4.uberLevelFactor;
+				_local6 = new Random(_local4.id);
+				if(_local4.aggroRange > 2000) {
+					_local4.aggroRange = 10000;
+				} else if(g.hud.uberStats.uberRank >= 9) {
+					_local4.aggroRange = 50 * 60 + _local6.random(10000);
+				} else if(g.hud.uberStats.uberRank >= 6) {
+					_local4.aggroRange = 2000 + _local6.random(10000);
+				} else if(g.hud.uberStats.uberRank >= 3) {
+					_local4.aggroRange = 25 * 60 + _local6.random(10000);
+				} else if(_local4.aggroRange < 50 * 60) {
+					_local4.aggroRange = 1000 + _local6.random(10000);
 				}
-				else if (param1.hud.uberStats.uberRank >= 9)
-				{
-					_loc4_.aggroRange = 3000 + _loc6_.random(10000);
-				}
-				else if (param1.hud.uberStats.uberRank >= 6)
-				{
-					_loc4_.aggroRange = 2000 + _loc6_.random(10000);
-				}
-				else if (param1.hud.uberStats.uberRank >= 3)
-				{
-					_loc4_.aggroRange = 1500 + _loc6_.random(10000);
-				}
-				else if (_loc4_.aggroRange < 3000)
-				{
-					_loc4_.aggroRange = 1000 + _loc6_.random(10000);
-				}
-				_loc4_.chaseRange = _loc4_.aggroRange;
-				_loc4_.visionRange = _loc4_.aggroRange;
-				_loc4_.xp *= _loc4_.uberLevelFactor;
-				_loc4_.level = param1.hud.uberStats.uberLevel;
+				_local4.chaseRange = _local4.aggroRange;
+				_local4.visionRange = _local4.aggroRange;
+				_local4.xp *= _local4.uberLevelFactor;
+				_local4.level = g.hud.uberStats.uberLevel;
 			}
-			_loc4_.orbitSpawner = _loc5_.orbitSpawner;
-			if (_loc4_.orbitSpawner)
-			{
-				_loc4_.hpRegen = _loc5_.hpRegen;
+			_local4.orbitSpawner = _local5.orbitSpawner;
+			if(_local4.orbitSpawner) {
+				_local4.hpRegen = _local5.hpRegen;
 			}
-			_loc4_.aimSkill = _loc5_.aimSkill;
-			if (_loc5_.hasOwnProperty("stopWhenClose"))
-			{
-				_loc4_.stopWhenClose = _loc5_.stopWhenClose;
+			_local4.aimSkill = _local5.aimSkill;
+			if(_local5.hasOwnProperty("stopWhenClose")) {
+				_local4.stopWhenClose = _local5.stopWhenClose;
 			}
-			if (_loc5_.hasOwnProperty("AIFaction1") && _loc5_.AIFaction1 != "")
-			{
-				_loc4_.factions.push(_loc5_.AIFaction1);
+			if(_local5.hasOwnProperty("AIFaction1") && _local5.AIFaction1 != "") {
+				_local4.factions.push(_local5.AIFaction1);
 			}
-			if (_loc5_.hasOwnProperty("AIFaction2") && _loc5_.AIFaction2 != "")
-			{
-				_loc4_.factions.push(_loc5_.AIFaction2);
+			if(_local5.hasOwnProperty("AIFaction2") && _local5.AIFaction2 != "") {
+				_local4.factions.push(_local5.AIFaction2);
 			}
-			if (_loc5_.hasOwnProperty("teleport"))
-			{
-				_loc4_.teleport = _loc5_.teleport;
+			if(_local5.hasOwnProperty("teleport")) {
+				_local4.teleport = _local5.teleport;
 			}
-			_loc4_.kamikaze = _loc5_.kamikaze;
-			if (_loc4_.kamikaze)
-			{
-				_loc4_.kamikazeLifeTreshhold = _loc5_.kamikazeLifeTreshhold;
-				_loc4_.kamikazeHoming = _loc5_.kamikazeHoming;
-				_loc4_.kamikazeTtl = _loc5_.kamikazeTtl;
-				_loc4_.kamikazeDmg = _loc5_.kamikazeDmg;
-				_loc4_.kamikazeRadius = _loc5_.kamikazeRadius;
-				_loc4_.kamikazeWhenClose = _loc5_.kamikazeWhenClose;
+			_local4.kamikaze = _local5.kamikaze;
+			if(_local4.kamikaze) {
+				_local4.kamikazeLifeTreshhold = _local5.kamikazeLifeTreshhold;
+				_local4.kamikazeHoming = _local5.kamikazeHoming;
+				_local4.kamikazeTtl = _local5.kamikazeTtl;
+				_local4.kamikazeDmg = _local5.kamikazeDmg;
+				_local4.kamikazeRadius = _local5.kamikazeRadius;
+				_local4.kamikazeWhenClose = _local5.kamikazeWhenClose;
 			}
-			if (_loc5_.hasOwnProperty("alwaysFire"))
-			{
-				_loc4_.alwaysFire = _loc5_.alwaysFire;
+			if(_local5.hasOwnProperty("alwaysFire")) {
+				_local4.alwaysFire = _local5.alwaysFire;
+			} else {
+				_local4.alwaysFire = false;
 			}
-			else
-			{
-				_loc4_.alwaysFire = false;
+			_local4.forcedRotation = _local5.forcedRotation;
+			if(_local4.forcedRotation) {
+				_local4.forcedRotationSpeed = _local5.forcedRotationSpeed;
+				_local4.forcedRotationAim = _local5.forcedRotationAim;
 			}
-			_loc4_.forcedRotation = _loc5_.forcedRotation;
-			if (_loc4_.forcedRotation)
-			{
-				_loc4_.forcedRotationSpeed = _loc5_.forcedRotationSpeed;
-				_loc4_.forcedRotationAim = _loc5_.forcedRotationAim;
+			_local4.melee = _local5.melee;
+			if(_local4.melee) {
+				_local4.meleeCharge = _local5.charge;
+				_local4.meleeChargeSpeedBonus = Number(_local5.chargeSpeedBonus) / 100;
+				_local4.meleeChargeDuration = _local5.chargeDuration;
+				_local4.meleeCanGrab = _local5.grab;
 			}
-			_loc4_.melee = _loc5_.melee;
-			if (_loc4_.melee)
-			{
-				_loc4_.meleeCharge = _loc5_.charge;
-				_loc4_.meleeChargeSpeedBonus = Number(_loc5_.chargeSpeedBonus) / 100;
-				_loc4_.meleeChargeDuration = _loc5_.chargeDuration;
-				_loc4_.meleeCanGrab = _loc5_.grab;
-			}
-			_loc4_.flee = _loc5_.flee;
-			if (_loc4_.flee)
-			{
-				_loc4_.fleeLifeTreshhold = _loc5_.fleeLifeTreshhold;
-				_loc4_.fleeDuration = _loc5_.fleeDuration;
-				if (_loc5_.hasOwnProperty("fleeClose"))
-				{
-					_loc4_.fleeClose = _loc5_.fleeClose;
-				}
-				else
-				{
-					_loc4_.fleeClose = 0;
+			_local4.flee = _local5.flee;
+			if(_local4.flee) {
+				_local4.fleeLifeTreshhold = _local5.fleeLifeTreshhold;
+				_local4.fleeDuration = _local5.fleeDuration;
+				if(_local5.hasOwnProperty("fleeClose")) {
+					_local4.fleeClose = _local5.fleeClose;
+				} else {
+					_local4.fleeClose = 0;
 				}
 			}
-			_loc4_.aiCloak = false;
-			if (_loc5_.hasOwnProperty("hardenShield"))
-			{
-				_loc4_.aiHardenShield = false;
-				_loc4_.aiHardenShieldDuration = _loc5_.hardenShieldDuration;
+			_local4.aiCloak = false;
+			if(_local5.hasOwnProperty("hardenShield")) {
+				_local4.aiHardenShield = false;
+				_local4.aiHardenShieldDuration = _local5.hardenShieldDuration;
+			} else {
+				_local4.aiHardenShield = false;
+				_local4.aiHardenShieldDuration = 0;
 			}
-			else
-			{
-				_loc4_.aiHardenShield = false;
-				_loc4_.aiHardenShieldDuration = 0;
-			}
-			if (_loc5_.hasOwnProperty("sniper"))
-			{
-				_loc4_.sniper = _loc5_.sniper;
-				if (_loc4_.sniper)
-				{
-					_loc4_.sniperMinRange = _loc5_.sniperMinRange;
+			if(_local5.hasOwnProperty("sniper")) {
+				_local4.sniper = _local5.sniper;
+				if(_local4.sniper) {
+					_local4.sniperMinRange = _local5.sniperMinRange;
 				}
 			}
-			_loc4_.isHostile = true;
-			_loc4_.group = null;
-			createBody(_loc5_.ship, param1, _loc4_);
-			_loc4_.engine = EngineFactory.create(_loc5_.engine, param1, _loc4_);
-			if (_loc4_.uberDifficulty > 0)
-			{
-				_loc4_.hp = _loc4_.hpMax *= _loc4_.uberDifficulty;
-				_loc4_.shieldHp = _loc4_.shieldHpMax *= _loc4_.uberDifficulty;
-				_loc4_.engine.speed *= _loc4_.uberLevelFactor;
-				if (_loc4_.engine.speed > 380)
-				{
-					_loc4_.engine.speed = 380;
+			_local4.isHostile = true;
+			_local4.group = null;
+			createBody(_local5.ship,g,_local4);
+			_local4.engine = EngineFactory.create(_local5.engine,g,_local4);
+			if(_local4.uberDifficulty > 0) {
+				_local4.hp = _local4.hpMax *= _local4.uberDifficulty;
+				_local4.shieldHp = _local4.shieldHpMax *= _local4.uberDifficulty;
+				_local4.engine.speed *= _local4.uberLevelFactor;
+				if(_local4.engine.speed > 380) {
+					_local4.engine.speed = 380;
 				}
 			}
-			if (param3 == 1)
-			{
-				_loc4_.hp = _loc4_.hpMax *= 3;
-				_loc4_.shieldHp = _loc4_.shieldHpMax *= 3;
+			if(rareType == 1) {
+				_local4.hp = _local4.hpMax *= 3;
+				_local4.shieldHp = _local4.shieldHpMax *= 3;
 			}
-			if (param3 == 4)
-			{
-				_loc4_.hp = _loc4_.hpMax *= 3;
-				_loc4_.shieldHp = _loc4_.shieldHpMax *= 3;
-				_loc4_.engine.speed *= 1.1;
+			if(rareType == 4) {
+				_local4.hp = _local4.hpMax *= 3;
+				_local4.shieldHp = _local4.shieldHpMax *= 3;
+				_local4.engine.speed *= 1.1;
 			}
-			if (param3 == 5)
-			{
-				_loc4_.color = 16746513;
-				_loc4_.hp = _loc4_.hpMax *= 10;
-				_loc4_.shieldHp = _loc4_.shieldHpMax *= 10;
-				_loc4_.engine.speed *= 1.3;
+			if(rareType == 5) {
+				_local4.color = 0xff8811;
+				_local4.hp = _local4.hpMax *= 10;
+				_local4.shieldHp = _local4.shieldHpMax *= 10;
+				_local4.engine.speed *= 1.3;
 			}
-			if (param3 == 3)
-			{
-				_loc4_.engine.speed *= 1.4;
+			if(rareType == 3) {
+				_local4.engine.speed *= 1.4;
 			}
-			if (_loc5_.hasOwnProperty("startHp"))
-			{
-				_loc4_.hp = 0.01 * _loc5_.startHp * _loc4_.hp;
+			if(_local5.hasOwnProperty("startHp")) {
+				_local4.hp = 0.01 * _local5.startHp * _local4.hp;
 			}
-			CreateEnemyShipWeapon(param1, 0, _loc5_.weapons, _loc4_);
-			CreateEnemyShipExtraWeapon(param1, _loc4_.weapons.length, _loc5_.fleeWeaponItem, _loc4_, 0);
-			CreateEnemyShipExtraWeapon(param1, _loc4_.weapons.length, _loc5_.antiProjectileWeaponItem, _loc4_, 1);
-			if (!param1.isLeaving)
-			{
-				param1.shipManager.activateEnemyShip(_loc4_);
+			CreateEnemyShipWeapon(g,0,_local5.weapons,_local4);
+			CreateEnemyShipExtraWeapon(g,_local4.weapons.length,_local5.fleeWeaponItem,_local4,0);
+			CreateEnemyShipExtraWeapon(g,_local4.weapons.length,_local5.antiProjectileWeaponItem,_local4,1);
+			if(!g.isLeaving) {
+				g.shipManager.activateEnemyShip(_local4);
 			}
-			return _loc4_;
+			return _local4;
 		}
 		
-		private static function CreateEnemyShipWeapon(param1:Game, param2:int, param3:Array, param4:EnemyShip):void
-		{
-			var _loc6_:Weapon = null;
-			if (param3.length == 0)
-			{
+		private static function CreateEnemyShipWeapon(g:Game, i:int, weapons:Array, ship:EnemyShip) : void {
+			var _local6:Weapon = null;
+			if(weapons.length == 0) {
 				return;
 			}
-			var _loc7_:Object = param3[param2];
-			var _loc5_:Weapon = WeaponFactory.create(_loc7_.weapon, param1, param4, 0);
-			param4.weaponRanges.push(new WeaponRange(_loc7_.minRange, _loc7_.maxRange));
-			if (param2 < param4.weapons.length)
-			{
-				_loc6_ = param4.weapons[param2];
-				param4.weapons[param2] = _loc5_;
-				_loc6_.destroy();
+			var _local7:Object = weapons[i];
+			var _local5:Weapon = WeaponFactory.create(_local7.weapon,g,ship,0);
+			ship.weaponRanges.push(new WeaponRange(_local7.minRange,_local7.maxRange));
+			if(i < ship.weapons.length) {
+				_local6 = ship.weapons[i];
+				ship.weapons[i] = _local5;
+				_local6.destroy();
+			} else {
+				ship.weapons.push(_local5);
 			}
-			else
-			{
-				param4.weapons.push(_loc5_);
-			}
-			if (param2 != param3.length - 1)
-			{
-				param2 += 1;
-				CreateEnemyShipWeapon(param1, param2, param3, param4);
+			if(i != weapons.length - 1) {
+				i += 1;
+				CreateEnemyShipWeapon(g,i,weapons,ship);
 			}
 		}
 		
-		private static function CreateEnemyShipExtraWeapon(param1:Game, param2:int, param3:Object, param4:EnemyShip, param5:int):void
-		{
-			var _loc7_:Weapon = null;
-			if (param3 == null)
-			{
+		private static function CreateEnemyShipExtraWeapon(g:Game, i:int, weaponObj:Object, ship:EnemyShip, type:int) : void {
+			var _local7:Weapon = null;
+			if(weaponObj == null) {
 				return;
 			}
-			var _loc6_:Weapon = WeaponFactory.create(param3.weapon, param1, param4, 0);
-			param4.weaponRanges.push(new WeaponRange(0, 0));
-			if (param5 == 0)
-			{
-				param4.escapeWeapon = _loc6_;
+			var _local6:Weapon = WeaponFactory.create(weaponObj.weapon,g,ship,0);
+			ship.weaponRanges.push(new WeaponRange(0,0));
+			if(type == 0) {
+				ship.escapeWeapon = _local6;
+			} else {
+				ship.antiProjectileWeapon = _local6;
 			}
-			else
-			{
-				param4.antiProjectileWeapon = _loc6_;
-			}
-			if (param2 < param4.weapons.length)
-			{
-				_loc7_ = param4.weapons[param2];
-				param4.weapons[param2] = _loc6_;
-				_loc7_.destroy();
-			}
-			else
-			{
-				param4.weapons.push(_loc6_);
+			if(i < ship.weapons.length) {
+				_local7 = ship.weapons[i];
+				ship.weapons[i] = _local6;
+				_local7.destroy();
+			} else {
+				ship.weapons.push(_local6);
 			}
 		}
 		
-		public static function createBody(param1:String, param2:Game, param3:Unit):void
-		{
-			var _loc6_:IDataManager = DataLocator.getService();
-			var _loc4_:Object = _loc6_.loadKey("Ships", param1);
-			param3.switchTexturesByObj(_loc4_);
-			if (_loc4_.blendModeAdd)
-			{
-				param3.movieClip.blendMode = "add";
+		public static function createBody(key:String, g:Game, s:Unit) : void {
+			var _local6:IDataManager = DataLocator.getService();
+			var _local4:Object = _local6.loadKey("Ships",key);
+			s.switchTexturesByObj(_local4);
+			if(_local4.blendModeAdd) {
+				s.movieClip.blendMode = "add";
 			}
-			param3.obj = _loc4_;
-			param3.bodyName = _loc4_.name;
-			param3.collisionRadius = _loc4_.collisionRadius;
-			param3.hp = _loc4_.hp;
-			param3.hpMax = _loc4_.hp;
-			param3.shieldHp = _loc4_.shieldHp;
-			param3.shieldHpMax = _loc4_.shieldHp;
-			param3.armorThreshold = _loc4_.armor;
-			param3.armorThresholdBase = _loc4_.armor;
-			param3.shieldRegenBase = 1.5 * _loc4_.shieldRegen;
-			param3.shieldRegen = param3.shieldRegenBase;
-			if (param3 is Ship)
-			{
-				param3.enginePos.x = _loc4_.enginePosX;
-				param3.enginePos.y = _loc4_.enginePosY;
-				param3.weaponPos.x = _loc4_.weaponPosX;
-				param3.weaponPos.y = _loc4_.weaponPosY;
+			s.obj = _local4;
+			s.bodyName = _local4.name;
+			s.collisionRadius = _local4.collisionRadius;
+			s.hp = _local4.hp;
+			s.hpMax = _local4.hp;
+			s.shieldHp = _local4.shieldHp;
+			s.shieldHpMax = _local4.shieldHp;
+			s.armorThreshold = _local4.armor;
+			s.armorThresholdBase = _local4.armor;
+			s.shieldRegenBase = 1.5 * _local4.shieldRegen;
+			s.shieldRegen = s.shieldRegenBase;
+			if(s is Ship) {
+				s.enginePos.x = _local4.enginePosX;
+				s.enginePos.y = _local4.enginePosY;
+				s.weaponPos.x = _local4.weaponPosX;
+				s.weaponPos.y = _local4.weaponPosY;
+			} else {
+				s is Turret;
 			}
-			else
-			{
-				param3 is Turret;
-			}
-			param3.weaponPos.x = _loc4_.weaponPosX;
-			param3.weaponPos.y = _loc4_.weaponPosY;
-			param3.explosionEffect = _loc4_.explosionEffect;
-			param3.explosionSound = _loc4_.explosionSound;
-			var _loc5_:ISound = SoundLocator.getService();
-			if (param3.explosionSound != null)
-			{
-				_loc5_.preCacheSound(param3.explosionSound);
+			s.weaponPos.x = _local4.weaponPosX;
+			s.weaponPos.y = _local4.weaponPosY;
+			s.explosionEffect = _local4.explosionEffect;
+			s.explosionSound = _local4.explosionSound;
+			var _local5:ISound = SoundLocator.getService();
+			if(s.explosionSound != null) {
+				_local5.preCacheSound(s.explosionSound);
 			}
 		}
 	}
 }
+

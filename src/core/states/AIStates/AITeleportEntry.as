@@ -1,5 +1,4 @@
-package core.states.AIStates
-{
+package core.states.AIStates {
 	import core.particle.Emitter;
 	import core.particle.EmitterFactory;
 	import core.scene.Game;
@@ -9,55 +8,43 @@ package core.states.AIStates
 	import generics.Random;
 	import movement.Heading;
 	
-	public class AITeleportEntry implements IState
-	{
+	public class AITeleportEntry implements IState {
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var targetX:Number;
-		
 		private var targetY:Number;
-		
 		private var emitters1:Vector.<Emitter>;
 		
-		public function AITeleportEntry(param1:Game, param2:EnemyShip, param3:Heading)
-		{
+		public function AITeleportEntry(g:Game, s:EnemyShip, course:Heading) {
 			super();
-			targetX = param3.pos.x.valueOf();
-			targetY = param3.pos.y.valueOf();
-			var _loc4_:Random = new Random(param2.id);
-			param2.course.pos.x = 2411242;
-			param2.course.pos.y = 8942522;
-			param2.course.rotation = 2 * 3.141592653589793 * _loc4_.randomNumber();
-			param2.clearConvergeTarget();
-			if (isNaN(param2.pos.x))
-			{
-				trace("NaN entry: " + param2.name);
+			targetX = course.pos.x.valueOf();
+			targetY = course.pos.y.valueOf();
+			var _local4:Random = new Random(s.id);
+			s.course.pos.x = 2411242;
+			s.course.pos.y = 8942522;
+			s.course.rotation = 2 * 3.141592653589793 * _local4.randomNumber();
+			s.clearConvergeTarget();
+			if(isNaN(s.pos.x)) {
+				trace("NaN entry: " + s.name);
 				return;
 			}
-			this.g = param1;
-			this.s = param2;
+			this.g = g;
+			this.s = s;
 		}
 		
-		public function enter():void
-		{
+		public function enter() : void {
 			s.invulnerable = true;
 			s.visible = false;
-			emitters1 = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw", g, targetX, targetY, null, true);
+			emitters1 = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw",g,targetX,targetY,null,true);
 		}
 		
-		public function execute():void
-		{
+		public function execute() : void {
 		}
 		
-		public function exit():void
-		{
-			for each (var _loc1_:* in emitters1)
-			{
-				_loc1_.killEmitter();
+		public function exit() : void {
+			for each(var _local1 in emitters1) {
+				_local1.killEmitter();
 			}
 			s.course.pos.x = targetX;
 			s.course.pos.y = targetY;
@@ -67,20 +54,18 @@ package core.states.AIStates
 			s.invulnerable = false;
 			s.nextDistanceCalculation = -1;
 			g.emitterManager.forceUpdate(s);
-			if (s.shieldRegenCounter > -3000)
-			{
+			if(s.shieldRegenCounter > -3000) {
 				s.shieldRegenCounter = -3000;
 			}
 		}
 		
-		public function set stateMachine(param1:StateMachine):void
-		{
-			this.sm = param1;
+		public function set stateMachine(sm:StateMachine) : void {
+			this.sm = sm;
 		}
 		
-		public function get type():String
-		{
+		public function get type() : String {
 			return "AITeleportEntry";
 		}
 	}
 }
+

@@ -1,5 +1,4 @@
-package core.states.AIStates
-{
+package core.states.AIStates {
 	import core.hud.components.chat.MessageLog;
 	import core.particle.Emitter;
 	import core.particle.EmitterFactory;
@@ -9,37 +8,26 @@ package core.states.AIStates
 	import core.states.StateMachine;
 	import core.unit.Unit;
 	
-	public class AIResurect implements IState
-	{
+	public class AIResurect implements IState {
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var target:Unit;
-		
 		private var targetX:Number;
-		
 		private var targetY:Number;
-		
 		private var duration:Number;
-		
 		private var emitters1:Vector.<Emitter>;
-		
 		private var emitters2:Vector.<Emitter>;
 		
-		public function AIResurect(param1:Game, param2:EnemyShip)
-		{
+		public function AIResurect(g:Game, s:EnemyShip) {
 			super();
-			this.g = param1;
-			this.s = param2;
+			this.g = g;
+			this.s = s;
 		}
 		
-		public function enter():void
-		{
-			var _loc1_:String = s.name + " used nanobot reconstruction!";
-			MessageLog.write(_loc1_);
+		public function enter() : void {
+			var _local1:String = s.name + " used nanobot reconstruction!";
+			MessageLog.write(_local1);
 			s.course.speed.x = 0;
 			s.course.speed.y = 0;
 			s.course.accelerate = false;
@@ -47,36 +35,31 @@ package core.states.AIStates
 			s.course.rotateRight = false;
 			s.course.roll = false;
 			s.invulnerable = true;
-			emitters1 = EmitterFactory.create("UZ3AiNHAEUmBD4ev0Itu0A", g, s.pos.x, s.pos.y, s, true);
-			emitters2 = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw", g, targetX, targetY, null, true);
+			emitters1 = EmitterFactory.create("UZ3AiNHAEUmBD4ev0Itu0A",g,s.pos.x,s.pos.y,s,true);
+			emitters2 = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw",g,targetX,targetY,null,true);
 		}
 		
-		public function execute():void
-		{
+		public function execute() : void {
 		}
 		
-		public function exit():void
-		{
+		public function exit() : void {
 			s.hp = s.hpMax;
 			s.shieldHp = s.shieldHpMax;
-			for each (var _loc1_:* in emitters1)
-			{
-				_loc1_.killEmitter();
+			for each(var _local1 in emitters1) {
+				_local1.killEmitter();
 			}
-			for each (_loc1_ in emitters2)
-			{
-				_loc1_.killEmitter();
+			for each(_local1 in emitters2) {
+				_local1.killEmitter();
 			}
 		}
 		
-		public function set stateMachine(param1:StateMachine):void
-		{
-			this.sm = param1;
+		public function set stateMachine(sm:StateMachine) : void {
+			this.sm = sm;
 		}
 		
-		public function get type():String
-		{
+		public function get type() : String {
 			return "AITeleport";
 		}
 	}
 }
+

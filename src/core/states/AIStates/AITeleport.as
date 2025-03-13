@@ -1,5 +1,4 @@
-package core.states.AIStates
-{
+package core.states.AIStates {
 	import core.particle.Emitter;
 	import core.particle.EmitterFactory;
 	import core.scene.Game;
@@ -9,83 +8,62 @@ package core.states.AIStates
 	import core.unit.Unit;
 	import generics.Util;
 	
-	public class AITeleport implements IState
-	{
+	public class AITeleport implements IState {
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var target:Unit;
-		
 		private var targetX:Number;
-		
 		private var targetY:Number;
-		
 		private var duration:Number;
-		
 		private var emitters1:Vector.<Emitter>;
-		
 		private var emitters2:Vector.<Emitter>;
 		
-		public function AITeleport(param1:Game, param2:EnemyShip, param3:Unit, param4:int = 1, param5:Number = 0, param6:Number = 0)
-		{
+		public function AITeleport(g:Game, s:EnemyShip, target:Unit, duration:int = 1, targetX:Number = 0, targetY:Number = 0) {
 			super();
-			this.g = param1;
-			this.s = param2;
-			this.target = param3;
-			this.targetX = param5;
-			this.targetY = param6;
-			this.duration = param4;
+			this.g = g;
+			this.s = s;
+			this.target = target;
+			this.targetX = targetX;
+			this.targetY = targetY;
+			this.duration = duration;
 		}
 		
-		public function enter():void
-		{
+		public function enter() : void {
 			s.invulnerable = true;
-			emitters1 = EmitterFactory.create("UZ3AiNHAEUmBD4ev0Itu0A", g, s.pos.x, s.pos.y, s, true);
-			emitters2 = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw", g, targetX, targetY, null, true);
+			emitters1 = EmitterFactory.create("UZ3AiNHAEUmBD4ev0Itu0A",g,s.pos.x,s.pos.y,s,true);
+			emitters2 = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw",g,targetX,targetY,null,true);
 		}
 		
-		public function execute():void
-		{
-			if (target == null && s.target == null && g.time > s.orbitStartTime && g.time - 2000 < s.orbitStartTime)
-			{
-				s.stateMachine.changeState(new AIOrbit(g, s, true));
+		public function execute() : void {
+			if(target == null && s.target == null && g.time > s.orbitStartTime && g.time - 2000 < s.orbitStartTime) {
+				s.stateMachine.changeState(new AIOrbit(g,s,true));
 				s.course.pos.x = targetX;
 				s.course.pos.y = targetY;
 				s.clearConvergeTarget();
 			}
 		}
 		
-		public function exit():void
-		{
-			var _loc2_:Number = NaN;
-			var _loc3_:Number = NaN;
-			for each (var _loc1_:* in emitters1)
-			{
-				_loc1_.killEmitter();
+		public function exit() : void {
+			var _local2:Number = NaN;
+			var _local3:Number = NaN;
+			for each(var _local1 in emitters1) {
+				_local1.killEmitter();
 			}
-			for each (_loc1_ in emitters2)
-			{
-				_loc1_.killEmitter();
+			for each(_local1 in emitters2) {
+				_local1.killEmitter();
 			}
-			if (target != null)
-			{
-				_loc2_ = target.pos.x - targetX;
-				_loc3_ = target.pos.y - targetY;
-				if (_loc3_ != 0 || _loc2_ != 0)
-				{
-					s.rotation = Util.clampRadians(Math.atan2(_loc3_, _loc2_));
+			if(target != null) {
+				_local2 = target.pos.x - targetX;
+				_local3 = target.pos.y - targetY;
+				if(_local3 != 0 || _local2 != 0) {
+					s.rotation = Util.clampRadians(Math.atan2(_local3,_local2));
 				}
-			}
-			else if (s.target != null)
-			{
-				_loc2_ = s.target.pos.x - targetX;
-				_loc3_ = s.target.pos.y - targetY;
-				if (_loc3_ != 0 || _loc2_ != 0)
-				{
-					s.rotation = Util.clampRadians(Math.atan2(_loc3_, _loc2_) - 3.141592653589793);
+			} else if(s.target != null) {
+				_local2 = s.target.pos.x - targetX;
+				_local3 = s.target.pos.y - targetY;
+				if(_local3 != 0 || _local2 != 0) {
+					s.rotation = Util.clampRadians(Math.atan2(_local3,_local2) - 3.141592653589793);
 				}
 				s.target = null;
 			}
@@ -93,20 +71,18 @@ package core.states.AIStates
 			s.course.pos.y = targetY;
 			s.clearConvergeTarget();
 			s.invulnerable = false;
-			if (s.shieldRegenCounter > -3000)
-			{
+			if(s.shieldRegenCounter > -3000) {
 				s.shieldRegenCounter = -3000;
 			}
 		}
 		
-		public function set stateMachine(param1:StateMachine):void
-		{
-			this.sm = param1;
+		public function set stateMachine(sm:StateMachine) : void {
+			this.sm = sm;
 		}
 		
-		public function get type():String
-		{
+		public function get type() : String {
 			return "AITeleport";
 		}
 	}
 }
+

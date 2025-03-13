@@ -1,159 +1,132 @@
-package core.solarSystem
-{
+package core.solarSystem {
 	import core.scene.Game;
 	import debug.Console;
 	import flash.utils.Dictionary;
 	import playerio.Message;
 	
-	public class BodyManager
-	{
+	public class BodyManager {
 		private static const MAX_ORBIT_DIFF:Number = 10;
-		
 		public var bodiesById:Dictionary;
-		
 		public var bodies:Vector.<Body>;
-		
 		public var roots:Vector.<Body>;
-		
 		public var visibleBodies:Vector.<Body>;
-		
 		private var startTime:Number;
-		
 		private var bodyId:int = 0;
-		
 		private var g:Game;
 		
-		public function BodyManager(param1:Game)
-		{
+		public function BodyManager(m:Game) {
 			super();
-			this.g = param1;
+			this.g = m;
 			bodies = new Vector.<Body>();
 			roots = new Vector.<Body>();
 			bodiesById = new Dictionary();
 			visibleBodies = new Vector.<Body>();
 		}
 		
-		public function addMessageHandlers():void
-		{
+		public function addMessageHandlers() : void {
 		}
 		
-		public function update():void
-		{
-			var _loc2_:Body = null;
-			var _loc3_:int = 0;
-			if (g.me == null || g.me.ship == null)
-			{
+		public function update() : void {
+			var _local2:Body = null;
+			var _local3:int = 0;
+			if(g.me == null || g.me.ship == null) {
 				return;
 			}
-			var _loc1_:int = int(roots.length);
-			_loc3_ = _loc1_ - 1;
-			while (_loc3_ > -1)
-			{
-				_loc2_ = roots[_loc3_];
-				_loc2_.updateBody(startTime);
-				_loc3_--;
+			var _local1:int = int(roots.length);
+			_local3 = _local1 - 1;
+			while(_local3 > -1) {
+				_local2 = roots[_local3];
+				_local2.updateBody(startTime);
+				_local3--;
 			}
 		}
 		
-		public function forceUpdate():void
-		{
-			var _loc2_:Body = null;
-			var _loc3_:int = 0;
-			var _loc1_:int = int(bodies.length);
-			_loc3_ = _loc1_ - 1;
-			while (_loc3_ > -1)
-			{
-				_loc2_ = bodies[_loc3_];
-				_loc2_.nextDistanceCalculation = 0;
-				_loc3_--;
+		public function forceUpdate() : void {
+			var _local2:Body = null;
+			var _local3:int = 0;
+			var _local1:int = int(bodies.length);
+			_local3 = _local1 - 1;
+			while(_local3 > -1) {
+				_local2 = bodies[_local3];
+				_local2.nextDistanceCalculation = 0;
+				_local3--;
 			}
 		}
 		
-		public function getBodyByKey(param1:String):Body
-		{
-			for each (var _loc2_:* in bodies)
-			{
-				if (_loc2_.key == param1)
-				{
-					return _loc2_;
+		public function getBodyByKey(key:String) : Body {
+			for each(var _local2 in bodies) {
+				if(_local2.key == key) {
+					return _local2;
 				}
 			}
 			return null;
 		}
 		
-		public function getBody():Body
-		{
-			var _loc1_:Body = new Body(g);
-			bodies.push(_loc1_);
-			return _loc1_;
+		public function getBody() : Body {
+			var _local1:Body = new Body(g);
+			bodies.push(_local1);
+			return _local1;
 		}
 		
-		public function getRoot():Body
-		{
-			var _loc1_:Body = getBody();
-			roots.push(_loc1_);
-			return _loc1_;
+		public function getRoot() : Body {
+			var _local1:Body = getBody();
+			roots.push(_local1);
+			return _local1;
 		}
 		
-		public function syncBodies(param1:Message, param2:int, param3:int):void
-		{
-			var _loc5_:* = 0;
-			var _loc4_:Body = null;
-			_loc5_ = param2;
-			while (_loc5_ < param3)
-			{
-				_loc4_ = getBodyByKey(param1.getString(_loc5_));
-				if (_loc4_ == null)
-				{
+		public function syncBodies(m:Message, index:int, endIndex:int) : void {
+			var _local5:* = 0;
+			var _local4:Body = null;
+			_local5 = index;
+			while(_local5 < endIndex) {
+				_local4 = getBodyByKey(m.getString(_local5));
+				if(_local4 == null) {
 					Console.write("Body is null in sync.");
 				}
-				_loc5_ += 2;
+				_local5 += 2;
 			}
 		}
 		
-		public function initSolarSystem(param1:Message):void
-		{
-			var _loc9_:* = 0;
-			var _loc8_:String = param1.getString(0);
-			startTime = param1.getNumber(2);
-			g.hud.uberStats.uberRank = param1.getNumber(3);
-			g.hud.uberStats.uberLives = param1.getNumber(4);
-			BodyFactory.createSolarSystem(g, _loc8_);
-			g.solarSystem.pvpAboveCap = param1.getBoolean(1);
-			_loc9_ = 5;
-			var _loc5_:int = param1.getInt(_loc9_++);
-			var _loc6_:int = _loc5_ * 5 + _loc9_;
-			while (_loc9_ < _loc6_)
-			{
-				g.deathLineManager.addLine(param1.getInt(_loc9_), param1.getInt(_loc9_ + 1), param1.getInt(_loc9_ + 2), param1.getInt(_loc9_ + 3), param1.getString(_loc9_ + 4));
-				_loc9_ += 5;
+		public function initSolarSystem(m:Message) : void {
+			var _local9:* = 0;
+			var _local8:String = m.getString(0);
+			startTime = m.getNumber(2);
+			g.hud.uberStats.uberRank = m.getNumber(3);
+			g.hud.uberStats.uberLives = m.getNumber(4);
+			BodyFactory.createSolarSystem(g,_local8);
+			g.solarSystem.pvpAboveCap = m.getBoolean(1);
+			_local9 = 5;
+			var _local5:int = m.getInt(_local9++);
+			var _local6:int = _local5 * 5 + _local9;
+			while(_local9 < _local6) {
+				g.deathLineManager.addLine(m.getInt(_local9),m.getInt(_local9 + 1),m.getInt(_local9 + 2),m.getInt(_local9 + 3),m.getString(_local9 + 4));
+				_local9 += 5;
 			}
-			var _loc4_:int = param1.getInt(_loc9_++);
-			_loc6_ = _loc4_ * 4 + _loc9_;
-			g.bossManager.initBosses(param1, _loc9_, _loc6_);
-			_loc9_ = _loc6_;
-			var _loc7_:int = param1.getInt(_loc9_++);
-			_loc6_ = _loc7_ * 5 + _loc9_;
-			g.spawnManager.syncSpawners(param1, _loc9_, _loc6_);
-			_loc9_ = _loc6_;
-			var _loc2_:int = param1.getInt(_loc9_++);
-			_loc6_ = _loc2_ * 5 + _loc9_;
-			g.turretManager.syncTurret(param1, _loc9_, _loc6_);
-			_loc9_ = _loc6_;
-			var _loc3_:int = param1.getInt(_loc9_++);
-			_loc6_ = _loc3_ * 2 + _loc9_;
-			g.bodyManager.syncBodies(param1, _loc9_, _loc6_);
-			_loc9_ = _loc6_;
+			var _local4:int = m.getInt(_local9++);
+			_local6 = _local4 * 4 + _local9;
+			g.bossManager.initBosses(m,_local9,_local6);
+			_local9 = _local6;
+			var _local7:int = m.getInt(_local9++);
+			_local6 = _local7 * 5 + _local9;
+			g.spawnManager.syncSpawners(m,_local9,_local6);
+			_local9 = _local6;
+			var _local2:int = m.getInt(_local9++);
+			_local6 = _local2 * 5 + _local9;
+			g.turretManager.syncTurret(m,_local9,_local6);
+			_local9 = _local6;
+			var _local3:int = m.getInt(_local9++);
+			_local6 = _local3 * 2 + _local9;
+			g.bodyManager.syncBodies(m,_local9,_local6);
+			_local9 = _local6;
 		}
 		
-		public function dispose():void
-		{
+		public function dispose() : void {
 			bodiesById = null;
-			for each (var _loc1_:* in bodies)
-			{
-				_loc1_.reset();
+			for each(var _local1 in bodies) {
+				_local1.reset();
 			}
 			bodies = null;
 		}
 	}
 }
+

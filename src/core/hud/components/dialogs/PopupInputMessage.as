@@ -1,28 +1,23 @@
-package core.hud.components.dialogs
-{
+package core.hud.components.dialogs {
 	import core.hud.components.InputText;
 	import starling.events.Event;
 	
-	public class PopupInputMessage extends PopupConfirmMessage
-	{
-		public var input:InputText;
+	public class PopupInputMessage extends PopupConfirmMessage {
+		public var input:InputText = new InputText(0,0,200,20);
 		
-		public function PopupInputMessage(param1:String = "Confirm", param2:String = "Cancel")
-		{
-			input = new InputText(0, 0, 200, 20);
-			super(param1, param2);
+		public function PopupInputMessage(confirmText:String = "Confirm", cancelText:String = "Cancel") {
+			super(confirmText,cancelText);
 			box.addChild(input);
 		}
 		
-		public function get text():String
-		{
+		public function get text() : String {
 			return input.text;
 		}
 		
-		override protected function redraw(param1:Event = null):void
-		{
+		override protected function redraw(e:Event = null) : void {
 			super.redraw();
 			confirmButton.y = closeButton.y = input.y + input.height + 10;
 		}
 	}
 }
+

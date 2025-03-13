@@ -1,5 +1,4 @@
-package core.sync
-{
+package core.sync {
 	import core.deathLine.DeathLine;
 	import core.scene.Game;
 	import core.ship.EnemyShip;
@@ -10,176 +9,134 @@ package core.sync
 	import generics.Util;
 	import movement.Heading;
 	
-	public class Converger
-	{
+	public class Converger {
 		public static const PI_DIVIDED_BY_8:Number = 0.39269908169872414;
-		
 		private const BLIP_OFFSET:Number = 30;
-		
-		public var course:Heading;
-		
+		public var course:Heading = new Heading();
 		private var target:Heading;
-		
-		private var error:Point;
-		
+		private var error:Point = new Point();
 		private var errorAngle:Number;
-		
 		private var convergeTime:Number = 1000;
-		
 		private var convergeStartTime:Number;
-		
 		private var errorOldTime:Number;
-		
 		private var ship:Ship;
-		
 		private var g:Game;
-		
 		private var angleTargetPos:Point;
-		
 		private var isFacingTarget:Boolean;
-		
 		private var nextTurnDirection:int;
-		
 		private const RIGHT:int = 1;
-		
 		private const LEFT:int = -1;
-		
 		private const NONE:int = 0;
 		
-		public function Converger(param1:Ship, param2:Game)
-		{
-			course = new Heading();
-			error = new Point();
+		public function Converger(ship:Ship, g:Game) {
 			super();
-			this.ship = param1;
-			this.g = param2;
+			this.ship = ship;
+			this.g = g;
 			angleTargetPos = null;
 			nextTurnDirection = 0;
 		}
 		
-		public function run():void
-		{
-			if (course == null || course.time > g.time - 33)
-			{
+		public function run() : void {
+			if(course == null || course.time > g.time - 33) {
 				return;
 			}
-			if (ship is EnemyShip)
-			{
+			if(ship is EnemyShip) {
 				aiRemoveError(course);
 				updateHeading(course);
 				aiAddError(course);
-			}
-			else
-			{
+			} else {
 				updateHeading(course);
-				if (target != null)
-				{
+				if(target != null) {
 					calculateOffset();
 				}
 			}
 		}
 		
-		public function calculateOffset():void
-		{
-			var _loc8_:Number = NaN;
-			var _loc11_:Number = NaN;
-			var _loc6_:* = undefined;
-			var _loc4_:int = 0;
-			var _loc10_:int = 0;
-			var _loc5_:DeathLine = null;
-			while (target.time < course.time)
-			{
-				_loc8_ = target.pos.y;
-				_loc11_ = target.pos.x;
+		public function calculateOffset() : void {
+			var _local8:Number = NaN;
+			var _local11:Number = NaN;
+			var _local6:* = undefined;
+			var _local4:int = 0;
+			var _local10:int = 0;
+			var _local5:DeathLine = null;
+			while(target.time < course.time) {
+				_local8 = target.pos.y;
+				_local11 = target.pos.x;
 				updateHeading(target);
-				_loc6_ = g.deathLineManager.lines;
-				_loc4_ = int(_loc6_.length);
-				_loc10_ = 0;
-				while (_loc10_ < _loc4_)
-				{
-					_loc5_ = _loc6_[_loc10_];
-					if (_loc5_.lineIntersection2(course.pos.x, course.pos.y, _loc11_, _loc8_, ship.collisionRadius))
-					{
-						target.pos.x = _loc11_;
-						target.pos.y = _loc8_;
+				_local6 = g.deathLineManager.lines;
+				_local4 = int(_local6.length);
+				_local10 = 0;
+				while(_local10 < _local4) {
+					_local5 = _local6[_local10];
+					if(_local5.lineIntersection2(course.pos.x,course.pos.y,_local11,_local8,ship.collisionRadius)) {
+						target.pos.x = _local11;
+						target.pos.y = _local8;
 						target.speed.x = 0;
 						target.speed.y = 0;
 						break;
 					}
-					_loc10_++;
+					_local10++;
 				}
 			}
-			var _loc3_:Number = target.pos.x - course.pos.x;
-			var _loc9_:Number = target.pos.y - course.pos.y;
-			var _loc1_:Number = Math.sqrt(_loc3_ * _loc3_ + _loc9_ * _loc9_);
-			var _loc2_:Number = Util.angleDifference(target.rotation, course.rotation);
-			if (_loc1_ > 30)
-			{
+			var _local3:Number = target.pos.x - course.pos.x;
+			var _local9:Number = target.pos.y - course.pos.y;
+			var _local1:Number = Math.sqrt(_local3 * _local3 + _local9 * _local9);
+			var _local2:Number = Util.angleDifference(target.rotation,course.rotation);
+			if(_local1 > 30) {
 				setCourse(target);
 				return;
 			}
-			if (_loc2_ > 0.39269908169872414 || _loc2_ < -0.39269908169872414)
-			{
+			if(_local2 > 0.39269908169872414 || _local2 < -0.39269908169872414) {
 				course.rotation = target.rotation;
 				return;
 			}
-			var _loc7_:Number = 0.4;
-			course.speed.x = target.speed.x + _loc7_ * _loc3_;
-			course.speed.y = target.speed.y + _loc7_ * _loc9_;
-			course.rotation += _loc2_ * 0.05;
+			var _local7:Number = 0.4;
+			course.speed.x = target.speed.x + _local7 * _local3;
+			course.speed.y = target.speed.y + _local7 * _local9;
+			course.rotation += _local2 * 0.05;
 			course.rotation = Util.clampRadians(course.rotation);
 		}
 		
-		private function aiAddError(param1:Heading):void
-		{
-			if (error.x == 0 && error.y == 0)
-			{
+		private function aiAddError(heading:Heading) : void {
+			if(error.x == 0 && error.y == 0) {
 				return;
 			}
-			var _loc2_:Number = g.time;
-			var _loc3_:Number = (convergeTime - (_loc2_ - convergeStartTime)) / convergeTime;
-			var _loc4_:Number = 3 * _loc3_ * _loc3_ - 2 * _loc3_ * _loc3_ * _loc3_;
-			if (_loc3_ > 0)
-			{
-				param1.pos.x += _loc4_ * error.x;
-				param1.pos.y += _loc4_ * error.y;
-				param1.rotation += _loc4_ * errorAngle;
-				errorOldTime = _loc2_;
-			}
-			else
-			{
+			var _local2:Number = g.time;
+			var _local3:Number = (convergeTime - (_local2 - convergeStartTime)) / convergeTime;
+			var _local4:Number = 3 * _local3 * _local3 - 2 * _local3 * _local3 * _local3;
+			if(_local3 > 0) {
+				heading.pos.x += _local4 * error.x;
+				heading.pos.y += _local4 * error.y;
+				heading.rotation += _local4 * errorAngle;
+				errorOldTime = _local2;
+			} else {
 				error.x = 0;
 				error.y = 0;
 				errorOldTime = 0;
 			}
 		}
 		
-		private function aiRemoveError(param1:Heading):void
-		{
-			if (error.x == 0 && error.y == 0 || errorOldTime == 0)
-			{
+		private function aiRemoveError(heading:Heading) : void {
+			if(error.x == 0 && error.y == 0 || errorOldTime == 0) {
 				return;
 			}
-			var _loc2_:Number = (convergeTime - (errorOldTime - convergeStartTime)) / convergeTime;
-			var _loc3_:Number = 3 * _loc2_ * _loc2_ - 2 * _loc2_ * _loc2_ * _loc2_;
-			param1.pos.x -= _loc3_ * error.x;
-			param1.pos.y -= _loc3_ * error.y;
-			param1.rotation -= _loc3_ * errorAngle;
+			var _local2:Number = (convergeTime - (errorOldTime - convergeStartTime)) / convergeTime;
+			var _local3:Number = 3 * _local2 * _local2 - 2 * _local2 * _local2 * _local2;
+			heading.pos.x -= _local3 * error.x;
+			heading.pos.y -= _local3 * error.y;
+			heading.rotation -= _local3 * errorAngle;
 		}
 		
-		public function setNextTurnDirection(param1:int):void
-		{
-			nextTurnDirection = param1;
+		public function setNextTurnDirection(value:int) : void {
+			nextTurnDirection = value;
 		}
 		
-		public function setConvergeTarget(param1:Heading):void
-		{
-			target = param1;
-			if (ship is EnemyShip)
-			{
+		public function setConvergeTarget(value:Heading) : void {
+			target = value;
+			if(ship is EnemyShip) {
 				error.x = course.pos.x - target.pos.x;
 				error.y = course.pos.y - target.pos.y;
-				errorAngle = Util.angleDifference(course.rotation, target.rotation);
+				errorAngle = Util.angleDifference(course.rotation,target.rotation);
 				convergeStartTime = g.time;
 				course.speed = target.speed;
 				course.pos = target.pos;
@@ -189,263 +146,208 @@ package core.sync
 			}
 		}
 		
-		public function clearConvergeTarget():void
-		{
+		public function clearConvergeTarget() : void {
 			target = null;
 			error.x = 0;
 			error.y = 0;
 		}
 		
-		public function setCourse(param1:Heading, param2:Boolean = true):void
-		{
-			if (param2)
-			{
-				fastforwardToServerTime(param1);
+		public function setCourse(heading:Heading, allowFastForward:Boolean = true) : void {
+			if(allowFastForward) {
+				fastforwardToServerTime(heading);
 			}
-			course = param1;
+			course = heading;
 			target = null;
 		}
 		
-		public function setAngleTargetPos(param1:Point):void
-		{
+		public function setAngleTargetPos(angleTarget:Point) : void {
 			isFacingTarget = false;
-			angleTargetPos = param1;
+			angleTargetPos = angleTarget;
 		}
 		
-		public function isFacingAngleTarget():Boolean
-		{
+		public function isFacingAngleTarget() : Boolean {
 			return isFacingTarget;
 		}
 		
-		public function fastforwardToServerTime(param1:Heading):void
-		{
-			if (param1 == null)
-			{
+		public function fastforwardToServerTime(heading:Heading) : void {
+			if(heading == null) {
 				return;
 			}
-			while (param1.time < g.time - 33)
-			{
-				updateHeading(param1);
+			while(heading.time < g.time - 33) {
+				updateHeading(heading);
 			}
 		}
 		
-		public function updateHeading(param1:Heading):void
-		{
-			var _loc8_:Point = null;
-			var _loc9_:Number = NaN;
-			var _loc7_:Number = NaN;
-			var _loc26_:Number = NaN;
-			var _loc5_:Number = NaN;
-			var _loc6_:Boolean = false;
-			var _loc15_:Number = NaN;
-			var _loc24_:EnemyShip = null;
-			var _loc14_:Number = NaN;
-			var _loc13_:Number = NaN;
-			var _loc12_:Number = NaN;
-			var _loc16_:Number = NaN;
-			var _loc11_:Number = NaN;
-			var _loc25_:Number = NaN;
-			var _loc10_:Number = NaN;
-			var _loc4_:Number = NaN;
-			var _loc3_:Number = NaN;
-			var _loc28_:* = undefined;
-			var _loc20_:int = 0;
-			var _loc22_:int = 0;
-			var _loc17_:Body = null;
-			var _loc18_:Number = NaN;
-			var _loc23_:Number = NaN;
-			var _loc19_:Number = NaN;
-			var _loc21_:Number = NaN;
-			var _loc27_:Number = NaN;
-			var _loc2_:Number = 33;
-			if (ship is EnemyShip)
-			{
+		public function updateHeading(heading:Heading) : void {
+			var _local8:Point = null;
+			var _local9:Number = NaN;
+			var _local7:Number = NaN;
+			var _local26:Number = NaN;
+			var _local5:Number = NaN;
+			var _local6:Boolean = false;
+			var _local15:Number = NaN;
+			var _local24:EnemyShip = null;
+			var _local14:Number = NaN;
+			var _local13:Number = NaN;
+			var _local12:Number = NaN;
+			var _local16:Number = NaN;
+			var _local11:Number = NaN;
+			var _local25:Number = NaN;
+			var _local10:Number = NaN;
+			var _local4:Number = NaN;
+			var _local3:Number = NaN;
+			var _local28:* = undefined;
+			var _local20:int = 0;
+			var _local22:int = 0;
+			var _local17:Body = null;
+			var _local18:Number = NaN;
+			var _local23:Number = NaN;
+			var _local19:Number = NaN;
+			var _local21:Number = NaN;
+			var _local27:Number = NaN;
+			var _local2:Number = 33;
+			if(ship is EnemyShip) {
 			}
-			if (ship is EnemyShip && angleTargetPos != null)
-			{
-				_loc8_ = ship.pos;
-				_loc9_ = ship.rotation;
-				_loc7_ = Math.atan2(angleTargetPos.y - _loc8_.y, angleTargetPos.x - _loc8_.x);
-				_loc26_ = Util.angleDifference(_loc9_, _loc7_ + 3.141592653589793);
-				_loc5_ = 0.001 * ship.engine.rotationSpeed * _loc2_;
-				_loc6_ = _loc26_ > 0.5 * 3.141592653589793 || _loc26_ < -0.5 * 3.141592653589793;
-				_loc15_ = (angleTargetPos.y - _loc8_.y) * (angleTargetPos.y - _loc8_.y) + (angleTargetPos.x - _loc8_.x) * (angleTargetPos.x - _loc8_.x);
-				_loc24_ = ship as EnemyShip;
-				if (_loc15_ < 2500 && _loc24_.meleeCharge)
-				{
+			if(ship is EnemyShip && angleTargetPos != null) {
+				_local8 = ship.pos;
+				_local9 = ship.rotation;
+				_local7 = Math.atan2(angleTargetPos.y - _local8.y,angleTargetPos.x - _local8.x);
+				_local26 = Util.angleDifference(_local9,_local7 + 3.141592653589793);
+				_local5 = 0.001 * ship.engine.rotationSpeed * _local2;
+				_local6 = _local26 > 0.5 * 3.141592653589793 || _local26 < -0.5 * 3.141592653589793;
+				_local15 = (angleTargetPos.y - _local8.y) * (angleTargetPos.y - _local8.y) + (angleTargetPos.x - _local8.x) * (angleTargetPos.x - _local8.x);
+				_local24 = ship as EnemyShip;
+				if(_local15 < 2500 && _local24.meleeCharge) {
 					isFacingTarget = false;
-				}
-				else if (!_loc6_)
-				{
-					param1.accelerate = true;
-					param1.roll = false;
-					if (_loc26_ > 0 && _loc26_ < 3.141592653589793 - _loc5_)
-					{
-						param1.rotation += _loc5_;
-						param1.rotation = Util.clampRadians(param1.rotation);
+				} else if(!_local6) {
+					heading.accelerate = true;
+					heading.roll = false;
+					if(_local26 > 0 && _local26 < 3.141592653589793 - _local5) {
+						heading.rotation += _local5;
+						heading.rotation = Util.clampRadians(heading.rotation);
+						isFacingTarget = false;
+					} else if(_local26 <= 0 && _local26 > -3.141592653589793 + _local5) {
+						heading.rotation -= _local5;
+						heading.rotation = Util.clampRadians(heading.rotation);
 						isFacingTarget = false;
 					}
-					else if (_loc26_ <= 0 && _loc26_ > -3.141592653589793 + _loc5_)
-					{
-						param1.rotation -= _loc5_;
-						param1.rotation = Util.clampRadians(param1.rotation);
-						isFacingTarget = false;
-					}
-				}
-				else if (_loc26_ > 0 && _loc26_ < 3.141592653589793 - _loc5_)
-				{
-					param1.rotation += _loc5_;
-					param1.rotation = Util.clampRadians(param1.rotation);
+				} else if(_local26 > 0 && _local26 < 3.141592653589793 - _local5) {
+					heading.rotation += _local5;
+					heading.rotation = Util.clampRadians(heading.rotation);
 					isFacingTarget = false;
-				}
-				else if (_loc26_ <= 0 && _loc26_ > -3.141592653589793 + _loc5_)
-				{
-					param1.rotation -= _loc5_;
-					param1.rotation = Util.clampRadians(param1.rotation);
+				} else if(_local26 <= 0 && _local26 > -3.141592653589793 + _local5) {
+					heading.rotation -= _local5;
+					heading.rotation = Util.clampRadians(heading.rotation);
 					isFacingTarget = false;
-				}
-				else
-				{
+				} else {
 					isFacingTarget = true;
-					param1.rotation = Util.clampRadians(_loc7_);
+					heading.rotation = Util.clampRadians(_local7);
+				}
+			} else {
+				if(heading.rotateLeft) {
+					heading.rotation -= 0.001 * ship.engine.rotationSpeed * _local2;
+					heading.rotation = Util.clampRadians(heading.rotation);
+				}
+				if(heading.rotateRight) {
+					heading.rotation += 0.001 * ship.engine.rotationSpeed * _local2;
+					heading.rotation = Util.clampRadians(heading.rotation);
 				}
 			}
-			else
-			{
-				if (param1.rotateLeft)
-				{
-					param1.rotation -= 0.001 * ship.engine.rotationSpeed * _loc2_;
-					param1.rotation = Util.clampRadians(param1.rotation);
+			if(heading.accelerate) {
+				_local14 = heading.speed.x;
+				_local13 = heading.speed.y;
+				_local12 = _local14 * _local14 + _local13 * _local13;
+				_local16 = heading.rotation + ship.rollDir * ship.rollMod * ship.rollPassive;
+				_local11 = ship.engine.acceleration * 0.5 * Math.pow(_local2,2);
+				if(ship is EnemyShip) {
+					_local14 += Math.cos(_local16) * _local11;
+					_local13 += Math.sin(_local16) * _local11;
+				} else {
+					_local14 += Math.cos(heading.rotation) * _local11;
+					_local13 += Math.sin(heading.rotation) * _local11;
 				}
-				if (param1.rotateRight)
-				{
-					param1.rotation += 0.001 * ship.engine.rotationSpeed * _loc2_;
-					param1.rotation = Util.clampRadians(param1.rotation);
+				_local25 = ship.engine.speed;
+				if(ship.usingBoost) {
+					_local25 = 0.01 * _local25 * (100 + ship.boostBonus);
+				} else if(_local12 > _local25 * _local25) {
+					_local25 = Math.sqrt(_local12);
 				}
-			}
-			if (param1.accelerate)
-			{
-				_loc14_ = param1.speed.x;
-				_loc13_ = param1.speed.y;
-				_loc12_ = _loc14_ * _loc14_ + _loc13_ * _loc13_;
-				_loc16_ = param1.rotation + ship.rollDir * ship.rollMod * ship.rollPassive;
-				_loc11_ = ship.engine.acceleration * 0.5 * Math.pow(_loc2_, 2);
-				if (ship is EnemyShip)
-				{
-					_loc14_ += Math.cos(_loc16_) * _loc11_;
-					_loc13_ += Math.sin(_loc16_) * _loc11_;
+				_local12 = _local14 * _local14 + _local13 * _local13;
+				if(_local12 <= _local25 * _local25) {
+					heading.speed.x = _local14;
+					heading.speed.y = _local13;
+				} else {
+					_local10 = Math.sqrt(_local12);
+					_local4 = _local14 / _local10 * _local25;
+					_local3 = _local13 / _local10 * _local25;
+					heading.speed.x = _local4;
+					heading.speed.y = _local3;
 				}
-				else
-				{
-					_loc14_ += Math.cos(param1.rotation) * _loc11_;
-					_loc13_ += Math.sin(param1.rotation) * _loc11_;
-				}
-				_loc25_ = ship.engine.speed;
-				if (ship.usingBoost)
-				{
-					_loc25_ = 0.01 * _loc25_ * (100 + ship.boostBonus);
-				}
-				else if (_loc12_ > _loc25_ * _loc25_)
-				{
-					_loc25_ = Math.sqrt(_loc12_);
-				}
-				_loc12_ = _loc14_ * _loc14_ + _loc13_ * _loc13_;
-				if (_loc12_ <= _loc25_ * _loc25_)
-				{
-					param1.speed.x = _loc14_;
-					param1.speed.y = _loc13_;
-				}
-				else
-				{
-					_loc10_ = Math.sqrt(_loc12_);
-					_loc4_ = _loc14_ / _loc10_ * _loc25_;
-					_loc3_ = _loc13_ / _loc10_ * _loc25_;
-					param1.speed.x = _loc4_;
-					param1.speed.y = _loc3_;
-				}
-			}
-			else if (param1.deaccelerate)
-			{
-				param1.speed.x = 0.9 * param1.speed.x;
-				param1.speed.y = 0.9 * param1.speed.y;
-			}
-			else if (ship is EnemyShip && param1.roll)
-			{
-				_loc14_ = param1.speed.x;
-				_loc13_ = param1.speed.y;
-				_loc12_ = _loc14_ * _loc14_ + _loc13_ * _loc13_;
-				if (_loc12_ <= ship.rollSpeed * ship.rollSpeed)
-				{
-					_loc16_ = param1.rotation + ship.rollDir * ship.rollMod * 3.141592653589793 * 0.5;
-					_loc11_ = ship.engine.acceleration * 0.5 * Math.pow(_loc2_, 2);
-					_loc14_ += Math.cos(_loc16_) * _loc11_;
-					_loc13_ += Math.sin(_loc16_) * _loc11_;
-					_loc12_ = _loc14_ * _loc14_ + _loc13_ * _loc13_;
-					if (_loc12_ <= ship.rollSpeed * ship.rollSpeed)
-					{
-						param1.speed.x = _loc14_;
-						param1.speed.y = _loc13_;
+			} else if(heading.deaccelerate) {
+				heading.speed.x = 0.9 * heading.speed.x;
+				heading.speed.y = 0.9 * heading.speed.y;
+			} else if(ship is EnemyShip && heading.roll) {
+				_local14 = heading.speed.x;
+				_local13 = heading.speed.y;
+				_local12 = _local14 * _local14 + _local13 * _local13;
+				if(_local12 <= ship.rollSpeed * ship.rollSpeed) {
+					_local16 = heading.rotation + ship.rollDir * ship.rollMod * 3.141592653589793 * 0.5;
+					_local11 = ship.engine.acceleration * 0.5 * Math.pow(_local2,2);
+					_local14 += Math.cos(_local16) * _local11;
+					_local13 += Math.sin(_local16) * _local11;
+					_local12 = _local14 * _local14 + _local13 * _local13;
+					if(_local12 <= ship.rollSpeed * ship.rollSpeed) {
+						heading.speed.x = _local14;
+						heading.speed.y = _local13;
+					} else {
+						_local10 = Math.sqrt(_local12);
+						_local4 = _local14 / _local10 * ship.rollSpeed;
+						_local3 = _local13 / _local10 * ship.rollSpeed;
+						heading.speed.x = _local4;
+						heading.speed.y = _local3;
 					}
-					else
-					{
-						_loc10_ = Math.sqrt(_loc12_);
-						_loc4_ = _loc14_ / _loc10_ * ship.rollSpeed;
-						_loc3_ = _loc13_ / _loc10_ * ship.rollSpeed;
-						param1.speed.x = _loc4_;
-						param1.speed.y = _loc3_;
-					}
-				}
-				else
-				{
-					param1.speed.x -= 0.02 * param1.speed.x;
-					param1.speed.y -= 0.02 * param1.speed.y;
+				} else {
+					heading.speed.x -= 0.02 * heading.speed.x;
+					heading.speed.y -= 0.02 * heading.speed.y;
 				}
 			}
-			if (ship is EnemyShip && !param1.accelerate)
-			{
-				param1.speed.x = 0.9 * param1.speed.x;
-				param1.speed.y = 0.9 * param1.speed.y;
+			if(ship is EnemyShip && !heading.accelerate) {
+				heading.speed.x = 0.9 * heading.speed.x;
+				heading.speed.y = 0.9 * heading.speed.y;
+			} else {
+				heading.speed.x -= 0.009 * heading.speed.x;
+				heading.speed.y -= 0.009 * heading.speed.y;
 			}
-			else
-			{
-				param1.speed.x -= 0.009 * param1.speed.x;
-				param1.speed.y -= 0.009 * param1.speed.y;
-			}
-			if (ship is PlayerShip)
-			{
-				_loc28_ = g.bodyManager.bodies;
-				_loc20_ = int(_loc28_.length);
-				_loc22_ = 0;
-				while (_loc22_ < _loc20_)
-				{
-					_loc17_ = _loc28_[_loc22_];
-					if (_loc17_.type == "sun")
-					{
-						_loc18_ = _loc17_.pos.x - param1.pos.x;
-						_loc23_ = _loc17_.pos.y - param1.pos.y;
-						_loc19_ = _loc18_ * _loc18_ + _loc23_ * _loc23_;
-						if (_loc19_ <= _loc17_.gravityDistance)
-						{
-							if (_loc19_ != 0)
-							{
-								if (_loc19_ < _loc17_.gravityMin)
-								{
-									_loc19_ = _loc17_.gravityMin;
+			if(ship is PlayerShip) {
+				_local28 = g.bodyManager.bodies;
+				_local20 = int(_local28.length);
+				_local22 = 0;
+				while(_local22 < _local20) {
+					_local17 = _local28[_local22];
+					if(_local17.type == "sun") {
+						_local18 = _local17.pos.x - heading.pos.x;
+						_local23 = _local17.pos.y - heading.pos.y;
+						_local19 = _local18 * _local18 + _local23 * _local23;
+						if(_local19 <= _local17.gravityDistance) {
+							if(_local19 != 0) {
+								if(_local19 < _local17.gravityMin) {
+									_local19 = _local17.gravityMin;
 								}
-								_loc21_ = Math.atan2(_loc23_, _loc18_);
-								_loc21_ = Util.clampRadians(_loc21_);
-								_loc27_ = _loc17_.gravityForce / _loc19_ * _loc2_ * 0.001;
-								param1.speed.x += Math.cos(_loc21_) * _loc27_;
-								param1.speed.y += Math.sin(_loc21_) * _loc27_;
+								_local21 = Math.atan2(_local23,_local18);
+								_local21 = Util.clampRadians(_local21);
+								_local27 = _local17.gravityForce / _local19 * _local2 * 0.001;
+								heading.speed.x += Math.cos(_local21) * _local27;
+								heading.speed.y += Math.sin(_local21) * _local27;
 							}
 						}
 					}
-					_loc22_++;
+					_local22++;
 				}
 			}
-			param1.pos.x += param1.speed.x * _loc2_ * 0.001;
-			param1.pos.y += param1.speed.y * _loc2_ * 0.001;
-			param1.time += _loc2_;
+			heading.pos.x += heading.speed.x * _local2 * 0.001;
+			heading.pos.y += heading.speed.y * _local2 * 0.001;
+			heading.time += _local2;
 		}
 	}
 }
+

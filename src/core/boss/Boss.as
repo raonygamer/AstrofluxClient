@@ -1,5 +1,4 @@
-package core.boss
-{
+package core.boss {
 	import com.greensock.TweenMax;
 	import core.GameObject;
 	import core.particle.EmitterFactory;
@@ -17,114 +16,61 @@ package core.boss
 	import starling.display.Image;
 	import textures.TextureLocator;
 	
-	public class Boss extends GameObject
-	{
+	public class Boss extends GameObject {
 		public var alive:Boolean;
-		
 		public var isHostile:Boolean;
-		
 		public var key:String;
-		
 		public var xp:int;
-		
 		public var level:int;
-		
 		public var hp:int;
-		
 		public var hpMax:int;
-		
 		public var resetTime:Number;
-		
 		public var respawnTime:Number;
-		
 		public var speed:Number;
-		
 		public var acceleration:Number;
-		
 		public var rotationSpeed:Number;
-		
 		public var rotationForced:Boolean;
-		
 		public var targetRange:int;
-		
 		public var holonomic:Boolean;
-		
 		public var orbitOrign:Point;
-		
 		public var orbitRadius:Point;
-		
 		public var turrets:Vector.<Turret>;
-		
 		public var spawners:Vector.<Spawner>;
-		
 		public var bossComponents:Vector.<BossComponent>;
-		
 		public var allComponents:Vector.<Unit>;
-		
 		public var target:Unit;
-		
 		public var angleTargetPos:Point;
-		
 		public var course:Heading;
-		
 		public var parentBody:Body;
-		
 		public var explosionEffect:String;
-		
 		public var explosionSound:String;
-		
 		public var bossRadius:int;
-		
 		public var currentWaypoint:Waypoint = null;
-		
 		public var waypoints:Vector.<Waypoint>;
-		
 		public var bodyDestroyStart:Number = 0;
-		
 		public var bodyDestroyEnd:Number = 0;
-		
 		public var bodyTarget:Body;
-		
 		public var awaitingActivation:Boolean;
-		
-		public var stateMachine:StateMachine;
-		
+		public var stateMachine:StateMachine = new StateMachine();
 		protected var g:Game;
-		
 		private var error:Point = null;
-		
 		private var errorAngle:Number;
-		
 		private var convergeTime:Number = 1000;
-		
 		private var convergeStartTime:Number;
-		
 		private var errorOldTime:Number;
-		
 		private var oldAngle:Number;
-		
 		public var teleportExitTime:Number = 0;
-		
 		public var teleportExitPoint:Point;
-		
 		public var hpRegen:int;
-		
-		public var factions:Vector.<String>;
-		
+		public var factions:Vector.<String> = new Vector.<String>();
 		public var uberDifficulty:Number = 0;
-		
 		public var uberLevelFactor:Number = 0;
-		
 		private var teleportDestinationImage:Image;
-		
 		private var teleportChannelImage:Image;
 		
-		public function Boss(param1:Game)
-		{
-			stateMachine = new StateMachine();
-			factions = new Vector.<String>();
+		public function Boss(g:Game) {
 			super();
-			canvas = param1.canvasBosses;
+			canvas = g.canvasBosses;
 			turrets = new Vector.<Turret>();
 			spawners = new Vector.<Spawner>();
 			bossComponents = new Vector.<BossComponent>();
@@ -132,423 +78,388 @@ package core.boss
 			stateMachine = new StateMachine();
 			course = new Heading();
 			waypoints = new Vector.<Waypoint>();
-			this.g = param1;
+			this.g = g;
 			distanceToCamera = 0;
 		}
 		
-		public function startTeleportEffect():void
-		{
-			teleportDestinationImage = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???", "qqq") + "_mini"));
+		public function startTeleportEffect() : void {
+			teleportDestinationImage = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???","qqq") + "_mini"));
 			teleportDestinationImage.scaleX = teleportDestinationImage.scaleY = bossRadius * 2 / teleportDestinationImage.width;
 			teleportDestinationImage.x = teleportExitPoint.x;
 			teleportDestinationImage.y = teleportExitPoint.y;
 			teleportDestinationImage.pivotX = teleportDestinationImage.texture.width / 2;
 			teleportDestinationImage.pivotY = teleportDestinationImage.texture.height / 2;
 			teleportDestinationImage.blendMode = "add";
-			teleportDestinationImage.color = 16729156;
-			TweenMax.fromTo(teleportDestinationImage, 0.2, {"alpha": 0.8}, {"alpha": 0.2, "yoyo": true, "repeat": -1});
+			teleportDestinationImage.color = 0xff4444;
+			TweenMax.fromTo(teleportDestinationImage,0.2,{"alpha":0.8},{
+				"alpha":0.2,
+				"yoyo":true,
+				"repeat":-1
+			});
 			g.addChildToCanvas(teleportDestinationImage);
-			teleportChannelImage = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???", "qqq") + "_mini"));
+			teleportChannelImage = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???","qqq") + "_mini"));
 			teleportChannelImage.scaleX = teleportChannelImage.scaleY = bossRadius * 2 / teleportChannelImage.width * 1.6;
 			teleportChannelImage.x = this.x;
 			teleportChannelImage.y = this.y;
 			teleportChannelImage.pivotX = teleportChannelImage.texture.width / 2;
 			teleportChannelImage.pivotY = teleportChannelImage.texture.height / 2;
 			teleportChannelImage.blendMode = "add";
-			teleportChannelImage.color = 16729156;
-			TweenMax.fromTo(teleportChannelImage, (teleportExitTime - g.time) / 1000 / 3, {"alpha": 0, "scaleX": teleportChannelImage.scaleX, "scaleY": teleportChannelImage.scaleY}, {"alpha": 0.8, "scaleX": teleportChannelImage.scaleX / 1.6, "scaleY": teleportChannelImage.scaleY / 1.6, "repeat": 3, "onComplete": function():void
-			{
-				g.removeChildFromCanvas(teleportChannelImage);
-			}});
+			teleportChannelImage.color = 0xff4444;
+			TweenMax.fromTo(teleportChannelImage,(teleportExitTime - g.time) / 1000 / 3,{
+				"alpha":0,
+				"scaleX":teleportChannelImage.scaleX,
+				"scaleY":teleportChannelImage.scaleY
+			},{
+				"alpha":0.8,
+				"scaleX":teleportChannelImage.scaleX / 1.6,
+				"scaleY":teleportChannelImage.scaleY / 1.6,
+				"repeat":3,
+				"onComplete":function():void {
+					g.removeChildFromCanvas(teleportChannelImage);
+				}
+			});
 			g.addChildToCanvas(teleportChannelImage);
 		}
 		
-		public function endTeleportEffect():void
-		{
+		public function endTeleportEffect() : void {
 			var splashImage1:Image;
 			var splashImage2:Image;
 			var splashImage3:Image;
 			TweenMax.killTweensOf(teleportDestinationImage);
 			g.removeChildFromCanvas(teleportDestinationImage);
-			splashImage1 = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???", "qqq") + "_mini"));
+			splashImage1 = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???","qqq") + "_mini"));
 			splashImage1.scaleX = splashImage1.scaleY = bossRadius * 2 / splashImage1.width;
 			splashImage1.x = teleportExitPoint.x;
 			splashImage1.y = teleportExitPoint.y;
 			splashImage1.pivotX = splashImage1.texture.width / 2;
 			splashImage1.pivotY = splashImage1.texture.height / 2;
 			splashImage1.blendMode = "add";
-			splashImage1.color = 16729156;
+			splashImage1.color = 0xff4444;
 			g.addChildToCanvas(splashImage1);
-			TweenMax.fromTo(splashImage1, 0.3, {"scaleX": splashImage1.scaleX, "scaleY": splashImage1.scaleY, "alpha": 0.6}, {"scaleX": splashImage1.scaleX * 2, "scaleY": splashImage1.scaleY * 2, "alpha": 0, "onComplete": function():void
-			{
-				g.removeChildFromCanvas(splashImage1);
-			}});
-			splashImage2 = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???", "qqq") + "_mini"));
+			TweenMax.fromTo(splashImage1,0.3,{
+				"scaleX":splashImage1.scaleX,
+				"scaleY":splashImage1.scaleY,
+				"alpha":0.6
+			},{
+				"scaleX":splashImage1.scaleX * 2,
+				"scaleY":splashImage1.scaleY * 2,
+				"alpha":0,
+				"onComplete":function():void {
+					g.removeChildFromCanvas(splashImage1);
+				}
+			});
+			splashImage2 = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???","qqq") + "_mini"));
 			splashImage2.scaleX = splashImage2.scaleY = bossRadius * 2 / splashImage2.width;
 			splashImage2.x = teleportExitPoint.x;
 			splashImage2.y = teleportExitPoint.y;
 			splashImage2.pivotX = splashImage2.texture.width / 2;
 			splashImage2.pivotY = splashImage2.texture.height / 2;
 			splashImage2.blendMode = "add";
-			splashImage2.color = 16729156;
+			splashImage2.color = 0xff4444;
 			g.addChildToCanvas(splashImage2);
-			TweenMax.fromTo(splashImage2, 0.4, {"scaleX": splashImage2.scaleX, "scaleY": splashImage2.scaleY, "alpha": 0.6}, {"scaleX": splashImage2.scaleX * 2, "scaleY": splashImage2.scaleY * 2, "alpha": 0, "onComplete": function():void
-			{
-				g.removeChildFromCanvas(splashImage2);
-			}});
-			splashImage3 = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???", "qqq") + "_mini"));
+			TweenMax.fromTo(splashImage2,0.4,{
+				"scaleX":splashImage2.scaleX,
+				"scaleY":splashImage2.scaleY,
+				"alpha":0.6
+			},{
+				"scaleX":splashImage2.scaleX * 2,
+				"scaleY":splashImage2.scaleY * 2,
+				"alpha":0,
+				"onComplete":function():void {
+					g.removeChildFromCanvas(splashImage2);
+				}
+			});
+			splashImage3 = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???","qqq") + "_mini"));
 			splashImage3.scaleX = splashImage3.scaleY = bossRadius * 2 / splashImage3.width;
 			splashImage3.x = teleportExitPoint.x;
 			splashImage3.y = teleportExitPoint.y;
 			splashImage3.pivotX = splashImage3.texture.width / 2;
 			splashImage3.pivotY = splashImage3.texture.height / 2;
 			splashImage3.blendMode = "add";
-			splashImage3.color = 16729156;
+			splashImage3.color = 0xff4444;
 			g.addChildToCanvas(splashImage3);
-			TweenMax.fromTo(splashImage3, 0.6, {"scaleX": splashImage3.scaleX, "scaleY": splashImage3.scaleY, "alpha": 0.6}, {"scaleX": splashImage3.scaleX * 2, "scaleY": splashImage3.scaleY * 2, "alpha": 0, "onComplete": function():void
-			{
-				g.removeChildFromCanvas(splashImage3);
-			}});
+			TweenMax.fromTo(splashImage3,0.6,{
+				"scaleX":splashImage3.scaleX,
+				"scaleY":splashImage3.scaleY,
+				"alpha":0.6
+			},{
+				"scaleX":splashImage3.scaleX * 2,
+				"scaleY":splashImage3.scaleY * 2,
+				"alpha":0,
+				"onComplete":function():void {
+					g.removeChildFromCanvas(splashImage3);
+				}
+			});
 		}
 		
-		override public function update():void
-		{
-			var _loc4_:Point = null;
-			var _loc2_:Point = null;
-			if (!alive || awaitingActivation)
-			{
+		override public function update() : void {
+			var _local4:Point = null;
+			var _local2:Point = null;
+			if(!alive || awaitingActivation) {
 				return;
 			}
-			if (g.me.ship != null)
-			{
-				_loc4_ = this.pos;
-				_loc2_ = g.me.ship.pos;
-				distanceToCameraX = _loc4_.x - _loc2_.x;
-				distanceToCameraY = _loc4_.y - _loc2_.y;
+			if(g.me.ship != null) {
+				_local4 = this.pos;
+				_local2 = g.me.ship.pos;
+				distanceToCameraX = _local4.x - _local2.x;
+				distanceToCameraY = _local4.y - _local2.y;
 				distanceToCamera = Math.sqrt(distanceToCameraX * distanceToCameraX + distanceToCameraY * distanceToCameraY);
 			}
-			if (nextDistanceCalculation <= 0)
-			{
+			if(nextDistanceCalculation <= 0) {
 				updateIsNear();
-			}
-			else
-			{
+			} else {
 				nextDistanceCalculation -= 33;
 			}
 			stateMachine.update();
-			var _loc3_:int = 0;
+			var _local3:int = 0;
 			hp = 0;
-			for each (var _loc1_:* in allComponents)
-			{
-				_loc1_.update();
-				if (_loc1_.alive && _loc1_.essential)
-				{
-					hp += _loc1_.hp + _loc1_.shieldHp;
-					_loc3_++;
+			for each(var _local1 in allComponents) {
+				_local1.update();
+				if(_local1.alive && _local1.essential) {
+					hp += _local1.hp + _local1.shieldHp;
+					_local3++;
 				}
-				if ((!_loc1_.alive || !_loc1_.active) && !(_loc1_ is Spawner))
-				{
-					_loc1_.visible = false;
+				if((!_local1.alive || !_local1.active) && !(_local1 is Spawner)) {
+					_local1.visible = false;
 				}
 			}
 		}
 		
-		private function updateIsNear():void
-		{
-			var _loc2_:Number = g.stage.stageWidth;
+		private function updateIsNear() : void {
+			var _local2:Number = g.stage.stageWidth;
 			distanceToCamera = Math.sqrt(distanceToCameraX * distanceToCameraX + distanceToCameraY * distanceToCameraY);
-			var _loc1_:Number = distanceToCamera - _loc2_;
-			nextDistanceCalculation = _loc1_ / 600 * 100;
-			if (nextDistanceCalculation > 5000)
-			{
+			var _local1:Number = distanceToCamera - _local2;
+			nextDistanceCalculation = _local1 / (10 * 60) * 100;
+			if(nextDistanceCalculation > 5000) {
 				nextDistanceCalculation = 5000;
 			}
-			if (distanceToCamera < _loc2_)
-			{
-				if (isAddedToCanvas)
-				{
+			if(distanceToCamera < _local2) {
+				if(isAddedToCanvas) {
 					return;
 				}
 				addToCanvas();
-			}
-			else
-			{
-				if (!isAddedToCanvas)
-				{
+			} else {
+				if(!isAddedToCanvas) {
 					return;
 				}
 				removeFromCanvas();
 			}
 		}
 		
-		override public function removeFromCanvas():void
-		{
+		override public function removeFromCanvas() : void {
 			isAddedToCanvas = false;
-			for each (var _loc1_:* in allComponents)
-			{
-				_loc1_.removeFromCanvas();
+			for each(var _local1 in allComponents) {
+				_local1.removeFromCanvas();
 			}
 		}
 		
-		override public function addToCanvas():void
-		{
+		override public function addToCanvas() : void {
 			isAddedToCanvas = true;
-			for each (var _loc1_:* in allComponents)
-			{
-				_loc1_.addToCanvas();
+			for each(var _local1 in allComponents) {
+				_local1.addToCanvas();
 			}
 		}
 		
-		public function addFactions():void
-		{
-			for each (var _loc1_:* in allComponents)
-			{
-				_loc1_.factions = factions;
+		public function addFactions() : void {
+			for each(var _local1 in allComponents) {
+				_local1.factions = factions;
 			}
 		}
 		
-		public function updateHeading(param1:Heading):void
-		{
-			var _loc9_:Number = NaN;
-			var _loc11_:Number = NaN;
-			var _loc7_:Number = NaN;
-			var _loc5_:Number = NaN;
-			var _loc8_:Number = NaN;
-			var _loc10_:Number = NaN;
-			var _loc4_:Number = NaN;
-			var _loc14_:Number = NaN;
-			var _loc13_:Number = NaN;
-			var _loc12_:Number = NaN;
-			var _loc6_:Number = NaN;
-			var _loc3_:Number = NaN;
-			var _loc2_:int = 33;
-			aiRemoveError(param1);
+		public function updateHeading(heading:Heading) : void {
+			var _local9:Number = NaN;
+			var _local11:Number = NaN;
+			var _local7:Number = NaN;
+			var _local5:Number = NaN;
+			var _local8:Number = NaN;
+			var _local10:Number = NaN;
+			var _local4:Number = NaN;
+			var _local14:Number = NaN;
+			var _local13:Number = NaN;
+			var _local12:Number = NaN;
+			var _local6:Number = NaN;
+			var _local3:Number = NaN;
+			var _local2:int = 33;
+			aiRemoveError(heading);
 			oldAngle = course.rotation;
-			if (angleTargetPos != null)
-			{
-				if (holonomic || rotationForced)
-				{
-					param1.rotation = Math.atan2(angleTargetPos.y - course.pos.y, angleTargetPos.x - course.pos.x);
-				}
-				else
-				{
-					_loc9_ = Math.atan2(angleTargetPos.y - course.pos.y, angleTargetPos.x - course.pos.x);
-					_loc11_ = Util.angleDifference(course.rotation, _loc9_ + 3.141592653589793);
-					_loc7_ = rotationSpeed * _loc2_ / 1000;
-					if (_loc11_ > 0 && _loc11_ < 3.141592653589793 - _loc7_)
-					{
-						param1.rotation += _loc7_;
-						param1.rotation = Util.clampRadians(param1.rotation);
-					}
-					else if (_loc11_ <= 0 && _loc11_ > -3.141592653589793 + _loc7_)
-					{
-						param1.rotation -= _loc7_;
-						param1.rotation = Util.clampRadians(param1.rotation);
-					}
-					else
-					{
-						param1.rotation = Util.clampRadians(_loc9_);
+			if(angleTargetPos != null) {
+				if(holonomic || rotationForced) {
+					heading.rotation = Math.atan2(angleTargetPos.y - course.pos.y,angleTargetPos.x - course.pos.x);
+				} else {
+					_local9 = Math.atan2(angleTargetPos.y - course.pos.y,angleTargetPos.x - course.pos.x);
+					_local11 = Util.angleDifference(course.rotation,_local9 + 3.141592653589793);
+					_local7 = rotationSpeed * _local2 / 1000;
+					if(_local11 > 0 && _local11 < 3.141592653589793 - _local7) {
+						heading.rotation += _local7;
+						heading.rotation = Util.clampRadians(heading.rotation);
+					} else if(_local11 <= 0 && _local11 > -3.141592653589793 + _local7) {
+						heading.rotation -= _local7;
+						heading.rotation = Util.clampRadians(heading.rotation);
+					} else {
+						heading.rotation = Util.clampRadians(_local9);
 					}
 				}
 			}
-			if (param1.accelerate)
-			{
-				if (angleTargetPos != null && (holonomic || rotationForced))
-				{
-					_loc8_ = pos.x - angleTargetPos.x;
-					_loc10_ = pos.y - angleTargetPos.y;
-					_loc4_ = _loc8_ * _loc8_ + _loc10_ * _loc10_;
-					if (_loc4_ > 1.1025 * (targetRange * targetRange))
-					{
-						_loc5_ = 1;
+			if(heading.accelerate) {
+				if(angleTargetPos != null && (holonomic || rotationForced)) {
+					_local8 = pos.x - angleTargetPos.x;
+					_local10 = pos.y - angleTargetPos.y;
+					_local4 = _local8 * _local8 + _local10 * _local10;
+					if(_local4 > 1.1025 * (targetRange * targetRange)) {
+						_local5 = 1;
+					} else if(_local4 < 0.9025 * (targetRange * targetRange)) {
+						_local5 = -1;
+					} else {
+						_local5 = 0;
+						heading.speed.x = 0.98 * heading.speed.x;
+						heading.speed.y = 0.98 * heading.speed.y;
 					}
-					else if (_loc4_ < 0.9025 * (targetRange * targetRange))
-					{
-						_loc5_ = -1;
-					}
-					else
-					{
-						_loc5_ = 0;
-						param1.speed.x = 0.98 * param1.speed.x;
-						param1.speed.y = 0.98 * param1.speed.y;
-					}
+				} else {
+					_local5 = 1;
 				}
-				else
-				{
-					_loc5_ = 1;
-				}
-				_loc14_ = param1.speed.x;
-				_loc13_ = param1.speed.y;
-				_loc14_ += _loc5_ * (Math.cos(param1.rotation) * acceleration * 0.5 * Math.pow(_loc2_, 2));
-				_loc13_ += _loc5_ * (Math.sin(param1.rotation) * acceleration * 0.5 * Math.pow(_loc2_, 2));
-				if (_loc14_ * _loc14_ + _loc13_ * _loc13_ <= speed * speed)
-				{
-					param1.speed.x = _loc14_;
-					param1.speed.y = _loc13_;
-				}
-				else
-				{
-					_loc12_ = Math.sqrt(_loc14_ * _loc14_ + _loc13_ * _loc13_);
-					_loc6_ = _loc14_ / _loc12_ * speed;
-					_loc3_ = _loc13_ / _loc12_ * speed;
-					param1.speed.x = _loc6_;
-					param1.speed.y = _loc3_;
+				_local14 = heading.speed.x;
+				_local13 = heading.speed.y;
+				_local14 += _local5 * (Math.cos(heading.rotation) * acceleration * 0.5 * Math.pow(_local2,2));
+				_local13 += _local5 * (Math.sin(heading.rotation) * acceleration * 0.5 * Math.pow(_local2,2));
+				if(_local14 * _local14 + _local13 * _local13 <= speed * speed) {
+					heading.speed.x = _local14;
+					heading.speed.y = _local13;
+				} else {
+					_local12 = Math.sqrt(_local14 * _local14 + _local13 * _local13);
+					_local6 = _local14 / _local12 * speed;
+					_local3 = _local13 / _local12 * speed;
+					heading.speed.x = _local6;
+					heading.speed.y = _local3;
 				}
 			}
-			param1.speed.x -= 0.009 * param1.speed.x;
-			param1.speed.y -= 0.009 * param1.speed.y;
-			param1.pos.x += param1.speed.x * _loc2_ / 1000;
-			param1.pos.y += param1.speed.y * _loc2_ / 1000;
-			param1.time += _loc2_;
-			if (holonomic || rotationForced)
-			{
+			heading.speed.x -= 0.009 * heading.speed.x;
+			heading.speed.y -= 0.009 * heading.speed.y;
+			heading.pos.x += heading.speed.x * _local2 / 1000;
+			heading.pos.y += heading.speed.y * _local2 / 1000;
+			heading.time += _local2;
+			if(holonomic || rotationForced) {
 				course.rotation = oldAngle;
 			}
-			aiAddError(param1);
+			aiAddError(heading);
 		}
 		
-		public function calcHpMax():void
-		{
+		public function calcHpMax() : void {
 			hp = 0;
 			hpMax = 0;
-			for each (var _loc1_:* in allComponents)
-			{
-				if (_loc1_.essential)
-				{
-					hp += _loc1_.hp + _loc1_.shieldHp;
-					hpMax += _loc1_.hpMax + _loc1_.shieldHpMax;
+			for each(var _local1 in allComponents) {
+				if(_local1.essential) {
+					hp += _local1.hp + _local1.shieldHp;
+					hpMax += _local1.hpMax + _local1.shieldHpMax;
 				}
 			}
 		}
 		
-		private function aiAddError(param1:Heading):void
-		{
-			var _loc2_:Number = NaN;
-			var _loc3_:Number = NaN;
-			var _loc4_:Number = NaN;
-			if (error != null)
-			{
-				_loc2_ = g.time;
-				_loc3_ = (convergeTime - (_loc2_ - convergeStartTime)) / convergeTime;
-				_loc4_ = 3 * _loc3_ * _loc3_ - 2 * _loc3_ * _loc3_ * _loc3_;
-				if (_loc3_ > 0)
-				{
-					param1.pos.x += _loc4_ * error.x;
-					param1.pos.y += _loc4_ * error.y;
-					param1.rotation += _loc4_ * errorAngle;
-					errorOldTime = _loc2_;
-				}
-				else
-				{
+		private function aiAddError(heading:Heading) : void {
+			var _local2:Number = NaN;
+			var _local3:Number = NaN;
+			var _local4:Number = NaN;
+			if(error != null) {
+				_local2 = g.time;
+				_local3 = (convergeTime - (_local2 - convergeStartTime)) / convergeTime;
+				_local4 = 3 * _local3 * _local3 - 2 * _local3 * _local3 * _local3;
+				if(_local3 > 0) {
+					heading.pos.x += _local4 * error.x;
+					heading.pos.y += _local4 * error.y;
+					heading.rotation += _local4 * errorAngle;
+					errorOldTime = _local2;
+				} else {
 					error = null;
 					errorOldTime = 0;
 				}
 			}
 		}
 		
-		private function aiRemoveError(param1:Heading):void
-		{
-			var _loc2_:Number = NaN;
-			var _loc3_:Number = NaN;
-			if (error != null && errorOldTime != 0)
-			{
-				_loc2_ = (convergeTime - (errorOldTime - convergeStartTime)) / convergeTime;
-				_loc3_ = 3 * _loc2_ * _loc2_ - 2 * _loc2_ * _loc2_ * _loc2_;
-				param1.pos.x -= _loc3_ * error.x;
-				param1.pos.y -= _loc3_ * error.y;
-				param1.rotation -= _loc3_ * errorAngle;
+		private function aiRemoveError(heading:Heading) : void {
+			var _local2:Number = NaN;
+			var _local3:Number = NaN;
+			if(error != null && errorOldTime != 0) {
+				_local2 = (convergeTime - (errorOldTime - convergeStartTime)) / convergeTime;
+				_local3 = 3 * _local2 * _local2 - 2 * _local2 * _local2 * _local2;
+				heading.pos.x -= _local3 * error.x;
+				heading.pos.y -= _local3 * error.y;
+				heading.rotation -= _local3 * errorAngle;
 			}
 		}
 		
-		public function setConvergeTarget(param1:Heading):void
-		{
-			error = new Point(course.pos.x - param1.pos.x, course.pos.y - param1.pos.y);
-			errorAngle = Util.angleDifference(course.rotation, param1.rotation);
+		public function setConvergeTarget(t:Heading) : void {
+			error = new Point(course.pos.x - t.pos.x,course.pos.y - t.pos.y);
+			errorAngle = Util.angleDifference(course.rotation,t.rotation);
 			convergeStartTime = g.time;
-			course.speed = param1.speed;
-			course.pos = param1.pos;
-			course.rotation = param1.rotation;
-			course.time = param1.time;
+			course.speed = t.speed;
+			course.pos = t.pos;
+			course.rotation = t.rotation;
+			course.time = t.time;
 			aiAddError(course);
 		}
 		
-		public function overrideConvergeTarget(param1:Number, param2:Number):void
-		{
+		public function overrideConvergeTarget(posx:Number, posy:Number) : void {
 			error = null;
 			errorAngle = 0;
 			errorOldTime = 0;
 			convergeStartTime = g.time;
-			course.pos.x = param1;
-			course.pos.y = param2;
+			course.pos.x = posx;
+			course.pos.y = posy;
 			course.time = g.time;
 		}
 		
-		public function destroy():void
-		{
-			var _loc2_:Turret = null;
-			var _loc3_:Spawner = null;
-			var _loc4_:ISound = null;
+		public function destroy() : void {
+			var _local2:Turret = null;
+			var _local3:Spawner = null;
+			var _local4:ISound = null;
 			alive = false;
-			for each (var _loc1_:* in allComponents)
-			{
-				_loc1_.destroy(_loc1_.alive);
-				_loc1_.alive = false;
-				_loc1_.active = false;
-				_loc1_.visible = false;
-				if (_loc1_ is Turret)
-				{
-					_loc2_ = _loc1_ as Turret;
-					if (_loc2_.weapon != null)
-					{
-						_loc2_.weapon.fire = false;
+			for each(var _local1 in allComponents) {
+				_local1.destroy(_local1.alive);
+				_local1.alive = false;
+				_local1.active = false;
+				_local1.visible = false;
+				if(_local1 is Turret) {
+					_local2 = _local1 as Turret;
+					if(_local2.weapon != null) {
+						_local2.weapon.fire = false;
 					}
-					_loc2_.visible = false;
-					g.turretManager.removeTurret(_loc2_);
+					_local2.visible = false;
+					g.turretManager.removeTurret(_local2);
 				}
-				if (_loc1_ is Spawner)
-				{
-					_loc3_ = _loc1_ as Spawner;
-					_loc1_.destroy();
-					g.spawnManager.removeSpawner(_loc3_);
+				if(_local1 is Spawner) {
+					_local3 = _local1 as Spawner;
+					_local1.destroy();
+					g.spawnManager.removeSpawner(_local3);
 				}
-				g.unitManager.remove(_loc1_);
+				g.unitManager.remove(_local1);
 			}
-			if (g.camera.isCircleOnScreen(pos.x, pos.y, radius))
-			{
-				if (explosionSound != "")
-				{
-					_loc4_ = SoundLocator.getService();
-					_loc4_.play(explosionSound);
+			if(g.camera.isCircleOnScreen(pos.x,pos.y,radius)) {
+				if(explosionSound != "") {
+					_local4 = SoundLocator.getService();
+					_local4.play(explosionSound);
 				}
-				if (explosionEffect != "")
-				{
-					EmitterFactory.create(explosionEffect, g, pos.x, pos.y, null, true);
+				if(explosionEffect != "") {
+					EmitterFactory.create(explosionEffect,g,pos.x,pos.y,null,true);
 				}
 			}
 		}
 		
-		public function getComponent(param1:int):Unit
-		{
-			for each (var _loc2_:* in allComponents)
-			{
-				if (_loc2_.syncId == param1)
-				{
-					return _loc2_;
+		public function getComponent(id:int) : Unit {
+			for each(var _local2 in allComponents) {
+				if(_local2.syncId == id) {
+					return _local2;
 				}
 			}
 			return null;
 		}
 		
-		override public function draw():void
-		{
-			if (awaitingActivation)
-			{
+		override public function draw() : void {
+			if(awaitingActivation) {
 				return;
 			}
-			for each (var _loc1_:* in allComponents)
-			{
-				_loc1_.draw();
+			for each(var _local1 in allComponents) {
+				_local1.draw();
 			}
 		}
 	}
 }
+

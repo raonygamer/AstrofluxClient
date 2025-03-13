@@ -1,119 +1,95 @@
-package core.particle
-{
+package core.particle {
 	import core.GameObject;
 	import core.scene.Game;
 	import debug.Console;
 	
-	public class EmitterManager
-	{
+	public class EmitterManager {
 		public var emitters:Vector.<Emitter>;
-		
 		private var g:Game;
-		
 		private var inactiveEmitters:Vector.<Emitter>;
 		
-		public function EmitterManager(param1:Game)
-		{
-			var _loc2_:int = 0;
+		public function EmitterManager(m:Game) {
+			var _local2:int = 0;
 			super();
-			this.g = param1;
+			this.g = m;
 			emitters = new Vector.<Emitter>();
 			inactiveEmitters = new Vector.<Emitter>();
 			Console.write(" -- init emitter pool");
-			_loc2_ = 0;
-			while (_loc2_ < 40)
-			{
-				inactiveEmitters.push(new Emitter(param1));
-				_loc2_++;
+			_local2 = 0;
+			while(_local2 < 40) {
+				inactiveEmitters.push(new Emitter(m));
+				_local2++;
 			}
 			Console.write(" -- emitter pool complete ");
 		}
 		
-		public function update():void
-		{
-			var _loc3_:int = 0;
-			var _loc1_:Emitter = null;
-			var _loc2_:int = int(emitters.length);
-			_loc3_ = _loc2_ - 1;
-			while (_loc3_ > -1)
-			{
-				_loc1_ = emitters[_loc3_];
-				if (_loc1_.alive)
-				{
-					_loc1_.update();
+		public function update() : void {
+			var _local3:int = 0;
+			var _local1:Emitter = null;
+			var _local2:int = int(emitters.length);
+			_local3 = _local2 - 1;
+			while(_local3 > -1) {
+				_local1 = emitters[_local3];
+				if(_local1.alive) {
+					_local1.update();
+				} else {
+					removeEmitter(_local1,_local3);
 				}
-				else
-				{
-					removeEmitter(_loc1_, _loc3_);
-				}
-				_loc3_--;
+				_local3--;
 			}
 			CollectiveMeshBatch.AllMeshesAreUpdated();
 		}
 		
-		public function getEmitter():Emitter
-		{
-			var _loc1_:Emitter = null;
-			if (inactiveEmitters.length > 0)
-			{
-				_loc1_ = inactiveEmitters.pop();
+		public function getEmitter() : Emitter {
+			var _local1:Emitter = null;
+			if(inactiveEmitters.length > 0) {
+				_local1 = inactiveEmitters.pop();
+			} else {
+				_local1 = new Emitter(g);
 			}
-			else
-			{
-				_loc1_ = new Emitter(g);
-			}
-			_loc1_.dispose();
-			emitters.push(_loc1_);
-			_loc1_.alive = true;
-			return _loc1_;
+			_local1.dispose();
+			emitters.push(_local1);
+			_local1.alive = true;
+			return _local1;
 		}
 		
-		public function forceUpdate(param1:GameObject = null):void
-		{
-			var _loc3_:int = 0;
-			var _loc2_:Emitter = null;
-			_loc3_ = emitters.length - 1;
-			while (_loc3_ > -1)
-			{
-				_loc2_ = emitters[_loc3_];
-				if (_loc2_.target == param1 || param1 == null)
-				{
-					_loc2_.nextDistanceCalculation = 0;
+		public function forceUpdate(go:GameObject = null) : void {
+			var _local3:int = 0;
+			var _local2:Emitter = null;
+			_local3 = emitters.length - 1;
+			while(_local3 > -1) {
+				_local2 = emitters[_local3];
+				if(_local2.target == go || go == null) {
+					_local2.nextDistanceCalculation = 0;
 				}
-				_loc3_--;
+				_local3--;
 			}
 		}
 		
-		public function clean(param1:GameObject):void
-		{
-			var _loc4_:int = 0;
-			var _loc2_:Emitter = null;
-			var _loc3_:int = int(emitters.length);
-			_loc4_ = _loc3_ - 1;
-			while (_loc4_ > -1)
-			{
-				_loc2_ = emitters[_loc4_];
-				if (_loc2_.target == param1)
-				{
-					removeEmitter(_loc2_, _loc4_);
+		public function clean(o:GameObject) : void {
+			var _local4:int = 0;
+			var _local2:Emitter = null;
+			var _local3:int = int(emitters.length);
+			_local4 = _local3 - 1;
+			while(_local4 > -1) {
+				_local2 = emitters[_local4];
+				if(_local2.target == o) {
+					removeEmitter(_local2,_local4);
 				}
-				_loc4_--;
+				_local4--;
 			}
 		}
 		
-		public function removeEmitter(param1:Emitter, param2:int):void
-		{
-			param1.killEmitter();
-			emitters.splice(param2, 1);
-			inactiveEmitters.push(param1);
-			param1.dispose();
+		public function removeEmitter(e:Emitter, index:int) : void {
+			e.killEmitter();
+			emitters.splice(index,1);
+			inactiveEmitters.push(e);
+			e.dispose();
 		}
 		
-		public function dispose():void
-		{
-			for each (var _loc1_:* in emitters)
-			{
-				_loc1_.dispose();
+		public function dispose() : void {
+			for each(var _local1 in emitters) {
+				_local1.dispose();
 			}
 			emitters = null;
 			inactiveEmitters = null;
@@ -121,3 +97,4 @@ package core.particle
 		}
 	}
 }
+

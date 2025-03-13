@@ -1,5 +1,4 @@
-package core.states.gameStates
-{
+package core.states.gameStates {
 	import com.greensock.TweenMax;
 	import core.clan.ClanApplicationCheck;
 	import core.credits.CreditManager;
@@ -30,97 +29,67 @@ package core.states.gameStates
 	import starling.events.KeyboardEvent;
 	import starling.events.TouchEvent;
 	
-	public class ClanState extends PlayState implements IGameState
-	{
+	public class ClanState extends PlayState implements IGameState {
 		private var confirmBuyWithFlux:CreditBuyBox;
-		
 		private var createClanButton:Button;
-		
-		private var viewContainer:Sprite;
-		
-		private var scrollContainer:ScrollContainer;
-		
-		private var applicationsList:ScrollContainer;
-		
+		private var viewContainer:Sprite = new Sprite();
+		private var scrollContainer:ScrollContainer = new ScrollContainer();
+		private var applicationsList:ScrollContainer = new ScrollContainer();
 		private var dataManager:IDataManager;
-		
 		private const STATUS_CLAN:String = "clan";
-		
 		private const STATUS_EDIT:String = "edit";
-		
 		private const STATUS_APPLY:String = "apply";
-		
 		private const STATUS_HANDLE_APPLICATIONS:String = "handle_applications";
-		
 		private const STATUS_TOP_CLANS:String = "clans";
-		
 		private var STATUS:String = "";
-		
 		private var bgr:Image;
-		
 		private var toClan:String;
-		
 		private var searchField:TextInput;
-		
 		private var searchButton:Button;
-		
 		private var clanApplicationCheck:ClanApplicationCheck;
 		
-		public function ClanState(param1:Game, param2:String = "")
-		{
-			viewContainer = new Sprite();
-			scrollContainer = new ScrollContainer();
-			applicationsList = new ScrollContainer();
-			super(param1);
-			this.toClan = param2;
+		public function ClanState(g:Game, toClan:String = "") {
+			super(g);
+			this.toClan = toClan;
 			dataManager = DataLocator.getService();
 		}
 		
-		public static function getMemberRankName(param1:Object, param2:String):String
-		{
-			for each (var _loc3_:* in param1.members)
-			{
-				if (_loc3_.player != param2)
-				{
+		public static function getMemberRankName(clanObj:Object, memberId:String) : String {
+			for each(var _local3 in clanObj.members) {
+				if(_local3.player != memberId) {
 					continue;
 				}
-				switch (_loc3_.rank)
-				{
-				case 1: 
-					return param1.rank1;
-				case 2: 
-					return param1.rank2;
-				case 3: 
-					return param1.rank3;
-				case 4: 
-					return param1.rank4;
+				switch(_local3.rank) {
+					case 1:
+						return clanObj.rank1;
+					case 2:
+						return clanObj.rank2;
+					case 3:
+						return clanObj.rank3;
+					case 4:
+						return clanObj.rank4;
 				}
 			}
 			return Localize.t("Not a member");
 		}
 		
-		override public function enter():void
-		{
+		override public function enter() : void {
 			var closeButton:ButtonExpandableHud;
 			var clanKey:String;
 			bgr = new Image(textureManager.getTextureGUIByTextureName("map_bgr.png"));
 			addChild(bgr);
-			closeButton = new ButtonExpandableHud(function():void
-			{
+			closeButton = new ButtonExpandableHud(function():void {
 				sm.revertState();
-			}, Localize.t("close"));
+			},Localize.t("close"));
 			closeButton.x = bgr.width - 46 - closeButton.width;
 			closeButton.y = 0;
 			addChild(closeButton);
 			g.hud.show = false;
 			super.enter();
 			drawBlackBackground();
-			if (g.me.clanId == "" && toClan == "")
-			{
+			if(g.me.clanId == "" && toClan == "") {
 				drawClansView();
-			}
-			else
-			{
+			} else {
 				clanKey = toClan == "" ? g.me.clanId : toClan;
 				drawClanView(clanKey);
 			}
@@ -128,12 +97,11 @@ package core.states.gameStates
 			loadCompleted();
 		}
 		
-		private function drawClansView():void
-		{
+		private function drawClansView() : void {
 			var headline:Text;
 			var yourClanButton:Button;
 			STATUS = "clans";
-			viewContainer.removeChildren(0, -1, true);
+			viewContainer.removeChildren(0,-1,true);
 			scrollContainer = new ScrollContainer();
 			scrollContainer.width = 640;
 			scrollContainer.height = 380;
@@ -143,33 +111,27 @@ package core.states.gameStates
 			headline.y = 60;
 			headline.x = 60;
 			viewContainer.addChild(headline);
-			if (g.me.clanId == "")
-			{
-				createClanButton = new Button(createClan, Localize.t("Create Clan"), "buy");
+			if(g.me.clanId == "") {
+				createClanButton = new Button(createClan,Localize.t("Create Clan"),"buy");
 				createClanButton.x = 680 - createClanButton.width;
 				createClanButton.y = 60;
 				viewContainer.addChild(createClanButton);
-			}
-			else
-			{
-				yourClanButton = new Button(function(param1:TouchEvent):void
-				{
+			} else {
+				yourClanButton = new Button(function(param1:TouchEvent):void {
 					drawClanView(g.me.clanId);
-				}, Localize.t("Your Clan"));
+				},Localize.t("Your Clan"));
 				yourClanButton.x = 680 - yourClanButton.width;
 				yourClanButton.y = 60;
 				viewContainer.addChild(yourClanButton);
 			}
 			clanApplicationCheck = new ClanApplicationCheck(g);
-			searchField = new InputText(0, 110, 200, 20);
-			searchField.addEventListener("keyUp", function(param1:KeyboardEvent):void
-			{
-				if (param1.keyCode == 13)
-				{
+			searchField = new InputText(0,110,200,20);
+			searchField.addEventListener("keyUp",function(param1:KeyboardEvent):void {
+				if(param1.keyCode == 13) {
 					onSearch();
 				}
 			});
-			searchButton = new Button(onSearch, Localize.t("Search"));
+			searchButton = new Button(onSearch,Localize.t("Search"));
 			searchField.x = headline.x;
 			searchButton.x = searchField.x + searchField.width + 10;
 			searchButton.y = 110;
@@ -177,14 +139,11 @@ package core.states.gameStates
 			viewContainer.addChild(searchButton);
 		}
 		
-		private function onSearch(param1:Event = null):void
-		{
-			var e:Event = param1;
-			scrollContainer.removeChildren(0, -1, true);
-			scrollContainer.scrollToPosition(0, 0);
+		private function onSearch(e:Event = null) : void {
+			scrollContainer.removeChildren(0,-1,true);
+			scrollContainer.scrollToPosition(0,0);
 			searchButton.enabled = false;
-			dataManager.loadRangeFromBigDB("Clans", "ByName", [searchField.text], function(param1:Array):void
-			{
+			dataManager.loadRangeFromBigDB("Clans","ByName",[searchField.text],function(param1:Array):void {
 				var i:int;
 				var obj:Object;
 				var cont:Sprite;
@@ -195,27 +154,22 @@ package core.states.gameStates
 				var troons:Text;
 				var troonImg:Image;
 				var array:Array = param1;
-				if (STATUS != "clans")
-				{
+				if(STATUS != "clans") {
 					return;
 				}
 				i = 0;
-				array.sort(function(param1:Object, param2:Object):int
-				{
-					if (param1.troons < param2.troons)
-					{
+				array.sort(function(param1:Object, param2:Object):int {
+					if(param1.troons < param2.troons) {
 						return 1;
 					}
 					return -1;
 				});
-				for each (obj in array)
-				{
-					clanApplicationCheck.checkSpecific(obj, function():void
-					{
+				for each(obj in array) {
+					clanApplicationCheck.checkSpecific(obj,function():void {
 						drawClanView(obj.key);
 					});
 					cont = new Sprite();
-					bgr = new Quad(620, 60, 921102);
+					bgr = new Quad(620,60,0xe0e0e);
 					rank = new Text();
 					rank.text = (i + 1).toString();
 					rank.size = 16;
@@ -231,7 +185,7 @@ package core.states.gameStates
 					obj.rank = i + 1;
 					clanName = new Text();
 					clanName.text = obj.name;
-					clanName.x = 120;
+					clanName.x = 2 * 60;
 					clanName.y = 20;
 					clanName.size = 16;
 					clanName.touchable = false;
@@ -256,7 +210,7 @@ package core.states.gameStates
 					cont.y = i * 80;
 					cont.x = 0;
 					cont.useHandCursor = true;
-					cont.addEventListener("touch", fClanTouch(obj));
+					cont.addEventListener("touch",fClanTouch(obj));
 					scrollContainer.addChild(cont);
 					i++;
 				}
@@ -264,44 +218,32 @@ package core.states.gameStates
 				scrollContainer.x = 60;
 				scrollContainer.y = 160;
 				searchButton.enabled = true;
-			}, 20);
+			},20);
 		}
 		
-		private function fClanTouch(param1:Object):Function
-		{
-			var obj:Object = param1;
-			return (function():*
-			{
+		private function fClanTouch(obj:Object) : Function {
+			return (function():* {
 				var onClanTouch:Function;
-				return onClanTouch = function(param1:TouchEvent):void
-				{
-					var _loc2_:Quad = param1.target as Quad;
-					if (param1.getTouch(_loc2_, "ended"))
-					{
+				return onClanTouch = function(param1:TouchEvent):void {
+					var _local2:Quad = param1.target as Quad;
+					if(param1.getTouch(_local2,"ended")) {
 						drawClanView(obj.key);
-					}
-					else if (param1.interactsWith(_loc2_))
-					{
-						_loc2_.color = 3026478;
-					}
-					else
-					{
-						_loc2_.color = 921102;
+					} else if(param1.interactsWith(_local2)) {
+						_local2.color = 0x2e2e2e;
+					} else {
+						_local2.color = 0xe0e0e;
 					}
 				};
 			})();
 		}
 		
-		private function drawClanView(param1:String):void
-		{
-			var clanId:String = param1;
+		private function drawClanView(clanId:String) : void {
 			STATUS = "clan";
-			viewContainer.removeChildren(0, -1, true);
+			viewContainer.removeChildren(0,-1,true);
 			scrollContainer = new ScrollContainer();
 			scrollContainer.width = 640;
-			scrollContainer.height = 300;
-			dataManager.loadKeyFromBigDB("Clans", clanId, function(param1:Object):void
-			{
+			scrollContainer.height = 5 * 60;
+			dataManager.loadKeyFromBigDB("Clans",clanId,function(param1:Object):void {
 				var applicationCheck:ClanApplicationCheck;
 				var haveApplied:Boolean;
 				var logo:Image;
@@ -322,16 +264,13 @@ package core.states.gameStates
 				var member:Object;
 				var mObj:Object;
 				var obj:Object = param1;
-				if (STATUS != "clan")
-				{
+				if(STATUS != "clan") {
 					return;
 				}
 				applicationCheck = new ClanApplicationCheck(g);
-				haveApplied = applicationCheck.checkSpecific(obj, function():void
-				{
+				haveApplied = applicationCheck.checkSpecific(obj,function():void {
 					drawClanView(obj.key);
-				}, function():void
-				{
+				},function():void {
 					drawClanView(obj.key);
 				});
 				logo = new Image(textureManager.getTextureGUIByTextureName(obj.logo));
@@ -339,91 +278,76 @@ package core.states.gameStates
 				logo.x = 60;
 				logo.y = 60;
 				viewContainer.addChild(logo);
-				clansButton = new Button(function():void
-				{
+				clansButton = new Button(function():void {
 					drawClansView();
-				}, Localize.t("Search Clans"));
+				},Localize.t("Search Clans"));
 				clansButton.x = 680 - clansButton.width;
 				clansButton.y = 60;
 				viewContainer.addChild(clansButton);
-				if (g.me.clanId == "" && !haveApplied)
-				{
-					joinButton = new Button(function():void
-					{
+				if(g.me.clanId == "" && !haveApplied) {
+					joinButton = new Button(function():void {
 						drawApplyView(obj.key);
-					}, Localize.t("Join Clan"), "buy");
+					},Localize.t("Join Clan"),"buy");
 					joinButton.x = clansButton.x - joinButton.width - 10;
 					joinButton.y = 60;
 					viewContainer.addChild(joinButton);
-				}
-				else if (g.me.clanId == obj.key && !isLeader(obj, g.me.id))
-				{
-					leaveButton = new Button(function():void
-					{
+				} else if(g.me.clanId == obj.key && !isLeader(obj,g.me.id)) {
+					leaveButton = new Button(function():void {
 						var m:Message = g.createMessage("clanRemoveMember");
 						m.add(g.me.id);
 						leaveButton.enabled = false;
 						g.blockHotkeys = true;
-						g.rpcMessage(m, function(param1:Message):void
-						{
-							var _loc2_:Message = null;
-							if (param1.getBoolean(0))
-							{
-								_loc2_ = g.createMessage("clanLeave");
-								_loc2_.add(obj.key);
-								g.sendMessageToServiceRoom(_loc2_);
+						g.rpcMessage(m,function(param1:Message):void {
+							var _local2:Message = null;
+							if(param1.getBoolean(0)) {
+								_local2 = g.createMessage("clanLeave");
+								_local2.add(obj.key);
+								g.sendMessageToServiceRoom(_local2);
 								g.me.clanId = "";
 								g.updateServiceRoom();
 								g.showErrorDialog(Localize.t("You have now left the clan."));
-							}
-							else
-							{
+							} else {
 								g.showErrorDialog(param1.getString(1));
 							}
 							drawClansView();
 							g.blockHotkeys = false;
 						});
-					}, Localize.t("Leave Clan"), "negative");
+					},Localize.t("Leave Clan"),"negative");
 					leaveButton.x = clansButton.x - leaveButton.width - 10;
 					leaveButton.y = 60;
 					viewContainer.addChild(leaveButton);
 				}
 				clanName = new Text();
 				clanName.text = obj.name;
-				clanName.x = 180;
+				clanName.x = 3 * 60;
 				clanName.y = 60;
 				clanName.size = 30;
 				viewContainer.addChild(clanName);
-				while (clanName.width > 300)
-				{
+				while(clanName.width > 5 * 60) {
 					clanName.size -= 1;
 				}
 				description = new Text();
 				description.width = 340;
 				description.wordWrap = true;
 				description.text = obj.description;
-				description.color = 11184810;
-				description.x = 180;
+				description.color = 0xaaaaaa;
+				description.x = 3 * 60;
 				description.y = 60 + clanName.height + 10;
 				description.size = 12;
 				viewContainer.addChild(description);
 				hh = logo.y + logo.height > description.y + description.height ? logo.y + logo.height : description.y + description.height;
-				if (isAllowedToAcceptApplications(obj, g.me.id))
-				{
-					handleApplicationButton = new Button(function():void
-					{
+				if(isAllowedToAcceptApplications(obj,g.me.id)) {
+					handleApplicationButton = new Button(function():void {
 						drawHandleApplicationsView(obj.key);
-					}, Localize.t("Handle Applications"));
+					},Localize.t("Handle Applications"));
 					handleApplicationButton.x = 60;
 					handleApplicationButton.y = hh + 20;
 					viewContainer.addChild(handleApplicationButton);
 				}
-				if (isLeader(obj, g.me.id))
-				{
-					editButton = new Button(function():void
-					{
+				if(isLeader(obj,g.me.id)) {
+					editButton = new Button(function():void {
 						drawEditView(clanId);
-					}, Localize.t("Edit Clan"));
+					},Localize.t("Edit Clan"));
 					editButton.x = handleApplicationButton.x + handleApplicationButton.width + 10;
 					editButton.y = handleApplicationButton.y;
 					viewContainer.addChild(editButton);
@@ -431,7 +355,7 @@ package core.states.gameStates
 				rank = new Text();
 				rank.text = Localize.t("Rank");
 				rank.size = 16;
-				rank.color = 11184810;
+				rank.color = 0xaaaaaa;
 				rank.x = 560;
 				rank.y = description.y;
 				viewContainer.addChild(rank);
@@ -455,26 +379,23 @@ package core.states.gameStates
 				viewContainer.addChild(troonImg);
 				i = 0;
 				memberArray = [];
-				for each (member in obj.members)
-				{
+				for each(member in obj.members) {
 					memberArray.push(member);
 				}
-				memberArray.sortOn("troons", 16);
+				memberArray.sortOn("troons",16);
 				memberArray.reverse();
-				for each (mObj in memberArray)
-				{
-					drawClanMember(mObj, i, obj);
+				for each(mObj in memberArray) {
+					drawClanMember(mObj,i,obj);
 					i++;
 				}
 				scrollContainer.x = 60;
-				scrollContainer.y = 240 > hh + 60 ? 240 : hh + 60;
-				scrollContainer.height = 540 - scrollContainer.y;
+				scrollContainer.y = 4 * 60 > hh + 60 ? 4 * 60 : hh + 60;
+				scrollContainer.height = 9 * 60 - scrollContainer.y;
 				viewContainer.addChild(scrollContainer);
 			});
 		}
 		
-		private function drawClanMember(param1:Object, param2:int, param3:Object):void
-		{
+		private function drawClanMember(mObj:Object, i:int, clanObj:Object) : void {
 			var contM:Sprite;
 			var bgrM:Quad;
 			var positionM:Text;
@@ -494,28 +415,23 @@ package core.states.gameStates
 			var troonImgM:Image;
 			var troonContainer:Sprite;
 			var promoteContainer:Sprite;
-			var mObj:Object = param1;
-			var i:int = param2;
-			var clanObj:Object = param3;
 			var memberId:String = mObj.player;
-			if (STATUS != "clan")
-			{
+			if(STATUS != "clan") {
 				return;
 			}
 			contM = new Sprite();
-			bgrM = new Quad(620, 60, 921102);
+			bgrM = new Quad(620,60,0xe0e0e);
 			positionM = new Text();
 			positionM.text = (i + 1).toString();
 			positionM.size = 16;
 			positionM.x = 20;
 			positionM.y = 20;
 			positionM.touchable = false;
-			if (mObj.activeSkin == null)
-			{
+			if(mObj.activeSkin == null) {
 				mObj.activeSkin = "H1XyZ2LoLUKkzwAA4ivQnQ";
 			}
-			skinObj = dataManager.loadKey("Skins", mObj.activeSkin);
-			shipObj = dataManager.loadKey("Ships", skinObj.ship);
+			skinObj = dataManager.loadKey("Skins",mObj.activeSkin);
+			shipObj = dataManager.loadKey("Ships",skinObj.ship);
 			img = new Image(textureManager.getTexturesMainByKey(shipObj.bitmap)[0]);
 			img.x = 80;
 			img.y = 30;
@@ -525,91 +441,77 @@ package core.states.gameStates
 			img.scaleX = img.scaleY = img.width > 40 ? 40 / img.width : 1;
 			name = new Text();
 			name.text = mObj.name || "...";
-			name.x = 120;
+			name.x = 2 * 60;
 			name.y = 10;
 			name.size = 16;
 			name.touchable = false;
-			while (name.width > 250)
-			{
+			while(name.width > 250) {
 				name.size -= 1;
 			}
 			level = new Text();
 			level.text = Localize.t("lvl") + " " + (mObj.level || "..");
-			level.color = 11184810;
+			level.color = 0xaaaaaa;
 			level.x = name.x + name.width + 5;
 			level.y = name.y + name.height - level.height - 2;
 			level.size = 12;
 			level.touchable = false;
 			rankM = new Text();
-			rankM.text = getMemberRankName(clanObj, memberId);
+			rankM.text = getMemberRankName(clanObj,memberId);
 			rankM.color = clanObj.color;
-			rankM.x = 120;
+			rankM.x = 2 * 60;
 			rankM.y = 30;
 			rankM.size = 14;
 			rankM.touchable = false;
-			while (rankM.width > 250)
-			{
+			while(rankM.width > 250) {
 				rankM.size -= 1;
 			}
-			rank = getMemberRank(clanObj, memberId);
+			rank = getMemberRank(clanObj,memberId);
 			promoteButtonText = rank == 2 ? Localize.t("Promote to leader") : Localize.t("Promote");
 			promoteStyle = rank == 2 ? "negative" : "positive";
-			promoteButton = new Button(function():void
-			{
+			promoteButton = new Button(function():void {
 				var warning:PopupConfirmMessage;
-				if (rank == 2)
-				{
-					warning = new PopupConfirmMessage(promoteButtonText, Localize.t("Cancel"), "negative");
-					warning.text = Localize.t("<FONT COLOR='#FF4444' SIZE='18'>WARNING!</FONT>\n\nYou are about to give away your clan to someone else. Only one player can be the leader.");
-				}
-				else
-				{
-					warning = new PopupConfirmMessage(promoteButtonText, Localize.t("Cancel"), "positive");
+				if(rank == 2) {
+					warning = new PopupConfirmMessage(promoteButtonText,Localize.t("Cancel"),"negative");
+					warning.text = Localize.t("<FONT COLOR=\'#FF4444\' SIZE=\'18\'>WARNING!</FONT>\n\nYou are about to give away your clan to someone else. Only one player can be the leader.");
+				} else {
+					warning = new PopupConfirmMessage(promoteButtonText,Localize.t("Cancel"),"positive");
 					warning.text = Localize.t("Do you really want to promote this player?");
 				}
 				g.blockHotkeys = true;
-				warning.addEventListener("accept", function():void
-				{
+				warning.addEventListener("accept",function():void {
 					var m:Message = g.createMessage("clanSetMemberRank");
 					m.add(memberId);
 					m.add(rank - 1);
 					promoteButton.enabled = false;
 					demoteButton.enabled = false;
 					kickButton.enabled = false;
-					g.rpcMessage(m, function(param1:Message):void
-					{
-						if (param1.getBoolean(0))
-						{
+					g.rpcMessage(m,function(param1:Message):void {
+						if(param1.getBoolean(0)) {
 							g.showErrorDialog(Localize.t("Player promoted!"));
-						}
-						else
-						{
+						} else {
 							g.showErrorDialog(param1.getString(1));
 						}
 						drawClanView(clanObj.key);
 						g.blockHotkeys = false;
-						g.removeChildFromOverlay(warning, true);
+						g.removeChildFromOverlay(warning,true);
 					});
 				});
-				warning.addEventListener("close", function():void
-				{
+				warning.addEventListener("close",function():void {
 					promoteButton.enabled = true;
 					demoteButton.enabled = true;
 					kickButton.enabled = true;
 					g.blockHotkeys = false;
-					g.removeChildFromOverlay(warning, true);
+					g.removeChildFromOverlay(warning,true);
 				});
 				g.addChildToOverlay(warning);
-			}, promoteButtonText, promoteStyle);
-			promoteButton.x = rank == 2 ? 260 : 300;
+			},promoteButtonText,promoteStyle);
+			promoteButton.x = rank == 2 ? 260 : 5 * 60;
 			promoteButton.y = 20;
-			demoteButton = new Button(function():void
-			{
-				var warning:PopupConfirmMessage = new PopupConfirmMessage(Localize.t("Demote"), Localize.t("cancel"), "negative");
+			demoteButton = new Button(function():void {
+				var warning:PopupConfirmMessage = new PopupConfirmMessage(Localize.t("Demote"),Localize.t("cancel"),"negative");
 				warning.text = Localize.t("Do you really want to demote this player?");
 				g.blockHotkeys = true;
-				warning.addEventListener("accept", function():void
-				{
+				warning.addEventListener("accept",function():void {
 					var m:Message = g.createMessage("clanSetMemberRank");
 					m.add(memberId);
 					m.add(rank + 1);
@@ -617,44 +519,36 @@ package core.states.gameStates
 					demoteButton.enabled = false;
 					kickButton.enabled = false;
 					g.blockHotkeys = true;
-					g.rpcMessage(m, function(param1:Message):void
-					{
-						if (param1.getBoolean(0))
-						{
+					g.rpcMessage(m,function(param1:Message):void {
+						if(param1.getBoolean(0)) {
 							g.showErrorDialog(Localize.t("Player demoted!"));
-						}
-						else
-						{
+						} else {
 							g.showErrorDialog(param1.getString(1));
 						}
 						drawClanView(clanObj.key);
 						g.blockHotkeys = false;
-						g.removeChildFromOverlay(warning, true);
+						g.removeChildFromOverlay(warning,true);
 					});
 				});
-				warning.addEventListener("close", function():void
-				{
+				warning.addEventListener("close",function():void {
 					promoteButton.enabled = true;
 					demoteButton.enabled = true;
 					kickButton.enabled = true;
 					g.blockHotkeys = false;
-					g.removeChildFromOverlay(warning, true);
+					g.removeChildFromOverlay(warning,true);
 				});
 				g.addChildToOverlay(warning);
-			}, Localize.t("Demote"), "negative");
+			},Localize.t("Demote"),"negative");
 			demoteButton.x = promoteButton.x + promoteButton.width + 5;
 			demoteButton.y = 20;
-			if (rank == 4)
-			{
+			if(rank == 4) {
 				demoteButton.visible = false;
 			}
-			kickButton = new Button(function():void
-			{
-				var warning:PopupConfirmMessage = new PopupConfirmMessage(Localize.t("Kick"), Localize.t("cancel"), "negative");
+			kickButton = new Button(function():void {
+				var warning:PopupConfirmMessage = new PopupConfirmMessage(Localize.t("Kick"),Localize.t("cancel"),"negative");
 				warning.text = Localize.t("Do you really want to kick this player?");
 				g.blockHotkeys = true;
-				warning.addEventListener("accept", function():void
-				{
+				warning.addEventListener("accept",function():void {
 					var m:Message = g.createMessage("clanRemoveMember");
 					m.add(memberId);
 					promoteButton.enabled = false;
@@ -662,43 +556,38 @@ package core.states.gameStates
 					kickButton.enabled = false;
 					g.blockHotkeys = true;
 					warning.enableCloseButton(false);
-					g.rpcMessage(m, function(param1:Message):void
-					{
-						var _loc2_:Message = null;
-						if (param1.getBoolean(0))
-						{
-							_loc2_ = g.createMessage("clanKick");
-							_loc2_.add(memberId);
-							_loc2_.add(mObj.name);
-							_loc2_.add(clanObj.name);
-							g.sendMessageToServiceRoom(_loc2_);
+					g.rpcMessage(m,function(param1:Message):void {
+						var _local2:Message = null;
+						if(param1.getBoolean(0)) {
+							_local2 = g.createMessage("clanKick");
+							_local2.add(memberId);
+							_local2.add(mObj.name);
+							_local2.add(clanObj.name);
+							g.sendMessageToServiceRoom(_local2);
 							g.showErrorDialog(Localize.t("Player kicked!"));
-						}
-						else
-						{
+						} else {
 							g.showErrorDialog(param1.getString(1));
 						}
 						drawClanView(clanObj.key);
 						warning.enableCloseButton(true);
 						g.blockHotkeys = false;
-						g.removeChildFromOverlay(warning, true);
+						g.removeChildFromOverlay(warning,true);
 					});
 				});
-				warning.addEventListener("close", function():void
-				{
+				warning.addEventListener("close",function():void {
 					promoteButton.enabled = true;
 					demoteButton.enabled = true;
 					kickButton.enabled = true;
 					g.blockHotkeys = false;
-					g.removeChildFromOverlay(warning, true);
+					g.removeChildFromOverlay(warning,true);
 				});
 				g.addChildToOverlay(warning);
-			}, Localize.t("Kick"), "negative");
+			},Localize.t("Kick"),"negative");
 			kickButton.x = demoteButton.x + demoteButton.width + 5;
 			kickButton.y = 20;
 			troonsM = new Text();
 			troonsM.text = Util.formatAmount(mObj.troons || 0);
-			troonsM.x = 420;
+			troonsM.x = 7 * 60;
 			troonsM.y = 5;
 			troonsM.size = 36;
 			troonsM.color = 15985920;
@@ -724,37 +613,24 @@ package core.states.gameStates
 			contM.y = i * 80;
 			contM.x = 0;
 			scrollContainer.addChild(contM);
-			new ToolTip(g, contM, Localize.t("Last Login") + ": " + (mObj.lastSession != null ? mObj.lastSession : "---"), null, "clan");
-			if (!isAllowedToPromote(clanObj, g.me.id) || isLeader(clanObj, memberId) || rank == 2 && !isLeader(clanObj, g.me.id))
-			{
+			new ToolTip(g,contM,Localize.t("Last Login") + ": " + (mObj.lastSession != null ? mObj.lastSession : "---"),null,"clan");
+			if(!isAllowedToPromote(clanObj,g.me.id) || isLeader(clanObj,memberId) || rank == 2 && !isLeader(clanObj,g.me.id)) {
 				return;
 			}
-			contM.addEventListener("touch", fMemberTouch(clanObj, promoteContainer, troonContainer, contM));
+			contM.addEventListener("touch",fMemberTouch(clanObj,promoteContainer,troonContainer,contM));
 		}
 		
-		private function fMemberTouch(param1:Object, param2:Sprite, param3:Sprite, param4:Sprite):Function
-		{
-			var obj:Object = param1;
-			var promoteContainer:Sprite = param2;
-			var troonContainer:Sprite = param3;
-			var target:Sprite = param4;
-			return (function():*
-			{
+		private function fMemberTouch(obj:Object, promoteContainer:Sprite, troonContainer:Sprite, target:Sprite) : Function {
+			return (function():* {
 				var onMemberTouch:Function;
-				return onMemberTouch = function(param1:TouchEvent):void
-				{
+				return onMemberTouch = function(param1:TouchEvent):void {
 					param1.stopPropagation();
-					if (!param1.getTouch(target, "ended"))
-					{
-						if (!param1.getTouch(target, "began"))
-						{
-							if (param1.interactsWith(target))
-							{
+					if(!param1.getTouch(target,"ended")) {
+						if(!param1.getTouch(target,"began")) {
+							if(param1.interactsWith(target)) {
 								troonContainer.visible = false;
 								promoteContainer.visible = true;
-							}
-							else if (!param1.interactsWith(target))
-							{
+							} else if(!param1.interactsWith(target)) {
 								troonContainer.visible = true;
 								promoteContainer.visible = false;
 							}
@@ -764,49 +640,38 @@ package core.states.gameStates
 			})();
 		}
 		
-		private function createClan(param1:TouchEvent):void
-		{
-			var e:TouchEvent = param1;
-			confirmBuyWithFlux = new CreditBuyBox(g, CreditManager.getCostClan(), Localize.t("Are you sure you want to buy a clan?"));
+		private function createClan(e:TouchEvent) : void {
+			confirmBuyWithFlux = new CreditBuyBox(g,CreditManager.getCostClan(),Localize.t("Are you sure you want to buy a clan?"));
 			g.addChildToOverlay(confirmBuyWithFlux);
-			confirmBuyWithFlux.addEventListener("accept", function():void
-			{
+			confirmBuyWithFlux.addEventListener("accept",function():void {
 				g.blockHotkeys = true;
-				g.rpc("buyClan", function(param1:Message):void
-				{
-					var _loc2_:String = null;
-					g.removeChildFromOverlay(confirmBuyWithFlux, true);
+				g.rpc("buyClan",function(param1:Message):void {
+					var _local2:String = null;
+					g.removeChildFromOverlay(confirmBuyWithFlux,true);
 					g.blockHotkeys = false;
-					if (param1.getBoolean(0))
-					{
+					if(param1.getBoolean(0)) {
 						g.creditManager.refresh();
 						g.showErrorDialog(Localize.t("Clan created!"));
-						_loc2_ = param1.getString(1);
-						g.me.clanId = _loc2_;
-						drawClanView(_loc2_);
-					}
-					else
-					{
-						g.showErrorDialog(param1.getString(1), true);
+						_local2 = param1.getString(1);
+						g.me.clanId = _local2;
+						drawClanView(_local2);
+					} else {
+						g.showErrorDialog(param1.getString(1),true);
 						createClanButton.enabled = true;
 					}
 				});
 				confirmBuyWithFlux.removeEventListeners();
 			});
-			confirmBuyWithFlux.addEventListener("close", function():void
-			{
+			confirmBuyWithFlux.addEventListener("close",function():void {
 				confirmBuyWithFlux.removeEventListeners();
 				createClanButton.enabled = true;
-				g.removeChildFromOverlay(confirmBuyWithFlux, true);
+				g.removeChildFromOverlay(confirmBuyWithFlux,true);
 			});
 		}
 		
-		private function drawEditView(param1:String):void
-		{
-			var clanId:String = param1;
+		private function drawEditView(clanId:String) : void {
 			STATUS = "edit";
-			dataManager.loadKeyFromBigDB("Clans", clanId, function(param1:Object):void
-			{
+			dataManager.loadKeyFromBigDB("Clans",clanId,function(param1:Object):void {
 				var padding:int;
 				var backButton:Button;
 				var headline:Text;
@@ -831,18 +696,16 @@ package core.states.gameStates
 				var saveButton:Button;
 				var deleteButton:Button;
 				var clanObj:Object = param1;
-				if (STATUS != "edit")
-				{
+				if(STATUS != "edit") {
 					return;
 				}
 				g.blockHotkeys = true;
 				padding = 20;
-				viewContainer.removeChildren(0, -1, true);
-				backButton = new Button(function():void
-				{
+				viewContainer.removeChildren(0,-1,true);
+				backButton = new Button(function():void {
 					g.blockHotkeys = false;
 					drawClanView(g.me.clanId);
-				}, Localize.t("back"));
+				},Localize.t("back"));
 				backButton.x = 680 - backButton.width;
 				backButton.y = 60;
 				viewContainer.addChild(backButton);
@@ -857,7 +720,7 @@ package core.states.gameStates
 				labelName.x = 60;
 				labelName.y = 160;
 				viewContainer.addChild(labelName);
-				inputName = new InputText(0, 0, 200, 20);
+				inputName = new InputText(0,0,200,20);
 				inputName.text = clanObj.name;
 				inputName.x = 160;
 				inputName.y = 160;
@@ -867,7 +730,7 @@ package core.states.gameStates
 				labelRank1.x = 60;
 				labelRank1.y = labelName.y + labelName.height + padding;
 				viewContainer.addChild(labelRank1);
-				inputRank1 = new InputText(0, 0, 200, 20);
+				inputRank1 = new InputText(0,0,200,20);
 				inputRank1.text = clanObj.rank1;
 				inputRank1.x = 160;
 				inputRank1.y = labelName.y + labelName.height + padding;
@@ -877,7 +740,7 @@ package core.states.gameStates
 				labelRank2.x = 60;
 				labelRank2.y = labelRank1.y + labelRank1.height + padding;
 				viewContainer.addChild(labelRank2);
-				inputRank2 = new InputText(0, 0, 200, 20);
+				inputRank2 = new InputText(0,0,200,20);
 				inputRank2.text = clanObj.rank2;
 				inputRank2.x = 160;
 				inputRank2.y = labelRank1.y + labelRank1.height + padding;
@@ -887,7 +750,7 @@ package core.states.gameStates
 				labelRank3.x = 60;
 				labelRank3.y = labelRank2.y + labelRank2.height + padding;
 				viewContainer.addChild(labelRank3);
-				inputRank3 = new InputText(0, 0, 200, 20);
+				inputRank3 = new InputText(0,0,200,20);
 				inputRank3.text = clanObj.rank3;
 				inputRank3.x = 160;
 				inputRank3.y = labelRank2.y + labelRank2.height + padding;
@@ -897,7 +760,7 @@ package core.states.gameStates
 				labelRank4.x = 60;
 				labelRank4.y = labelRank3.y + labelRank3.height + padding;
 				viewContainer.addChild(labelRank4);
-				inputRank4 = new InputText(0, 0, 200, 20);
+				inputRank4 = new InputText(0,0,200,20);
 				inputRank4.text = clanObj.rank4;
 				inputRank4.x = 160;
 				inputRank4.y = labelRank3.y + labelRank3.height + padding;
@@ -907,80 +770,70 @@ package core.states.gameStates
 				labelDescription.x = 60;
 				labelDescription.y = labelRank4.y + labelRank4.height + padding;
 				viewContainer.addChild(labelDescription);
-				inputDescription = new InputText(0, 0, 200, 50);
+				inputDescription = new InputText(0,0,200,50);
 				inputDescription.text = clanObj.description;
 				inputDescription.x = 160;
 				inputDescription.y = labelRank4.y + labelRank4.height + padding;
 				viewContainer.addChild(inputDescription);
-				changeColor = new Button(function():void
-				{
-					var _loc3_:int = Math.floor(Math.random() * 255);
-					var _loc1_:int = Math.floor(Math.random() * 255);
-					var _loc2_:int = Math.floor(Math.random() * 255);
-					logo.color = Color.RGBtoHEX(_loc3_, _loc1_, _loc2_);
-					inputColor.text = _loc3_ + "," + _loc1_ + "," + _loc2_;
+				changeColor = new Button(function():void {
+					var _local3:int = Math.floor(Math.random() * 255);
+					var _local1:int = Math.floor(Math.random() * 255);
+					var _local2:int = Math.floor(Math.random() * 255);
+					logo.color = Color.RGBtoHEX(_local3,_local1,_local2);
+					inputColor.text = _local3 + "," + _local1 + "," + _local2;
 					changeColor.enabled = true;
-				}, Localize.t("Randomize Color"));
+				},Localize.t("Randomize Color"));
 				changeColor.x = 400;
 				changeColor.y = 160;
 				viewContainer.addChild(changeColor);
 				rgb = Color.HEXtoRGB(clanObj.color);
-				inputColor = new InputText(0, 0, 100, 20);
+				inputColor = new InputText(0,0,100,20);
 				inputColor.text = rgb[0] + "," + rgb[1] + "," + rgb[2];
-				inputColor.addEventListener("change", function(param1:Event):void
-				{
+				inputColor.addEventListener("change",function(param1:Event):void {
 					rgb = inputColor.text.split(",");
-					logo.color = Color.RGBtoHEX(rgb[0], rgb[1], rgb[2]);
+					logo.color = Color.RGBtoHEX(rgb[0],rgb[1],rgb[2]);
 				});
 				inputColor.x = changeColor.x + changeColor.width + padding;
 				inputColor.y = 160;
 				viewContainer.addChild(inputColor);
-				changeLogo = new Button(function():void
-				{
-					var _loc1_:Array = clanObj.logo.split("clan_logo");
-					var _loc2_:int = 1;
-					if (_loc1_.length > 1)
-					{
-						_loc2_ = int(_loc1_[1]);
+				changeLogo = new Button(function():void {
+					var _local1:Array = clanObj.logo.split("clan_logo");
+					var _local2:int = 1;
+					if(_local1.length > 1) {
+						_local2 = int(_local1[1]);
 					}
-					if (_loc2_ == 3)
-					{
-						_loc2_ = 0;
+					if(_local2 == 3) {
+						_local2 = 0;
 					}
-					clanObj.logo = "clan_logo" + (_loc2_ + 1).toString();
+					clanObj.logo = "clan_logo" + (_local2 + 1).toString();
 					logo.texture = textureManager.getTextureGUIByTextureName(clanObj.logo);
 					changeLogo.enabled = true;
-				}, Localize.t("Next Logo"));
+				},Localize.t("Next Logo"));
 				changeLogo.x = 400;
 				changeLogo.y = changeColor.y + changeColor.height + padding;
 				viewContainer.addChild(changeLogo);
 				logo = new Image(textureManager.getTextureGUIByTextureName(clanObj.logo));
 				logo.color = clanObj.color;
-				logo.addEventListener("touch", function(param1:TouchEvent):void
-				{
-					var _loc2_:Array = null;
-					var _loc3_:int = 0;
-					if (param1.getTouch(logo, "began"))
-					{
-						_loc2_ = clanObj.logo.split("clan_logo");
-						_loc3_ = 1;
-						if (_loc2_.length > 1)
-						{
-							_loc3_ = int(_loc2_[1]);
+				logo.addEventListener("touch",function(param1:TouchEvent):void {
+					var _local2:Array = null;
+					var _local3:int = 0;
+					if(param1.getTouch(logo,"began")) {
+						_local2 = clanObj.logo.split("clan_logo");
+						_local3 = 1;
+						if(_local2.length > 1) {
+							_local3 = int(_local2[1]);
 						}
-						if (_loc3_ == 3)
-						{
-							_loc3_ = 0;
+						if(_local3 == 3) {
+							_local3 = 0;
 						}
-						clanObj.logo = "clan_logo" + (_loc3_ + 1).toString();
+						clanObj.logo = "clan_logo" + (_local3 + 1).toString();
 						logo.texture = textureManager.getTextureGUIByTextureName(clanObj.logo);
 					}
 				});
 				logo.x = 400;
 				logo.y = changeLogo.y + changeLogo.height + 5;
 				viewContainer.addChild(logo);
-				saveButton = new Button(function():void
-				{
+				saveButton = new Button(function():void {
 					var m:Message;
 					backButton.enabled = false;
 					g.blockHotkeys = true;
@@ -993,68 +846,56 @@ package core.states.gameStates
 					m.add(inputDescription.text);
 					m.add(logo.color);
 					m.add(clanObj.logo);
-					g.rpcMessage(m, function(param1:Message):void
-					{
-						if (param1.getBoolean(0))
-						{
+					g.rpcMessage(m,function(param1:Message):void {
+						if(param1.getBoolean(0)) {
 							g.showErrorDialog(Localize.t("Success!"));
-						}
-						else
-						{
+						} else {
 							g.showErrorDialog(param1.getString(1));
 						}
 						drawEditView(clanId);
 					});
-				}, Localize.t("Save Settings"), "buy");
+				},Localize.t("Save Settings"),"buy");
 				saveButton.x = 400;
 				saveButton.y = logo.y + logo.height + padding;
 				viewContainer.addChild(saveButton);
-				deleteButton = new Button(function():void
-				{
+				deleteButton = new Button(function():void {
 					var m:Message;
 					backButton.enabled = false;
 					g.blockHotkeys = true;
 					m = g.createMessage("clanDelete");
-					g.rpcMessage(m, function(param1:Message):void
-					{
-						if (!param1.getBoolean(0))
-						{
+					g.rpcMessage(m,function(param1:Message):void {
+						if(!param1.getBoolean(0)) {
 							g.showErrorDialog(param1.getString(1));
 							return;
 						}
 						g.showErrorDialog(Localize.t("Clan deleted."));
 						g.me.clanId = "";
-						TweenMax.delayedCall(2, drawClansView);
+						TweenMax.delayedCall(2,drawClansView);
 					});
-				}, Localize.t("Delete clan"), "negative");
+				},Localize.t("Delete clan"),"negative");
 				deleteButton.x = 400;
 				deleteButton.y = logo.y + logo.height + padding + 100;
 				viewContainer.addChild(deleteButton);
 			});
 		}
 		
-		private function drawApplyView(param1:String):void
-		{
-			var clanId:String = param1;
+		private function drawApplyView(clanId:String) : void {
 			STATUS = "apply";
-			dataManager.loadKeyFromBigDB("Clans", clanId, function(param1:Object):void
-			{
+			dataManager.loadKeyFromBigDB("Clans",clanId,function(param1:Object):void {
 				var backButton:Button;
 				var info:Text;
 				var inputReason:InputText;
 				var saveButton:Button;
 				var clanObj:Object = param1;
-				if (STATUS != "apply")
-				{
+				if(STATUS != "apply") {
 					return;
 				}
 				g.blockHotkeys = true;
-				viewContainer.removeChildren(0, -1, true);
-				backButton = new Button(function():void
-				{
+				viewContainer.removeChildren(0,-1,true);
+				backButton = new Button(function():void {
 					g.blockHotkeys = false;
 					drawClanView(clanObj.key);
-				}, Localize.t("back"));
+				},Localize.t("back"));
 				backButton.x = 680 - backButton.width;
 				backButton.y = 60;
 				viewContainer.addChild(backButton);
@@ -1066,58 +907,48 @@ package core.states.gameStates
 				info.width = 500;
 				info.height = 50;
 				viewContainer.addChild(info);
-				inputReason = new InputText(0, 0, 400, 22);
+				inputReason = new InputText(0,0,400,22);
 				inputReason.text = Localize.t("I want to join your clan!");
 				inputReason.x = 60;
 				inputReason.y = info.y + info.height + 30;
 				viewContainer.addChild(inputReason);
-				saveButton = new Button(function():void
-				{
+				saveButton = new Button(function():void {
 					var m:Message = g.createMessage("clanApply");
 					m.add(clanId);
 					m.add(inputReason.text);
-					g.rpcMessage(m, function(param1:Message):void
-					{
-						if (param1.getBoolean(0))
-						{
+					g.rpcMessage(m,function(param1:Message):void {
+						if(param1.getBoolean(0)) {
 							me.clanApplicationId = clanObj.key;
-							g.sendToServiceRoom("clanApplication", clanObj.key);
+							g.sendToServiceRoom("clanApplication",clanObj.key);
 							drawClanView(clanId);
 							g.showErrorDialog(Localize.t("You have applied!"));
-						}
-						else
-						{
+						} else {
 							g.showErrorDialog(param1.getString(1));
 						}
 					});
-				}, Localize.t("Send Application"), "buy");
+				},Localize.t("Send Application"),"buy");
 				saveButton.x = 60;
 				saveButton.y = inputReason.y + 40;
 				viewContainer.addChild(saveButton);
 			});
 		}
 		
-		private function drawHandleApplicationsView(param1:String):void
-		{
-			var clanId:String = param1;
+		private function drawHandleApplicationsView(clanId:String) : void {
 			STATUS = "handle_applications";
-			dataManager.loadKeyFromBigDB("Clans", clanId, function(param1:Object):void
-			{
+			dataManager.loadKeyFromBigDB("Clans",clanId,function(param1:Object):void {
 				var backButton:Button;
 				var i:int;
 				var application:Object;
 				var t:Text;
 				var clanObj:Object = param1;
-				if (STATUS != "handle_applications")
-				{
+				if(STATUS != "handle_applications") {
 					return;
 				}
-				viewContainer.removeChildren(0, -1, true);
-				backButton = new Button(function():void
-				{
+				viewContainer.removeChildren(0,-1,true);
+				backButton = new Button(function():void {
 					g.blockHotkeys = false;
 					drawClanView(clanObj.key);
-				}, Localize.t("back"));
+				},Localize.t("back"));
 				backButton.x = 680 - backButton.width;
 				backButton.y = 60;
 				viewContainer.addChild(backButton);
@@ -1127,33 +958,26 @@ package core.states.gameStates
 				applicationsList.x = 80;
 				applicationsList.y = 100;
 				i = 0;
-				for each (application in clanObj.applications)
-				{
-					drawApplication(application, i, clanObj);
+				for each(application in clanObj.applications) {
+					drawApplication(application,i,clanObj);
 					i++;
 				}
-				if (i == 0)
-				{
+				if(i == 0) {
 					t = new Text();
 					t.text = Localize.t("You have no new applications to handle.");
 					t.size = 16;
 					t.x = 60;
-					t.y = 120;
+					t.y = 2 * 60;
 					applicationsList.addChild(t);
 					return;
 				}
 			});
 		}
 		
-		private function drawApplication(param1:Object, param2:int, param3:Object):void
-		{
-			var application:Object = param1;
-			var i:int = param2;
-			var clanObj:Object = param3;
+		private function drawApplication(application:Object, i:int, clanObj:Object) : void {
 			var playerId:String = application.player;
 			var reason:String = application.reason;
-			dataManager.loadKeyFromBigDB("PlayerObjects", playerId, function(param1:Object):void
-			{
+			dataManager.loadKeyFromBigDB("PlayerObjects",playerId,function(param1:Object):void {
 				var contM:Sprite;
 				var bgrM:Quad;
 				var positionM:Text;
@@ -1170,99 +994,88 @@ package core.states.gameStates
 				var acceptedText:TextBitmap;
 				var promoteContainer:Sprite;
 				var mObj:Object = param1;
-				if (STATUS != "handle_applications")
-				{
+				if(STATUS != "handle_applications") {
 					return;
 				}
 				contM = new Sprite();
-				bgrM = new Quad(620, 60, 921102);
+				bgrM = new Quad(620,60,0xe0e0e);
 				positionM = new Text();
 				positionM.text = (i + 1).toString();
 				positionM.size = 16;
 				positionM.x = 20;
 				positionM.y = 20;
 				positionM.touchable = false;
-				skinObj = dataManager.loadKey("Skins", mObj.activeSkin);
-				shipObj = dataManager.loadKey("Ships", skinObj.ship);
+				skinObj = dataManager.loadKey("Skins",mObj.activeSkin);
+				shipObj = dataManager.loadKey("Ships",skinObj.ship);
 				img = new Image(textureManager.getTexturesMainByKey(shipObj.bitmap)[0]);
 				img.x = 60;
 				img.y = 10;
 				img.touchable = false;
 				name = new Text();
 				name.text = mObj.name;
-				name.x = 120;
+				name.x = 2 * 60;
 				name.y = 10;
 				name.size = 16;
 				name.touchable = false;
 				level = new Text();
 				level.text = Localize.t("lvl") + " " + mObj.level;
-				level.color = 11184810;
+				level.color = 0xaaaaaa;
 				level.x = 260;
 				level.y = 20;
 				level.size = 12;
 				level.touchable = false;
-				new ToolTip(g, contM, Localize.t("Application") + ": <FONT COLOR='#ffffff'>" + reason + "</FONT>", null, "clan");
-				acceptButton = new Button(function():void
-				{
+				new ToolTip(g,contM,Localize.t("Application") + ": <FONT COLOR=\'#ffffff\'>" + reason + "</FONT>",null,"clan");
+				acceptButton = new Button(function():void {
 					var m:Message = g.createMessage("clanAcceptApplication");
 					m.add(playerId);
 					acceptButton.enabled = false;
 					declineButton.enabled = false;
 					g.blockHotkeys = true;
-					g.rpcMessage(m, function(param1:Message):void
-					{
-						var _loc2_:Message = null;
-						if (param1.getBoolean(0))
-						{
-							_loc2_ = g.createMessage("clanApplicationAccept");
-							_loc2_.add(playerId);
-							_loc2_.add(clanObj.name);
-							g.sendMessageToServiceRoom(_loc2_);
+					g.rpcMessage(m,function(param1:Message):void {
+						var _local2:Message = null;
+						if(param1.getBoolean(0)) {
+							_local2 = g.createMessage("clanApplicationAccept");
+							_local2.add(playerId);
+							_local2.add(clanObj.name);
+							g.sendMessageToServiceRoom(_local2);
 							g.showErrorDialog(Localize.t("Application accepted!"));
 							Action.join(clanObj.name);
-						}
-						else
-						{
+						} else {
 							g.showErrorDialog(param1.getString(1));
 						}
 						drawHandleApplicationsView(clanObj.key);
 						g.blockHotkeys = false;
 					});
-				}, Localize.t("Accept"), "buy");
-				acceptButton.x = 300;
+				},Localize.t("Accept"),"buy");
+				acceptButton.x = 5 * 60;
 				acceptButton.y = 20;
-				declineButton = new Button(function():void
-				{
+				declineButton = new Button(function():void {
 					var m:Message = g.createMessage("clanDeclineApplication");
 					m.add(clanObj.key);
 					m.add(playerId);
 					acceptButton.enabled = false;
 					declineButton.enabled = false;
 					g.blockHotkeys = true;
-					g.rpcMessage(m, function(param1:Message):void
-					{
-						var _loc2_:Message = null;
-						if (param1.getBoolean(0))
-						{
-							_loc2_ = g.createMessage("clanApplicationDecline");
-							_loc2_.add(playerId);
-							_loc2_.add(clanObj.name);
-							g.sendMessageToServiceRoom(_loc2_);
+					g.rpcMessage(m,function(param1:Message):void {
+						var _local2:Message = null;
+						if(param1.getBoolean(0)) {
+							_local2 = g.createMessage("clanApplicationDecline");
+							_local2.add(playerId);
+							_local2.add(clanObj.name);
+							g.sendMessageToServiceRoom(_local2);
 							g.showErrorDialog(Localize.t("Application declined!"));
-						}
-						else
-						{
+						} else {
 							g.showErrorDialog(param1.getString(1));
 						}
 						drawHandleApplicationsView(clanObj.key);
 						g.blockHotkeys = false;
 					});
-				}, Localize.t("Decline"), "negative");
+				},Localize.t("Decline"),"negative");
 				declineButton.x = acceptButton.x + acceptButton.width + 5;
 				declineButton.y = 20;
 				troonsM = new Text();
 				troonsM.text = mObj.troons == null ? "1000" : mObj.troons.toString();
-				troonsM.x = 420;
+				troonsM.x = 7 * 60;
 				troonsM.y = 5;
 				troonsM.size = 36;
 				troonsM.color = 15985920;
@@ -1282,13 +1095,12 @@ package core.states.gameStates
 				contM.y = i * 80;
 				contM.x = 0;
 				applicationsList.addChild(contM);
-				if (application.accepted)
-				{
+				if(application.accepted) {
 					acceptedText = new TextBitmap();
 					acceptedText.text = Localize.t("ACCEPTED").toUpperCase();
 					acceptedText.x = name.x;
 					acceptedText.y = name.y + name.height;
-					acceptedText.format.color = 4521796;
+					acceptedText.format.color = 0x44ff44;
 					contM.addChild(acceptedText);
 					acceptButton.visible = false;
 				}
@@ -1297,63 +1109,52 @@ package core.states.gameStates
 				promoteContainer.addChild(declineButton);
 				contM.addChild(promoteContainer);
 				promoteContainer.visible = false;
-				if (isAllowedToAcceptApplications(clanObj, g.me.id) && !isLeader(clanObj, playerId))
-				{
-					contM.addEventListener("touch", fMemberTouch(clanObj, promoteContainer, troonContainer, contM));
+				if(isAllowedToAcceptApplications(clanObj,g.me.id) && !isLeader(clanObj,playerId)) {
+					contM.addEventListener("touch",fMemberTouch(clanObj,promoteContainer,troonContainer,contM));
 				}
 			});
 		}
 		
-		private function getMemberRank(param1:Object, param2:String):int
-		{
-			for each (var _loc3_:* in param1.members)
-			{
-				if (_loc3_.player == param2)
-				{
-					return _loc3_.rank;
+		private function getMemberRank(clanObj:Object, memberId:String) : int {
+			for each(var _local3 in clanObj.members) {
+				if(_local3.player == memberId) {
+					return _local3.rank;
 				}
 			}
 			return 4;
 		}
 		
-		public function isAllowedToChangeSettings(param1:Object, param2:String):Boolean
-		{
-			return getMemberRank(param1, param2) == 1;
+		public function isAllowedToChangeSettings(clanObj:Object, memberId:String) : Boolean {
+			return getMemberRank(clanObj,memberId) == 1;
 		}
 		
-		public function isAllowedToPromote(param1:Object, param2:String):Boolean
-		{
-			return getMemberRank(param1, param2) <= 2;
+		public function isAllowedToPromote(clanObj:Object, memberId:String) : Boolean {
+			return getMemberRank(clanObj,memberId) <= 2;
 		}
 		
-		public function isAllowedToAcceptApplications(param1:Object, param2:String):Boolean
-		{
-			return getMemberRank(param1, param2) <= 2;
+		public function isAllowedToAcceptApplications(clanObj:Object, memberId:String) : Boolean {
+			return getMemberRank(clanObj,memberId) <= 2;
 		}
 		
-		public function isLeader(param1:Object, param2:String):Boolean
-		{
-			return getMemberRank(param1, param2) == 1;
+		public function isLeader(clanObj:Object, memberId:String) : Boolean {
+			return getMemberRank(clanObj,memberId) == 1;
 		}
 		
-		override public function execute():void
-		{
-			if (loaded)
-			{
-				if (keybinds.isEscPressed)
-				{
+		override public function execute() : void {
+			if(loaded) {
+				if(keybinds.isEscPressed) {
 					sm.revertState();
 				}
 			}
 			super.execute();
 		}
 		
-		override public function exit(param1:Function):void
-		{
+		override public function exit(callback:Function) : void {
 			ToolTip.disposeType("clan");
 			g.updateServiceRoom();
-			container.removeChildren(0, -1, true);
-			super.exit(param1);
+			container.removeChildren(0,-1,true);
+			super.exit(callback);
 		}
 	}
 }
+
