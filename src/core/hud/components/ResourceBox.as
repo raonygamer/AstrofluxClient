@@ -14,7 +14,7 @@ package core.hud.components {
 		public function update() : void {
 			var _local2:int = 0;
 			removeChildren();
-			for each(var _local1 in g.myCargo.minerals) {
+			for each(var _local1:* in g.myCargo.minerals) {
 				_local1.draw("hud");
 				_local1.x = _local2 * 78;
 				_local1.y = 1;

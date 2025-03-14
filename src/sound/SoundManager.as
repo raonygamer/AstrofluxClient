@@ -87,14 +87,14 @@ package sound {
 		}
 		
 		public function stopMusic() : void {
-			for each(var _local1 in musicObjects) {
+			for each(var _local1:* in musicObjects) {
 				_local1.pause();
 			}
 		}
 		
 		public function stopAllMusicExcept(key:String, fade:Boolean = true) : void {
 			var _local4:int = 1;
-			for each(var _local3 in musicObjects) {
+			for each(var _local3:* in musicObjects) {
 				if(_local3.key != key) {
 					if(fade) {
 						_local3.fadeStop();
@@ -224,7 +224,7 @@ package sound {
 					param1.multipleAllowed = true;
 					effectObjects[key] = param1;
 				}
-				for each(var _local2 in callbackQueue[key]) {
+				for each(var _local2:* in callbackQueue[key]) {
 					_local2(param1);
 				}
 				delete callbackQueue[key];
@@ -257,7 +257,7 @@ package sound {
 		
 		public function set musicVolume(value:Number) : void {
 			_musicVolume = value;
-			for each(var _local2 in musicObjects) {
+			for each(var _local2:* in musicObjects) {
 				_local2.volume = _local2.originalVolume * value;
 			}
 			if(Game.instance) {
@@ -271,7 +271,7 @@ package sound {
 		
 		public function set effectVolume(value:Number) : void {
 			_effectVolume = value;
-			for each(var _local2 in effectObjects) {
+			for each(var _local2:* in effectObjects) {
 				_local2.volume = _local2.originalVolume * value;
 			}
 		}
@@ -284,7 +284,7 @@ package sound {
 			var _local3:SoundTransform = SoundMixer.soundTransform;
 			_local3.volume = value;
 			SoundMixer.soundTransform = _local3;
-			for each(var _local2 in soundObjects) {
+			for each(var _local2:* in soundObjects) {
 				_local2.volume = _local2.originalVolume * value;
 			}
 		}

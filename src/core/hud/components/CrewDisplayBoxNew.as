@@ -291,7 +291,7 @@ package core.hud.components {
 		private function addLocation() : void {
 			if(crewMember.isDeployed) {
 				addText(60,30,crewMember.getCompactFullLocation(),0xffff00);
-				for each(var _local1 in g.me.explores) {
+				for each(var _local1:* in g.me.explores) {
 					if(_local1.areaKey == crewMember.area) {
 						if(_local1.finishTime < g.time) {
 							addWaitingForPickup();

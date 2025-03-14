@@ -15,7 +15,7 @@ package core.states.gameStates {
 		
 		public function LandedExplore(g:Game, body:Body) {
 			var _local3:Boolean = false;
-			for each(var _local4 in g.me.landedBodies) {
+			for each(var _local4:* in g.me.landedBodies) {
 				if(_local4.key == body.key) {
 					_local3 = true;
 					break;

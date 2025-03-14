@@ -54,7 +54,7 @@ package core.solarSystem {
 		}
 		
 		public function getBodyByKey(key:String) : Body {
-			for each(var _local2 in bodies) {
+			for each(var _local2:* in bodies) {
 				if(_local2.key == key) {
 					return _local2;
 				}
@@ -122,7 +122,7 @@ package core.solarSystem {
 		
 		public function dispose() : void {
 			bodiesById = null;
-			for each(var _local1 in bodies) {
+			for each(var _local1:* in bodies) {
 				_local1.reset();
 			}
 			bodies = null;

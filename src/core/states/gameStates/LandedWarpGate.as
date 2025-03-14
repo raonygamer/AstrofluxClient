@@ -74,7 +74,7 @@ package core.states.gameStates {
 							var _local2:Object = obj["livesic3w-BxdMU6qWhX9t3_EaA"];
 							if(_local2 != null) {
 								_local5 = 0;
-								for(var _local4 in _local2) {
+								for(var _local4:* in _local2) {
 									_local5 += _local2[_local4];
 								}
 								if(_local5 > 0 && _local2[g.me.id] == 0 && _local3 > g.time - 24 * 60 * 60 * 1000) {

@@ -25,7 +25,7 @@ package core.states.ship {
 		
 		public function enter() : void {
 			warpJumpEffect = EmitterFactory.create("vtJpEIW2Z0aMfEtayo62GA",g,ship.x,ship.y,ship,true);
-			for each(var _local1 in warpJumpEffect) {
+			for each(var _local1:* in warpJumpEffect) {
 				_local1.fastForward(2000);
 			}
 		}
@@ -37,7 +37,7 @@ package core.states.ship {
 					_local2 = startX - ship.x;
 					ship.x += _local2 / 33;
 					if(hyperDriveEngaged) {
-						for each(var _local1 in warpJumpEffect) {
+						for each(var _local1:* in warpJumpEffect) {
 							_local1.stop();
 						}
 						hyperDriveEngaged = false;
@@ -50,7 +50,7 @@ package core.states.ship {
 		}
 		
 		public function exit() : void {
-			for each(var _local1 in warpJumpEffect) {
+			for each(var _local1:* in warpJumpEffect) {
 				_local1.killEmitter();
 			}
 		}

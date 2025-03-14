@@ -214,7 +214,7 @@ package core.states.gameStates {
 		
 		private function onSelect(e:TouchEvent) : void {
 			var _local2:ICreditItem = e.target as ICreditItem;
-			for each(var _local3 in items) {
+			for each(var _local3:* in items) {
 				if(_local2 != _local3) {
 					_local3.deselect();
 				}
@@ -227,14 +227,14 @@ package core.states.gameStates {
 		}
 		
 		private function deselectAll() : void {
-			for each(var _local1 in items) {
+			for each(var _local1:* in items) {
 				_local1.deselect();
 			}
 		}
 		
 		private function bought(e:Event) : void {
 			refreshCreditManager();
-			for each(var _local2 in items) {
+			for each(var _local2:* in items) {
 				_local2.update();
 			}
 		}
@@ -243,11 +243,11 @@ package core.states.gameStates {
 		}
 		
 		public function exit() : void {
-			for each(var _local2 in items) {
+			for each(var _local2:* in items) {
 				_local2.exit();
 			}
 			g.creditManager.removeEventListener("refresh",refreshCreditManager);
-			for each(var _local1 in items) {
+			for each(var _local1:* in items) {
 				_local1.removeEventListeners();
 			}
 			removeChild(container,true);

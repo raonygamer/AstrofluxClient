@@ -18,7 +18,7 @@ package core.hud.components.radar {
 			if(g.me.ship == null) {
 				return;
 			}
-			for each(var _local1 in arrows) {
+			for each(var _local1:* in arrows) {
 				_local1.update();
 			}
 		}
@@ -45,7 +45,7 @@ package core.hud.components.radar {
 		}
 		
 		public function hasTarget(go:GameObject) : Boolean {
-			for each(var _local2 in arrows) {
+			for each(var _local2:* in arrows) {
 				if(_local2.target == go) {
 					return true;
 				}
@@ -56,7 +56,7 @@ package core.hud.components.radar {
 		public function addHintArrow(bodyType:String) : void {
 			clear();
 			var _local3:Vector.<Body> = g.bodyManager.bodies;
-			for each(var _local2 in _local3) {
+			for each(var _local2:* in _local3) {
 				if(_local2.type == bodyType) {
 					addArrow(_local2,0x88ff88).activate();
 				}
@@ -66,7 +66,7 @@ package core.hud.components.radar {
 		public function addHintArrowByKey(bodyKey:String) : void {
 			clear();
 			var _local3:Vector.<Body> = g.bodyManager.bodies;
-			for each(var _local2 in _local3) {
+			for each(var _local2:* in _local3) {
 				if(_local2.key == bodyKey) {
 					addArrow(_local2,0x88ff88).activate();
 				}
@@ -92,7 +92,7 @@ package core.hud.components.radar {
 		}
 		
 		public function clear() : void {
-			for each(var _local1 in arrows) {
+			for each(var _local1:* in arrows) {
 				_local1.deactivate();
 				g.removeChildFromCanvas(_local1);
 			}

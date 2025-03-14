@@ -147,7 +147,7 @@ package core.hud.components.starMap {
 			var _local1:PriceCommodities = null;
 			var _local3:Sprite = new Sprite();
 			var _local5:int = 0;
-			for each(var _local4 in priceItems) {
+			for each(var _local4:* in priceItems) {
 				_local1 = new PriceCommodities(sb,_local4.item,_local4.amount);
 				_local1.x = 10;
 				_local1.y = 10 + 30 * _local5;

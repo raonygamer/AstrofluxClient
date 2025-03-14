@@ -113,7 +113,7 @@ package core.artifact {
 				}
 				p.artifactCount = param1.length;
 				g.send("artifactCount",param1.length);
-				for each(var _local5 in param1) {
+				for each(var _local5:* in param1) {
 					if(_local5 != null) {
 						_local2 = new Artifact(_local5);
 						_local4 = p.getArtifactById(_local2.id);
@@ -315,7 +315,7 @@ package core.artifact {
 			var _local1:Artifact = null;
 			var _local3:ArtifactBox = null;
 			var _local4:int = 0;
-			for each(var _local2 in p.activeArtifacts) {
+			for each(var _local2:* in p.activeArtifacts) {
 				_local1 = p.getArtifactById(_local2);
 				if(_local1 != null) {
 					_local3 = activeSlots[_local4++];
@@ -329,7 +329,7 @@ package core.artifact {
 			var _local5:int = 0;
 			var _local4:int = 0;
 			var _local2:ToggleButton = null;
-			for each(var _local1 in setups) {
+			for each(var _local1:* in setups) {
 				_local1.removeEventListeners();
 				removeChild(_local1);
 			}
@@ -565,7 +565,7 @@ package core.artifact {
 				return;
 			}
 			var _local4:ToggleButton = e.target as ToggleButton;
-			for each(var _local2 in setups) {
+			for each(var _local2:* in setups) {
 				if(_local2 != _local4) {
 					_local2.isSelected = false;
 				}
@@ -580,11 +580,11 @@ package core.artifact {
 			}
 			g.send("changeArtifactSetup",_local6);
 			p.changeArtifactSetup(_local6);
-			for each(var _local5 in activeSlots) {
+			for each(var _local5:* in activeSlots) {
 				_local5.setEmpty();
 			}
 			setActiveArtifacts();
-			for each(var _local3 in cargoBoxes) {
+			for each(var _local3:* in cargoBoxes) {
 				_local3.updateSetupChange();
 			}
 			reloadStats();
@@ -640,10 +640,10 @@ package core.artifact {
 			var _local3:Artifact = null;
 			var _local5:String = null;
 			var _local1:Object = {};
-			for each(var _local4 in p.activeArtifacts) {
+			for each(var _local4:* in p.activeArtifacts) {
 				_local3 = p.getArtifactById(_local4);
 				if(_local3 != null) {
-					for each(var _local2 in _local3.stats) {
+					for each(var _local2:* in _local3.stats) {
 						_local5 = _local2.type;
 						if(_local5.indexOf("2") != -1 || _local5.indexOf("3") != -1) {
 							_local5 = _local5.slice(0,_local5.length - 1);
@@ -715,7 +715,7 @@ package core.artifact {
 			var _local4:String = "";
 			var _local7:String = "";
 			var _local8:String = "";
-			for(var _local6 in dataValues) {
+			for(var _local6:* in dataValues) {
 				if(_local6.indexOf("Resist") != -1) {
 					_local3 += ArtifactStat.parseTextFromStatType(_local6,dataValues[_local6]) + "<br>";
 				} else if(_local6.indexOf("health") != -1) {
@@ -786,7 +786,7 @@ package core.artifact {
 			autoRecycleInput.visible = !autoRecycleInput.visible;
 			buySupporter.visible = !buySupporter.visible && !g.me.hasSupporter();
 			markedForRecycle.splice(0,markedForRecycle.length);
-			for each(var _local2 in cargoBoxes) {
+			for each(var _local2:* in cargoBoxes) {
 				if(recycleMode) {
 					_local2.setRecycleState();
 				} else {
@@ -807,7 +807,7 @@ package core.artifact {
 			crewContainer.visible = !crewContainer.visible;
 			upgradeButton.enabled = false;
 			statsContainer.visible = !statsContainer.visible;
-			for each(var _local2 in cargoBoxes) {
+			for each(var _local2:* in cargoBoxes) {
 				if(upgradeMode) {
 					_local2.setUpgradeState();
 				} else {
@@ -828,7 +828,7 @@ package core.artifact {
 		private function selectAllForRecycle(e:TouchEvent = null) : void {
 			var _local3:int = 0;
 			markedForRecycle.splice(0,markedForRecycle.length);
-			for each(var _local2 in cargoBoxes) {
+			for each(var _local2:* in cargoBoxes) {
 				if(_local2.a != null) {
 					if(!_local2.isUsedInSetup()) {
 						if(!_local2.a.upgrading) {
@@ -879,7 +879,7 @@ package core.artifact {
 				return;
 			}
 			var _local3:Message = g.createMessage("bulkRecycle");
-			for each(var _local2 in markedForRecycle) {
+			for each(var _local2:* in markedForRecycle) {
 				_local3.add(_local2.id);
 			}
 			g.rpcMessage(_local3,onRecycleMessage);
@@ -962,7 +962,7 @@ package core.artifact {
 			if(selectedUpgradeBox != null && selectedUpgradeBox.a == _local4.a) {
 				return;
 			}
-			for each(var _local2 in cargoBoxes) {
+			for each(var _local2:* in cargoBoxes) {
 				if(_local2.a == _local3) {
 					_local2.stateNormal();
 					break;

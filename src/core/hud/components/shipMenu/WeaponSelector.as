@@ -108,7 +108,7 @@ package core.hud.components.shipMenu {
 		}
 		
 		public function refresh() : void {
-			for each(var _local1 in icons) {
+			for each(var _local1:* in icons) {
 				if(contains(_local1)) {
 					removeChild(_local1,true);
 				}
@@ -118,7 +118,7 @@ package core.hud.components.shipMenu {
 		}
 		
 		override public function dispose() : void {
-			for each(var _local1 in icons) {
+			for each(var _local1:* in icons) {
 				if(contains(_local1)) {
 					removeChild(_local1,true);
 				}

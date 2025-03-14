@@ -38,7 +38,7 @@ package core.states.menuStates {
 		}
 		
 		public function refresh() : void {
-			for each(var _local1 in crew) {
+			for each(var _local1:* in crew) {
 				if(mainBody.contains(_local1)) {
 					mainBody.removeChild(_local1);
 				}
@@ -97,7 +97,7 @@ package core.states.menuStates {
 			var _local7:int = 60;
 			var _local1:int = 330;
 			var _local6:int = 25;
-			for each(var _local5 in _local4) {
+			for each(var _local5:* in _local4) {
 				_local3 = new CrewDisplayBoxNew(g,_local5,0);
 				_local3.x = _local7;
 				_local3.y = _local6;

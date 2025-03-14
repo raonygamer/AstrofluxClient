@@ -120,7 +120,7 @@ package core.states.gameStates.missions {
 			var _local5:Vector.<Object> = new Vector.<Object>();
 			var _local7:int = 1;
 			var _local3:String = description.htmlText;
-			for each(var _local6 in missionType.addedBodies) {
+			for each(var _local6:* in missionType.addedBodies) {
 				_local1 = dataManager.loadKey("Bodies",_local6);
 				_local5.push(_local1);
 				_local3 = _local3.replace("[location" + _local7 + "]","<font color=\'#ffffff\'>" + _local1.name + "</font>");
@@ -128,7 +128,7 @@ package core.states.gameStates.missions {
 			}
 			description.htmlText = _local3;
 			_local7 = 1;
-			for each(var _local4 in _local5) {
+			for each(var _local4:* in _local5) {
 				_local2 = new Text();
 				_local2.size = 13;
 				_local2.x = 0;
@@ -224,7 +224,7 @@ package core.states.gameStates.missions {
 			var _local7:Object = null;
 			var _local5:MovieClip = null;
 			var _local2:Vector.<Object> = new Vector.<Object>();
-			for each(var _local11 in missionType.addedEnemies) {
+			for each(var _local11:* in missionType.addedEnemies) {
 				_local9 = dataManager.loadKey("Enemies",_local11);
 				_local1 = {};
 				if(_local9 != null) {
@@ -238,7 +238,7 @@ package core.states.gameStates.missions {
 			var _local8:Number = 0;
 			var _local12:int = 5;
 			var _local10:int = description.y + description.height + 20;
-			for each(var _local4 in _local2) {
+			for each(var _local4:* in _local2) {
 				if(_local6 != _local4.ship.bitmap) {
 					_local6 = _local4.ship.bitmap;
 					_local5 = new MovieClip(textureManager.getTexturesMainByKey(_local4.ship.bitmap));
@@ -547,7 +547,7 @@ package core.states.gameStates.missions {
 			}
 			g.me.removeMission(mission);
 			g.creditManager.refresh();
-			for each(var _local2 in dropBase.items) {
+			for each(var _local2:* in dropBase.items) {
 				transferItemToCargo(_local2);
 			}
 			g.hud.cargoButton.update();

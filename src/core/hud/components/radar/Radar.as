@@ -38,28 +38,28 @@ package core.hud.components.radar {
 		public function load() : void {
 			var _local6:* = null;
 			drawBackground();
-			for each(var _local2 in g.shipManager.enemies) {
+			for each(var _local2:* in g.shipManager.enemies) {
 				createBlip(_local2,_local7);
 			}
-			for each(var _local7 in g.shipManager.players) {
+			for each(var _local7:* in g.shipManager.players) {
 				if(!_local7.player.isMe) {
 					createBlip(_local7);
 				}
 			}
-			for each(var _local4 in g.spawnManager.spawners) {
+			for each(var _local4:* in g.spawnManager.spawners) {
 				if(_local4.alive) {
 					createBlip(_local4);
 				}
 			}
-			for each(var _local3 in g.bodyManager.bodies) {
+			for each(var _local3:* in g.bodyManager.bodies) {
 				if(_local3.type == "planet" || _local3.type == "junk yard" || _local3.type == "warpGate" || _local3.type == "shop" || _local3.type == "pirate" || _local3.type == "research" || _local3.type == "comet" || _local3.type == "sun") {
 					createBlip(_local3);
 				}
 			}
-			for each(var _local1 in g.dropManager.drops) {
+			for each(var _local1:* in g.dropManager.drops) {
 				createBlip(_local1);
 			}
-			for each(var _local5 in g.bossManager.bosses) {
+			for each(var _local5:* in g.bossManager.bosses) {
 				if(_local5.alive) {
 					createBlip(_local5);
 				}
@@ -153,7 +153,7 @@ package core.hud.components.radar {
 		}
 		
 		override public function dispose() : void {
-			for each(var _local1 in blips) {
+			for each(var _local1:* in blips) {
 				_local1.dispose();
 			}
 			blips = null;

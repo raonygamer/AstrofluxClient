@@ -379,7 +379,7 @@ package core.projectile {
 			if(_local3 == null) {
 				return;
 			}
-			for each(var _local4 in projectiles) {
+			for each(var _local4:* in projectiles) {
 				if(_local4.stateMachine.inState(ProjectileStuck) && _local4.target == _local3) {
 					_local4.destroy(true);
 				}
@@ -408,7 +408,7 @@ package core.projectile {
 		}
 		
 		public function dispose() : void {
-			for each(var _local1 in projectiles) {
+			for each(var _local1:* in projectiles) {
 				_local1.removeFromCanvas();
 				_local1.reset();
 			}

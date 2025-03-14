@@ -33,7 +33,7 @@ package core.group {
 				}
 			}
 			_players.push(p);
-			for each(var _local2 in _players) {
+			for each(var _local2:* in _players) {
 				if(_local2.ship != null) {
 					_local2.ship.updateLabel();
 				}
@@ -54,7 +54,7 @@ package core.group {
 				}
 			}
 			_players.splice(_players.indexOf(p),1);
-			for each(var _local2 in _players) {
+			for each(var _local2:* in _players) {
 				if(_local2.ship != null) {
 					_local2.ship.updateLabel();
 				}

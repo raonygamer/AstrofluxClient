@@ -231,7 +231,7 @@ package core.hud.components {
 				_local4.format.color = 0xffff00;
 				_local4.text = crewMember.getCompactFullLocation();
 				box.addChild(_local4);
-				for each(var _local3 in p.explores) {
+				for each(var _local3:* in p.explores) {
 					if(_local3.areaKey == crewMember.area) {
 						if(_local3.finishTime >= g.time) {
 							exploreTimer = new HudTimer(g);

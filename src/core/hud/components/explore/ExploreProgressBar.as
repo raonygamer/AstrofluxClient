@@ -50,7 +50,7 @@ package core.hud.components.explore {
 			effectTarget = new GameObject();
 			effectCanvas = new Sprite();
 			exploreEffect = EmitterFactory.create("9iZrZ9p5nEWqrPhkxTYNgA",g,0,0,effectTarget,true,true,true,effectCanvas);
-			for each(var _local5 in exploreEffect) {
+			for each(var _local5:* in exploreEffect) {
 				_local5.followEmitter = true;
 				_local5.followTarget = true;
 				_local5.speed = 2;
@@ -140,7 +140,7 @@ package core.hud.components.explore {
 		}
 		
 		public function stopEffect() : void {
-			for each(var _local1 in exploreEffect) {
+			for each(var _local1:* in exploreEffect) {
 				_local1.killEmitter();
 			}
 		}

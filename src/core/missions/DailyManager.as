@@ -23,7 +23,7 @@ package core.missions {
 		public function initDailyMissionsFromMessage(m:Message, startIndex:int) : int {
 			var _local5:Daily = null;
 			var _local4:Object = g.dataManager.loadTable("DailyMissions");
-			for(var _local6 in _local4) {
+			for(var _local6:* in _local4) {
 				g.me.dailyMissions.push(new Daily(_local6,_local4[_local6]));
 			}
 			resetTime = m.getNumber(startIndex);
@@ -43,7 +43,7 @@ package core.missions {
 		}
 		
 		private function getDaily(key:String) : Daily {
-			for each(var _local2 in g.me.dailyMissions) {
+			for each(var _local2:* in g.me.dailyMissions) {
 				if(_local2.key == key) {
 					return _local2;
 				}

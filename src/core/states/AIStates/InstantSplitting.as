@@ -47,7 +47,7 @@ package core.states.AIStates {
 		
 		public function execute() : void {
 			if(p.alive) {
-				for each(var _local1 in lines) {
+				for each(var _local1:* in lines) {
 					_local1.x = p.pos.x;
 					_local1.y = p.pos.y;
 					_local1.lineTo(p.pos.x + Math.cos(p.rotation) * 200,p.pos.y + Math.sin(p.rotation) * 200);

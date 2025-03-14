@@ -86,7 +86,7 @@ package core.hud.components.techTree {
 		private function mouseClick(e:TouchEvent) : void {
 			var _local2:Boolean = false;
 			touchable = false;
-			for each(var _local3 in techSkill.eliteTechs) {
+			for each(var _local3:* in techSkill.eliteTechs) {
 				if(_local3.eliteTech == eliteTech) {
 					techSkill.activeEliteTech = _local3.eliteTech;
 					techSkill.activeEliteTechLevel = _local3.eliteTechLevel;

@@ -21,7 +21,7 @@ package core.drops {
 			var _local4:Object = null;
 			var _local6:IDataManager = DataLocator.getService();
 			var _local3:Object = _local6.loadRange("Drops","name",name);
-			for(var _local5 in _local3) {
+			for(var _local5:* in _local3) {
 				_local4 = _local3[_local5];
 				if(_local4.name == name) {
 					return setDropProps(g,_local4,_local5.toString());

@@ -191,7 +191,7 @@ package core.states.menuStates {
 			var _local10:Number = 0;
 			var _local15:IDataManager = DataLocator.getService();
 			var _local11:Object = _local15.loadTable("BodyAreas");
-			for(var _local7 in _local11) {
+			for(var _local7:* in _local11) {
 				if(g.me.hasExploredArea(_local7)) {
 					_local13++;
 				}

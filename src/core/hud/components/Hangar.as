@@ -170,7 +170,7 @@ package core.hud.components {
 			if(mode == 1) {
 				_local1 = skinsItems.length > 0 ? skinsItems[0] : null;
 			} else if(mode == 2) {
-				for each(var _local2 in skinsItems) {
+				for each(var _local2:* in skinsItems) {
 					if(_local2.key == g.me.activeSkin) {
 						_local1 = _local2;
 						break;

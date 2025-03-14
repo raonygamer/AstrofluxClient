@@ -93,8 +93,8 @@ package core.states.gameStates {
 		}
 		
 		private function hasWeaponInFleet(weaponKey:String) : Boolean {
-			for each(var _local3 in g.me.fleet) {
-				for each(var _local2 in _local3.weapons) {
+			for each(var _local3:* in g.me.fleet) {
+				for each(var _local2:* in _local3.weapons) {
 					if(_local2.weapon == weaponKey) {
 						return true;
 					}
@@ -105,7 +105,7 @@ package core.states.gameStates {
 		
 		private function onSelect(e:TouchEvent) : void {
 			var _local2:ShopItemBar = e.target as ShopItemBar;
-			for each(var _local3 in shopItemBars) {
+			for each(var _local3:* in shopItemBars) {
 				if(_local3 != _local2) {
 					_local3.deselect();
 				}
@@ -113,7 +113,7 @@ package core.states.gameStates {
 		}
 		
 		private function bought(e:Event) : void {
-			for each(var _local2 in shopItemBars) {
+			for each(var _local2:* in shopItemBars) {
 				_local2.update();
 			}
 			hasBought = true;
@@ -123,7 +123,7 @@ package core.states.gameStates {
 			if(hasBought) {
 				g.tutorial.showChangeWeapon();
 			}
-			for each(var _local2 in shopItemBars) {
+			for each(var _local2:* in shopItemBars) {
 				_local2.removeEventListener("bought",bought);
 				_local2.removeEventListener("select",onSelect);
 			}

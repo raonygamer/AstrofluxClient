@@ -97,7 +97,7 @@ package core.states.gameStates {
 		}
 		
 		public function updateButtons(e:Event) : void {
-			for each(var _local2 in keybindList) {
+			for each(var _local2:* in keybindList) {
 				_local2.update();
 			}
 		}

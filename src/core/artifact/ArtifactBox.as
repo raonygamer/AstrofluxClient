@@ -115,7 +115,7 @@ package core.artifact {
 			if(a.upgrading) {
 				_local2 += "Upgrading: " + Util.getFormattedTime(a.upgradeTime - g.time) + "<br>";
 			}
-			for each(var _local1 in a.stats) {
+			for each(var _local1:* in a.stats) {
 				_local2 += ArtifactStat.parseTextFromStatType(_local1.type,_local1.value) + "<br>";
 			}
 			toolTip.text = _local2;

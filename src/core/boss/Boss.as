@@ -213,7 +213,7 @@ package core.boss {
 			stateMachine.update();
 			var _local3:int = 0;
 			hp = 0;
-			for each(var _local1 in allComponents) {
+			for each(var _local1:* in allComponents) {
 				_local1.update();
 				if(_local1.alive && _local1.essential) {
 					hp += _local1.hp + _local1.shieldHp;
@@ -248,20 +248,20 @@ package core.boss {
 		
 		override public function removeFromCanvas() : void {
 			isAddedToCanvas = false;
-			for each(var _local1 in allComponents) {
+			for each(var _local1:* in allComponents) {
 				_local1.removeFromCanvas();
 			}
 		}
 		
 		override public function addToCanvas() : void {
 			isAddedToCanvas = true;
-			for each(var _local1 in allComponents) {
+			for each(var _local1:* in allComponents) {
 				_local1.addToCanvas();
 			}
 		}
 		
 		public function addFactions() : void {
-			for each(var _local1 in allComponents) {
+			for each(var _local1:* in allComponents) {
 				_local1.factions = factions;
 			}
 		}
@@ -346,7 +346,7 @@ package core.boss {
 		public function calcHpMax() : void {
 			hp = 0;
 			hpMax = 0;
-			for each(var _local1 in allComponents) {
+			for each(var _local1:* in allComponents) {
 				if(_local1.essential) {
 					hp += _local1.hp + _local1.shieldHp;
 					hpMax += _local1.hpMax + _local1.shieldHpMax;
@@ -412,7 +412,7 @@ package core.boss {
 			var _local3:Spawner = null;
 			var _local4:ISound = null;
 			alive = false;
-			for each(var _local1 in allComponents) {
+			for each(var _local1:* in allComponents) {
 				_local1.destroy(_local1.alive);
 				_local1.alive = false;
 				_local1.active = false;
@@ -444,7 +444,7 @@ package core.boss {
 		}
 		
 		public function getComponent(id:int) : Unit {
-			for each(var _local2 in allComponents) {
+			for each(var _local2:* in allComponents) {
 				if(_local2.syncId == id) {
 					return _local2;
 				}
@@ -456,7 +456,7 @@ package core.boss {
 			if(awaitingActivation) {
 				return;
 			}
-			for each(var _local1 in allComponents) {
+			for each(var _local1:* in allComponents) {
 				_local1.draw();
 			}
 		}

@@ -162,7 +162,7 @@ package core {
 			while(clip.numFrames > 1) {
 				clip.removeFrameAt(0);
 			}
-			for each(var _local3 in textures) {
+			for each(var _local3:* in textures) {
 				clip.addFrame(_local3);
 			}
 			clip.removeFrameAt(0);

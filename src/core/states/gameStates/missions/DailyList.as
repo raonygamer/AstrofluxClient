@@ -61,7 +61,7 @@ package core.states.gameStates.missions {
 		override public function dispose() : void {
 			super.dispose();
 			container.removeEventListener("dailyMissionsUpdateList",updateList);
-			for each(var _local1 in views) {
+			for each(var _local1:* in views) {
 				_local1.dispose();
 			}
 		}

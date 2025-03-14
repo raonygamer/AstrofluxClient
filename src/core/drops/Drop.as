@@ -143,7 +143,7 @@ package core.drops {
 		
 		public function expire() : void {
 			if(effect) {
-				for each(var _local1 in effect) {
+				for each(var _local1:* in effect) {
 					_local1.killEmitter();
 				}
 			}

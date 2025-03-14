@@ -43,7 +43,7 @@ package core.states.AIStates {
 		}
 		
 		public function exit() : void {
-			for each(var _local1 in emitters1) {
+			for each(var _local1:* in emitters1) {
 				_local1.killEmitter();
 			}
 			s.course.pos.x = targetX;

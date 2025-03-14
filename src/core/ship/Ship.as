@@ -110,7 +110,7 @@ package core.ship {
 		
 		override public function destroy(explode:Boolean = true) : void {
 			engine.destroy();
-			for each(var _local2 in weapons) {
+			for each(var _local2:* in weapons) {
 				_local2.destroy();
 			}
 			super.destroy(explode);

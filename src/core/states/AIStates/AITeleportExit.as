@@ -27,7 +27,7 @@ package core.states.AIStates {
 		
 		public function execute() : void {
 			if(endTime < g.time) {
-				for each(var _local1 in emitters1) {
+				for each(var _local1:* in emitters1) {
 					_local1.killEmitter();
 				}
 				s.clearConvergeTarget();

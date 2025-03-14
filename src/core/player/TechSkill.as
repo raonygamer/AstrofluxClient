@@ -27,7 +27,7 @@ package core.player {
 		
 		public function addEliteTechData(eliteTech:String, eliteTechLevel:int) : void {
 			var _local4:Boolean = false;
-			for each(var _local3 in eliteTechs) {
+			for each(var _local3:* in eliteTechs) {
 				if(_local3.eliteTech == eliteTech) {
 					_local3.eliteTechLevel = eliteTechLevel;
 					_local4 = true;

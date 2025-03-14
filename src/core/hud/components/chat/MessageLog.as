@@ -492,7 +492,7 @@ package core.hud.components.chat {
 					msgType = "team";
 				}
 			}
-			for(var _local10 in profanities) {
+			for(var _local10:* in profanities) {
 				_local7 = "";
 				_local12 = 0;
 				while(_local12 < _local10.length) {

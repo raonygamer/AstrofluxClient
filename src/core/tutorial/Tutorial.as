@@ -277,7 +277,7 @@ package core.tutorial {
 					}
 					var _local5:DropBase = g.dropManager.getDropItems(_drop,g,_mission.created);
 					var _local9:int = 0;
-					for each(var _local3 in _local5.items) {
+					for each(var _local3:* in _local5.items) {
 						_local6 = _local3.table;
 						_local4 = _local3.item;
 						_local2 = Number(_local3.quantity);
@@ -663,7 +663,7 @@ package core.tutorial {
 		}
 		
 		private function hasCheckPoint(tutorialId:String) : Boolean {
-			for each(var _local2 in tutorialArray) {
+			for each(var _local2:* in tutorialArray) {
 				if(_local2 == tutorialId) {
 					return true;
 				}

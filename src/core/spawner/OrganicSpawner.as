@@ -46,7 +46,7 @@ package core.spawner {
 			var _local4:ITextureManager = TextureLocator.getService();
 			if(imgObj != null) {
 				_local3 = _local4.getTexturesMainByTextureName(imgObj.textureName.replace("active","inactive"));
-				for each(var _local5 in _local3) {
+				for each(var _local5:* in _local3) {
 					_local6 = new Vector.<Texture>();
 					_local6.push(_local5);
 					inactiveTexturesArray.push(_local6);

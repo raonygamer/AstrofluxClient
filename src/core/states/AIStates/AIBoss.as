@@ -37,7 +37,7 @@ package core.states.AIStates {
 				return;
 			}
 			if(nextRegen < g.time) {
-				for each(var _local2 in b.allComponents) {
+				for each(var _local2:Unit in b.allComponents) {
 					if(_local2.alive && _local2.active && _local2.hp < _local2.hpMax && _local2.disableHealEndtime < g.time) {
 						_local2.hp += b.hpRegen;
 						if(_local2.hp > _local2.hpMax) {
@@ -65,7 +65,7 @@ package core.states.AIStates {
 					b.bodyDestroyStart = 0;
 					b.bodyDestroyEnd = 0;
 				}
-				for each(var _local3 in b.turrets) {
+				for each(var _local3:Turret in b.turrets) {
 					_local1 = _local3.weapon;
 					if(_local1 is Beam) {
 						_local4 = _local1 as Beam;

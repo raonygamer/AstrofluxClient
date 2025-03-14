@@ -90,7 +90,7 @@ package core.ship {
 		}
 		
 		public function stopShooting() : void {
-			for each(var _local1 in weapons) {
+			for each(var _local1:* in weapons) {
 				_local1.fire = false;
 			}
 		}
@@ -110,7 +110,7 @@ package core.ship {
 			if(hasFaction("AF") && AFName != null) {
 				g.canvasTexts.removeChild(AFName);
 			}
-			for each(var _local1 in rareEmitters) {
+			for each(var _local1:* in rareEmitters) {
 				_local1.killEmitter();
 			}
 			rareEmitters.length = 0;
@@ -152,7 +152,7 @@ package core.ship {
 		override public function update() : void {
 			if(aiHardenShield && aiHardenShieldEndtime < g.time) {
 				aiHardenShield = false;
-				for each(var _local1 in aiHardenedShieldEffect) {
+				for each(var _local1:* in aiHardenedShieldEffect) {
 					_local1.killEmitter();
 				}
 			}

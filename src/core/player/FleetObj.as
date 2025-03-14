@@ -29,7 +29,7 @@ package core.player {
 			var _local2:Object = _local6.loadKey("Skins",skinKey);
 			skin = skinKey;
 			var _local3:Array = _local2.upgrades;
-			for each(var _local5 in _local3) {
+			for each(var _local5:* in _local3) {
 				_local4 = new TechSkill();
 				_local4.table = _local5.table;
 				_local4.tech = _local5.tech;

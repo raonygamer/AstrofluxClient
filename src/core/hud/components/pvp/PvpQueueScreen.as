@@ -139,7 +139,7 @@ package core.hud.components.pvp {
 		}
 		
 		override public function update() : void {
-			for each(var _local1 in buttons) {
+			for each(var _local1:* in buttons) {
 				_local1.update();
 			}
 		}

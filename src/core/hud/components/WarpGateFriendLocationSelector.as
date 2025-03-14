@@ -52,7 +52,7 @@ package core.hud.components {
 			_local5 = new WarpToFriendRow("clan",null,closeAndWarp);
 			_local5.y = 3 + _local4 * _local2++;
 			box.addChild(_local5);
-			for each(var _local3 in StarMap.friendsInSelectedSystem) {
+			for each(var _local3:* in StarMap.friendsInSelectedSystem) {
 				_local5 = new WarpToFriendRow("",_local3,closeAndWarp);
 				_local5.y = 3 + _local4 * _local2++;
 				box.addChild(_local5);

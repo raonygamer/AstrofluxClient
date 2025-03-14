@@ -154,7 +154,7 @@ package core.hud.components.hangar {
 			specialStats.addChild(_local2);
 			specialStats.x = 370;
 			specialStats.y = stats.y;
-			for(var _local3 in obj.specials) {
+			for(var _local3:* in obj.specials) {
 				addSpecialText("" + _local3);
 			}
 			if(specialCount == 0) {
@@ -400,7 +400,7 @@ package core.hud.components.hangar {
 		}
 		
 		override public function dispose() : void {
-			for each(var _local1 in emitters) {
+			for each(var _local1:* in emitters) {
 				_local1.killEmitter();
 			}
 			emitters = null;

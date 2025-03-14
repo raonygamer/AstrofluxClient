@@ -52,7 +52,7 @@ package core.hud.components.techTree {
 			if(_local4.hasOwnProperty("eliteTechs")) {
 				eliteTechs = EliteTechs.getEliteTechBarList(g,_local2,_local4);
 			}
-			for each(var _local1 in eliteTechs) {
+			for each(var _local1:* in eliteTechs) {
 				_local1.y = _local3;
 				_local1.x = 5;
 				_local1.etpm = this;
@@ -72,7 +72,7 @@ package core.hud.components.techTree {
 		}
 		
 		public function disableAll() : void {
-			for each(var _local1 in eliteTechs) {
+			for each(var _local1:* in eliteTechs) {
 				_local1.touchable = false;
 			}
 			closeButton.touchable = false;

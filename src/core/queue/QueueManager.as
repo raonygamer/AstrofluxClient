@@ -54,7 +54,7 @@ package core.queue {
 		}
 		
 		public function removedFromAllQueues() : void {
-			for each(var _local1 in queues) {
+			for each(var _local1:* in queues) {
 				_local1.isInQueue = false;
 				_local1.isWaiting = false;
 				_local1.isReady = false;
@@ -63,7 +63,7 @@ package core.queue {
 		
 		public function removedFromQueue(m:Message) : void {
 			var _local3:String = m.getString(0);
-			for each(var _local2 in queues) {
+			for each(var _local2:* in queues) {
 				if(_local2.type == _local3) {
 					_local2.isInQueue = false;
 					_local2.isWaiting = false;
@@ -75,7 +75,7 @@ package core.queue {
 		public function queueReady(m:Message) : void {
 			var _local2:int = 0;
 			var _local4:String = m.getString(0);
-			for each(var _local3 in queues) {
+			for each(var _local3:* in queues) {
 				if(_local3.type == _local4) {
 					_local2 = Math.ceil(0.001 * (g.time - _local3.startTime));
 					if(_local2 > 0 && _local2 < 1000000) {
@@ -157,14 +157,14 @@ package core.queue {
 		}
 		
 		public function update() : void {
-			for each(var _local1 in queues) {
+			for each(var _local1:* in queues) {
 				_local1.update();
 			}
 		}
 		
 		public function leftQueue(m:Message) : void {
 			var _local3:String = m.getString(0);
-			for each(var _local2 in queues) {
+			for each(var _local2:* in queues) {
 				if(_local2.type == _local3) {
 					_local2.isInQueue = false;
 					_local2.isWaiting = false;
@@ -175,7 +175,7 @@ package core.queue {
 		
 		public function leaveFailed(m:Message) : void {
 			var _local3:String = m.getString(0);
-			for each(var _local2 in queues) {
+			for each(var _local2:* in queues) {
 				if(_local2.type == _local3) {
 					_local2.isInQueue = false;
 					_local2.isWaiting = false;
@@ -185,7 +185,7 @@ package core.queue {
 		}
 		
 		public function getQueue(type:String) : QueueInfoHolder {
-			for each(var _local2 in queues) {
+			for each(var _local2:* in queues) {
 				if(_local2.type == type) {
 					return _local2;
 				}
@@ -194,7 +194,7 @@ package core.queue {
 		}
 		
 		private function containsQueue(type:String) : Boolean {
-			for each(var _local2 in queues) {
+			for each(var _local2:* in queues) {
 				if(_local2.type == type) {
 					return true;
 				}

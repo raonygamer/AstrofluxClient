@@ -152,7 +152,7 @@ package core.hud.components.pvp {
 						matchState = 2;
 						g.textManager.createPvpText("The Match begins! Fight!",0,50);
 					}
-					for each(var _local1 in g.playerManager.players) {
+					for each(var _local1:* in g.playerManager.players) {
 						_local1.inSafeZone = true;
 					}
 					break;
@@ -214,7 +214,7 @@ package core.hud.components.pvp {
 			endGameScreenTime = matchEndTime + 5000;
 			roomEndTime = m.getNumber(_local5++);
 			saveScore(m,_local5);
-			for each(var _local4 in g.playerManager.players) {
+			for each(var _local4:* in g.playerManager.players) {
 				if(_local4.ship != null) {
 					_local4.ship.hp = _local4.ship.hpMax;
 					_local4.ship.shieldHp = _local4.ship.shieldHpMax;
@@ -332,7 +332,7 @@ package core.hud.components.pvp {
 		}
 		
 		public function getScoreItem(key:String) : PvpScoreHolder {
-			for each(var _local2 in scoreList) {
+			for each(var _local2:* in scoreList) {
 				if(_local2.playerKey == key) {
 					return _local2;
 				}
@@ -345,7 +345,7 @@ package core.hud.components.pvp {
 		}
 		
 		public function getScoreHolder(key:String, name:String) : PvpScoreHolder {
-			for each(var _local3 in scoreList) {
+			for each(var _local3:* in scoreList) {
 				if(_local3.playerKey == key) {
 					return _local3;
 				}

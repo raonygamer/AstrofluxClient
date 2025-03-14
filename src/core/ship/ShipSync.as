@@ -149,7 +149,7 @@ package core.ship {
 					_local3 = m.getString(_local9 + _local8 * 3 + 4 + 10);
 					_local6 = m.getBoolean(_local9 + _local8 * 3 + 5 + 10);
 					_local4 = g.unitManager.getTarget(m.getInt(_local9 + _local8 * 3 + 6 + 10));
-					for each(var _local10 in _local2.weapons) {
+					for each(var _local10:* in _local2.weapons) {
 						if(_local10.name == _local3) {
 							_local10.fire = _local6;
 							_local10.target = _local4;

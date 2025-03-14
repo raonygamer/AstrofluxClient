@@ -27,7 +27,7 @@ package core.states.menuStates {
 			addChild(_local2);
 			var _local4:int = 0;
 			var _local3:int = 0;
-			for each(var _local1 in p.ship.weapons) {
+			for each(var _local1:* in p.ship.weapons) {
 				createWeaponBox(_local4,_local3,_local1);
 				_local4++;
 				if(_local4 == 10) {

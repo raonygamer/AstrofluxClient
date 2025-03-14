@@ -213,7 +213,7 @@ package core.ship {
 					_local22 = m.getInt(_local26++);
 					_local6 = m.getNumber(_local26++);
 					_local30 = m.getInt(_local26++);
-					for each(var _local27 in _local18.weapons) {
+					for each(var _local27:* in _local18.weapons) {
 						_local27.speed = _local20;
 						_local27.ttl = _local24;
 						_local27.numberOfHits = _local22;
@@ -270,7 +270,7 @@ package core.ship {
 		}
 		
 		public function getShipFromId(id:int) : Ship {
-			for each(var _local2 in ships) {
+			for each(var _local2:* in ships) {
 				if(_local2.id == id) {
 					return _local2;
 				}

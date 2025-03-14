@@ -103,10 +103,10 @@ package core.hud.components.starMap {
 				_local12 = 0;
 				_local15 = DataLocator.getService();
 				_local14 = _local15.loadRange("Bodies","solarSystem",key);
-				for(var _local9 in _local14) {
+				for(var _local9:* in _local14) {
 					_local6 = _local14[_local9];
 					if(_local6.hasOwnProperty("exploreAreas")) {
-						for each(var _local10 in _local6.exploreAreas) {
+						for each(var _local10:* in _local6.exploreAreas) {
 							if(g.me.hasExploredArea(_local10)) {
 								_local13++;
 							}

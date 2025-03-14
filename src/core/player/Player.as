@@ -159,7 +159,7 @@ package core.player {
 		public static function getSkinTechLevel(tech:String, skinKey:String) : int {
 			var _local5:IDataManager = DataLocator.getService();
 			var _local4:Object = _local5.loadKey("Skins",skinKey);
-			for each(var _local3 in _local4.upgrades) {
+			for each(var _local3:* in _local4.upgrades) {
 				if(_local3.tech == tech) {
 					return _local3.level;
 				}
@@ -356,7 +356,7 @@ package core.player {
 		}
 		
 		public function getExploreByKey(key:String) : Explore {
-			for each(var _local2 in explores) {
+			for each(var _local2:* in explores) {
 				if(_local2.areaKey == key) {
 					return _local2;
 				}
@@ -479,10 +479,10 @@ package core.player {
 					}
 					soundManager = SoundLocator.getService();
 					soundManager.preCacheSound("5wAlzsUCPEKqX7tAdCw3UA",function():void {
-						for each(var _local2 in effect) {
+						for each(var _local2:* in effect) {
 							_local2.play();
 						}
-						for each(var _local1 in effect2) {
+						for each(var _local1:* in effect2) {
 							_local1.play();
 						}
 						g.textManager.createLevelUpText(level);
@@ -743,7 +743,7 @@ package core.player {
 		}
 		
 		public function hasExploredArea(areaKey:String) : Boolean {
-			for each(var _local2 in explores) {
+			for each(var _local2:* in explores) {
 				if(areaKey == _local2.areaKey && _local2.finished && _local2.lootClaimed) {
 					return true;
 				}
@@ -788,7 +788,7 @@ package core.player {
 		}
 		
 		public function hasMission(id:String) : Boolean {
-			for each(var _local2 in missions) {
+			for each(var _local2:* in missions) {
 				if(_local2.id == id) {
 					return true;
 				}
@@ -1065,7 +1065,7 @@ package core.player {
 				return;
 			}
 			applySkinArtifact();
-			for each(var _local2 in activeArtifacts) {
+			for each(var _local2:* in activeArtifacts) {
 				_local1 = getArtifactById(_local2);
 				if(_local1 != null) {
 					addArtifactStat(_local1,false);
@@ -1235,7 +1235,7 @@ package core.player {
 		
 		private function autoSetHotkeysForWeapons() : void {
 			var _local2:Vector.<Weapon> = ship.weapons;
-			for each(var _local1 in _local2) {
+			for each(var _local1:* in _local2) {
 				if(_local1.hotkey == 0) {
 					g.playerManager.trySetActiveWeapons(this,-1,_local1.key);
 				}
@@ -1263,7 +1263,7 @@ package core.player {
 		}
 		
 		public function isArtifactInSetup(a:Artifact) : Boolean {
-			for each(var _local2 in artifactSetups) {
+			for each(var _local2:* in artifactSetups) {
 				if(_local2.indexOf(a.id) != -1) {
 					return true;
 				}
@@ -1300,7 +1300,7 @@ package core.player {
 			if(notifyServer) {
 				g.send("toggleArtifact",a.id);
 			}
-			for each(var _local5 in a.stats) {
+			for each(var _local5:* in a.stats) {
 				_local6 = 1;
 				if(!active) {
 					_local6 = -1;
@@ -1500,7 +1500,7 @@ package core.player {
 		}
 		
 		public function hasTechSkill(table:String, tech:String) : Boolean {
-			for each(var _local3 in techSkills) {
+			for each(var _local3:* in techSkills) {
 				if(_local3.table == table && _local3.tech == tech) {
 					return true;
 				}
@@ -1531,7 +1531,7 @@ package core.player {
 			}
 			selectedWeaponIndex = _local4;
 			ship.weaponIsChanging = false;
-			for each(var _local7 in weapons) {
+			for each(var _local7:* in weapons) {
 				if(_local7 is Weapon) {
 					_local3 = _local7 as Weapon;
 					_local3.fire = false;
@@ -1549,7 +1549,7 @@ package core.player {
 				while(_local3 < ship.weapons.length) {
 					if(ship.weapons[_local3].active && ship.weapons[_local3].hotkey == weaponUsedHotkey) {
 						ship.weaponIsChanging = true;
-						for each(var _local2 in ship.weapons) {
+						for each(var _local2:* in ship.weapons) {
 							_local2.fire = false;
 						}
 						selectedWeaponIndex = _local3;
@@ -1638,7 +1638,7 @@ package core.player {
 			var _local4:WeaponDataHolder = null;
 			var _local3:String = "";
 			weaponData = new Vector.<WeaponDataHolder>();
-			for each(var _local2 in weapList) {
+			for each(var _local2:* in weapList) {
 				_local3 = _local2.getDescription(_local2 is Beam);
 				_local4 = new WeaponDataHolder(_local2.key,_local3);
 				weaponData.push(_local4);
@@ -1656,7 +1656,7 @@ package core.player {
 			if(ship == null) {
 				return null;
 			}
-			for each(var _local2 in ship.weapons) {
+			for each(var _local2:* in ship.weapons) {
 				if(_local2.active && _local2.hotkey == i) {
 					return _local2;
 				}
@@ -1665,7 +1665,7 @@ package core.player {
 		}
 		
 		public function getCrewMember(key:String) : CrewMember {
-			for each(var _local2 in crewMembers) {
+			for each(var _local2:* in crewMembers) {
 				if(_local2.key == key) {
 					return _local2;
 				}
@@ -1675,7 +1675,7 @@ package core.player {
 		
 		public function getCrewMembersBySolarSystem(solarSystemKey:String) : Vector.<CrewMember> {
 			var _local3:Vector.<CrewMember> = new Vector.<CrewMember>();
-			for each(var _local2 in crewMembers) {
+			for each(var _local2:* in crewMembers) {
 				if(_local2.solarSystem == solarSystemKey) {
 					_local3.push(_local2);
 				}
@@ -1684,7 +1684,7 @@ package core.player {
 		}
 		
 		public function isFriendWith(p:Player) : Boolean {
-			for each(var _local2 in friends) {
+			for each(var _local2:* in friends) {
 				if(_local2.id == p.id) {
 					return true;
 				}
@@ -1700,7 +1700,7 @@ package core.player {
 		}
 		
 		private function getMissionById(id:String) : Mission {
-			for each(var _local2 in missions) {
+			for each(var _local2:* in missions) {
 				if(_local2.id == id) {
 					return _local2;
 				}
@@ -1720,9 +1720,9 @@ package core.player {
 				g.hud.compas.clear();
 				TweenMax.delayedCall(1.5,function():void {
 					var _local1:Boolean = false;
-					for each(var _local3 in g.bodyManager.bodies) {
+					for each(var _local3:* in g.bodyManager.bodies) {
 						if(_local3.key == "SWqDETtcD0i6Wc3s81yccQ" || _local3.key == "U8PYtFoC5U6c2A_gar9j2A" || _local3.key == "TLYpHghGOU6FaZtxDiVXBA") {
-							for each(var _local2 in _local3.spawners) {
+							for each(var _local2:* in _local3.spawners) {
 								if(_local2.alive) {
 									_local1 = true;
 									g.hud.compas.addHintArrowByKey(_local3.key);
@@ -1855,7 +1855,7 @@ package core.player {
 		}
 		
 		public function hasSkin(skin:String) : Boolean {
-			for each(var _local2 in fleet) {
+			for each(var _local2:* in fleet) {
 				if(skin == _local2.skin) {
 					return true;
 				}
@@ -1887,7 +1887,7 @@ package core.player {
 		}
 		
 		public function getFleetObj(skin:String) : FleetObj {
-			for each(var _local2 in fleet) {
+			for each(var _local2:* in fleet) {
 				if(_local2.skin == skin) {
 					return _local2;
 				}
@@ -1909,7 +1909,7 @@ package core.player {
 		}
 		
 		public function hasTriggeredMission(typeKey:String) : Boolean {
-			for each(var _local2 in triggeredMissions) {
+			for each(var _local2:* in triggeredMissions) {
 				if(_local2 == typeKey) {
 					return true;
 				}

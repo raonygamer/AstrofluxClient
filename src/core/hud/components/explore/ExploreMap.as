@@ -60,7 +60,7 @@ package core.hud.components.explore {
 		
 		public function getMapArea(key:String) : ExploreMapArea {
 			if(map_areas != null) {
-				for each(var _local2 in map_areas) {
+				for each(var _local2:* in map_areas) {
 					if(_local2.key != null && _local2.key == key) {
 						return _local2;
 					}
@@ -77,9 +77,9 @@ package core.hud.components.explore {
 			addChild(new Image(_local3.getTextureGUIByTextureName("grid.png")));
 			var _local10:int = 0;
 			map_areas = new Vector.<ExploreMapArea>();
-			for each(var _local1 in shell) {
+			for each(var _local1:* in shell) {
 				_local2 = null;
-				for each(var _local6 in explored) {
+				for each(var _local6:* in explored) {
 					if(_local6.area == areas[_local10].key) {
 						_local2 = _local6;
 					}
@@ -89,7 +89,7 @@ package core.hud.components.explore {
 			}
 			_local10 = 10;
 			while(_local10 > 0) {
-				for each(var _local8 in map_areas) {
+				for each(var _local8:* in map_areas) {
 					if(_local8.size == _local10) {
 						addChild(_local8);
 					}
@@ -137,7 +137,7 @@ package core.hud.components.explore {
 			var _local5:int = 0;
 			var _local4:flash.display.Sprite = new flash.display.Sprite();
 			_local4.graphics.lineStyle(2,0x22ff22,0.2);
-			for each(var _local3 in grid) {
+			for each(var _local3:* in grid) {
 				_local4.graphics.moveTo(_local3[0].x * kx,_local3[0].y * ky);
 				_local5 = 1;
 				while(_local5 < _local3.length) {
@@ -155,8 +155,8 @@ package core.hud.components.explore {
 			var _local7:Number = NaN;
 			var _local3:Number = 65;
 			var _local1:Number = 65;
-			for each(var _local2 in grid) {
-				for each(var _local4 in _local2) {
+			for each(var _local2:* in grid) {
+				for each(var _local4:* in _local2) {
 					_local5 = _local4.x - _local3;
 					_local6 = _local4.y - _local1;
 					_local7 = Math.sin(0.5 * 3.141592653589793 * _local5 / _local3 + 0.5 * 3.141592653589793) * Math.sin(0.5 * 3.141592653589793 * _local6 / _local3 - 0.5 * 3.141592653589793) * _local3;
@@ -183,8 +183,8 @@ package core.hud.components.explore {
 			var _local4:Number = NaN;
 			var _local3:Number = 65;
 			var _local1:Number = 65;
-			for each(var _local2 in grid) {
-				for each(var _local5 in _local2) {
+			for each(var _local2:* in grid) {
+				for each(var _local5:* in _local2) {
 					_local7 = _local5.x - _local3;
 					_local8 = _local5.y - _local1;
 					_local4 = Math.sqrt(_local7 * _local7 + _local8 * _local8) / _local3;
@@ -220,8 +220,8 @@ package core.hud.components.explore {
 			var _local5:Number = 130;
 			var _local4:Number = 65;
 			var _local9:Number = 0.5;
-			for each(var _local1 in shell) {
-				for each(var _local7 in _local1) {
+			for each(var _local1:* in shell) {
+				for each(var _local7:* in _local1) {
 					_local7.y += 42.5;
 					_local2 = _local7.x;
 					_local8 = _local7.y;
@@ -248,7 +248,7 @@ package core.hud.components.explore {
 			var _local2:* = null;
 			var _local3:* = null;
 			var _local5:* = null;
-			for each(var _local1 in map_areas) {
+			for each(var _local1:* in map_areas) {
 				_local1.clearSelect();
 				if(!(_local1.explore != null && _local1.explore.finished && _local1.explore.lootClaimed)) {
 					if(_local4 > _local1.area.skillLevel) {
@@ -284,7 +284,7 @@ package core.hud.components.explore {
 		}
 		
 		public function clearSelected(area:ExploreMapArea) : void {
-			for each(var _local2 in map_areas) {
+			for each(var _local2:* in map_areas) {
 				if(_local2 != area) {
 					_local2.clearSelect();
 				}
@@ -326,7 +326,7 @@ package core.hud.components.explore {
 			}
 			var _local4:Number = 0;
 			var _local2:int = int(areas.length);
-			for each(var _local3 in areas) {
+			for each(var _local3:* in areas) {
 				if(_local3.size < 7) {
 					_local4 += 0.5 * _local3.size;
 				} else {
@@ -387,7 +387,7 @@ package core.hud.components.explore {
 		
 		private function startNewGroup(i:int) : Boolean {
 			var _local2:Vector.<int> = getRandomPosList();
-			for each(var _local3 in _local2) {
+			for each(var _local3:* in _local2) {
 				if(canAddNew(_local3,i)) {
 					lastPos = _local3;
 					return true;
@@ -398,7 +398,7 @@ package core.hud.components.explore {
 		
 		private function joinOldGroup(i:int) : Boolean {
 			var _local2:Vector.<int> = getRandomPosList();
-			for each(var _local3 in _local2) {
+			for each(var _local3:* in _local2) {
 				if(canJoinOld(_local3,i)) {
 					lastPos = _local3;
 					return true;
@@ -824,7 +824,7 @@ package core.hud.components.explore {
 			while(_local6 < v.length - 1) {
 				if(v[_local6].x != 0 && v[_local6].x != 130 - 1) {
 					_local4 = false;
-					for each(var _local5 in _local3) {
+					for each(var _local5:* in _local3) {
 						if(v[_local6].y == 45 - 1 || v[_local6].y == 0) {
 							v[_local6].x += 0.01 * (-40 + r.random(80));
 							v[_local6].y += 0.01 * (-40 + r.random(80));
@@ -856,9 +856,9 @@ package core.hud.components.explore {
 			var _local3:Number = NaN;
 			var _local7:* = 16900;
 			var _local6:* = null;
-			for each(var _local5 in shell) {
+			for each(var _local5:* in shell) {
 				if(_local5 != v1) {
-					for each(var _local4 in _local5) {
+					for each(var _local4:* in _local5) {
 						if(_local4.x != 0 && _local4.y != 0 && _local4.x != 130 - 1 && _local4.y != 45 - 1) {
 							_local3 = dist(p1,_local4);
 							if(_local3 < _local7) {
@@ -874,8 +874,8 @@ package core.hud.components.explore {
 		
 		private function postProccessShells(treshhold:Number) : void {
 			var _local3:* = null;
-			for each(var _local2 in shell) {
-				for each(var _local4 in _local2) {
+			for each(var _local2:* in shell) {
+				for each(var _local4:* in _local2) {
 					if(_local4.x != 0 && _local4.y != 0 && _local4.x != 130 - 1 && _local4.y != 45 - 1) {
 						_local3 = findClosesPoint(_local4,_local2);
 						if(dist(_local4,_local3) < treshhold) {

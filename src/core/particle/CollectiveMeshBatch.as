@@ -47,7 +47,7 @@ package core.particle {
 		public static function dispose() : void {
 			effectsBatch.dispose();
 			effectsBatch = null;
-			for each(var _local1 in meshBatches) {
+			for each(var _local1:* in meshBatches) {
 				_local1.emitters.length = 0;
 				_local1.dispose();
 			}

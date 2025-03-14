@@ -71,7 +71,7 @@ package core.states.exploreStates {
 			_local15.y = 200;
 			_local15.center();
 			var _local2:String = area.body.name + ", " + area.name + ", ";
-			for each(var _local3 in area.specialTypes) {
+			for each(var _local3:* in area.specialTypes) {
 				_local2 += Area.SPECIALTYPEHTML[_local3] + " ";
 			}
 			_local15.htmlText = _local2;

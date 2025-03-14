@@ -536,7 +536,7 @@ package core.hud.components.techTree {
 				if(tli.table == "BasicTechs") {
 					_local4 = tli.description;
 				}
-				for each(var _local2 in me.weaponData) {
+				for each(var _local2:* in me.weaponData) {
 					if(_local2.key == tli.tech) {
 						_local4 = _local2.desc;
 					}
@@ -900,7 +900,7 @@ package core.hud.components.techTree {
 		}
 		
 		override public function dispose() : void {
-			for each(var _local1 in techBars) {
+			for each(var _local1:* in techBars) {
 				_local1.dispose();
 			}
 			isUpgradingEliteTech = false;
@@ -911,7 +911,7 @@ package core.hud.components.techTree {
 		
 		private function disableTouch() : void {
 			hideEliteSlider();
-			for each(var _local1 in techBars) {
+			for each(var _local1:* in techBars) {
 				_local1.touchable = false;
 			}
 			resetButton.enabled = false;
@@ -919,7 +919,7 @@ package core.hud.components.techTree {
 		}
 		
 		private function enableTouch() : void {
-			for each(var _local1 in techBars) {
+			for each(var _local1:* in techBars) {
 				_local1.touchable = true;
 			}
 			resetButton.enabled = true;

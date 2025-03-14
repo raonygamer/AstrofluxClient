@@ -57,7 +57,7 @@ package core.hud.components.playerList {
 				var _local1:FriendDisplayBox = null;
 				var _local3:int = 0;
 				onlineFriends = new Sprite();
-				for each(var _local2 in Player.onlineFriends) {
+				for each(var _local2:* in Player.onlineFriends) {
 					_local1 = new FriendDisplayBox(g,_local2);
 					_local1.x = 50;
 					_local1.y = _local3 * 40 + 20;

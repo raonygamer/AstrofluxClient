@@ -66,7 +66,7 @@ package core.hud.components.map {
 			}
 			var _local3:flash.display.Sprite = new flash.display.Sprite();
 			_local3.graphics.lineStyle(1.5,49151,0.3);
-			for each(var _local1 in body.children) {
+			for each(var _local1:* in body.children) {
 				if(!(_local1.type == "comet" || _local1.type == "hidden" || _local1.type == "boss" || _local1.type == "warning")) {
 					_local3.graphics.drawCircle(radius,radius,_local1.course.orbitRadius * Map.SCALE);
 				}

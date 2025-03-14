@@ -93,7 +93,7 @@ package core.text {
 		}
 		
 		public function dispose() : void {
-			for each(var _local1 in texts) {
+			for each(var _local1:* in texts) {
 				if(_local1.fixed) {
 					g.removeChild(_local1);
 				} else {

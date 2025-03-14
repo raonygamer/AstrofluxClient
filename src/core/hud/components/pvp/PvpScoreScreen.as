@@ -47,7 +47,7 @@ package core.hud.components.pvp {
 		}
 		
 		override public function unload() : void {
-			for each(var _local1 in addedItems) {
+			for each(var _local1:* in addedItems) {
 				if(mainBody.contains(_local1.img)) {
 					mainBody.removeChild(_local1.img);
 				}
@@ -181,7 +181,7 @@ package core.hud.components.pvp {
 			if(g.pvpManager is DominationManager) {
 				_local4 = true;
 			}
-			for each(var _local2 in _local6) {
+			for each(var _local2:* in _local6) {
 				_local2.load();
 				_local2.img.x = 60;
 				_local2.img.y = _local5;

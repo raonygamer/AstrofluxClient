@@ -226,7 +226,7 @@ package core.engine {
 				thrustEmitters = EmitterFactory.create(obj.effect,g,x,y,this,accelerating);
 			}
 			if(obj.changeThrustColors) {
-				for each(var _local7 in thrustEmitters) {
+				for each(var _local7:* in thrustEmitters) {
 					_local7.startColor = Color.HEXHue(obj.thrustStartColor,colorHue);
 					_local7.finishColor = Color.HEXHue(obj.thrustFinishColor,colorHue);
 				}
@@ -255,7 +255,7 @@ package core.engine {
 				idleThrustEmitters = EmitterFactory.create(obj.idleEffect,g,x,y,this,!accelerating);
 			}
 			if(obj.changeIdleThrustColors) {
-				for each(var _local3 in idleThrustEmitters) {
+				for each(var _local3:* in idleThrustEmitters) {
 					_local3.startColor = Color.HEXHue(obj.idleThrustStartColor,colorHue);
 					_local3.finishColor = Color.HEXHue(obj.idleThrustFinishColor,colorHue);
 				}

@@ -23,7 +23,7 @@ package core.credits {
 				_local1 = new SaleEvent(2016,10,28,7,96);
 				eventList.push(_local1);
 			}
-			for each(var _local2 in eventList) {
+			for each(var _local2:* in eventList) {
 				if(_local2.isNow()) {
 					return true;
 				}
@@ -56,7 +56,7 @@ package core.credits {
 		}
 		
 		public function isSkinSale(key:String = null) : Boolean {
-			for each(var _local2 in saleList) {
+			for each(var _local2:* in saleList) {
 				if(_local2.type == "item" && _local2.isNow() && (key == null || _local2.key == key || _local2.vaultKey == key)) {
 					return true;
 				}
@@ -65,7 +65,7 @@ package core.credits {
 		}
 		
 		public function getSkinSale(key:String) : Sale {
-			for each(var _local2 in saleList) {
+			for each(var _local2:* in saleList) {
 				if(_local2.type == "item" && _local2.isNow() && (key == null || _local2.key == key || _local2.vaultKey == key)) {
 					return _local2;
 				}
@@ -74,7 +74,7 @@ package core.credits {
 		}
 		
 		public function isPackageSale(key:String = null) : Boolean {
-			for each(var _local2 in saleList) {
+			for each(var _local2:* in saleList) {
 				if(_local2.type == "pack" && _local2.isNow() && (key == null || _local2.key == key || _local2.vaultKey == key)) {
 					return true;
 				}
@@ -83,7 +83,7 @@ package core.credits {
 		}
 		
 		public function getPackageSale(key:String) : Sale {
-			for each(var _local2 in saleList) {
+			for each(var _local2:* in saleList) {
 				if(_local2.type == "pack" && _local2.isNow() && (key == null || _local2.key == key || _local2.vaultKey == key)) {
 					return _local2;
 				}
@@ -92,7 +92,7 @@ package core.credits {
 		}
 		
 		public function isSpecialSkinSale(key:String = null) : Boolean {
-			for each(var _local2 in saleList) {
+			for each(var _local2:* in saleList) {
 				if(_local2.type == "sskin" && _local2.isNow() && (key == null || _local2.key == key || _local2.vaultKey == key)) {
 					return true;
 				}
@@ -101,7 +101,7 @@ package core.credits {
 		}
 		
 		public function getSpecialSkinSale(key:String = null) : Boolean {
-			for each(var _local2 in saleList) {
+			for each(var _local2:* in saleList) {
 				if(_local2.type == "sskin" && _local2.isNow() && (key == null || _local2.key == key || _local2.vaultKey == key)) {
 					return _local2;
 				}
@@ -110,7 +110,7 @@ package core.credits {
 		}
 		
 		public function isFluxSale() : Boolean {
-			for each(var _local1 in saleList) {
+			for each(var _local1:* in saleList) {
 				if(_local1.type == "flux" && _local1.isNow()) {
 					return true;
 				}
@@ -120,7 +120,7 @@ package core.credits {
 		
 		public function getSkinSales() : Vector.<Sale> {
 			var _local1:Vector.<Sale> = new Vector.<Sale>();
-			for each(var _local2 in saleList) {
+			for each(var _local2:* in saleList) {
 				if(_local2.type == "item" && _local2.isNow()) {
 					_local1.push(_local2);
 				}
@@ -130,7 +130,7 @@ package core.credits {
 		
 		public function getSpecialSkinSales() : Vector.<Sale> {
 			var _local1:Vector.<Sale> = new Vector.<Sale>();
-			for each(var _local2 in saleList) {
+			for each(var _local2:* in saleList) {
 				if(_local2.type == "sskin" && _local2.isNow()) {
 					_local1.push(_local2);
 				}
@@ -140,7 +140,7 @@ package core.credits {
 		
 		public function getPackageSales() : Vector.<Sale> {
 			var _local1:Vector.<Sale> = new Vector.<Sale>();
-			for each(var _local2 in saleList) {
+			for each(var _local2:* in saleList) {
 				if(_local2.type == "pack" && _local2.isNow()) {
 					_local1.push(_local2);
 				}
@@ -149,7 +149,7 @@ package core.credits {
 		}
 		
 		public function isSale() : Boolean {
-			for each(var _local1 in saleList) {
+			for each(var _local1:* in saleList) {
 				if(_local1.isNow()) {
 					return true;
 				}
@@ -158,7 +158,7 @@ package core.credits {
 		}
 		
 		public function getFluxSale() : Sale {
-			for each(var _local1 in saleList) {
+			for each(var _local1:* in saleList) {
 				if(_local1.type == "flux" && _local1.isNow()) {
 					return _local1;
 				}

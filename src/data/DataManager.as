@@ -97,7 +97,7 @@ package data {
 		public function loadKeys(table:String, keys:Array) : Array {
 			var _local4:Object = null;
 			var _local3:Array = [];
-			for each(var _local5 in keys) {
+			for each(var _local5:* in keys) {
 				_local4 = loadKey(table,_local5);
 				_local4.key = _local5;
 				_local3.push(_local4);
@@ -120,7 +120,7 @@ package data {
 				return null;
 			}
 			var _local4:Object = {};
-			for(var _local6 in json[table]) {
+			for(var _local6:* in json[table]) {
 				_local5 = json[table][_local6];
 				if(_local5.hasOwnProperty(property)) {
 					if(_local5[property] == compareValue) {
@@ -137,7 +137,7 @@ package data {
 				Console.write("error table missing i json cache, table: " + table);
 				return null;
 			}
-			for(var _local5 in json[table]) {
+			for(var _local5:* in json[table]) {
 				_local4 = json[table][_local5];
 				if(_local4.hasOwnProperty(property)) {
 					if(_local4[property] == compareValue) {

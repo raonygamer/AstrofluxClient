@@ -45,7 +45,7 @@ package core.states.ship {
 			ship.accelerate = true;
 			if(ship.speed.length >= 700) {
 				if(!hyperDriveEngaged) {
-					for each(var _local1 in warpJumpEffect) {
+					for each(var _local1:* in warpJumpEffect) {
 						_local1.posX = ship.x;
 						_local1.posY = ship.y;
 						_local1.play();
@@ -58,7 +58,7 @@ package core.states.ship {
 		}
 		
 		public function exit() : void {
-			for each(var _local1 in warpJumpEffect) {
+			for each(var _local1:* in warpJumpEffect) {
 				_local1.killEmitter();
 			}
 		}

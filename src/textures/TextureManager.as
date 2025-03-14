@@ -295,7 +295,7 @@ package textures {
 			var _local3:TextureAtlas = null;
 			var _local1:Texture = null;
 			var _local2:Array = [];
-			for(var _local5 in textureAtlasDict) {
+			for(var _local5:* in textureAtlasDict) {
 				_local4 = false;
 				if(_local5 == "texture_gui1_test.png" || _local5 == "texture_gui2.png" || _local5 == "texture_main_NEW.png" || _local5 == "texture_body.png") {
 					_local4 = true;

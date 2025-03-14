@@ -37,7 +37,7 @@ package core.login {
 			var _local3:* = null;
 			var _local1:int = 0;
 			var _local4:int = 0;
-			for each(var _local2 in roomPreviews) {
+			for each(var _local2:* in roomPreviews) {
 				_local2.setRecommended(false);
 				if(_local2.playerLevel >= 0) {
 					if(!_local3) {
@@ -120,7 +120,7 @@ package core.login {
 		
 		private function handleRoomClosing() : void {
 			var _local2:* = null;
-			for each(var _local1 in roomPreviews) {
+			for each(var _local1:* in roomPreviews) {
 				if(_local2 == null) {
 					_local2 = _local1;
 				} else if(_local1.info.onlineUsers < _local2.info.onlineUsers) {
@@ -140,7 +140,7 @@ package core.login {
 		
 		public function updateTotalFree() : void {
 			totalFree = 0;
-			for each(var _local1 in rooms) {
+			for each(var _local1:* in rooms) {
 				totalFree += getFree(_local1);
 			}
 		}
@@ -154,7 +154,7 @@ package core.login {
 			_local6 = 0;
 			while(_local6 < 1000) {
 				_local5 = false;
-				for each(var _local2 in rooms) {
+				for each(var _local2:* in rooms) {
 					_local3 = _local2.id.split("_");
 					if(_local3.length == 2) {
 						_local1 = Number(_local3[1]);
@@ -182,7 +182,7 @@ package core.login {
 		
 		private function connectToBestNoobRoom() : void {
 			var _local2:* = null;
-			for each(var _local1 in roomPreviews) {
+			for each(var _local1:* in roomPreviews) {
 				if(_local1.isOpenForAll()) {
 					if(_local1.enabled) {
 						if(!_local1.isClosing) {

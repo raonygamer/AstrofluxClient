@@ -53,7 +53,7 @@ package core.boss {
 			_local6.targetRange = _local7.targetRange;
 			_local6.orbitOrign = new Point();
 			_local6.bossRadius = _local7.radius;
-			for each(var _local8 in wpArray) {
+			for each(var _local8:* in wpArray) {
 				_local6.waypoints.push(new Waypoint(g,_local8.body,_local8.xpos,_local8.ypos,_local8.id));
 			}
 			_local6.waypoints.push(new Waypoint(g,parentKey,0,0,1));
@@ -117,7 +117,7 @@ package core.boss {
 		
 		private static function addTurrets(obj:Object, g:Game, b:Boss) : void {
 			var _local4:Array = obj.turrets;
-			for each(var _local5 in _local4) {
+			for each(var _local5:* in _local4) {
 				createTurret(_local5,b,g);
 			}
 		}
@@ -150,7 +150,7 @@ package core.boss {
 			if(_local4.length == 0) {
 				return;
 			}
-			for(var _local6 in _local4) {
+			for(var _local6:* in _local4) {
 				_local5 = _local4[_local6];
 				createSpawner(_local5,_local6.toString(),b,g);
 			}
@@ -184,7 +184,7 @@ package core.boss {
 		
 		private static function addBossComponents(obj:Object, g:Game, b:Boss) : void {
 			var _local4:Array = obj.basicObjs;
-			for each(var _local5 in _local4) {
+			for each(var _local5:* in _local4) {
 				createBossComponent(_local5,b,g);
 			}
 		}
@@ -299,7 +299,7 @@ package core.boss {
 		
 		private static function sortComponents(g:Game, b:Boss) : void {
 			b.allComponents.sort(compareFunction);
-			for each(var _local3 in b.allComponents) {
+			for each(var _local3:* in b.allComponents) {
 				_local3.isBossUnit = true;
 				_local3.distanceToCamera = 0;
 				g.unitManager.add(_local3,g.canvasBosses,false);

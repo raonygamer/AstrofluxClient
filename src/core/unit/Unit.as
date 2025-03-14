@@ -425,16 +425,16 @@ package core.unit {
 				}
 			}
 			if(dotTimers.length > 0 && dotTimers[0]._active && this.dotEffect == dotEffect) {
-				for each(var _local8 in dotTimers) {
+				for each(var _local8:* in dotTimers) {
 					_local8.restart();
 				}
 			} else {
-				for each(var _local6 in dotTimers) {
+				for each(var _local6:* in dotTimers) {
 					_local6.seek(_local6.totalDuration(),false);
 				}
 				dotTimers.splice(0,-1);
 				_local9 = EmitterFactory.create(dotEffect,g,pos.x,pos.y,this,true);
-				for each(var _local7 in _local9) {
+				for each(var _local7:* in _local9) {
 					_local5 = TweenMax.to(_local7,dotDuration,{
 						"startAlpha":0.1,
 						"onComplete":removeDot(_local7)
@@ -463,7 +463,7 @@ package core.unit {
 			alive = true;
 			hp = _hpMax;
 			shieldHp = _shieldHpMax;
-			for each(var _local1 in triggers) {
+			for each(var _local1:* in triggers) {
 				_local1.reEnable();
 			}
 		}
@@ -481,14 +481,14 @@ package core.unit {
 				}
 			}
 			if(parentObj is Boss) {
-				for each(var _local3 in triggers) {
+				for each(var _local3:* in triggers) {
 					_local3.tryActivateTrigger(this,Boss(parentObj));
 				}
 				if(!(this is Spawner)) {
 					visible = false;
 				}
 			}
-			for each(var _local2 in dotTimers) {
+			for each(var _local2:* in dotTimers) {
 				_local2.seek(_local2.totalDuration(),false);
 			}
 			g.emitterManager.clean(this);
@@ -659,7 +659,7 @@ package core.unit {
 		}
 		
 		public function hasFaction(faction:String) : Boolean {
-			for each(var _local2 in factions) {
+			for each(var _local2:* in factions) {
 				if(_local2 == faction) {
 					return true;
 				}

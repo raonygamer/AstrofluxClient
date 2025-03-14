@@ -214,13 +214,13 @@ package core.hud.components.map {
 		
 		public function update() : void {
 			var _local1:DisplayObject = null;
-			for each(var _local4 in mapBodies) {
+			for each(var _local4:* in mapBodies) {
 				_local4.update();
 			}
-			for each(var _local2 in pvpZones) {
+			for each(var _local2:* in pvpZones) {
 				_local2.update();
 			}
-			for each(var _local6 in mapPlayers) {
+			for each(var _local6:* in mapPlayers) {
 				_local6.update();
 				if(_local6.isMe) {
 					_local1 = mapContainer.mask;
@@ -233,20 +233,20 @@ package core.hud.components.map {
 					mapContainer.y = HEIGHT / 2 - _local6.y + PADDING / 2;
 				}
 			}
-			for each(var _local3 in mapSpawners) {
+			for each(var _local3:* in mapSpawners) {
 				_local3.update();
 			}
-			for each(var _local5 in mapBosses) {
+			for each(var _local5:* in mapBosses) {
 				_local5.update();
 			}
 			mapLastKilled.update();
 		}
 		
 		override public function dispose() : void {
-			for each(var _local1 in mapDeathLines) {
+			for each(var _local1:* in mapDeathLines) {
 				_local1.dispose();
 			}
-			for each(var _local2 in mapPlayers) {
+			for each(var _local2:* in mapPlayers) {
 				_local2.dispose();
 			}
 			mapDeathLines.length = 0;

@@ -30,7 +30,7 @@ package core.hud.components.shipMenu {
 		private function load() : void {
 			var _local3:int = 0;
 			var _local1:String = "";
-			for each(var _local2 in p.artifacts) {
+			for each(var _local2:* in p.artifacts) {
 				if(p.isActiveArtifact(_local2)) {
 					_local1 = "<FONT COLOR=\'#2233ff\'>" + _local2.name + "</FONT>: Click to change active artifacts";
 					createArtifactIcon(_local3,textureManager.getTextureGUIByKey(_local2.bitmap),"slot_artifact.png",false,true,true,_local1);
@@ -108,7 +108,7 @@ package core.hud.components.shipMenu {
 		}
 		
 		public function refresh() : void {
-			for each(var _local1 in icons) {
+			for each(var _local1:* in icons) {
 				if(contains(_local1)) {
 					removeChild(_local1,true);
 				}
@@ -118,7 +118,7 @@ package core.hud.components.shipMenu {
 		}
 		
 		override public function dispose() : void {
-			for each(var _local1 in icons) {
+			for each(var _local1:* in icons) {
 				if(contains(_local1)) {
 					removeChild(_local1,true);
 				}

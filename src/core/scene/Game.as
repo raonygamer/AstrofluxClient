@@ -358,7 +358,7 @@ package core.scene {
 				Emitter.setHighGraphics();
 			} else {
 				Emitter.setLowGraphics();
-				for each(var _local2 in bodyManager.bodies) {
+				for each(var _local2:* in bodyManager.bodies) {
 					_local2.turnOffEffects();
 				}
 			}

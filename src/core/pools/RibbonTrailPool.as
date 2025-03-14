@@ -69,7 +69,7 @@ package core.pools {
 		}
 		
 		public function dispose() : void {
-			for each(var _local1 in inactiveRibbonTrails) {
+			for each(var _local1:* in inactiveRibbonTrails) {
 				_local1.dispose();
 			}
 			for each(_local1 in activeRibbonTrails) {

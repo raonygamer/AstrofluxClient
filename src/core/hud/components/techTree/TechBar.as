@@ -107,7 +107,7 @@ package core.hud.components.techTree {
 		}
 		
 		override public function dispose() : void {
-			for each(var _local1 in techIcons) {
+			for each(var _local1:* in techIcons) {
 				_local1.dispose();
 			}
 			removeEventListeners();
@@ -115,14 +115,14 @@ package core.hud.components.techTree {
 		}
 		
 		override public function set touchable(value:Boolean) : void {
-			for each(var _local2 in techIcons) {
+			for each(var _local2:* in techIcons) {
 				_local2.touchable = value;
 			}
 			eliteTechIcon.touchable = value;
 		}
 		
 		private function getUpgradeByLevel(level:int) : TechLevelIcon {
-			for each(var _local2 in techIcons) {
+			for each(var _local2:* in techIcons) {
 				if(_local2.level == level) {
 					return _local2;
 				}

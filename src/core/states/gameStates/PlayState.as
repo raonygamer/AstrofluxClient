@@ -242,7 +242,7 @@ package core.states.gameStates {
 			if(!_local2.isShooting && (keybinds.isInputDown(19) || fireWithHotkeys)) {
 				sendCommand(3,true);
 			} else if(_local2.isShooting && keybinds.isInputUp(19) && !fireWithHotkeys) {
-				for each(var _local1 in _local2.weapons) {
+				for each(var _local1:* in _local2.weapons) {
 					_local1.fire = false;
 				}
 				sendCommand(3,false);

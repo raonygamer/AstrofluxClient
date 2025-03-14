@@ -205,7 +205,7 @@ package core.hud.components {
 		}
 		
 		public function update() : void {
-			for each(var _local1 in priceItems) {
+			for each(var _local1:* in priceItems) {
 				_local1.load();
 			}
 		}
@@ -214,7 +214,7 @@ package core.hud.components {
 			if(m.getBoolean(0)) {
 				hasItem = true;
 				g.me.addTechSkill(buyObj.name,table,key);
-				for each(var _local2 in priceItems) {
+				for each(var _local2:* in priceItems) {
 					g.myCargo.removeMinerals(_local2.item,_local2.amount);
 				}
 				this.dispatchEvent(new Event("bought"));

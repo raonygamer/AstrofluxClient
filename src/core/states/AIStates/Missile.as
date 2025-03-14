@@ -41,7 +41,7 @@ package core.states.AIStates {
 				sm.changeState(new MissileStuck(g,p));
 				return;
 			}
-			for each(var _local3 in p.thrustEmitters) {
+			for each(var _local3:* in p.thrustEmitters) {
 				_local3.target = engine;
 			}
 			var _local1:Number = 33;

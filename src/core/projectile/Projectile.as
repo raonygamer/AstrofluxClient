@@ -246,7 +246,7 @@ package core.projectile {
 			if(explode) {
 				this.explode(false,null);
 			}
-			for each(var _local3 in thrustEmitters) {
+			for each(var _local3:* in thrustEmitters) {
 				_local3.killEmitter();
 			}
 			alive = false;

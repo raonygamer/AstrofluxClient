@@ -246,8 +246,8 @@ package core.hud.components.starMap {
 					callback();
 					return;
 				}
-				for each(var _local2 in solarSystemIcons) {
-					for each(var _local1 in Player.onlineFriends) {
+				for each(var _local2:* in solarSystemIcons) {
+					for each(var _local1:* in Player.onlineFriends) {
 						if(_local1.currentSolarSystem == _local2.key) {
 							_local2.hasFriends = true;
 						}
@@ -259,8 +259,8 @@ package core.hud.components.starMap {
 		
 		private function loadCrew() : void {
 			var _local3:Vector.<CrewMember> = g.me.crewMembers;
-			for each(var _local1 in solarSystemIcons) {
-				for each(var _local2 in _local3) {
+			for each(var _local1:* in solarSystemIcons) {
+				for each(var _local2:* in _local3) {
 					if(_local2.solarSystem == _local1.key) {
 						_local1.hasCrew = true;
 					}
@@ -276,7 +276,7 @@ package core.hud.components.starMap {
 			var _local3:SolarSystem = null;
 			var _local9:Boolean = false;
 			var _local6:WarpPath = null;
-			for(var _local11 in allSolarSystems) {
+			for(var _local11:* in allSolarSystems) {
 				_local8 = allSolarSystems[_local11];
 				_local1 = new SolarSystem(g,_local8,_local11,isDiscovered(_local11),_currentSolarSystemKey);
 				if(!(_local8 == null || !_local8.hasOwnProperty("type") || _local8.type != "regular" && _local8.type != "pvp")) {
@@ -298,7 +298,7 @@ package core.hud.components.starMap {
 				}
 			}
 			var _local2:Object = dataManager.loadTable("WarpPaths");
-			for(var _local10 in _local2) {
+			for(var _local10:* in _local2) {
 				_local5 = _local2[_local10];
 				_local4 = findSolarSystemIcon(_local5.solarSystem1);
 				_local3 = findSolarSystemIcon(_local5.solarSystem2);
@@ -311,7 +311,7 @@ package core.hud.components.starMap {
 						neighbours.push(_local4.key);
 					}
 					_local9 = false;
-					for each(var _local7 in _warpPathLicenses) {
+					for each(var _local7:* in _warpPathLicenses) {
 						if(_local7 == _local5.key) {
 							_local9 = true;
 						}
@@ -342,7 +342,7 @@ package core.hud.components.starMap {
 		private function onTouch(e:TouchEvent) : void {
 			var _local2:SolarSystem = e.currentTarget as SolarSystem;
 			if(e.getTouch(_local2,"ended")) {
-				for each(var _local3 in solarSystemIcons) {
+				for each(var _local3:* in solarSystemIcons) {
 					_local3.selected = false;
 				}
 				selectIcon(_local2);
@@ -364,7 +364,7 @@ package core.hud.components.starMap {
 				crewText.visible = false;
 				crewBullet.visible = false;
 			}
-			for each(var _local5 in _local6) {
+			for each(var _local5:* in _local6) {
 				_local9 += _local5.name + "\n";
 			}
 			_local9 += "\n\n";
@@ -377,7 +377,7 @@ package core.hud.components.starMap {
 			_local8.color = 0x666666;
 			friendsInSystem.addChild(_local8);
 			friendsInSelectedSystem = [];
-			for each(var _local3 in Player.onlineFriends) {
+			for each(var _local3:* in Player.onlineFriends) {
 				if(_local3.currentSolarSystem == icon.key) {
 					_local2++;
 					_local7 = new WarpToFriendRow(_local3);
@@ -396,7 +396,7 @@ package core.hud.components.starMap {
 			friendsInSystem.y = crewText.y + crewText.height;
 			friendsBullet.y = friendsInSystem.y + 8;
 			updateRect(icon.x,icon.y);
-			for each(var _local4 in _warpPaths) {
+			for each(var _local4:* in _warpPaths) {
 				_local4.selected = false;
 			}
 			handleWarpJumpAllowance();
@@ -425,7 +425,7 @@ package core.hud.components.starMap {
 			}
 			if(allowBuy) {
 				_local4 = findClosestPath(selectedSolarSystem.key);
-				for each(var _local2 in _local4) {
+				for each(var _local2:* in _local4) {
 					for each(_local6 in _warpPaths) {
 						if(_local2.parent != null) {
 							if(_local6.isConnectedTo(_local2.key,_local2.parent.key)) {
@@ -440,7 +440,7 @@ package core.hud.components.starMap {
 							Console.write("Warp path key: " + _local6.key);
 							_selectedWarpPath = _local6;
 							_local6.selected = true;
-							for each(var _local7 in p.solarSystemLicenses) {
+							for each(var _local7:* in p.solarSystemLicenses) {
 								if(_local7 == selectedSolarSystem.key) {
 									_selectedWarpPath.bought = true;
 								}
@@ -524,7 +524,7 @@ package core.hud.components.starMap {
 				}
 				currentNode = _local4.shift();
 				findChildren(currentNode,_local5);
-				for each(var _local3 in currentNode.children) {
+				for each(var _local3:* in currentNode.children) {
 					_local4.push(_local3);
 				}
 			}
@@ -533,7 +533,7 @@ package core.hud.components.starMap {
 		
 		private function findChildren(node:Node, paths:Vector.<WarpPath>) : void {
 			var _local3:Node = null;
-			for each(var _local4 in _warpPaths) {
+			for each(var _local4:* in _warpPaths) {
 				if(paths.indexOf(_local4) == -1) {
 					_local3 = null;
 					if(node.key == _local4.solarSystem1) {
@@ -550,7 +550,7 @@ package core.hud.components.starMap {
 		}
 		
 		private function isDiscovered(key:String) : Boolean {
-			for each(var _local2 in discoveredSolarSystemsKeys) {
+			for each(var _local2:* in discoveredSolarSystemsKeys) {
 				if(_local2 == key) {
 					return true;
 				}
@@ -559,7 +559,7 @@ package core.hud.components.starMap {
 		}
 		
 		private function findSolarSystemIcon(key:String) : SolarSystem {
-			for each(var _local2 in solarSystemIcons) {
+			for each(var _local2:* in solarSystemIcons) {
 				if(_local2.key == key) {
 					return _local2;
 				}
@@ -631,7 +631,7 @@ package core.hud.components.starMap {
 				selectedWarpPath.bought = true;
 				p.solarSystemLicenses.push(selectedSolarSystem.key);
 				p.warpPathLicenses.push(selectedWarpPath.key);
-				for each(var _local2 in selectedWarpPath.priceItems) {
+				for each(var _local2:* in selectedWarpPath.priceItems) {
 					g.myCargo.removeMinerals(_local2.item,_local2.amount);
 				}
 				selectIcon(selectedSolarSystem);
@@ -660,7 +660,7 @@ package core.hud.components.starMap {
 		
 		public function clean(e:Event = null) : void {
 			Console.write("Clean up warp gate");
-			for each(var _local2 in _warpPaths) {
+			for each(var _local2:* in _warpPaths) {
 				_local2.removeEventListener("transitClick",transitClick);
 			}
 			removeEventListener("removedFromStage",clean);

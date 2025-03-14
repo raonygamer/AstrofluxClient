@@ -153,7 +153,7 @@ package core.hud.components.cargo {
 		}
 		
 		public function hasMinerals(item:String, amount:int) : Boolean {
-			for each(var _local3 in _minerals) {
+			for each(var _local3:* in _minerals) {
 				if(_local3.item == item && _local3.amount >= amount) {
 					return true;
 				}
@@ -162,7 +162,7 @@ package core.hud.components.cargo {
 		}
 		
 		public function hasCommodities(item:String, amount:int) : Boolean {
-			for each(var _local3 in _commodities) {
+			for each(var _local3:* in _commodities) {
 				if(_local3.item == item && _local3.amount >= amount) {
 					return true;
 				}
@@ -261,7 +261,7 @@ package core.hud.components.cargo {
 						if(param1.getBoolean(0)) {
 							SoundLocator.getService().play("7zeIcPFb-UWzgtR_3nrZ8Q");
 							g.me.compressorLevel = newlevel;
-							for(var _local2 in costs) {
+							for(var _local2:* in costs) {
 								removeJunk(_local2,costs[_local2]);
 							}
 							draw(true);
@@ -389,7 +389,7 @@ package core.hud.components.cargo {
 		}
 		
 		public function getCommoditiesAmount(item:String) : int {
-			for each(var _local2 in commoditites) {
+			for each(var _local2:* in commoditites) {
 				if(_local2.item == item) {
 					return _local2.amount;
 				}
@@ -398,7 +398,7 @@ package core.hud.components.cargo {
 		}
 		
 		public function removeMinerals(mineral:String, amount:int) : void {
-			for each(var _local3 in _minerals) {
+			for each(var _local3:* in _minerals) {
 				if(_local3.item == mineral && _local3.amount >= amount) {
 					_local3.amount -= amount;
 				}
@@ -406,7 +406,7 @@ package core.hud.components.cargo {
 		}
 		
 		public function removeJunk(junk:String, amount:int) : void {
-			for each(var _local3 in _spaceJunk) {
+			for each(var _local3:* in _spaceJunk) {
 				if(_local3.item == junk && _local3.amount >= amount) {
 					_local3.amount -= amount;
 				}
@@ -415,7 +415,7 @@ package core.hud.components.cargo {
 		}
 		
 		public function removeAllJunk() : void {
-			for each(var _local1 in _spaceJunk) {
+			for each(var _local1:* in _spaceJunk) {
 				_local1.amount = 0;
 			}
 			spaceJunkCount = 0;
@@ -431,7 +431,7 @@ package core.hud.components.cargo {
 			if(_local6.type == "spaceJunk") {
 				spaceJunkCount += amount;
 				_local4 = null;
-				for each(var _local5 in _spaceJunk) {
+				for each(var _local5:* in _spaceJunk) {
 					if(_local5.item == item) {
 						_local4 = _local5;
 						break;

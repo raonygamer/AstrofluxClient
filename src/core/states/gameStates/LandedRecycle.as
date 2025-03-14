@@ -150,7 +150,7 @@ package core.states.gameStates {
 			var _local4:Vector.<CargoItem> = myCargo.spaceJunk;
 			var _local2:int = 0;
 			var _local5:int = 0;
-			for each(var _local1 in _local4) {
+			for each(var _local1:* in _local4) {
 				if(_local1.amount != 0) {
 					_local2 += _local1.amount;
 					_local3 = dataManager.loadKey(_local1.table,_local1.item);
@@ -263,7 +263,7 @@ package core.states.gameStates {
 						obj2.itemContainer.filter = _local3;
 					} else {
 						recycleButton.enabled = false;
-						for each(var _local4 in junkTextItems) {
+						for each(var _local4:* in junkTextItems) {
 							if(_local4.selected) {
 								recycleButton.enabled = true;
 							}
@@ -296,7 +296,7 @@ package core.states.gameStates {
 			recycleButton.enabled = false;
 			removeMinerals();
 			var _local3:Message = g.createMessage("recycleJunk");
-			for each(var _local2 in junkTextItems) {
+			for each(var _local2:* in junkTextItems) {
 				if(_local2.selected) {
 					_local3.add(_local2.obj.key);
 				}
@@ -311,7 +311,7 @@ package core.states.gameStates {
 			var _local3:String = null;
 			var _local5:int = 0;
 			var _local4:Object = null;
-			for each(var _local6 in junkTextItems) {
+			for each(var _local6:* in junkTextItems) {
 				if(_local6.selected) {
 					tweenReduceJunk(_local6);
 					myCargo.removeJunk(_local6.obj.key,_local6.quantity);
@@ -372,7 +372,7 @@ package core.states.gameStates {
 		
 		private function selectAllJunk(e:Event = null) : void {
 			var _local2:ColorMatrixFilter = null;
-			for each(var _local3 in junkTextItems) {
+			for each(var _local3:* in junkTextItems) {
 				if(_local3.quantity > 0) {
 					soundManager.play("BWHiEHVtwkC56EUUiGainw");
 					_local3.selected = true;

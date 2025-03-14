@@ -55,7 +55,7 @@ package core.states.gameStates {
 		}
 		
 		public static function getMemberRankName(clanObj:Object, memberId:String) : String {
-			for each(var _local3 in clanObj.members) {
+			for each(var _local3:* in clanObj.members) {
 				if(_local3.player != memberId) {
 					continue;
 				}
@@ -1116,7 +1116,7 @@ package core.states.gameStates {
 		}
 		
 		private function getMemberRank(clanObj:Object, memberId:String) : int {
-			for each(var _local3 in clanObj.members) {
+			for each(var _local3:* in clanObj.members) {
 				if(_local3.player == memberId) {
 					return _local3.rank;
 				}

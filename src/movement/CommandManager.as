@@ -25,7 +25,7 @@ package movement {
 				return;
 			}
 			var _local1:Message = g.createMessage("command");
-			for each(var _local2 in sendBuffer) {
+			for each(var _local2:* in sendBuffer) {
 				_local1.add(_local2.type);
 				_local1.add(_local2.active);
 				_local1.add(_local2.time);

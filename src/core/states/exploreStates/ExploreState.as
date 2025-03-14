@@ -180,7 +180,7 @@ package core.states.exploreStates {
 			var _local3:ExploreArea = null;
 			areas = new Vector.<ExploreArea>();
 			if(b.obj.exploreAreas != null) {
-				for each(var _local16 in b.obj.exploreAreas) {
+				for each(var _local16:* in b.obj.exploreAreas) {
 					_local20 = _local16;
 					_local13 = areaTypes[_local20];
 					_local14 = Number(_local13.skillLevel);
@@ -245,7 +245,7 @@ package core.states.exploreStates {
 				sm.changeState(new ControlZoneState(g,b));
 			}
 			updateInterval = 5;
-			for each(var _local1 in areas) {
+			for each(var _local1:* in areas) {
 				if(areaBox.contains(_local1)) {
 					_local1.visible = false;
 				}
@@ -259,7 +259,7 @@ package core.states.exploreStates {
 		}
 		
 		public function stopEffect() : void {
-			for each(var _local1 in areas) {
+			for each(var _local1:* in areas) {
 				_local1.stopEffect();
 			}
 		}

@@ -45,7 +45,7 @@ package core.unit {
 		}
 		
 		public function getTarget(targetId:int) : Unit {
-			for each(var _local2 in units) {
+			for each(var _local2:* in units) {
 				if(_local2.id == targetId) {
 					return _local2;
 				}

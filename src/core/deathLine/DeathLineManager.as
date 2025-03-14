@@ -86,7 +86,7 @@ package core.deathLine {
 		}
 		
 		private function lineById(id:String) : DeathLine {
-			for each(var _local2 in lines) {
+			for each(var _local2:* in lines) {
 				if(_local2.id == id) {
 					return _local2;
 				}
@@ -95,7 +95,7 @@ package core.deathLine {
 		}
 		
 		public function forceUpdate() : void {
-			for each(var _local1 in lines) {
+			for each(var _local1:* in lines) {
 				_local1.nextDistanceCalculation = -1;
 			}
 		}
@@ -118,7 +118,7 @@ package core.deathLine {
 		
 		public function clear(send:Boolean = false) : void {
 			lineBatch.clear();
-			for each(var _local2 in lines) {
+			for each(var _local2:* in lines) {
 				_local2.removeEventListeners();
 			}
 			lines.length = 0;
@@ -148,13 +148,13 @@ package core.deathLine {
 		
 		private function updateBatch() : void {
 			lineBatch.clear();
-			for each(var _local1 in lines) {
+			for each(var _local1:* in lines) {
 				lineBatch.addMesh(_local1);
 			}
 		}
 		
 		public function update() : void {
-			for each(var _local1 in lines) {
+			for each(var _local1:* in lines) {
 				_local1.update();
 			}
 		}

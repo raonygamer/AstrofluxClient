@@ -45,7 +45,7 @@ package core.boss {
 			effectTarget.x = effectX * Math.cos(_rotation) - effectY * Math.sin(_rotation) + _pos.x;
 			effectTarget.y = effectX * Math.sin(_rotation) + effectY * Math.cos(_rotation) + _pos.y;
 			if(parentObj is Boss) {
-				for each(var _local1 in triggers) {
+				for each(var _local1:* in triggers) {
 					_local1.tryActivateTrigger(this,Boss(parentObj));
 				}
 			}
@@ -53,7 +53,7 @@ package core.boss {
 		}
 		
 		override public function destroy(explode:Boolean = true) : void {
-			for each(var _local2 in effect) {
+			for each(var _local2:* in effect) {
 				_local2.killEmitter();
 			}
 			super.destroy(explode);

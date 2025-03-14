@@ -71,7 +71,7 @@ package core.states.AIStates {
 					s.engine.speed = s.oldSpeed;
 					s.engine.rotationSpeed = s.oldTurningSpeed;
 					s.meleeChargeEndTime = 0;
-					for each(var _local2 in s.chargeEffect) {
+					for each(var _local2:Emitter in s.chargeEffect) {
 						_local2.killEmitter();
 					}
 				}
@@ -169,7 +169,7 @@ package core.states.AIStates {
 				s.engine.speed = s.oldSpeed;
 				s.engine.rotationSpeed = s.oldTurningSpeed;
 				s.meleeChargeEndTime = 0;
-				for each(var _local1 in s.chargeEffect) {
+				for each(var _local1:Emitter in s.chargeEffect) {
 					_local1.killEmitter();
 				}
 			}

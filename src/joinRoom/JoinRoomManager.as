@@ -71,7 +71,7 @@ package joinRoom {
 			var _local4:Room = new Room();
 			_local4.roomType = "service";
 			var _local2:Array = [];
-			for each(var _local3 in rooms) {
+			for each(var _local3:* in rooms) {
 				_local6 = _local3.id.substr(8,4);
 				if((int(_local6)) >= 1379) {
 					_local4.id = _local3.id;
@@ -231,7 +231,7 @@ package joinRoom {
 			var _local2:* = false;
 			var _local5:* = false;
 			var _local4:int = 15;
-			for each(var _local3 in rooms) {
+			for each(var _local3:* in rooms) {
 				if(int(_local3.data.version) >= 1379) {
 					if(_local3.data.systemType == room.data.systemType) {
 						if(_local3.onlineUsers < _local4) {

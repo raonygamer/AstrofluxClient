@@ -38,13 +38,13 @@ package core.states.menuStates {
 		}
 		
 		override public function execute() : void {
-			for each(var _local1 in crew) {
+			for each(var _local1:* in crew) {
 				_local1.update();
 			}
 		}
 		
 		public function refresh() : void {
-			for each(var _local1 in crew) {
+			for each(var _local1:* in crew) {
 				if(mainBody.contains(_local1)) {
 					mainBody.removeChild(_local1);
 				}
@@ -61,7 +61,7 @@ package core.states.menuStates {
 			var _local6:int = 70;
 			var _local1:int = 330;
 			var _local5:int = 28;
-			for each(var _local4 in _local3) {
+			for each(var _local4:* in _local3) {
 				_local2 = new CrewDisplayBox(g,_local4,null,p,false,this);
 				_local2.x = _local6;
 				_local2.y = _local5;

@@ -44,7 +44,7 @@ package core.hud.components.hotkeys {
 				return;
 			}
 			var _local11:int = 0;
-			for each(var _local9 in g.me.techSkills) {
+			for each(var _local9:* in g.me.techSkills) {
 				if(_local9.tech == "m4yG1IRPIUeyRQHrC3h5kQ" || _local9.tech == "QgKEEj8a-0yzYAJ06eSLqA" || _local9.tech == "rSr1sn-_oUOY6E0hpAhh0Q" || _local9.tech == "kwlCdExeJk-oEJZopIz5kg") {
 					_local8 = dataManager.loadKey(_local9.table,_local9.tech);
 					_local7 = "";
@@ -108,7 +108,7 @@ package core.hud.components.hotkeys {
 		}
 		
 		public function update() : void {
-			for each(var _local1 in hotkeys) {
+			for each(var _local1:* in hotkeys) {
 				_local1.update();
 			}
 		}
@@ -119,7 +119,7 @@ package core.hud.components.hotkeys {
 		}
 		
 		public function initiateCooldown(name:String) : void {
-			for each(var _local2 in hotkeys) {
+			for each(var _local2:* in hotkeys) {
 				if(_local2.obj.name == name) {
 					_local2.initiateCooldown();
 				}
@@ -127,7 +127,7 @@ package core.hud.components.hotkeys {
 		}
 		
 		public function refresh() : void {
-			for each(var _local1 in hotkeys) {
+			for each(var _local1:* in hotkeys) {
 				removeChild(_local1);
 				ToolTip.disposeType("abiltites");
 			}

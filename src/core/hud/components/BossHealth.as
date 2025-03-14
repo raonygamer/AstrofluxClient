@@ -65,7 +65,7 @@ package core.hud.components {
 				return;
 			}
 			var _local3:* = null;
-			for each(var _local2 in g.bossManager.bosses) {
+			for each(var _local2:* in g.bossManager.bosses) {
 				_local5 = g.me.ship.pos;
 				_local1 = (_local5.x - _local2.pos.x) * (_local5.x - _local2.pos.x) + (_local5.y - _local2.pos.y) * (_local5.y - _local2.pos.y);
 				if(_local3 == null && _local1 < 400 * 60 * 60) {

@@ -30,7 +30,7 @@ package core.hud.components {
 			this.target = target;
 			this.imgsData = images;
 			imgs = new Vector.<Image>();
-			for each(var _local7 in imgsData) {
+			for each(var _local7:* in imgsData) {
 				addImage(_local7);
 			}
 			s = tooltip;
@@ -109,7 +109,7 @@ package core.hud.components {
 				_local3.validate();
 				_local3.width += 5;
 				_local3.invalidate();
-				for each(var _local2 in imgs) {
+				for each(var _local2:* in imgs) {
 					container.addChild(_local2);
 				}
 			}

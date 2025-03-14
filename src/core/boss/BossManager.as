@@ -184,7 +184,7 @@ package core.boss {
 		}
 		
 		public function getBossFromKey(key:String) : Boss {
-			for each(var _local2 in bosses) {
+			for each(var _local2:* in bosses) {
 				if(_local2.key == key) {
 					return _local2;
 				}
@@ -193,8 +193,8 @@ package core.boss {
 		}
 		
 		public function getComponentById(id:int) : Unit {
-			for each(var _local3 in bosses) {
-				for each(var _local2 in _local3.allComponents) {
+			for each(var _local3:* in bosses) {
+				for each(var _local2:* in _local3.allComponents) {
 					if(_local2.syncId == id) {
 						return _local2;
 					}

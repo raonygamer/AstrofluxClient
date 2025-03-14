@@ -53,7 +53,7 @@ package core.hud.components.map {
 		private function addCrew() : void {
 			var _local1:Image = null;
 			var _local3:int = 0;
-			for each(var _local2 in g.me.crewMembers) {
+			for each(var _local2:* in g.me.crewMembers) {
 				if(_local2.body == body.key) {
 					_local1 = new Image(_local2.texture);
 					_local1.height *= 0.2;
@@ -72,7 +72,7 @@ package core.hud.components.map {
 			var _local12:ControlZone = null;
 			var _local9:Number = NaN;
 			var _local11:Boolean = false;
-			for each(var _local10 in g.me.landedBodies) {
+			for each(var _local10:* in g.me.landedBodies) {
 				if(_local10.key == body.key) {
 					_local11 = true;
 					break;
@@ -88,7 +88,7 @@ package core.hud.components.map {
 			var _local5:int = 0;
 			var _local6:int = 0;
 			_local2 += "Name: " + body.name + "\nAreas: ";
-			for each(var _local8 in body.obj.exploreAreas) {
+			for each(var _local8:* in body.obj.exploreAreas) {
 				_local13 = DataLocator.getService();
 				_local3 = _local13.loadKey("BodyAreas",_local8);
 				if(_local3.skillLevel > 99) {
@@ -103,7 +103,7 @@ package core.hud.components.map {
 					"y":38 + 19 * _local5
 				});
 				_local6 = 0;
-				for each(var _local4 in _local3.types) {
+				for each(var _local4:* in _local3.types) {
 					_local6++;
 					_local2 += "    ";
 					_local1.push({
@@ -150,7 +150,7 @@ package core.hud.components.map {
 			}
 			var _local2:int = 0;
 			var _local3:int = 0;
-			for each(var _local1 in body.obj.exploreAreas) {
+			for each(var _local1:* in body.obj.exploreAreas) {
 				if(g.me.hasExploredArea(_local1)) {
 					_local3++;
 				}

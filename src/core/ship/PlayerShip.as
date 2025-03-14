@@ -221,7 +221,7 @@ package core.ship {
 			weaponHeat.update();
 			if(hardenEndTimer < g.time && usingHardenedShield) {
 				usingHardenedShield = false;
-				for each(var _local1 in hardenedShieldEffect) {
+				for each(var _local1:* in hardenedShieldEffect) {
 					_local1.killEmitter();
 				}
 			}
@@ -264,7 +264,7 @@ package core.ship {
 			var _local3:DeathLine = null;
 			if(alive && course != null) {
 				if(_usingBoost && g.time > boostEndTime) {
-					for each(var _local1 in speedBoostEffect) {
+					for each(var _local1:* in speedBoostEffect) {
 						_local1.killEmitter();
 					}
 					Console.write("Stopped boost");
@@ -358,7 +358,7 @@ package core.ship {
 		}
 		
 		public function killChargeUpEffect() : void {
-			for each(var _local1 in chargeUpEffect) {
+			for each(var _local1:* in chargeUpEffect) {
 				_local1.killEmitter();
 			}
 		}
@@ -454,7 +454,7 @@ package core.ship {
 		
 		override public function destroy(explode:Boolean = true) : void {
 			super.destroy(explode);
-			for each(var _local2 in weapons) {
+			for each(var _local2:* in weapons) {
 				_local2.destroy();
 			}
 		}
@@ -515,7 +515,7 @@ package core.ship {
 		}
 		
 		public function get isShooting() : Boolean {
-			for each(var _local1 in weapons) {
+			for each(var _local1:* in weapons) {
 				if(_local1.fire) {
 					return true;
 				}

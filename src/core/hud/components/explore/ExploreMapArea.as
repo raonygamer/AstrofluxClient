@@ -128,7 +128,7 @@ package core.hud.components.explore {
 				_local9.x = _local11.x + _local11.width;
 				infoBox.addChild(_local9);
 				_local17 = 1;
-				for each(var _local13 in _local21) {
+				for each(var _local13:* in _local21) {
 					_local17++;
 					_local8 = new Image(_local19.getTextureGUIByTextureName(CrewDisplayBox.IMAGES_SPECIALS[_local13]));
 					_local8.x = -18 + 20 * _local17;

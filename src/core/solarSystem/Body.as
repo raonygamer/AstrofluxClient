@@ -275,13 +275,13 @@ package core.solarSystem {
 			var _local3:Object = null;
 			var _local4:Array = [];
 			var _local2:Array = [];
-			for each(var _local1 in obj.exploreAreas) {
+			for each(var _local1:* in obj.exploreAreas) {
 				_local4.push(_local1);
 			}
 			if(_local4.length == 0) {
 				return _local2;
 			}
-			for each(var _local5 in _local4) {
+			for each(var _local5:* in _local4) {
 				_local3 = dataManager.loadKey("BodyAreas",_local5);
 				if(_local3 != null) {
 					_local3["key"] = _local5;
@@ -304,7 +304,7 @@ package core.solarSystem {
 		}
 		
 		public function addChildren(childrenArray:Vector.<Body>) : void {
-			for each(var _local2 in childrenArray) {
+			for each(var _local2:* in childrenArray) {
 				this.children.push(_local2);
 				_local2.parentBody = this;
 			}
@@ -568,7 +568,7 @@ package core.solarSystem {
 			var _local4:* = this;
 			var _local3:Object = dataManager.loadRange("Spawners","body",bodyKey);
 			var _local5:int = 0;
-			for each(var _local6 in _local3) {
+			for each(var _local6:* in _local3) {
 				_local5++;
 			}
 			if(_local5 == 0) {
@@ -578,7 +578,7 @@ package core.solarSystem {
 			}
 			_local4.hostileZoneRadius = 1.5 * _local4.collisionRadius;
 			_local4.preDraw(obj);
-			for(var _local8 in _local3) {
+			for(var _local8:* in _local3) {
 				_local7 = _local3[_local8];
 				createSpawner(_local7,_local8.toString(),_local4,_local5);
 			}

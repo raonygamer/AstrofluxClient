@@ -71,7 +71,7 @@ package camerafocus {
 			_focusCurrentLoc = _focusTracker.clone();
 			_focusLastLoc = _focusTracker.clone();
 			speed = new Point();
-			for each(var _local6 in aLayersInfo) {
+			for each(var _local6:* in aLayersInfo) {
 				_local6.ox = _local6.instance.x;
 				_local6.oy = _local6.instance.y;
 				_layersInfo[_local6.name] = _local6;
@@ -361,7 +361,7 @@ package camerafocus {
 			var _local9:Number = NaN;
 			var _local8:Number = NaN;
 			var _local4:* = aTestResult;
-			for each(var _local6 in _layersInfo) {
+			for each(var _local6:* in _layersInfo) {
 				_local7 = _local6.instance;
 				_local3 = Number(_local6.ox);
 				_local2 = Number(_local6.oy);

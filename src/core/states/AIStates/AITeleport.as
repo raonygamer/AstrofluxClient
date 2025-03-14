@@ -47,7 +47,7 @@ package core.states.AIStates {
 		public function exit() : void {
 			var _local2:Number = NaN;
 			var _local3:Number = NaN;
-			for each(var _local1 in emitters1) {
+			for each(var _local1:* in emitters1) {
 				_local1.killEmitter();
 			}
 			for each(_local1 in emitters2) {

@@ -112,7 +112,7 @@ package core.hud.components.explore {
 			var _local20:ITextureManager = TextureLocator.getService();
 			var _local19:int = 0;
 			addSkillIcon(_local20.getTextureGUIByTextureName(CrewDisplayBox.IMAGES_SKILLS[type]),_local19,Area.SKILLTYPE[type]);
-			for each(var _local21 in specialTypes) {
+			for each(var _local21:* in specialTypes) {
 				_local19++;
 				addSkillIcon(_local20.getTextureGUIByTextureName(CrewDisplayBox.IMAGES_SPECIALS[_local21]),_local19,Area.SPECIALTYPE[_local21]);
 			}
@@ -266,7 +266,7 @@ package core.hud.components.explore {
 				return;
 			}
 			var _local2:String = "";
-			for each(var _local3 in teams) {
+			for each(var _local3:* in teams) {
 				if(_local2 != "") {
 					_local2 += " ";
 				}
@@ -345,7 +345,7 @@ package core.hud.components.explore {
 				_local7 = 6;
 				while(_local7 < 7 + (_local4 - 1) * 5) {
 					_local6 = m.getString(_local7);
-					for each(var _local5 in g.me.crewMembers) {
+					for each(var _local5:* in g.me.crewMembers) {
 						if(_local5.key == _local6) {
 							_local5.solarSystem = m.getString(_local7 + 1);
 							_local5.body = m.getString(_local7 + 2);

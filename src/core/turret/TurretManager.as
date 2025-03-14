@@ -121,7 +121,7 @@ package core.turret {
 		}
 		
 		public function getTurretById(id:int) : Turret {
-			for each(var _local2 in turrets) {
+			for each(var _local2:* in turrets) {
 				if(_local2.id == id) {
 					return _local2;
 				}
@@ -131,7 +131,7 @@ package core.turret {
 		}
 		
 		public function getTurretsByParentAndSyncId(id:int, syncId:int) : Turret {
-			for each(var _local3 in turrets) {
+			for each(var _local3:* in turrets) {
 				if(_local3.parentObj != null && _local3.parentObj.id == id && _local3.syncId == syncId) {
 					return _local3;
 				}

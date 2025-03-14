@@ -199,7 +199,7 @@ package core.hud.components.dialogs {
 		}
 		
 		private function containsName(n:String, v:Vector.<CrewMember>) : Boolean {
-			for each(var _local3 in v) {
+			for each(var _local3:* in v) {
 				if(_local3.name == n) {
 					return true;
 				}
@@ -208,7 +208,7 @@ package core.hud.components.dialogs {
 		}
 		
 		private function containsImage(img:String, v:Vector.<CrewMember>) : Boolean {
-			for each(var _local3 in v) {
+			for each(var _local3:* in v) {
 				if(_local3.imageKey == img) {
 					return true;
 				}

@@ -38,7 +38,7 @@ package core.states.AIStates {
 			var _local5:Number = NaN;
 			var _local6:Number = NaN;
 			var _local4:Number = NaN;
-			for each(var _local3 in p.thrustEmitters) {
+			for each(var _local3:* in p.thrustEmitters) {
 				_local3.target = engine;
 			}
 			var _local1:Number = 33;

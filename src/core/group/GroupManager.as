@@ -111,7 +111,7 @@ package core.group {
 		}
 		
 		public function findInvite(groupId:String, invited:Player) : Invite {
-			for each(var _local3 in _invites) {
+			for each(var _local3:* in _invites) {
 				if(_local3.id == groupId && invited == _local3.invited) {
 					return _local3;
 				}
@@ -147,7 +147,7 @@ package core.group {
 		}
 		
 		public function getGroupById(id:String) : Group {
-			for each(var _local2 in _groups) {
+			for each(var _local2:* in _groups) {
 				if(_local2.id == id) {
 					return _local2;
 				}

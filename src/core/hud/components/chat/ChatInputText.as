@@ -308,7 +308,7 @@ package core.hud.components.chat {
 				return;
 			}
 			var _local4:Boolean = false;
-			for each(var _local2 in g.playerManager.players) {
+			for each(var _local2:* in g.playerManager.players) {
 				if(_local2.name == _local3[0]) {
 					_local4 = true;
 				}
@@ -456,7 +456,7 @@ package core.hud.components.chat {
 		
 		private function sendInvite(input:String) : void {
 			if(input != "") {
-				for each(var _local2 in g.playerManager.players) {
+				for each(var _local2:* in g.playerManager.players) {
 					if(input == _local2.name) {
 						g.groupManager.invitePlayer(_local2);
 					}

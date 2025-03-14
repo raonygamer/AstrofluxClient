@@ -67,7 +67,7 @@ package extensions {
 		}
 		
 		public static function disposeHitArea(hitArea:PixelHitArea) : void {
-			for(var _local2 in hitAreas) {
+			for(var _local2:* in hitAreas) {
 				if(hitAreas[_local2] == hitArea) {
 					hitArea.dispose();
 					hitAreas[_local2] = null;
@@ -77,7 +77,7 @@ package extensions {
 		
 		public static function dispose() : void {
 			var _local2:PixelHitArea = null;
-			for(var _local1 in hitAreas) {
+			for(var _local1:* in hitAreas) {
 				_local2 = hitAreas[_local1];
 				if(_local2) {
 					_local2.dispose();
@@ -101,7 +101,7 @@ package extensions {
 			var _local2:String = "HitArea memory size:\r";
 			var _local1:Number = 0;
 			var _local6:Number = 0;
-			for(var _local3 in hitAreas) {
+			for(var _local3:* in hitAreas) {
 				_local5 = hitAreas[_local3];
 				if(_local5) {
 					_local4 = _local5.getMemorySize() / 1024 / 1024;

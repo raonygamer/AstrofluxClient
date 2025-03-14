@@ -157,7 +157,7 @@ package core.drops {
 			} else {
 				_local10.reputation = 0;
 			}
-			for each(var _local9 in _local11.dropItems) {
+			for each(var _local9:* in _local11.dropItems) {
 				_local7 = getDropItem(_local9,_local8);
 				if(_local7 != null) {
 					_local10.items.push(_local7);
@@ -249,7 +249,7 @@ package core.drops {
 			var _local7:Drop = dropsById[_local5];
 			if(_local7 == null && createdDropIds[_local5] != null) {
 				if(createdDropIds[_local5] == true) {
-					for each(var _local11 in pickupQueue) {
+					for each(var _local11:* in pickupQueue) {
 						if(_local11.msg == m) {
 							Console.write("Pickup already queued. dropId: " + _local5);
 							return;
@@ -295,7 +295,7 @@ package core.drops {
 		}
 		
 		public function dispose() : void {
-			for each(var _local1 in drops) {
+			for each(var _local1:* in drops) {
 				_local1.removeFromCanvas();
 				_local1.reset();
 			}

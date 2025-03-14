@@ -150,7 +150,7 @@ package core.states.gameStates {
 			sliderEngineHue.direction == "horizontal";
 			sliderEngineHue.useHandCursor = true;
 			sliderEngineHue.addEventListener("change",function(param1:Event):void {
-				for each(var _local2 in emitters) {
+				for each(var _local2:* in emitters) {
 					_local2.changeHue(sliderEngineHue.value);
 				}
 			});
@@ -287,7 +287,7 @@ package core.states.gameStates {
 				}
 			}
 			if(_local7.changeThrustColors) {
-				for each(var _local10 in emitters) {
+				for each(var _local10:* in emitters) {
 					_local10.startColor = _local7.thrustStartColor;
 					_local10.finishColor = _local7.thrustFinishColor;
 					_local10.changeHue(_local3);
@@ -305,7 +305,7 @@ package core.states.gameStates {
 		}
 		
 		override public function exit(callback:Function) : void {
-			for each(var _local2 in emitters) {
+			for each(var _local2:* in emitters) {
 				_local2.killEmitter();
 			}
 			super.exit(callback);

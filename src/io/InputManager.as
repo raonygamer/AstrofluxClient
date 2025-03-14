@@ -36,7 +36,7 @@ package io {
 		}
 		
 		public function reset() : void {
-			for(var _local1 in releasedKeys) {
+			for(var _local1:* in releasedKeys) {
 				releasedKeys[_local1] = false;
 			}
 			for(_local1 in pressedKeys) {
@@ -84,9 +84,9 @@ package io {
 			if(!isKeyDown(e.keyCode)) {
 				downKeys[e.keyCode] = true;
 				pressedKeys[e.keyCode] = true;
-				for each(var _local3 in listedListenerKeys) {
+				for each(var _local3:* in listedListenerKeys) {
 					_local2 = _local3[0];
-					for each(var _local4 in _local2) {
+					for each(var _local4:* in _local2) {
 						if(_local4 == e.keyCode) {
 							_local3[1]();
 							listedListenerKeys.splice(listedListenerKeys.indexOf(_local3),1);
@@ -113,7 +113,7 @@ package io {
 		}
 		
 		public function isAnyKeyPressed() : Boolean {
-			for(var _local1 in pressedKeys) {
+			for(var _local1:* in pressedKeys) {
 				if(pressedKeys[_local1]) {
 					return true;
 				}

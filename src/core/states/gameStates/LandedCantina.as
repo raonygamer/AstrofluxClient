@@ -130,7 +130,7 @@ package core.states.gameStates {
 			var _local5:int = 60;
 			var _local1:int = 330;
 			var _local4:int = 25;
-			for each(var _local3 in crewMembers) {
+			for each(var _local3:* in crewMembers) {
 				_local2 = new CrewDisplayBoxNew(g,_local3,1);
 				_local2.x = _local5;
 				_local2.y = _local4;

@@ -88,7 +88,7 @@ package core.particle {
 		}
 		
 		public function dispose() : void {
-			for each(var _local1 in emitters) {
+			for each(var _local1:* in emitters) {
 				_local1.dispose();
 			}
 			emitters = null;

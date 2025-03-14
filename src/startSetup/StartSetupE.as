@@ -126,7 +126,7 @@ package startSetup {
 				pm.refresh();
 				isRunning = true;
 				run();
-				for each(var _local1 in pm.nebulas) {
+				for each(var _local1:* in pm.nebulas) {
 					TweenMax.to(_local1,1 / timeAdjust,{"alpha":1});
 				}
 				soundManager.playMusic("IOO5z1CeyESgoUp0yIuIPQ",true);

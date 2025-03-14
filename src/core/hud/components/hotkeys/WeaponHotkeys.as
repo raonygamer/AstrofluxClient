@@ -39,7 +39,7 @@ package core.hud.components.hotkeys {
 				Console.write("No weapons for hotkeys");
 				return;
 			}
-			for each(var _local1 in ship.weapons) {
+			for each(var _local1:* in ship.weapons) {
 				if(_local1.active) {
 					_local2 = DataLocator.getService().loadKey("Images",_local1.techIconFileName);
 					_local3 = new WeaponHotkey(clickedHotkey,textureManager.getTextureGUIByTextureName(_local2.textureName),textureManager.getTextureGUIByTextureName(_local2.textureName + "_inactive"),_local1.hotkey);
@@ -68,7 +68,7 @@ package core.hud.components.hotkeys {
 		}
 		
 		public function highlightWeapon(i:int) : void {
-			for each(var _local2 in hotkeys) {
+			for each(var _local2:* in hotkeys) {
 				if(_local2.key == i) {
 					selectedHotkey = _local2;
 					_local2.active = true;
@@ -79,14 +79,14 @@ package core.hud.components.hotkeys {
 		}
 		
 		public function update() : void {
-			for each(var _local1 in hotkeys) {
+			for each(var _local1:* in hotkeys) {
 				_local1.update();
 			}
 		}
 		
 		public function refresh() : void {
 			ToolTip.disposeType("WeaponHotkeys");
-			for each(var _local1 in hotkeys) {
+			for each(var _local1:* in hotkeys) {
 				removeChild(_local1,true);
 			}
 			hotkeys.length = 0;

@@ -216,11 +216,11 @@ package core.hud.components.techTree {
 			bitmapSelected.visible = false;
 			number.scaleX = number.scaleY = 1;
 			var _local4:Array = TweenMax.getTweensOf(number);
-			for each(var _local2 in _local4) {
+			for each(var _local2:* in _local4) {
 				_local2.kill();
 			}
 			var _local5:Array = TweenMax.getTweensOf(icon);
-			for each(var _local3 in _local5) {
+			for each(var _local3:* in _local5) {
 				_local3.kill();
 			}
 			switch(state) {

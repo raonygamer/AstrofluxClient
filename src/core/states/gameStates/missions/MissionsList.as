@@ -111,7 +111,7 @@ package core.states.gameStates.missions {
 		
 		private function trySetMissionsViewed() : void {
 			var _local1:Boolean = false;
-			for each(var _local2 in missions) {
+			for each(var _local2:* in missions) {
 				if(!_local2.viewed) {
 					_local2.viewed = true;
 					_local1 = true;

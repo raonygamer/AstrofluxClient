@@ -66,7 +66,7 @@ package core.spawner {
 		}
 		
 		public function getSpawnerByKey(key:String) : Spawner {
-			for each(var _local2 in spawners) {
+			for each(var _local2:* in spawners) {
 				if(_local2.key == key) {
 					return _local2;
 				}
@@ -75,7 +75,7 @@ package core.spawner {
 		}
 		
 		public function getSpawnerById(id:int) : Spawner {
-			for each(var _local2 in spawners) {
+			for each(var _local2:* in spawners) {
 				if(_local2.id == id) {
 					return _local2;
 				}
@@ -142,7 +142,7 @@ package core.spawner {
 		}
 		
 		public function dispose() : void {
-			for each(var _local1 in spawners) {
+			for each(var _local1:* in spawners) {
 				_local1.reset();
 				_local1.removeFromCanvas();
 			}

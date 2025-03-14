@@ -513,7 +513,7 @@ package core.player {
 					s.convCD -= Math.round(0.01 * _local6 * s.convCD);
 					break;
 				case "IncreaseDamage":
-					for each(var _local5 in s.weapons) {
+					for each(var _local5:* in s.weapons) {
 						_local5.dmg.addBasePercent(_local6);
 						_local5.debuffValue.addBasePercent(_local6);
 						_local5.debuffValue2.addBasePercent(_local6);
@@ -768,7 +768,7 @@ package core.player {
 		
 		private static function createEliteTechBar(g:Game, eliteTech:String, name:String, techSkill:TechSkill, obj:Object) : EliteTechBar {
 			var _local8:int = 1;
-			for each(var _local9 in techSkill.eliteTechs) {
+			for each(var _local9:* in techSkill.eliteTechs) {
 				if(_local9.eliteTech == eliteTech) {
 					_local8 = _local9.eliteTechLevel;
 					break;

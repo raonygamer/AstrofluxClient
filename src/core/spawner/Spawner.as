@@ -64,7 +64,7 @@ package core.spawner {
 			}
 			if(alive && active) {
 				if(_local1) {
-					for each(var _local4 in triggers) {
+					for each(var _local4:* in triggers) {
 						_local4.tryActivateTrigger(this,Boss(parentObj));
 					}
 				}
@@ -72,7 +72,7 @@ package core.spawner {
 					super.updateHealthBars();
 				}
 				super.regenerateShield();
-				for each(var _local3 in turrets) {
+				for each(var _local3:* in turrets) {
 					_local3.update();
 				}
 				if(lastDmgText != null) {
@@ -89,7 +89,7 @@ package core.spawner {
 						hardenShield();
 					}
 					if(!initialHardenedShield && aiHardenedShieldEffect.length > 0) {
-						for each(var _local2 in aiHardenedShieldEffect) {
+						for each(var _local2:* in aiHardenedShieldEffect) {
 							_local2.killEmitter();
 						}
 						aiHardenedShieldEffect.splice(0,aiHardenedShieldEffect.length);
@@ -122,7 +122,7 @@ package core.spawner {
 			var _local2:* = this;
 			var _local3:Array = obj.turrets;
 			if(_local3.length > 0) {
-				for each(var _local4 in _local3) {
+				for each(var _local4:* in _local3) {
 					createTurret(_local4,_local2);
 				}
 			}
@@ -155,7 +155,7 @@ package core.spawner {
 				super.destroy(explode);
 				return;
 			}
-			for each(var _local2 in turrets) {
+			for each(var _local2:* in turrets) {
 				_local2.destroy(_local2.alive);
 			}
 			super.destroy(explode);
@@ -185,7 +185,7 @@ package core.spawner {
 			if(imgObj != null) {
 				changeStateTextures(_textures,imgObj.animateOnStart);
 			}
-			for each(var _local1 in turrets) {
+			for each(var _local1:* in turrets) {
 				_local1.rebuild();
 			}
 			if(parentObj != null && parentObj is Body) {

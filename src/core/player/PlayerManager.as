@@ -259,13 +259,13 @@ package core.player {
 		}
 		
 		public function update() : void {
-			for each(var _local2 in _players) {
+			for each(var _local2:* in _players) {
 				_local2.update();
 				if(!(_local2.ship == null || _local2.ship.course == null)) {
 					if(!(!_local2.ship.isAddedToCanvas || _local2.isLanded)) {
 						if(g.pvpManager == null || !(g.pvpManager is DominationManager)) {
 							_local2.inSafeZone = false;
-							for each(var _local1 in g.bodyManager.bodies) {
+							for each(var _local1:* in g.bodyManager.bodies) {
 								_local1.setInSafeZone(_local2);
 							}
 						}
@@ -283,7 +283,7 @@ package core.player {
 		}
 		
 		public function listAll() : void {
-			for each(var _local1 in _players) {
+			for each(var _local1:* in _players) {
 				if(!(_local1.isDeveloper || _local1.isModerator)) {
 					MessageLog.writeChatMsg("list","lvl " + _local1.level,_local1.id,_local1.name);
 				}
@@ -974,9 +974,9 @@ package core.player {
 			me.addMission(m,0);
 			if(_local5 == "KG4YJCr9tU6IH0rJRYo7HQ") {
 				_local2 = false;
-				for each(var _local4 in g.bodyManager.bodies) {
+				for each(var _local4:* in g.bodyManager.bodies) {
 					if(_local4.key == "SWqDETtcD0i6Wc3s81yccQ" || _local4.key == "U8PYtFoC5U6c2A_gar9j2A" || _local4.key == "TLYpHghGOU6FaZtxDiVXBA") {
-						for each(var _local3 in _local4.spawners) {
+						for each(var _local3:* in _local4.spawners) {
 							if(_local3.alive) {
 								_local2 = true;
 								g.hud.compas.addHintArrowByKey(_local4.key);
@@ -1053,7 +1053,7 @@ package core.player {
 			if(_local9 == null) {
 				return;
 			}
-			for each(var _local2 in _local9) {
+			for each(var _local2:* in _local9) {
 				_local2.fire = false;
 				_local2.target = null;
 			}
@@ -1136,7 +1136,7 @@ package core.player {
 					EmitterFactory.create("CBZIObPQ40uaMZGvEcHvjw",g,ship.pos.x,ship.pos.y,ship,true);
 					TweenMax.delayedCall(0.24000000000000002,function():void {
 						line++;
-						for each(var _local1 in emitters) {
+						for each(var _local1:* in emitters) {
 							_local1.killEmitter();
 						}
 						line++;

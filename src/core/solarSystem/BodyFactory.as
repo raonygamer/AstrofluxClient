@@ -76,10 +76,10 @@ package core.solarSystem {
 				return;
 			}
 			var _local7:int = 0;
-			for(var _local9 in bodies) {
+			for(var _local9:* in bodies) {
 				_local8++;
 			}
-			for(var _local10 in bodies) {
+			for(var _local10:* in bodies) {
 				_local4 = bodies[_local10];
 				if(_local4.parent == "") {
 					_local6 = g.bodyManager.getRoot();
@@ -168,8 +168,8 @@ package core.solarSystem {
 				}
 				_local6.addSpawners(_local4,_local10);
 			}
-			for each(var _local3 in g.bodyManager.bodies) {
-				for each(var _local5 in g.bodyManager.bodies) {
+			for each(var _local3:* in g.bodyManager.bodies) {
+				for each(var _local5:* in g.bodyManager.bodies) {
 					if(_local5.obj.parent == _local3.key) {
 						_local3.addChild(_local5);
 					}

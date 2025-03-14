@@ -247,7 +247,7 @@ package core.states.gameStates {
 		
 		public function drawTopRank() : void {
 			var _local2:int = 0;
-			for each(var _local1 in topRankList) {
+			for each(var _local1:* in topRankList) {
 				drawClanObject(_local1,_local2,topRankContainer);
 				_local2++;
 			}
@@ -255,7 +255,7 @@ package core.states.gameStates {
 		
 		public function drawTopSurvivor() : void {
 			var _local2:int = 0;
-			for each(var _local1 in topSurvivorList) {
+			for each(var _local1:* in topSurvivorList) {
 				drawClanObject(_local1,_local2,topSurvivorContainer,false,true);
 				_local2++;
 			}
@@ -264,7 +264,7 @@ package core.states.gameStates {
 		public function drawTopTroonsPerMinute() : void {
 			var _local2:Text = null;
 			var _local3:int = 0;
-			for each(var _local1 in topTroonsPerMinuteList) {
+			for each(var _local1:* in topTroonsPerMinuteList) {
 				drawClanObject(_local1,_local3,topTroonsPerMinuteContainer,true);
 				_local3++;
 			}
@@ -452,7 +452,7 @@ package core.states.gameStates {
 		}
 		
 		private function getPlayerClanObj(clanKey:String) : Object {
-			for each(var _local2 in topRankList) {
+			for each(var _local2:* in topRankList) {
 				if(_local2.key == clanKey) {
 					return _local2;
 				}

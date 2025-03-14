@@ -32,7 +32,7 @@ package core.turret {
 				return;
 			}
 			if(parentObj is Boss) {
-				for each(var _local1 in triggers) {
+				for each(var _local1:* in triggers) {
 					_local1.tryActivateTrigger(this,Boss(parentObj));
 				}
 			}

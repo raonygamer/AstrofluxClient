@@ -11,7 +11,7 @@ package core.login {
 		
 		public static function isBanned(name:String) : Boolean {
 			var _local3:String = name.toLocaleLowerCase();
-			for each(var _local2 in BANNED) {
+			for each(var _local2:* in BANNED) {
 				if(_local3.indexOf(_local2) > -1) {
 					return true;
 				}

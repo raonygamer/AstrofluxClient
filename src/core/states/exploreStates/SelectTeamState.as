@@ -138,7 +138,7 @@ package core.states.exploreStates {
 		}
 		
 		override public function execute() : void {
-			for each(var _local1 in crewBoxes) {
+			for each(var _local1:* in crewBoxes) {
 				_local1.update();
 			}
 		}
@@ -192,7 +192,7 @@ package core.states.exploreStates {
 		
 		private function getTime() : String {
 			var _local2:Vector.<Number> = new Vector.<Number>();
-			for each(var _local6 in selectedCrew) {
+			for each(var _local6:* in selectedCrew) {
 				_local2.push(_local6.getTime());
 			}
 			if(_local2.length == 0) {
@@ -228,14 +228,14 @@ package core.states.exploreStates {
 		private function getChance() : String {
 			var _local1:Number = NaN;
 			var _local5:Vector.<Number> = new Vector.<Number>();
-			for each(var _local4 in selectedCrew) {
+			for each(var _local4:* in selectedCrew) {
 				_local5.push(_local4.getChance());
 			}
 			if(_local5.length == 0) {
 				return "<FONT COLOR=\'#ff0000\'>None</FONT>";
 			}
 			var _local3:Number = 1;
-			for each(var _local2 in _local5) {
+			for each(var _local2:* in _local5) {
 				_local3 *= 1 - _local2;
 			}
 			_local3 = 1 - _local3;
@@ -345,7 +345,7 @@ package core.states.exploreStates {
 		
 		override public function exit() : void {
 			ToolTip.disposeType("skill");
-			for each(var _local1 in crewBoxes) {
+			for each(var _local1:* in crewBoxes) {
 				_local1.removeEventListeners();
 			}
 			super.exit();

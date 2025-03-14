@@ -77,7 +77,7 @@ package core.solarSystem {
 			} else {
 				_local7 = 0;
 			}
-			for each(var _local8 in types) {
+			for each(var _local8:* in types) {
 				_local7 *= crew.specials[_local8] || 0;
 			}
 			if(_local7 > 1) {
@@ -97,7 +97,7 @@ package core.solarSystem {
 				_local8 = 1;
 			}
 			var _local9:Number = 0;
-			for each(var _local10 in types) {
+			for each(var _local10:* in types) {
 				if(Number(crew.specials[_local10]) < 0.5) {
 					_local9 += 0.5;
 				}

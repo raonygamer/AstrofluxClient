@@ -105,7 +105,7 @@ package core.hud.components {
 			addSkillPoints();
 			addCurrentStatus();
 			if(crewMember.skillPoints < 1) {
-				for each(var _local10 in raiseButtons) {
+				for each(var _local10:* in raiseButtons) {
 					_local10.visible = false;
 				}
 			}

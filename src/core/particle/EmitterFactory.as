@@ -155,7 +155,7 @@ package core.particle {
 			}
 			if(rareType == 4) {
 				_local4 = EmitterFactory.create("uWIxfxRAgUm6ThgrRFnixw",g,enemy.pos.x,enemy.pos.y,enemy,true);
-				for each(var _local6 in _local4) {
+				for each(var _local6:* in _local4) {
 					_local6.finishSize = 2.5;
 					_local6.startSize = 2.5;
 					_local6.startColor = 0x44ff44;

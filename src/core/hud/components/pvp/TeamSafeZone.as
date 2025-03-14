@@ -52,7 +52,7 @@ package core.hud.components.pvp {
 				friendlyZone.alpha = 0;
 				enemyZone.alpha = 1;
 			}
-			for each(var _local3 in g.playerManager.players) {
+			for each(var _local3:* in g.playerManager.players) {
 				if(_local3.ship != null && _local3.team > -1 && _local3.team == team) {
 					_local1 = _local3.ship.pos.x - x;
 					_local2 = _local3.ship.pos.y - y;

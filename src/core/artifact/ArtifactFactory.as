@@ -27,7 +27,7 @@ package core.artifact {
 			dataManager.loadKeysFromBigDB("Artifacts",keys,function(param1:Array):void {
 				var _local2:Artifact = null;
 				try {
-					for each(var _local3 in param1) {
+					for each(var _local3:* in param1) {
 						if(_local3 != null) {
 							_local2 = new Artifact(_local3);
 							p.artifacts.push(_local2);

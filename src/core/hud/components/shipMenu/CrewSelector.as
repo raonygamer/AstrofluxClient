@@ -31,7 +31,7 @@ package core.hud.components.shipMenu {
 			var _local2:String = null;
 			var _local4:int = 0;
 			var _local1:ITextureManager = TextureLocator.getService();
-			for each(var _local3 in p.crewMembers) {
+			for each(var _local3:* in p.crewMembers) {
 				_local2 = "Crew member: " + _local3.name;
 				createCrewIcon(_local4,_local1.getTextureGUIByKey(_local3.imageKey),"slot_crew.png",false,true,true,_local2);
 				_local4++;
@@ -110,7 +110,7 @@ package core.hud.components.shipMenu {
 		}
 		
 		public function refresh() : void {
-			for each(var _local1 in icons) {
+			for each(var _local1:* in icons) {
 				if(contains(_local1)) {
 					removeChild(_local1,true);
 				}
@@ -121,7 +121,7 @@ package core.hud.components.shipMenu {
 		}
 		
 		override public function dispose() : void {
-			for each(var _local1 in icons) {
+			for each(var _local1:* in icons) {
 				if(contains(_local1)) {
 					removeChild(_local1,true);
 				}

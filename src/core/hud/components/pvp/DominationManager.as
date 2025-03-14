@@ -132,7 +132,7 @@ package core.hud.components.pvp {
 						matchState = 2;
 						g.textManager.createPvpText("The Match begins! Fight!",0,50);
 					}
-					for each(var _local2 in g.playerManager.players) {
+					for each(var _local2:* in g.playerManager.players) {
 						_local2.inSafeZone = true;
 					}
 					break;
@@ -159,10 +159,10 @@ package core.hud.components.pvp {
 							redTeamBarFill.width = score[_local5] / 1000 * 96;
 							scoreTextRedTeam.text = score[_local5].toString();
 						}
-						for each(var _local1 in g.playerManager.players) {
+						for each(var _local1:* in g.playerManager.players) {
 							_local1.inSafeZone = false;
 						}
-						for each(var _local3 in safeZones) {
+						for each(var _local3:* in safeZones) {
 							_local3.updateZone();
 						}
 						if(zones.length > 4) {
@@ -239,7 +239,7 @@ package core.hud.components.pvp {
 		}
 		
 		override public function addZones(items:Array) : void {
-			for each(var _local2 in items) {
+			for each(var _local2:* in items) {
 				if(_local2.type == "dominationZone") {
 					addZone(_local2);
 				} else if(_local2.type == "safezoneT1") {
@@ -268,7 +268,7 @@ package core.hud.components.pvp {
 		}
 		
 		public function getDZ(id:*) : DominationZone {
-			for each(var _local2 in zones) {
+			for each(var _local2:* in zones) {
 				if(_local2.id == id) {
 					return _local2;
 				}
@@ -291,7 +291,7 @@ package core.hud.components.pvp {
 			endGameScreenTime = matchEndTime + 5000;
 			roomEndTime = m.getNumber(_local6++);
 			saveScore(m,_local6);
-			for each(var _local5 in g.playerManager.players) {
+			for each(var _local5:* in g.playerManager.players) {
 				if(_local5.ship != null) {
 					_local5.ship.hp = _local5.ship.hpMax;
 					_local5.ship.shieldHp = _local5.ship.shieldHpMax;

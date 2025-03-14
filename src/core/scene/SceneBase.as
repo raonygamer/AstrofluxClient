@@ -229,7 +229,7 @@ package core.scene {
 		}
 		
 		protected function resize(e:Event) : void {
-			for each(var _local2 in resizeCallbacks) {
+			for each(var _local2:* in resizeCallbacks) {
 				_local2(e);
 			}
 			if(camera != null) {
@@ -325,7 +325,7 @@ package core.scene {
 			menu = null;
 			hud = null;
 			overlay = null;
-			for(var _local2 in connectionHandlers) {
+			for(var _local2:* in connectionHandlers) {
 				removeMessageHandler(_local2,connectionHandlers[_local2]);
 			}
 			for(_local2 in serviceHandlers) {
@@ -341,7 +341,7 @@ package core.scene {
 			ToolTip.disposeAll();
 			Starling.juggler.purge();
 			stage.removeEventListener("resize",resize);
-			for each(var _local1 in resizeCallbacks) {
+			for each(var _local1:* in resizeCallbacks) {
 				stage.removeEventListener("resize",_local1);
 			}
 			removeEventListeners();
@@ -544,7 +544,7 @@ package core.scene {
 		
 		public function traceMessageCount() : void {
 			var _local3:Array = [];
-			for(var _local2 in messageCounter) {
+			for(var _local2:* in messageCounter) {
 				if(messageCounter[_local2] != 0) {
 					_local3.push({
 						"type":_local2,
@@ -553,7 +553,7 @@ package core.scene {
 				}
 			}
 			_local3.sortOn("count",0x10 | 2);
-			for each(var _local1 in _local3) {
+			for each(var _local1:* in _local3) {
 				Console.write(_local1.type + ": " + _local1.count);
 			}
 		}

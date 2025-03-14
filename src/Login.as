@@ -857,8 +857,8 @@ package {
 			new AstroTheme();
 			Button.loadTheme();
 			Box.loadTheme();
-			TextField.unregisterBitmapFont("font13");
-			TextField.registerBitmapFont(new BitmapFont(textureManager.getTextureGUIByTextureName("font13"),assets.getXml("font13")),"font13");
+			TextField.unregisterCompositor("font13");
+			TextField.registerCompositor(new BitmapFont(textureManager.getTextureGUIByTextureName("font13"),assets.getXml("font13")),"font13");
 			removeEmbeddedAssets();
 			removeEffects();
 			loginContainer = null;

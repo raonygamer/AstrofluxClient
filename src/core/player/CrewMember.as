@@ -62,7 +62,7 @@ package core.player {
 		}
 		
 		public function hasSpecialAreaSkill(area:ExploreArea) : Boolean {
-			for each(var _local2 in area.specialTypes) {
+			for each(var _local2:* in area.specialTypes) {
 				if(specials[_local2] == null) {
 					return false;
 				}
@@ -204,7 +204,7 @@ package core.player {
 			if(area == null || area == "") {
 				return false;
 			}
-			for each(var _local1 in g.me.explores) {
+			for each(var _local1:* in g.me.explores) {
 				if(_local1.areaKey == area) {
 					if(_local1.finishTime < g.time) {
 						return true;

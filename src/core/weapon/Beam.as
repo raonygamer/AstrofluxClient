@@ -136,7 +136,7 @@ package core.weapon {
 		}
 		
 		override public function destroy() : void {
-			for each(var _local2 in startEffect) {
+			for each(var _local2:* in startEffect) {
 				_local2.alive = false;
 			}
 			if(twin) {
@@ -144,7 +144,7 @@ package core.weapon {
 					_local2.alive = false;
 				}
 			}
-			for each(var _local1 in endEffect) {
+			for each(var _local1:* in endEffect) {
 				_local1.alive = false;
 			}
 			fire = false;
@@ -198,7 +198,7 @@ package core.weapon {
 			}
 			updateTargetOrder();
 			var _local8:Number = unit.rotation;
-			for each(var _local2 in startEffect) {
+			for each(var _local2:* in startEffect) {
 				_local2.posX = startPos.x;
 				_local2.posY = startPos.y;
 				_local2.angle = _local8;
@@ -216,7 +216,7 @@ package core.weapon {
 				beamAlpha = startBeamAlpha / 3;
 				endPos.x = unit.x + Math.cos(unit.rotation + _local9) * range;
 				endPos.y = unit.y + Math.sin(unit.rotation + _local9) * range;
-				for each(var _local1 in endEffect) {
+				for each(var _local1:* in endEffect) {
 					_local1.posX = endPos.x;
 					_local1.posY = endPos.y;
 					_local1.angle = _local8 - 3.141592653589793;
@@ -280,17 +280,17 @@ package core.weapon {
 				return;
 			}
 			if(drawBeam) {
-				for each(var _local3 in lines) {
+				for each(var _local3:* in lines) {
 					lineBatch.addMesh(_local3);
 				}
 				g.canvasEffects.addChild(lineBatch);
-				for each(var _local2 in endEffect) {
+				for each(var _local2:* in endEffect) {
 					_local2.play();
 				}
 			} else {
 				lineBatch.clear();
 				g.canvasEffects.removeChild(lineBatch);
-				for each(var _local1 in endEffect) {
+				for each(var _local1:* in endEffect) {
 					_local1.stop();
 				}
 			}
@@ -313,7 +313,7 @@ package core.weapon {
 			var _local8:Number = Math.atan2(_local5,_local4);
 			startPos.x = unit.x + Math.cos(unit.rotation + _local8 + unit.forcedRotationAngle) * _local7;
 			startPos.y = unit.y + Math.sin(unit.rotation + _local8 + unit.forcedRotationAngle) * _local7;
-			for each(var _local3 in startEffect) {
+			for each(var _local3:* in startEffect) {
 				_local3.posX = startPos.x;
 				_local3.posY = startPos.y;
 				_local3.angle = _local9;
@@ -332,7 +332,7 @@ package core.weapon {
 			endPos.x = startPos.x + _local6 * _local7;
 			endPos.y = startPos.y + _local10 * _local7;
 			_local9 = Math.atan2(_local10,_local6);
-			for each(var _local2 in endEffect) {
+			for each(var _local2:* in endEffect) {
 				_local2.posX = endPos.x;
 				_local2.posY = endPos.y;
 				_local2.angle = _local9 - 3.141592653589793;
@@ -436,7 +436,7 @@ package core.weapon {
 			_fire = value;
 			lastFire = 0;
 			if(_fire == true) {
-				for each(var _local5 in startEffect) {
+				for each(var _local5:* in startEffect) {
 					_local5.play();
 				}
 				if(twin) {
@@ -448,10 +448,10 @@ package core.weapon {
 				drawBeam = false;
 				lineBatch.clear();
 				g.canvasEffects.removeChild(lineBatch);
-				for each(var _local4 in lines) {
+				for each(var _local4:* in lines) {
 					_local4.clear();
 				}
-				for each(var _local3 in startEffect) {
+				for each(var _local3:* in startEffect) {
 					_local3.stop();
 				}
 				if(twin) {
@@ -459,7 +459,7 @@ package core.weapon {
 						_local3.stop();
 					}
 				}
-				for each(var _local2 in endEffect) {
+				for each(var _local2:* in endEffect) {
 					_local2.stop();
 				}
 			}

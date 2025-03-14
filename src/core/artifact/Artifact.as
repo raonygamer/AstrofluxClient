@@ -73,7 +73,7 @@ package core.artifact {
 			this.levelPotential = obj.levelPotential == null ? obj.level : obj.levelPotential;
 			this.revealed = obj.revealed;
 			this.upgraded = obj.upgraded;
-			for each(var _local2 in obj.stats) {
+			for each(var _local2:* in obj.stats) {
 				stats.push(new ArtifactStat(_local2.type,_local2.value));
 			}
 		}
