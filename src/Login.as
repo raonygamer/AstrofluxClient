@@ -26,6 +26,7 @@ package {
 	import debug.Console;
 	import facebook.FB;
 	import feathers.core.FocusManager;
+	import flash.display.BitmapDataChannel;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.external.ExternalInterface;

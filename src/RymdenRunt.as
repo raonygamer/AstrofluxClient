@@ -63,7 +63,7 @@ package {
 			s = new Starling(Login,stage,null,null,"auto","auto");
 			s.start();
 			s.skipUnchangedFrames = true;
-			s.addEventListener("rootCreated",onRootCreated);
+			s.addEventListener("rootCreated", onRootCreated);
 			stage.addEventListener("rightClick",function():void {
 				s.stage.dispatchEventWith("rightClick");
 			});
@@ -93,10 +93,10 @@ package {
 			Game.instance.client.errorLog.writeError(e.error.toString(),"UncaughtErrorEvent",e.error.getStackTrace(),_local2);
 			throw e;
 		}
-		
+
 		private function onRootCreated(e:starling.events.Event, preload:Login) : void {
 			s.removeEventListener("rootCreated",onRootCreated);
-			s.stage.addEventListener("resize",resize);
+			s.stage.addEventListener("resize", resize);
 			resize();
 			preload.start();
 		}
