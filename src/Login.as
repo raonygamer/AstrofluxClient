@@ -67,7 +67,7 @@ package {
 	
 	public class Login extends Sprite {
 		public static const DEV_SERVER:String = "";
-		public static const CLIENT_VERSION:int = 1379;
+		public static const CLIENT_VERSION:int = 1388;
 		public static const SERVER_ROOM_TYPE:String = "game";
 		public static const SERVICE_ROOM_TYPE:String = "service";
 		public static const MENU_WIDTH:int = 760;

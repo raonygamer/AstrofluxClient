@@ -49,7 +49,7 @@ package joinRoom {
 		}
 		
 		public static function getServiceRoomID(index:int) : String {
-			return "Service-1379_" + index;
+			return "Service-1388_" + index;
 		}
 		
 		public function init() : void {
@@ -73,7 +73,7 @@ package joinRoom {
 			var _local2:Array = [];
 			for each(var _local3:* in rooms) {
 				_local6 = _local3.id.substr(8,4);
-				if((int(_local6)) >= 1379) {
+				if((int(_local6)) >= 1388) {
 					_local4.id = _local3.id;
 					_local2.push(_local3);
 				}
@@ -93,7 +93,7 @@ package joinRoom {
 		
 		public function joinServiceRoom(id:String) : void {
 			login.removeEffects();
-			client.multiplayer.createJoinRoom(id,"service",true,{},{"client_version":1379},handleJoinServiceRoom,function(param1:PlayerIOError):void {
+			client.multiplayer.createJoinRoom(id,"service",true,{},{"client_version":1388},handleJoinServiceRoom,function(param1:PlayerIOError):void {
 				if(param1.errorID != 2) {
 					showErrorDialog("Join service room failed, please try again later. Contact us on forum.astroflux.org for support.",true,param1);
 				}
@@ -133,7 +133,7 @@ package joinRoom {
 			playerInfo.currentSolarSystem = m.getString(_local2++);
 			playerInfo.systemType = m.getString(_local2++);
 			playerInfo.clan = m.getString(_local2++);
-			joinData["client_version"] = 1379;
+			joinData["client_version"] = 1388;
 			joinData["session"] = session;
 			joinData["warpJump"] = false;
 			joinData["level"] = playerInfo.level > 0 ? playerInfo.level : 1;
@@ -195,7 +195,7 @@ package joinRoom {
 			var solarSystemObj:Object;
 			var roomData:Object;
 			var searchCriteria:Object;
-			joinData["client_version"] = 1379;
+			joinData["client_version"] = 1388;
 			joinData["session"] = session;
 			roomStateMachine.closeCurrentRoom();
 			roomType = "game";
@@ -232,7 +232,7 @@ package joinRoom {
 			var _local5:* = false;
 			var _local4:int = 15;
 			for each(var _local3:* in rooms) {
-				if(int(_local3.data.version) >= 1379) {
+				if(int(_local3.data.version) >= 1388) {
 					if(_local3.data.systemType == room.data.systemType) {
 						if(_local3.onlineUsers < _local4) {
 							if(_local3.data.modLocked != "true") {

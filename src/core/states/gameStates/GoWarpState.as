@@ -43,7 +43,7 @@ package core.states.gameStates {
 				return _local3;
 			});
 			for each(ri in rooms) {
-				if(!(ri.data.version != 1379 && !g.me.isDeveloper)) {
+				if(!(ri.data.version != 1388 && !g.me.isDeveloper)) {
 					if(!(ri.data.clanInstance == "true" && !g.me.isDeveloper)) {
 						roomInfoText = new TextBitmap();
 						roomInfoText.text += k + ". ";

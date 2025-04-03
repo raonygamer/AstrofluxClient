@@ -166,7 +166,7 @@ package core.login {
 			}
 			friends.text = "Looking for friends...";
 			Login.client.multiplayer.joinRoom(info.id,{
-				"client_version":1379,
+				"client_version":1388,
 				"preview":"true"
 			},joined,function(param1:PlayerIOError):void {
 				var _local2:String = null;
