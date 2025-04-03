@@ -1,4 +1,5 @@
-package core.hud.components.friends {
+package core.hud.components.friends
+{
 	import core.friend.Friend;
 	import core.hud.components.Button;
 	import core.hud.components.Style;
@@ -13,11 +14,14 @@ package core.hud.components.friends {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class FriendDisplayBox extends Sprite {
+	public class FriendDisplayBox extends Sprite
+	{
 		private var friend:Friend;
+		
 		private var reputationIcon:Image;
 		
-		public function FriendDisplayBox(g:Game, friend:Friend) {
+		public function FriendDisplayBox(g:Game, friend:Friend)
+		{
 			var dataManager:IDataManager;
 			var textureManager:ITextureManager;
 			var skinObj:Object;
@@ -55,15 +59,19 @@ package core.hud.components.friends {
 			addChild(level);
 			that = this;
 			objSolar = dataManager.loadKey("SolarSystems",friend.currentSolarSystem);
-			if(friend.isOnline) {
+			if(friend.isOnline)
+			{
 				useHandCursor = true;
-				addEventListener("touch",function(param1:TouchEvent):void {
-					if(param1.getTouch(that,"ended")) {
+				addEventListener("touch",function(param1:TouchEvent):void
+				{
+					if(param1.getTouch(that,"ended"))
+					{
 						dispatchEventWith("friendSelected",false,friend.currentSolarSystem);
 					}
 				});
 			}
-			b = new Button(function():void {
+			b = new Button(function():void
+			{
 				g.friendManager.sendRemoveFriendById(friend.id);
 				that.parent.visible = false;
 				g.showErrorDialog("Friend removed.",false);

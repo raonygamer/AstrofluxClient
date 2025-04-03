@@ -1,15 +1,19 @@
-package core.hud.components.credits {
+package core.hud.components.credits
+{
 	import core.scene.Game;
 	import generics.Localize;
 	import playerio.Message;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class CreditExpBoost extends CreditDayItem {
+	public class CreditExpBoost extends CreditDayItem
+	{
 		private var selectedDays:int;
+		
 		private var price:int;
 		
-		public function CreditExpBoost(g:Game, parent:Sprite) {
+		public function CreditExpBoost(g:Game, parent:Sprite)
+		{
 			super(g,parent);
 			bitmap = "ti_xp_boost.png";
 			description = Localize.t("Increases experience gain with 100% for enemy kills and 30% for PvP and missions.");
@@ -33,23 +37,29 @@ package core.hud.components.credits {
 			super.load();
 		}
 		
-		override protected function onBuy(days:int) : void {
+		override protected function onBuy(days:int) : void
+		{
 			super.onBuy(days);
 			selectedDays = days;
-			if(days == 1) {
+			if(days == 1)
+			{
 				price = CreditDayItem.PRICE_1_DAY;
 			}
-			if(days == 3) {
+			if(days == 3)
+			{
 				price = CreditDayItem.PRICE_3_DAY;
 			}
-			if(days == 7) {
+			if(days == 7)
+			{
 				price = CreditDayItem.PRICE_7_DAY;
 			}
 			g.rpc("buyExpBoost",onBuyTractorBeam,days);
 		}
 		
-		private function onBuyTractorBeam(m:Message) : void {
-			if(!m.getBoolean(0)) {
+		private function onBuyTractorBeam(m:Message) : void
+		{
+			if(!m.getBoolean(0))
+			{
 				showFailed(m.getString(1));
 				return;
 			}

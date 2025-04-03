@@ -1,4 +1,5 @@
-package core.hud.components.pvp {
+package core.hud.components.pvp
+{
 	import core.player.Player;
 	import core.scene.Game;
 	import flash.display.Sprite;
@@ -8,20 +9,32 @@ package core.hud.components.pvp {
 	import textures.TextureLocator;
 	import textures.TextureManager;
 	
-	public class TeamSafeZone {
+	public class TeamSafeZone
+	{
 		private var textureManager:ITextureManager;
+		
 		public var zoneRadius:Number = 350;
+		
 		public var team:int = -1;
+		
 		private var g:Game;
+		
 		private var friendlyZone:Image;
+		
 		private var enemyZone:Image;
+		
 		private var img:Image;
+		
 		public var friendlyColor:uint = 255;
+		
 		public var enemyColor:uint = 16711680;
+		
 		public var x:int;
+		
 		public var y:int;
 		
-		public function TeamSafeZone(g:Game, obj:Object, team:int) {
+		public function TeamSafeZone(g:Game, obj:Object, team:int)
+		{
 			super();
 			textureManager = TextureLocator.getService();
 			this.g = g;
@@ -41,52 +54,60 @@ package core.hud.components.pvp {
 			this.g.addChildToCanvasAt(img,9);
 		}
 		
-		public function updateZone() : void {
-			var _local1:Number = NaN;
-			var _local2:Number = NaN;
-			var _local4:Number = NaN;
-			if(g.me.team == team) {
+		public function updateZone() : void
+		{
+			var _loc2_:Number = NaN;
+			var _loc3_:Number = NaN;
+			var _loc4_:Number = NaN;
+			if(g.me.team == team)
+			{
 				friendlyZone.alpha = 1;
 				enemyZone.alpha = 0;
-			} else {
+			}
+			else
+			{
 				friendlyZone.alpha = 0;
 				enemyZone.alpha = 1;
 			}
-			for each(var _local3:* in g.playerManager.players) {
-				if(_local3.ship != null && _local3.team > -1 && _local3.team == team) {
-					_local1 = _local3.ship.pos.x - x;
-					_local2 = _local3.ship.pos.y - y;
-					_local4 = _local1 * _local1 + _local2 * _local2;
-					if(_local4 < zoneRadius * zoneRadius) {
-						_local3.inSafeZone = true;
+			for each(var _loc1_ in g.playerManager.players)
+			{
+				if(_loc1_.ship != null && _loc1_.team > -1 && _loc1_.team == team)
+				{
+					_loc2_ = _loc1_.ship.pos.x - x;
+					_loc3_ = _loc1_.ship.pos.y - y;
+					_loc4_ = _loc2_ * _loc2_ + _loc3_ * _loc3_;
+					if(_loc4_ < zoneRadius * zoneRadius)
+					{
+						_loc1_.inSafeZone = true;
 					}
 				}
 			}
 		}
 		
-		private function createZoneImg(obj:Object, colour:uint, name:String) : Image {
-			var _local10:Image = null;
-			var _local7:Sprite = new Sprite();
-			_local7.graphics.lineStyle(1,colour,0.2);
-			var _local9:String = "radial";
-			var _local5:Array = [0,colour];
-			var _local6:Array = [0,0.4];
-			var _local8:Array = [0,255];
-			var _local4:Matrix = new Matrix();
-			_local4.createGradientBox(2 * zoneRadius,2 * zoneRadius,0,-zoneRadius,-zoneRadius);
-			_local7.graphics.beginGradientFill(_local9,_local5,_local6,_local8,_local4);
-			_local7.graphics.drawCircle(0,0,zoneRadius);
-			_local7.graphics.endFill();
-			_local10 = TextureManager.imageFromSprite(_local7,name);
-			_local10.x = x;
-			_local10.y = y;
-			_local10.pivotX = _local10.width / 2;
-			_local10.pivotY = _local10.height / 2;
-			_local10.scaleX = 1;
-			_local10.scaleY = 1;
-			_local10.alpha = 0.25;
-			_local10.blendMode = "add";
-			return _local10;
+		private function createZoneImg(obj:Object, colour:uint, name:String) : Image
+		{
+			var _loc6_:Image = null;
+			var _loc5_:Sprite = new Sprite();
+			_loc5_.graphics.lineStyle(1,colour,0.2);
+			var _loc7_:String = "radial";
+			var _loc10_:Array = [0,colour];
+			var _loc8_:Array = [0,0.4];
+			var _loc9_:Array = [0,255];
+			var _loc4_:Matrix = new Matrix();
+			_loc4_.createGradientBox(2 * zoneRadius,2 * zoneRadius,0,-zoneRadius,-zoneRadius);
+			_loc5_.graphics.beginGradientFill(_loc7_,_loc10_,_loc8_,_loc9_,_loc4_);
+			_loc5_.graphics.drawCircle(0,0,zoneRadius);
+			_loc5_.graphics.endFill();
+			_loc6_ = TextureManager.imageFromSprite(_loc5_,name);
+			_loc6_.x = x;
+			_loc6_.y = y;
+			_loc6_.pivotX = _loc6_.width / 2;
+			_loc6_.pivotY = _loc6_.height / 2;
+			_loc6_.scaleX = 1;
+			_loc6_.scaleY = 1;
+			_loc6_.alpha = 0.25;
+			_loc6_.blendMode = "add";
+			return _loc6_;
 		}
 	}
 }

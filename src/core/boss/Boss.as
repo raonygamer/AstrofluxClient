@@ -1,4 +1,5 @@
-package core.boss {
+package core.boss
+{
 	import com.greensock.TweenMax;
 	import core.GameObject;
 	import core.particle.EmitterFactory;
@@ -16,59 +17,110 @@ package core.boss {
 	import starling.display.Image;
 	import textures.TextureLocator;
 	
-	public class Boss extends GameObject {
+	public class Boss extends GameObject
+	{
 		public var alive:Boolean;
+		
 		public var isHostile:Boolean;
+		
 		public var key:String;
+		
 		public var xp:int;
+		
 		public var level:int;
+		
 		public var hp:int;
+		
 		public var hpMax:int;
+		
 		public var resetTime:Number;
+		
 		public var respawnTime:Number;
+		
 		public var speed:Number;
+		
 		public var acceleration:Number;
+		
 		public var rotationSpeed:Number;
+		
 		public var rotationForced:Boolean;
+		
 		public var targetRange:int;
+		
 		public var holonomic:Boolean;
+		
 		public var orbitOrign:Point;
+		
 		public var orbitRadius:Point;
+		
 		public var turrets:Vector.<Turret>;
+		
 		public var spawners:Vector.<Spawner>;
+		
 		public var bossComponents:Vector.<BossComponent>;
+		
 		public var allComponents:Vector.<Unit>;
+		
 		public var target:Unit;
+		
 		public var angleTargetPos:Point;
+		
 		public var course:Heading;
+		
 		public var parentBody:Body;
+		
 		public var explosionEffect:String;
+		
 		public var explosionSound:String;
+		
 		public var bossRadius:int;
+		
 		public var currentWaypoint:Waypoint = null;
+		
 		public var waypoints:Vector.<Waypoint>;
+		
 		public var bodyDestroyStart:Number = 0;
+		
 		public var bodyDestroyEnd:Number = 0;
+		
 		public var bodyTarget:Body;
+		
 		public var awaitingActivation:Boolean;
+		
 		public var stateMachine:StateMachine = new StateMachine();
+		
 		protected var g:Game;
+		
 		private var error:Point = null;
+		
 		private var errorAngle:Number;
+		
 		private var convergeTime:Number = 1000;
+		
 		private var convergeStartTime:Number;
+		
 		private var errorOldTime:Number;
+		
 		private var oldAngle:Number;
+		
 		public var teleportExitTime:Number = 0;
+		
 		public var teleportExitPoint:Point;
+		
 		public var hpRegen:int;
+		
 		public var factions:Vector.<String> = new Vector.<String>();
+		
 		public var uberDifficulty:Number = 0;
+		
 		public var uberLevelFactor:Number = 0;
+		
 		private var teleportDestinationImage:Image;
+		
 		private var teleportChannelImage:Image;
 		
-		public function Boss(g:Game) {
+		public function Boss(g:Game)
+		{
 			super();
 			canvas = g.canvasBosses;
 			turrets = new Vector.<Turret>();
@@ -82,7 +134,8 @@ package core.boss {
 			distanceToCamera = 0;
 		}
 		
-		public function startTeleportEffect() : void {
+		public function startTeleportEffect() : void
+		{
 			teleportDestinationImage = new Image(TextureLocator.getService().getTextureMainByTextureName(name.toLowerCase().replace("???","qqq") + "_mini"));
 			teleportDestinationImage.scaleX = teleportDestinationImage.scaleY = bossRadius * 2 / teleportDestinationImage.width;
 			teleportDestinationImage.x = teleportExitPoint.x;
@@ -114,14 +167,16 @@ package core.boss {
 				"scaleX":teleportChannelImage.scaleX / 1.6,
 				"scaleY":teleportChannelImage.scaleY / 1.6,
 				"repeat":3,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					g.removeChildFromCanvas(teleportChannelImage);
 				}
 			});
 			g.addChildToCanvas(teleportChannelImage);
 		}
 		
-		public function endTeleportEffect() : void {
+		public function endTeleportEffect() : void
+		{
 			var splashImage1:Image;
 			var splashImage2:Image;
 			var splashImage3:Image;
@@ -144,7 +199,8 @@ package core.boss {
 				"scaleX":splashImage1.scaleX * 2,
 				"scaleY":splashImage1.scaleY * 2,
 				"alpha":0,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					g.removeChildFromCanvas(splashImage1);
 				}
 			});
@@ -165,7 +221,8 @@ package core.boss {
 				"scaleX":splashImage2.scaleX * 2,
 				"scaleY":splashImage2.scaleY * 2,
 				"alpha":0,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					g.removeChildFromCanvas(splashImage2);
 				}
 			});
@@ -186,207 +243,264 @@ package core.boss {
 				"scaleX":splashImage3.scaleX * 2,
 				"scaleY":splashImage3.scaleY * 2,
 				"alpha":0,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					g.removeChildFromCanvas(splashImage3);
 				}
 			});
 		}
 		
-		override public function update() : void {
-			var _local4:Point = null;
-			var _local2:Point = null;
-			if(!alive || awaitingActivation) {
+		override public function update() : void
+		{
+			var _loc1_:Point = null;
+			var _loc3_:Point = null;
+			if(!alive || awaitingActivation)
+			{
 				return;
 			}
-			if(g.me.ship != null) {
-				_local4 = this.pos;
-				_local2 = g.me.ship.pos;
-				distanceToCameraX = _local4.x - _local2.x;
-				distanceToCameraY = _local4.y - _local2.y;
+			if(g.me.ship != null)
+			{
+				_loc1_ = this.pos;
+				_loc3_ = g.me.ship.pos;
+				distanceToCameraX = _loc1_.x - _loc3_.x;
+				distanceToCameraY = _loc1_.y - _loc3_.y;
 				distanceToCamera = Math.sqrt(distanceToCameraX * distanceToCameraX + distanceToCameraY * distanceToCameraY);
 			}
-			if(nextDistanceCalculation <= 0) {
+			if(nextDistanceCalculation <= 0)
+			{
 				updateIsNear();
-			} else {
+			}
+			else
+			{
 				nextDistanceCalculation -= 33;
 			}
 			stateMachine.update();
-			var _local3:int = 0;
+			var _loc4_:int = 0;
 			hp = 0;
-			for each(var _local1:* in allComponents) {
-				_local1.update();
-				if(_local1.alive && _local1.essential) {
-					hp += _local1.hp + _local1.shieldHp;
-					_local3++;
+			for each(var _loc2_ in allComponents)
+			{
+				_loc2_.update();
+				if(_loc2_.alive && _loc2_.essential)
+				{
+					hp += _loc2_.hp + _loc2_.shieldHp;
+					_loc4_++;
 				}
-				if((!_local1.alive || !_local1.active) && !(_local1 is Spawner)) {
-					_local1.visible = false;
+				if((!_loc2_.alive || !_loc2_.active) && !(_loc2_ is Spawner))
+				{
+					_loc2_.visible = false;
 				}
 			}
 		}
 		
-		private function updateIsNear() : void {
-			var _local2:Number = g.stage.stageWidth;
+		private function updateIsNear() : void
+		{
+			var _loc2_:Number = g.stage.stageWidth;
 			distanceToCamera = Math.sqrt(distanceToCameraX * distanceToCameraX + distanceToCameraY * distanceToCameraY);
-			var _local1:Number = distanceToCamera - _local2;
-			nextDistanceCalculation = _local1 / (10 * 60) * 100;
-			if(nextDistanceCalculation > 5000) {
+			var _loc1_:Number = distanceToCamera - _loc2_;
+			nextDistanceCalculation = _loc1_ / (10 * 60) * 100;
+			if(nextDistanceCalculation > 5000)
+			{
 				nextDistanceCalculation = 5000;
 			}
-			if(distanceToCamera < _local2) {
-				if(isAddedToCanvas) {
+			if(distanceToCamera < _loc2_)
+			{
+				if(isAddedToCanvas)
+				{
 					return;
 				}
 				addToCanvas();
-			} else {
-				if(!isAddedToCanvas) {
+			}
+			else
+			{
+				if(!isAddedToCanvas)
+				{
 					return;
 				}
 				removeFromCanvas();
 			}
 		}
 		
-		override public function removeFromCanvas() : void {
+		override public function removeFromCanvas() : void
+		{
 			isAddedToCanvas = false;
-			for each(var _local1:* in allComponents) {
-				_local1.removeFromCanvas();
+			for each(var _loc1_ in allComponents)
+			{
+				_loc1_.removeFromCanvas();
 			}
 		}
 		
-		override public function addToCanvas() : void {
+		override public function addToCanvas() : void
+		{
 			isAddedToCanvas = true;
-			for each(var _local1:* in allComponents) {
-				_local1.addToCanvas();
+			for each(var _loc1_ in allComponents)
+			{
+				_loc1_.addToCanvas();
 			}
 		}
 		
-		public function addFactions() : void {
-			for each(var _local1:* in allComponents) {
-				_local1.factions = factions;
+		public function addFactions() : void
+		{
+			for each(var _loc1_ in allComponents)
+			{
+				_loc1_.factions = factions;
 			}
 		}
 		
-		public function updateHeading(heading:Heading) : void {
-			var _local9:Number = NaN;
-			var _local11:Number = NaN;
-			var _local7:Number = NaN;
-			var _local5:Number = NaN;
-			var _local8:Number = NaN;
-			var _local10:Number = NaN;
-			var _local4:Number = NaN;
-			var _local14:Number = NaN;
-			var _local13:Number = NaN;
-			var _local12:Number = NaN;
-			var _local6:Number = NaN;
-			var _local3:Number = NaN;
-			var _local2:int = 33;
+		public function updateHeading(heading:Heading) : void
+		{
+			var _loc10_:Number = NaN;
+			var _loc11_:Number = NaN;
+			var _loc12_:Number = NaN;
+			var _loc13_:Number = NaN;
+			var _loc2_:Number = NaN;
+			var _loc5_:Number = NaN;
+			var _loc14_:Number = NaN;
+			var _loc3_:Number = NaN;
+			var _loc4_:Number = NaN;
+			var _loc6_:Number = NaN;
+			var _loc8_:Number = NaN;
+			var _loc7_:Number = NaN;
+			var _loc9_:int = 33;
 			aiRemoveError(heading);
 			oldAngle = course.rotation;
-			if(angleTargetPos != null) {
-				if(holonomic || rotationForced) {
+			if(angleTargetPos != null)
+			{
+				if(holonomic || rotationForced)
+				{
 					heading.rotation = Math.atan2(angleTargetPos.y - course.pos.y,angleTargetPos.x - course.pos.x);
-				} else {
-					_local9 = Math.atan2(angleTargetPos.y - course.pos.y,angleTargetPos.x - course.pos.x);
-					_local11 = Util.angleDifference(course.rotation,_local9 + 3.141592653589793);
-					_local7 = rotationSpeed * _local2 / 1000;
-					if(_local11 > 0 && _local11 < 3.141592653589793 - _local7) {
-						heading.rotation += _local7;
+				}
+				else
+				{
+					_loc10_ = Math.atan2(angleTargetPos.y - course.pos.y,angleTargetPos.x - course.pos.x);
+					_loc11_ = Util.angleDifference(course.rotation,_loc10_ + 3.141592653589793);
+					_loc12_ = rotationSpeed * _loc9_ / 1000;
+					if(_loc11_ > 0 && _loc11_ < 3.141592653589793 - _loc12_)
+					{
+						heading.rotation += _loc12_;
 						heading.rotation = Util.clampRadians(heading.rotation);
-					} else if(_local11 <= 0 && _local11 > -3.141592653589793 + _local7) {
-						heading.rotation -= _local7;
+					}
+					else if(_loc11_ <= 0 && _loc11_ > -3.141592653589793 + _loc12_)
+					{
+						heading.rotation -= _loc12_;
 						heading.rotation = Util.clampRadians(heading.rotation);
-					} else {
-						heading.rotation = Util.clampRadians(_local9);
+					}
+					else
+					{
+						heading.rotation = Util.clampRadians(_loc10_);
 					}
 				}
 			}
-			if(heading.accelerate) {
-				if(angleTargetPos != null && (holonomic || rotationForced)) {
-					_local8 = pos.x - angleTargetPos.x;
-					_local10 = pos.y - angleTargetPos.y;
-					_local4 = _local8 * _local8 + _local10 * _local10;
-					if(_local4 > 1.1025 * (targetRange * targetRange)) {
-						_local5 = 1;
-					} else if(_local4 < 0.9025 * (targetRange * targetRange)) {
-						_local5 = -1;
-					} else {
-						_local5 = 0;
+			if(heading.accelerate)
+			{
+				if(angleTargetPos != null && (holonomic || rotationForced))
+				{
+					_loc2_ = pos.x - angleTargetPos.x;
+					_loc5_ = pos.y - angleTargetPos.y;
+					_loc14_ = _loc2_ * _loc2_ + _loc5_ * _loc5_;
+					if(_loc14_ > 1.1025 * (targetRange * targetRange))
+					{
+						_loc13_ = 1;
+					}
+					else if(_loc14_ < 0.9025 * (targetRange * targetRange))
+					{
+						_loc13_ = -1;
+					}
+					else
+					{
+						_loc13_ = 0;
 						heading.speed.x = 0.98 * heading.speed.x;
 						heading.speed.y = 0.98 * heading.speed.y;
 					}
-				} else {
-					_local5 = 1;
 				}
-				_local14 = heading.speed.x;
-				_local13 = heading.speed.y;
-				_local14 += _local5 * (Math.cos(heading.rotation) * acceleration * 0.5 * Math.pow(_local2,2));
-				_local13 += _local5 * (Math.sin(heading.rotation) * acceleration * 0.5 * Math.pow(_local2,2));
-				if(_local14 * _local14 + _local13 * _local13 <= speed * speed) {
-					heading.speed.x = _local14;
-					heading.speed.y = _local13;
-				} else {
-					_local12 = Math.sqrt(_local14 * _local14 + _local13 * _local13);
-					_local6 = _local14 / _local12 * speed;
-					_local3 = _local13 / _local12 * speed;
-					heading.speed.x = _local6;
-					heading.speed.y = _local3;
+				else
+				{
+					_loc13_ = 1;
+				}
+				_loc3_ = heading.speed.x;
+				_loc4_ = heading.speed.y;
+				_loc3_ += _loc13_ * (Math.cos(heading.rotation) * acceleration * 0.5 * Math.pow(_loc9_,2));
+				_loc4_ += _loc13_ * (Math.sin(heading.rotation) * acceleration * 0.5 * Math.pow(_loc9_,2));
+				if(_loc3_ * _loc3_ + _loc4_ * _loc4_ <= speed * speed)
+				{
+					heading.speed.x = _loc3_;
+					heading.speed.y = _loc4_;
+				}
+				else
+				{
+					_loc6_ = Math.sqrt(_loc3_ * _loc3_ + _loc4_ * _loc4_);
+					_loc8_ = _loc3_ / _loc6_ * speed;
+					_loc7_ = _loc4_ / _loc6_ * speed;
+					heading.speed.x = _loc8_;
+					heading.speed.y = _loc7_;
 				}
 			}
 			heading.speed.x -= 0.009 * heading.speed.x;
 			heading.speed.y -= 0.009 * heading.speed.y;
-			heading.pos.x += heading.speed.x * _local2 / 1000;
-			heading.pos.y += heading.speed.y * _local2 / 1000;
-			heading.time += _local2;
-			if(holonomic || rotationForced) {
+			heading.pos.x += heading.speed.x * _loc9_ / 1000;
+			heading.pos.y += heading.speed.y * _loc9_ / 1000;
+			heading.time += _loc9_;
+			if(holonomic || rotationForced)
+			{
 				course.rotation = oldAngle;
 			}
 			aiAddError(heading);
 		}
 		
-		public function calcHpMax() : void {
+		public function calcHpMax() : void
+		{
 			hp = 0;
 			hpMax = 0;
-			for each(var _local1:* in allComponents) {
-				if(_local1.essential) {
-					hp += _local1.hp + _local1.shieldHp;
-					hpMax += _local1.hpMax + _local1.shieldHpMax;
+			for each(var _loc1_ in allComponents)
+			{
+				if(_loc1_.essential)
+				{
+					hp += _loc1_.hp + _loc1_.shieldHp;
+					hpMax += _loc1_.hpMax + _loc1_.shieldHpMax;
 				}
 			}
 		}
 		
-		private function aiAddError(heading:Heading) : void {
-			var _local2:Number = NaN;
-			var _local3:Number = NaN;
-			var _local4:Number = NaN;
-			if(error != null) {
-				_local2 = g.time;
-				_local3 = (convergeTime - (_local2 - convergeStartTime)) / convergeTime;
-				_local4 = 3 * _local3 * _local3 - 2 * _local3 * _local3 * _local3;
-				if(_local3 > 0) {
-					heading.pos.x += _local4 * error.x;
-					heading.pos.y += _local4 * error.y;
-					heading.rotation += _local4 * errorAngle;
-					errorOldTime = _local2;
-				} else {
+		private function aiAddError(heading:Heading) : void
+		{
+			var _loc2_:Number = NaN;
+			var _loc4_:Number = NaN;
+			var _loc3_:Number = NaN;
+			if(error != null)
+			{
+				_loc2_ = g.time;
+				_loc4_ = (convergeTime - (_loc2_ - convergeStartTime)) / convergeTime;
+				_loc3_ = 3 * _loc4_ * _loc4_ - 2 * _loc4_ * _loc4_ * _loc4_;
+				if(_loc4_ > 0)
+				{
+					heading.pos.x += _loc3_ * error.x;
+					heading.pos.y += _loc3_ * error.y;
+					heading.rotation += _loc3_ * errorAngle;
+					errorOldTime = _loc2_;
+				}
+				else
+				{
 					error = null;
 					errorOldTime = 0;
 				}
 			}
 		}
 		
-		private function aiRemoveError(heading:Heading) : void {
-			var _local2:Number = NaN;
-			var _local3:Number = NaN;
-			if(error != null && errorOldTime != 0) {
-				_local2 = (convergeTime - (errorOldTime - convergeStartTime)) / convergeTime;
-				_local3 = 3 * _local2 * _local2 - 2 * _local2 * _local2 * _local2;
-				heading.pos.x -= _local3 * error.x;
-				heading.pos.y -= _local3 * error.y;
-				heading.rotation -= _local3 * errorAngle;
+		private function aiRemoveError(heading:Heading) : void
+		{
+			var _loc3_:Number = NaN;
+			var _loc2_:Number = NaN;
+			if(error != null && errorOldTime != 0)
+			{
+				_loc3_ = (convergeTime - (errorOldTime - convergeStartTime)) / convergeTime;
+				_loc2_ = 3 * _loc3_ * _loc3_ - 2 * _loc3_ * _loc3_ * _loc3_;
+				heading.pos.x -= _loc2_ * error.x;
+				heading.pos.y -= _loc2_ * error.y;
+				heading.rotation -= _loc2_ * errorAngle;
 			}
 		}
 		
-		public function setConvergeTarget(t:Heading) : void {
+		public function setConvergeTarget(t:Heading) : void
+		{
 			error = new Point(course.pos.x - t.pos.x,course.pos.y - t.pos.y);
 			errorAngle = Util.angleDifference(course.rotation,t.rotation);
 			convergeStartTime = g.time;
@@ -397,7 +511,8 @@ package core.boss {
 			aiAddError(course);
 		}
 		
-		public function overrideConvergeTarget(posx:Number, posy:Number) : void {
+		public function overrideConvergeTarget(posx:Number, posy:Number) : void
+		{
 			error = null;
 			errorAngle = 0;
 			errorOldTime = 0;
@@ -407,57 +522,71 @@ package core.boss {
 			course.time = g.time;
 		}
 		
-		public function destroy() : void {
-			var _local2:Turret = null;
-			var _local3:Spawner = null;
-			var _local4:ISound = null;
+		public function destroy() : void
+		{
+			var _loc2_:Turret = null;
+			var _loc1_:Spawner = null;
+			var _loc4_:ISound = null;
 			alive = false;
-			for each(var _local1:* in allComponents) {
-				_local1.destroy(_local1.alive);
-				_local1.alive = false;
-				_local1.active = false;
-				_local1.visible = false;
-				if(_local1 is Turret) {
-					_local2 = _local1 as Turret;
-					if(_local2.weapon != null) {
-						_local2.weapon.fire = false;
+			for each(var _loc3_ in allComponents)
+			{
+				_loc3_.destroy(_loc3_.alive);
+				_loc3_.alive = false;
+				_loc3_.active = false;
+				_loc3_.visible = false;
+				if(_loc3_ is Turret)
+				{
+					_loc2_ = _loc3_ as Turret;
+					if(_loc2_.weapon != null)
+					{
+						_loc2_.weapon.fire = false;
 					}
-					_local2.visible = false;
-					g.turretManager.removeTurret(_local2);
+					_loc2_.visible = false;
+					g.turretManager.removeTurret(_loc2_);
 				}
-				if(_local1 is Spawner) {
-					_local3 = _local1 as Spawner;
-					_local1.destroy();
-					g.spawnManager.removeSpawner(_local3);
+				if(_loc3_ is Spawner)
+				{
+					_loc1_ = _loc3_ as Spawner;
+					_loc3_.destroy();
+					g.spawnManager.removeSpawner(_loc1_);
 				}
-				g.unitManager.remove(_local1);
+				g.unitManager.remove(_loc3_);
 			}
-			if(g.camera.isCircleOnScreen(pos.x,pos.y,radius)) {
-				if(explosionSound != "") {
-					_local4 = SoundLocator.getService();
-					_local4.play(explosionSound);
+			if(g.camera.isCircleOnScreen(pos.x,pos.y,radius))
+			{
+				if(explosionSound != "")
+				{
+					_loc4_ = SoundLocator.getService();
+					_loc4_.play(explosionSound);
 				}
-				if(explosionEffect != "") {
+				if(explosionEffect != "")
+				{
 					EmitterFactory.create(explosionEffect,g,pos.x,pos.y,null,true);
 				}
 			}
 		}
 		
-		public function getComponent(id:int) : Unit {
-			for each(var _local2:* in allComponents) {
-				if(_local2.syncId == id) {
-					return _local2;
+		public function getComponent(id:int) : Unit
+		{
+			for each(var _loc2_ in allComponents)
+			{
+				if(_loc2_.syncId == id)
+				{
+					return _loc2_;
 				}
 			}
 			return null;
 		}
 		
-		override public function draw() : void {
-			if(awaitingActivation) {
+		override public function draw() : void
+		{
+			if(awaitingActivation)
+			{
 				return;
 			}
-			for each(var _local1:* in allComponents) {
-				_local1.draw();
+			for each(var _loc1_ in allComponents)
+			{
+				_loc1_.draw();
 			}
 		}
 	}

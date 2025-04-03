@@ -1,15 +1,19 @@
-package core.hud.components.credits {
+package core.hud.components.credits
+{
 	import core.scene.Game;
 	import generics.Localize;
 	import playerio.Message;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class CreditTractorBeam extends CreditDayItem {
+	public class CreditTractorBeam extends CreditDayItem
+	{
 		private var selectedDays:int;
+		
 		private var price:int;
 		
-		public function CreditTractorBeam(g:Game, parent:Sprite) {
+		public function CreditTractorBeam(g:Game, parent:Sprite)
+		{
 			super(g,parent);
 			bitmap = "ti_tractor_beam.png";
 			description = Localize.t("Junk nearby the ship will be locked to a tractor beam and pulled in automatically.");
@@ -33,23 +37,29 @@ package core.hud.components.credits {
 			super.load();
 		}
 		
-		override protected function onBuy(days:int) : void {
+		override protected function onBuy(days:int) : void
+		{
 			super.onBuy(days);
 			selectedDays = days;
-			if(days == 1) {
+			if(days == 1)
+			{
 				price = CreditDayItem.PRICE_1_DAY;
 			}
-			if(days == 3) {
+			if(days == 3)
+			{
 				price = CreditDayItem.PRICE_3_DAY;
 			}
-			if(days == 7) {
+			if(days == 7)
+			{
 				price = CreditDayItem.PRICE_7_DAY;
 			}
 			g.rpc("buyTractorBeam",onBuyTractorBeam,days);
 		}
 		
-		private function onBuyTractorBeam(m:Message) : void {
-			if(!m.getBoolean(0)) {
+		private function onBuyTractorBeam(m:Message) : void
+		{
+			if(!m.getBoolean(0))
+			{
 				showFailed(m.getString(1));
 				return;
 			}

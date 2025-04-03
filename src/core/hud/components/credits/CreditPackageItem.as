@@ -1,4 +1,5 @@
-package core.hud.components.credits {
+package core.hud.components.credits
+{
 	import core.credits.Sale;
 	import core.hud.components.NativeImageButton;
 	import core.hud.components.SaleTimer;
@@ -23,30 +24,49 @@ package core.hud.components.credits {
 	import starling.events.Event;
 	import starling.events.TouchEvent;
 	
-	public class CreditPackageItem extends CreditBaseItem {
+	public class CreditPackageItem extends CreditBaseItem
+	{
 		public var button:NativeImageButton;
+		
 		public var buyContainer:starling.display.Sprite = new starling.display.Sprite();
+		
 		private var price:Text;
+		
 		protected var descriptionContainer:starling.display.Sprite = new starling.display.Sprite();
+		
 		protected var waitingContainer:starling.display.Sprite = new starling.display.Sprite();
+		
 		protected var aquiredContainer:starling.display.Sprite = new starling.display.Sprite();
+		
 		protected var aquiredText:Text = new Text();
+		
 		protected var aquired:Boolean = false;
+		
 		private var nativeLayer:flash.display.Sprite = new flash.display.Sprite();
+		
 		protected var description:String = "";
+		
 		protected var checkoutDescription:String = "";
+		
 		protected var checkoutDescriptionShort:String = "";
+		
 		protected var preview:String = "";
+		
 		protected var buyButtonText:String = "";
+		
 		protected var itemKey:String = "";
+		
 		protected var rpcFunction:String = "";
 		
-		public function CreditPackageItem(g:Game, parent:starling.display.Sprite, spinner:Boolean = false) {
+		public function CreditPackageItem(g:Game, parent:starling.display.Sprite, spinner:Boolean = false)
+		{
 			super(g,parent,spinner);
 		}
 		
-		override protected function load() : void {
-			if(g.salesManager.isPackageSale(itemKey + "_sale")) {
+		override protected function load() : void
+		{
+			if(g.salesManager.isPackageSale(itemKey + "_sale"))
+			{
 				itemKey += "_sale";
 			}
 			addBuyButton();
@@ -58,7 +78,8 @@ package core.hud.components.credits {
 			super.load();
 		}
 		
-		private function addBuyButton() : void {
+		private function addBuyButton() : void
+		{
 			var obj:Object;
 			var unit:String;
 			var extraZero:String;
@@ -67,15 +88,23 @@ package core.hud.components.credits {
 			var crossOver:Image;
 			var saleTimer:SaleTimer;
 			var bitmap:Bitmap = new EmbeddedAssets.BuyButtonBitmap();
-			button = new NativeImageButton(function():void {
+			button = new NativeImageButton(function():void
+			{
 				Starling.current.nativeStage.removeChild(nativeLayer);
-				if(Login.currentState == "facebook") {
+				if(Login.currentState == "facebook")
+				{
 					onBuyFacebook();
-				} else if(Login.currentState == "steam") {
+				}
+				else if(Login.currentState == "steam")
+				{
 					onBuySteam();
-				} else if(Login.currentState == "kongregate") {
+				}
+				else if(Login.currentState == "kongregate")
+				{
 					onBuyKred();
-				} else {
+				}
+				else
+				{
 					onBuyPaypal();
 				}
 			},bitmap.bitmapData);
@@ -83,23 +112,28 @@ package core.hud.components.credits {
 			button.y = 20;
 			button.visible = false;
 			nativeLayer.addChild(button);
-			if(!spinner) {
+			if(!spinner)
+			{
 				infoContainer.addChild(buyContainer);
 			}
 			obj = g.dataManager.loadKey("PayVaultItems",itemKey);
 			unit = Login.currentState != "kongregate" ? "$" : "Kreds ";
 			extraZero = Login.currentState != "kongregate" ? "" : "0";
-			if(itemKey.search("_sale") == -1) {
+			if(itemKey.search("_sale") == -1)
+			{
 				price = new Text();
 				price.text = unit + Math.floor(obj.PriceUSD / 100) + extraZero;
 				price.size = 16;
 				price.x = 5;
 				price.y = 18;
 				buyContainer.addChild(price);
-			} else {
+			}
+			else
+			{
 				oldPrice = new Text();
 				sale = g.salesManager.getPackageSale(itemKey);
-				if(sale == null) {
+				if(sale == null)
+				{
 					return;
 				}
 				oldPrice.text = unit + Math.floor(sale.normalPrice / 100) + extraZero;
@@ -120,9 +154,12 @@ package core.hud.components.credits {
 				price.x = crossOver.x + crossOver.width / 2 + 7;
 				price.y = 18;
 				buyContainer.addChild(price);
-				if(!spinner) {
-					saleTimer = new SaleTimer(g,sale.startTime,sale.endTime,function():void {
-						if(button != null) {
+				if(!spinner)
+				{
+					saleTimer = new SaleTimer(g,sale.startTime,sale.endTime,function():void
+					{
+						if(button != null)
+						{
 							button.visible = !aquired;
 						}
 					});
@@ -130,28 +167,34 @@ package core.hud.components.credits {
 					buyContainer.addChild(saleTimer);
 				}
 			}
-			if(spinner) {
+			if(spinner)
+			{
 				select();
 			}
 		}
 		
-		private function onBuyPaypal() : void {
+		private function onBuyPaypal() : void
+		{
 			var popup:PopupMessage;
 			g.client.payVault.getBuyDirectInfo("paypal",{
 				"currency":"USD",
 				"item_name":itemLabel
-			},[{"itemKey":itemKey}],function(param1:Object):void {
+			},[{"itemKey":itemKey}],function(param1:Object):void
+			{
 				navigateToURL(new URLRequest(param1.paypalurl + "&os0=" + Login.currentState + "&on0=Info"),"_blank");
-			},function(param1:PlayerIOError):void {
+			},function(param1:PlayerIOError):void
+			{
 				g.showMessageDialog("Unable to buy item");
 				Starling.current.nativeStage.addChild(nativeLayer);
 			});
 			popup = new PopupMessage();
 			popup.text = "Click me when transaction is finished. If your package content is not shown instantly, try reloading the game. You need to land on a station to switch active ship.";
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close",(function():* {
+			popup.addEventListener("close",(function():*
+			{
 				var closePopup:Function;
-				return closePopup = function(param1:Event):void {
+				return closePopup = function(param1:Event):void
+				{
 					g.removeChildFromOverlay(popup);
 					popup.removeEventListeners();
 					onClose();
@@ -159,37 +202,48 @@ package core.hud.components.credits {
 			})());
 		}
 		
-		public function redraw() : void {
-			var _local1:Point = price.localToGlobal(new Point(price.x,price.y));
-			button.x = _local1.x;
-			button.y = _local1.y - price.height + 10;
+		public function redraw() : void
+		{
+			var _loc1_:Point = price.localToGlobal(new Point(price.x,price.y));
+			button.x = _loc1_.x;
+			button.y = _loc1_.y - price.height + 10;
 		}
 		
-		override protected function showInfo(value:Boolean) : void {
-			var _local2:Point = null;
-			if(value == true) {
+		override protected function showInfo(value:Boolean) : void
+		{
+			var _loc2_:Point = null;
+			if(value == true)
+			{
 				Starling.current.nativeStage.addChild(nativeLayer);
-			} else if(Starling.current.nativeStage.contains(nativeLayer)) {
+			}
+			else if(Starling.current.nativeStage.contains(nativeLayer))
+			{
 				Starling.current.nativeStage.removeChild(nativeLayer);
 			}
 			button.visible = value;
-			if(aquired) {
+			if(aquired)
+			{
 				button.visible = false;
 			}
 			super.showInfo(value);
-			if(value == true && price != null) {
-				_local2 = price.localToGlobal(new Point(price.x,price.y));
-				if(itemKey.search("_sale") == -1) {
-					button.x = _local2.x + price.width + 1;
-					button.y = _local2.y - price.height + 4;
-				} else {
-					button.x = _local2.x;
-					button.y = _local2.y - price.height + 8;
+			if(value == true && price != null)
+			{
+				_loc2_ = price.localToGlobal(new Point(price.x,price.y));
+				if(itemKey.search("_sale") == -1)
+				{
+					button.x = _loc2_.x + price.width + 1;
+					button.y = _loc2_.y - price.height + 4;
+				}
+				else
+				{
+					button.x = _loc2_.x;
+					button.y = _loc2_.y - price.height + 8;
 				}
 			}
 		}
 		
-		private function onBuySteam() : void {
+		private function onBuySteam() : void
+		{
 			var info:Object = {
 				"steamid":RymdenRunt.info.userId,
 				"appid":RymdenRunt.info.appId,
@@ -199,35 +253,42 @@ package core.hud.components.credits {
 			var vault:PayVault = g.client.payVault;
 			var buyItemInfo:PayVaultBuyItemInfo = new PayVaultBuyItemInfo();
 			buyItemInfo.itemKey = itemKey;
-			vault.getBuyDirectInfo("steam",info,[buyItemInfo],function(param1:Object):void {
+			vault.getBuyDirectInfo("steam",info,[buyItemInfo],function(param1:Object):void
+			{
 				var SteamBuySuccess:Function;
 				var SteamBuyFail:Function;
 				var obj:Object = param1;
 				info.orderid = obj.orderid;
-				SteamBuySuccess = function():void {
+				SteamBuySuccess = function():void
+				{
 					RymdenRunt.instance.removeEventListener("steambuysuccess",SteamBuySuccess);
 					RymdenRunt.instance.removeEventListener("steambuyfail",SteamBuyFail);
-					vault.usePaymentInfo("steam",info,function(param1:Object):void {
+					vault.usePaymentInfo("steam",info,function(param1:Object):void
+					{
 						onClose();
-					},function(param1:PlayerIOError):void {
+					},function(param1:PlayerIOError):void
+					{
 						g.showErrorDialog(param1.message,false);
 						Starling.current.nativeStage.addChild(nativeLayer);
 					});
 				};
-				SteamBuyFail = function():void {
+				SteamBuyFail = function():void
+				{
 					RymdenRunt.instance.removeEventListener("steambuysuccess",SteamBuySuccess);
 					RymdenRunt.instance.removeEventListener("steambuyfail",SteamBuyFail);
 					Starling.current.nativeStage.addChild(nativeLayer);
 				};
 				RymdenRunt.instance.addEventListener("steambuysuccess",SteamBuySuccess);
 				RymdenRunt.instance.addEventListener("steambuyfail",SteamBuyFail);
-			},function(param1:PlayerIOError):void {
+			},function(param1:PlayerIOError):void
+			{
 				g.showErrorDialog("Buying package failed! " + param1.message,false);
 				Starling.current.nativeStage.addChild(nativeLayer);
 			});
 		}
 		
-		private function onBuyFacebook() : void {
+		private function onBuyFacebook() : void
+		{
 			var popup:PopupMessage;
 			Starling.current.nativeStage.displayState = "normal";
 			g.client.payVault.getBuyDirectInfo("facebookv2",{
@@ -235,24 +296,30 @@ package core.hud.components.credits {
 				"description":checkoutDescription,
 				"image":g.client.gameFS.getUrl("/img/techicons/" + bitmap,Login.useSecure),
 				"currencies":"USD"
-			},[{"itemKey":itemKey}],function(param1:Object):void {
+			},[{"itemKey":itemKey}],function(param1:Object):void
+			{
 				var info:Object = param1;
-				FB.ui(info,function(param1:Object):void {
-					if(param1.status != "completed") {
+				FB.ui(info,function(param1:Object):void
+				{
+					if(param1.status != "completed")
+					{
 						g.showErrorDialog("Buying package failed!",false);
 						Starling.current.nativeStage.addChild(nativeLayer);
 					}
 				});
-			},function(param1:PlayerIOError):void {
+			},function(param1:PlayerIOError):void
+			{
 				g.showErrorDialog("Unable to buy item!");
 				Starling.current.nativeStage.addChild(nativeLayer);
 			});
 			popup = new PopupMessage();
 			popup.text = "Click me when transaction is finished. If your package content is not shown instantly, try reloading the game. You need to land on a station to switch active ship.";
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close",(function():* {
+			popup.addEventListener("close",(function():*
+			{
 				var closePopup:Function;
-				return closePopup = function(param1:Event):void {
+				return closePopup = function(param1:Event):void
+				{
 					g.removeChildFromOverlay(popup);
 					popup.removeEventListeners();
 					onClose();
@@ -260,75 +327,92 @@ package core.hud.components.credits {
 			})());
 		}
 		
-		private function onBuyKred() : void {
+		private function onBuyKred() : void
+		{
 			Starling.current.nativeStage.displayState = "normal";
-			Login.kongregate.mtx.purchaseItems(["item" + itemKey],function(param1:Object):void {
-				if(param1.success) {
+			Login.kongregate.mtx.purchaseItems(["item" + itemKey],function(param1:Object):void
+			{
+				if(param1.success)
+				{
 					onClose(null);
-				} else {
+				}
+				else
+				{
 					g.showMessageDialog("Buying package failed!");
 				}
 			});
 		}
 		
-		override public function exit() : void {
-			if(Starling.current.nativeStage.contains(nativeLayer)) {
+		override public function exit() : void
+		{
+			if(Starling.current.nativeStage.contains(nativeLayer))
+			{
 				Starling.current.nativeStage.removeChild(nativeLayer);
 			}
 		}
 		
-		private function onClose(e:TouchEvent = null) : void {
-			g.rpc(rpcFunction,function(param1:Message):void {
-				if(param1.getBoolean(0)) {
+		private function onClose(e:TouchEvent = null) : void
+		{
+			g.rpc(rpcFunction,function(param1:Message):void
+			{
+				if(param1.getBoolean(0))
+				{
 					onSuccess(param1);
-				} else {
+				}
+				else
+				{
 					g.showErrorDialog(param1.getString(1),true);
 				}
 			});
 		}
 		
-		protected function onSuccess(m:Message) : void {
+		protected function onSuccess(m:Message) : void
+		{
 			updateAquiredText();
 		}
 		
-		protected function addDescription() : void {
-			var _local3:int = 0;
-			var _local2:Image = null;
-			var _local4:Quad = null;
-			var _local1:Text = new Text();
-			_local1.color = 0xaaaaaa;
-			_local1.htmlText = description;
-			_local1.width = 5 * 60;
-			_local1.height = 5 * 60;
-			_local1.wordWrap = true;
-			_local1.y = 2 * 60;
-			descriptionContainer.addChild(_local1);
-			if(preview != null) {
-				_local3 = 4;
-				_local2 = new Image(textureManager.getTextureGUIByTextureName(preview));
-				_local2.x = 4;
-				_local2.y = 0;
-				_local4 = new Quad(_local2.width + 6,_local2.height + 6,0xaaaaaa);
-				_local4.x = _local2.x - 3;
-				_local4.y = _local2.y - 3;
-				descriptionContainer.addChild(_local4);
-				descriptionContainer.addChild(_local2);
+		protected function addDescription() : void
+		{
+			var _loc2_:int = 0;
+			var _loc4_:Image = null;
+			var _loc1_:Quad = null;
+			var _loc3_:Text = new Text();
+			_loc3_.color = 0xaaaaaa;
+			_loc3_.htmlText = description;
+			_loc3_.width = 5 * 60;
+			_loc3_.height = 5 * 60;
+			_loc3_.wordWrap = true;
+			_loc3_.y = 2 * 60;
+			descriptionContainer.addChild(_loc3_);
+			if(preview != null)
+			{
+				_loc2_ = 4;
+				_loc4_ = new Image(textureManager.getTextureGUIByTextureName(preview));
+				_loc4_.x = 4;
+				_loc4_.y = 0;
+				_loc1_ = new Quad(_loc4_.width + 6,_loc4_.height + 6,0xaaaaaa);
+				_loc1_.x = _loc4_.x - 3;
+				_loc1_.y = _loc4_.y - 3;
+				descriptionContainer.addChild(_loc1_);
+				descriptionContainer.addChild(_loc4_);
 			}
 			descriptionContainer.y = 70;
 			infoContainer.addChild(descriptionContainer);
 		}
 		
-		protected function addWaiting() : void {
-			var _local1:Text = new Text();
-			_local1.text = "waiting...";
-			_local1.x = 60;
-			_local1.y = 20;
-			waitingContainer.addChild(_local1);
+		protected function addWaiting() : void
+		{
+			var _loc1_:Text = new Text();
+			_loc1_.text = "waiting...";
+			_loc1_.x = 60;
+			_loc1_.y = 20;
+			waitingContainer.addChild(_loc1_);
 			waitingContainer.visible = false;
 			infoContainer.addChild(waitingContainer);
 		}
 		
-		protected function addAquired() : void {
+		protected function addAquired() : void
+		{
 			aquiredText.x = 0;
 			aquiredText.y = 20;
 			aquiredText.color = Style.COLOR_HIGHLIGHT;
@@ -339,19 +423,23 @@ package core.hud.components.credits {
 			infoContainer.addChild(aquiredContainer);
 		}
 		
-		protected function updateContainers() : void {
+		protected function updateContainers() : void
+		{
 			buyContainer.visible = !aquired;
 			aquiredContainer.visible = aquired;
 			waitingContainer.visible = false;
 		}
 		
-		protected function updateAquiredText() : void {
-			if(aquired) {
+		protected function updateAquiredText() : void
+		{
+			if(aquired)
+			{
 				aquiredText.text = "Aquired!";
 			}
 		}
 		
-		protected function showFailed(s:String) : void {
+		protected function showFailed(s:String) : void
+		{
 			g.showErrorDialog(s);
 			buyContainer.visible = true;
 			waitingContainer.visible = false;

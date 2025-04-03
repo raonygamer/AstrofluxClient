@@ -1,13 +1,18 @@
-package core.hud.components {
+package core.hud.components
+{
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class SaleTimer extends Sprite {
+	public class SaleTimer extends Sprite
+	{
 		private var hudTimer:HudTimer;
+		
 		private var text:Text;
+		
 		private var callback:Function = null;
 		
-		public function SaleTimer(g:*, start:Number, end:Number, callback:Function) {
+		public function SaleTimer(g:*, start:Number, end:Number, callback:Function)
+		{
 			super();
 			this.callback = callback;
 			text = new Text();
@@ -20,14 +25,17 @@ package core.hud.components {
 			hudTimer.start(start,end);
 			addChild(hudTimer);
 			addEventListener("enterFrame",update);
-			addEventListener("removedFromStage",function(param1:Event):void {
+			addEventListener("removedFromStage",function(param1:Event):void
+			{
 				removeEventListeners();
 			});
 		}
 		
-		private function update(e:Event) : void {
+		private function update(e:Event) : void
+		{
 			hudTimer.update();
-			if(hudTimer.isComplete() && callback != null) {
+			if(hudTimer.isComplete() && callback != null)
+			{
 				callback();
 			}
 		}

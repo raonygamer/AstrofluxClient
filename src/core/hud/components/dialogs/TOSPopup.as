@@ -1,4 +1,5 @@
-package core.hud.components.dialogs {
+package core.hud.components.dialogs
+{
 	import core.hud.components.Button;
 	import core.hud.components.Text;
 	import core.scene.Game;
@@ -8,14 +9,20 @@ package core.hud.components.dialogs {
 	import starling.events.KeyboardEvent;
 	import starling.events.TouchEvent;
 	
-	public class TOSPopup extends PopupMessage {
+	public class TOSPopup extends PopupMessage
+	{
 		public var confirmButton:Button;
+		
 		public var g:Game;
+		
 		public var textField2:Text;
+		
 		public var textField3:Text;
+		
 		public var textField4:Text;
 		
-		public function TOSPopup(g:Game) {
+		public function TOSPopup(g:Game)
+		{
 			super("Decline");
 			this.g = g;
 			confirmButton = new Button(accept,"I Accept","positive");
@@ -50,51 +57,61 @@ package core.hud.components.dialogs {
 			box.addChild(textField3);
 		}
 		
-		override protected function keyDown(e:KeyboardEvent) : void {
-			if(e.keyCode == 13) {
+		override protected function keyDown(e:KeyboardEvent) : void
+		{
+			if(e.keyCode == 13)
+			{
 				e.stopImmediatePropagation();
 				accept();
 			}
 		}
 		
-		private function accept(e:TouchEvent = null) : void {
+		private function accept(e:TouchEvent = null) : void
+		{
 			dispatchEventWith("accept");
 			removeEventListeners();
 		}
 		
-		private function openExternalPP(e:TouchEvent) : void {
-			var _local2:URLRequest = null;
-			if(e.getTouch(textField4,"ended")) {
-				_local2 = new URLRequest("http://www.astroflux.net/privacy.html");
-				navigateToURL(_local2,"_blank");
+		private function openExternalPP(e:TouchEvent) : void
+		{
+			var _loc2_:URLRequest = null;
+			if(e.getTouch(textField4,"ended"))
+			{
+				_loc2_ = new URLRequest("http://www.astroflux.net/privacy.html");
+				navigateToURL(_loc2_,"_blank");
 			}
 		}
 		
-		private function openExternalTOS(e:TouchEvent) : void {
-			var _local2:URLRequest = null;
-			if(e.getTouch(textField2,"ended")) {
-				_local2 = new URLRequest("http://www.astroflux.net/termsofuse.html");
-				navigateToURL(_local2,"_blank");
+		private function openExternalTOS(e:TouchEvent) : void
+		{
+			var _loc2_:URLRequest = null;
+			if(e.getTouch(textField2,"ended"))
+			{
+				_loc2_ = new URLRequest("http://www.astroflux.net/termsofuse.html");
+				navigateToURL(_loc2_,"_blank");
 			}
 		}
 		
-		private function openExternalROC(e:TouchEvent) : void {
-			var _local2:URLRequest = null;
-			if(e.getTouch(textField3,"ended")) {
-				_local2 = new URLRequest("http://www.astroflux.net/rulesofconduct.html");
-				navigateToURL(_local2,"_blank");
+		private function openExternalROC(e:TouchEvent) : void
+		{
+			var _loc2_:URLRequest = null;
+			if(e.getTouch(textField3,"ended"))
+			{
+				_loc2_ = new URLRequest("http://www.astroflux.net/rulesofconduct.html");
+				navigateToURL(_loc2_,"_blank");
 			}
 		}
 		
-		override protected function redraw(e:Event = null) : void {
+		override protected function redraw(e:Event = null) : void
+		{
 			super.redraw();
 			confirmButton.y = Math.round(textField.height + 25);
 			confirmButton.x = 40;
 			closeButton.y = Math.round(textField.height + 25);
 			closeButton.x = confirmButton.x + confirmButton.width + 30;
-			var _local2:int = confirmButton.y + confirmButton.height + 10;
+			var _loc2_:int = confirmButton.y + confirmButton.height + 10;
 			box.width = textField.width > closeButton.x + closeButton.width ? textField.width : closeButton.x + closeButton.width;
-			box.height = _local2;
+			box.height = _loc2_;
 		}
 	}
 }

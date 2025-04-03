@@ -1,9 +1,11 @@
-package textures {
+package textures
+{
 	import playerio.Client;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	
-	public interface ITextureManager {
+	public interface ITextureManager
+	{
 		function loadTextures(itemsArray:Array) : void;
 		
 		function get percLoaded() : int;

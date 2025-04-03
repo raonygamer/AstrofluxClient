@@ -1,79 +1,100 @@
-package core.pools {
+package core.pools
+{
 	import core.scene.Game;
 	import extensions.RibbonTrail;
 	import starling.display.MeshBatch;
 	
-	public class RibbonTrailPool {
+	public class RibbonTrailPool
+	{
 		private var meshBatch:MeshBatch;
+		
 		private var inactiveRibbonTrails:Vector.<RibbonTrail>;
+		
 		private var activeRibbonTrails:Vector.<RibbonTrail>;
+		
 		private var g:Game;
 		
-		public function RibbonTrailPool(g:Game) {
-			var _local3:int = 0;
-			var _local2:RibbonTrail = null;
+		public function RibbonTrailPool(g:Game)
+		{
+			var _loc3_:int = 0;
+			var _loc2_:RibbonTrail = null;
 			meshBatch = new MeshBatch();
 			inactiveRibbonTrails = new Vector.<RibbonTrail>();
 			activeRibbonTrails = new Vector.<RibbonTrail>();
 			super();
 			this.g = g;
-			_local3 = 0;
-			while(_local3 < 4) {
-				_local2 = new RibbonTrail(g,10);
-				inactiveRibbonTrails.push(_local2);
-				_local3++;
+			_loc3_ = 0;
+			while(_loc3_ < 4)
+			{
+				_loc2_ = new RibbonTrail(g,10);
+				inactiveRibbonTrails.push(_loc2_);
+				_loc3_++;
 			}
 			meshBatch.blendMode = "add";
 			g.canvasEffects.addChild(meshBatch);
 		}
 		
-		public function getRibbonTrail() : RibbonTrail {
-			var _local1:RibbonTrail = null;
-			if(inactiveRibbonTrails.length > 0) {
-				_local1 = inactiveRibbonTrails.pop();
-			} else {
-				_local1 = new RibbonTrail(g,10);
+		public function getRibbonTrail() : RibbonTrail
+		{
+			var _loc1_:RibbonTrail = null;
+			if(inactiveRibbonTrails.length > 0)
+			{
+				_loc1_ = inactiveRibbonTrails.pop();
 			}
-			activeRibbonTrails.push(_local1);
-			if(activeRibbonTrails.length > 1000) {
+			else
+			{
+				_loc1_ = new RibbonTrail(g,10);
+			}
+			activeRibbonTrails.push(_loc1_);
+			if(activeRibbonTrails.length > 1000)
+			{
 				g.client.errorLog.writeError("> 1000 trails in active pool.","","",{});
 			}
-			if(inactiveRibbonTrails.length > 1000) {
+			if(inactiveRibbonTrails.length > 1000)
+			{
 				g.client.errorLog.writeError("> 1000 trails in inactive pool","","",{});
 			}
-			return _local1;
+			return _loc1_;
 		}
 		
-		public function update() : void {
-			var _local3:int = 0;
-			var _local2:RibbonTrail = null;
+		public function update() : void
+		{
+			var _loc2_:int = 0;
+			var _loc1_:RibbonTrail = null;
 			meshBatch.clear();
-			var _local1:int = int(activeRibbonTrails.length);
-			_local3 = 0;
-			while(_local3 < _local1) {
-				_local2 = activeRibbonTrails[_local3];
-				if(_local2.isPlaying) {
-					meshBatch.addMesh(_local2);
+			var _loc3_:int = int(activeRibbonTrails.length);
+			_loc2_ = 0;
+			while(_loc2_ < _loc3_)
+			{
+				_loc1_ = activeRibbonTrails[_loc2_];
+				if(_loc1_.isPlaying)
+				{
+					meshBatch.addMesh(_loc1_);
 				}
-				_local3++;
+				_loc2_++;
 			}
 		}
 		
-		public function removeRibbonTrail(rt:RibbonTrail) : void {
-			var _local2:int = int(activeRibbonTrails.indexOf(rt));
-			if(_local2 == -1) {
+		public function removeRibbonTrail(rt:RibbonTrail) : void
+		{
+			var _loc2_:int = int(activeRibbonTrails.indexOf(rt));
+			if(_loc2_ == -1)
+			{
 				return;
 			}
-			activeRibbonTrails.splice(_local2,1);
+			activeRibbonTrails.splice(_loc2_,1);
 			inactiveRibbonTrails.push(rt);
 		}
 		
-		public function dispose() : void {
-			for each(var _local1:* in inactiveRibbonTrails) {
-				_local1.dispose();
+		public function dispose() : void
+		{
+			for each(var _loc1_ in inactiveRibbonTrails)
+			{
+				_loc1_.dispose();
 			}
-			for each(_local1 in activeRibbonTrails) {
-				_local1.dispose();
+			for each(_loc1_ in activeRibbonTrails)
+			{
+				_loc1_.dispose();
 			}
 			activeRibbonTrails = null;
 			inactiveRibbonTrails = null;

@@ -1,4 +1,5 @@
-package core.hud.components.dialogs {
+package core.hud.components.dialogs
+{
 	import core.credits.CreditManager;
 	import core.hud.components.Box;
 	import core.hud.components.Button;
@@ -15,19 +16,30 @@ package core.hud.components.dialogs {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class CreditBuyBox extends Sprite {
+	public class CreditBuyBox extends Sprite
+	{
 		private var g:Game;
+		
 		private var cost:int;
+		
 		private var caption:String;
+		
 		private var textureManager:ITextureManager;
+		
 		private var countText:Text = new Text();
+		
 		private var captionText:Text = new Text();
+		
 		private var box:Box;
+		
 		private var cancelButton:Button;
+		
 		private var acceptButton:Button;
+		
 		private var bgr:Quad = new Quad(100,100,0);
 		
-		public function CreditBuyBox(g:Game, cost:int, caption:String) {
+		public function CreditBuyBox(g:Game, cost:int, caption:String)
+		{
 			super();
 			this.g = g;
 			this.cost = cost;
@@ -39,7 +51,8 @@ package core.hud.components.dialogs {
 			g.addResizeListener(redraw);
 		}
 		
-		private function redraw(e:Event = null) : void {
+		private function redraw(e:Event = null) : void
+		{
 			bgr.alpha = 0.5;
 			bgr.width = g.stage.stageWidth;
 			bgr.height = g.stage.stageHeight;
@@ -47,7 +60,8 @@ package core.hud.components.dialogs {
 			box.y = Math.round(g.stage.stageHeight / 2 - box.height / 2);
 		}
 		
-		private function load() : void {
+		private function load() : void
+		{
 			var youHave:TextBitmap;
 			var style:String;
 			var getMoreButton:Button;
@@ -56,9 +70,12 @@ package core.hud.components.dialogs {
 			box = new Box(260,4 * 60,"buy",0.8,20);
 			addChild(box);
 			countText.text = cost.toString();
-			if(cost < 10) {
+			if(cost < 10)
+			{
 				countText.x = 60;
-			} else {
+			}
+			else
+			{
 				countText.x = 30;
 			}
 			countText.size = 50;
@@ -67,15 +84,19 @@ package core.hud.components.dialogs {
 			youHave = new TextBitmap(0,countText.y + countText.height + 15,"You have: " + CreditManager.FLUX);
 			box.addChild(youHave);
 			style = "highlight";
-			if(cost > CreditManager.FLUX) {
+			if(cost > CreditManager.FLUX)
+			{
 				style = "positive";
 			}
-			getMoreButton = new Button(function():void {
+			getMoreButton = new Button(function():void
+			{
 				var buyFlux:BuyFlux = new BuyFlux(g);
-				buyFlux.addEventListener("buyFluxClose",function():void {
+				buyFlux.addEventListener("buyFluxClose",function():void
+				{
 					buyFlux.removeEventListeners();
 					g.removeChildFromOverlay(buyFlux);
-					g.creditManager.refresh(function():void {
+					g.creditManager.refresh(function():void
+					{
 						youHave.text = "You have: " + CreditManager.FLUX;
 					});
 					getMoreButton.enabled = true;
@@ -103,7 +124,8 @@ package core.hud.components.dialogs {
 			cancelButton.y = acceptButton.y;
 			box.addChild(cancelButton);
 			box.height = acceptButton.y + acceptButton.height;
-			if(cost > CreditManager.FLUX) {
+			if(cost > CreditManager.FLUX)
+			{
 				acceptButton.enabled = false;
 			}
 			txt = textureManager.getTextureGUIByTextureName("credit_medium.png");
@@ -113,19 +135,22 @@ package core.hud.components.dialogs {
 			box.addChild(creditIcon);
 		}
 		
-		public function reload() : void {
+		public function reload() : void
+		{
 			removeChild(box,true);
 			load();
 			redraw();
 		}
 		
-		private function close(e:TouchEvent) : void {
+		private function close(e:TouchEvent) : void
+		{
 			dispatchEventWith("close");
 			g.removeResizeListener(redraw);
 			g.removeChildFromOverlay(this,true);
 		}
 		
-		private function accept(e:TouchEvent) : void {
+		private function accept(e:TouchEvent) : void
+		{
 			dispatchEventWith("accept");
 			g.removeResizeListener(redraw);
 			g.removeChildFromOverlay(this,true);

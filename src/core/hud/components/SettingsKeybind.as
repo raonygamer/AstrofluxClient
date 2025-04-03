@@ -1,21 +1,31 @@
-package core.hud.components {
+package core.hud.components
+{
 	import data.KeyBinds;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	import starling.events.TouchEvent;
 	
-	public class SettingsKeybind extends Sprite {
+	public class SettingsKeybind extends Sprite
+	{
 		private var type:int;
+		
 		private var bg:Box;
+		
 		private var description:Text;
+		
 		private var buttonOne:Button;
+		
 		private var buttonTwo:Button;
+		
 		private var keybinds:KeyBinds;
+		
 		private var currentButton:Button;
+		
 		private var currentNumber:int;
 		
-		public function SettingsKeybind(keybinds:KeyBinds, type:int, x:int, y:int) {
+		public function SettingsKeybind(keybinds:KeyBinds, type:int, x:int, y:int)
+		{
 			super();
 			this.keybinds = keybinds;
 			this.type = type;
@@ -24,12 +34,14 @@ package core.hud.components {
 			load();
 		}
 		
-		public function update() : void {
+		public function update() : void
+		{
 			buttonOne.text = keybinds.getKeyName(type,1);
 			buttonTwo.text = keybinds.getKeyName(type,2);
 		}
 		
-		private function load() : void {
+		private function load() : void
+		{
 			bg = new Box(610,24,"highlight",0.5,10);
 			description = new Text();
 			description.text = keybinds.getName(type);
@@ -49,20 +61,27 @@ package core.hud.components {
 			addChild(bg);
 		}
 		
-		private function listenButton(e:TouchEvent) : void {
-			if(e.interactsWith(buttonOne)) {
+		private function listenButton(e:TouchEvent) : void
+		{
+			if(e.interactsWith(buttonOne))
+			{
 				currentNumber = 1;
 				currentButton = buttonOne;
-			} else {
+			}
+			else
+			{
 				currentNumber = 2;
 				currentButton = buttonTwo;
 			}
-			if(currentButton.text != "Push a Button") {
+			if(currentButton.text != "Push a Button")
+			{
 				currentButton.text = "Push a Button";
 				stage.addEventListener("keyDown",onClickButton);
 				stage.addEventListener("touch",onMouseTouch);
 				stage.addEventListener("rightClick",rightClick);
-			} else {
+			}
+			else
+			{
 				currentButton.text = "Mouse1";
 				keybinds.setBindKey(-2,type,currentNumber);
 				stage.removeEventListener("keyDown",onClickButton);
@@ -74,9 +93,11 @@ package core.hud.components {
 			currentButton.enabled = true;
 		}
 		
-		private function onMouseTouch(e:TouchEvent) : void {
+		private function onMouseTouch(e:TouchEvent) : void
+		{
 			e.stopImmediatePropagation();
-			if(e.getTouch(stage,"began") && !e.interactsWith(currentButton)) {
+			if(e.getTouch(stage,"began") && !e.interactsWith(currentButton))
+			{
 				stage.removeEventListener("keyDown",onClickButton);
 				stage.removeEventListener("touch",onMouseTouch);
 				stage.removeEventListener("rightClick",rightClick);
@@ -87,7 +108,8 @@ package core.hud.components {
 			}
 		}
 		
-		private function rightClick(e:Event) : void {
+		private function rightClick(e:Event) : void
+		{
 			currentButton.text = "Mouse2";
 			keybinds.setBindKey(-3,type,currentNumber);
 			stage.removeEventListener("keyDown",onClickButton);
@@ -98,14 +120,18 @@ package core.hud.components {
 			currentButton.enabled = true;
 		}
 		
-		private function onClickButton(e:KeyboardEvent) : void {
+		private function onClickButton(e:KeyboardEvent) : void
+		{
 			stage.removeEventListener("keyDown",onClickButton);
 			stage.removeEventListener("touch",onMouseTouch);
 			stage.removeEventListener("rightClick",rightClick);
 			e.stopImmediatePropagation();
-			if(e.keyCode == 13 || e.keyCode == 27) {
+			if(e.keyCode == 13 || e.keyCode == 27)
+			{
 				currentButton.text = keybinds.getKeyName(type,currentNumber);
-			} else {
+			}
+			else
+			{
 				keybinds.setBindKey(e.keyCode,type,currentNumber);
 				currentButton.text = keybinds.getKeyName(type,currentNumber);
 				dispatchEventWith("updateButtons",true);

@@ -1,78 +1,111 @@
-package core.weapon {
+package core.weapon
+{
 	import core.scene.Game;
 	import core.unit.Unit;
 	import data.*;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class WeaponFactory {
-		public function WeaponFactory() {
+	public class WeaponFactory
+	{
+		public function WeaponFactory()
+		{
 			super();
 		}
 		
-		public static function create(key:String, g:Game, s:Unit, techLevel:int, eliteTechLevel:int = -1, eliteTech:String = "") : Weapon {
-			var _local7:Weapon = null;
-			var _local10:Object = null;
-			var _local8:ITextureManager = TextureLocator.getService();
-			var _local11:IDataManager = DataLocator.getService();
-			var _local9:Object = _local11.loadKey("Weapons",key);
-			if(!g.isLeaving) {
-				_local7 = g.weaponManager.getWeapon(_local9.type);
-				_local7.init(_local9,techLevel,eliteTechLevel,eliteTech);
-				_local7.key = key;
-				_local7.unit = s;
-				if(_local9.hasOwnProperty("fireEffect")) {
-					_local7.fireEffect = _local9.fireEffect;
-				} else {
-					_local7.fireEffect = "";
+		public static function create(key:String, g:Game, s:Unit, techLevel:int, eliteTechLevel:int = -1, eliteTech:String = "") : Weapon
+		{
+			var _loc8_:Weapon = null;
+			var _loc11_:Object = null;
+			var _loc9_:ITextureManager = TextureLocator.getService();
+			var _loc10_:IDataManager = DataLocator.getService();
+			var _loc7_:Object = _loc10_.loadKey("Weapons",key);
+			if(!g.isLeaving)
+			{
+				_loc8_ = g.weaponManager.getWeapon(_loc7_.type);
+				_loc8_.init(_loc7_,techLevel,eliteTechLevel,eliteTech);
+				_loc8_.key = key;
+				_loc8_.unit = s;
+				if(_loc7_.hasOwnProperty("fireEffect"))
+				{
+					_loc8_.fireEffect = _loc7_.fireEffect;
 				}
-				if(_local9.hasOwnProperty("useShipSystem")) {
-					_local7.useShipSystem = _local9.useShipSystem;
-				} else {
-					_local7.useShipSystem = false;
+				else
+				{
+					_loc8_.fireEffect = "";
 				}
-				if(_local9.hasOwnProperty("randomAngle")) {
-					_local7.randomAngle = _local9.randomAngle;
-				} else {
-					_local7.randomAngle = false;
+				if(_loc7_.hasOwnProperty("useShipSystem"))
+				{
+					_loc8_.useShipSystem = _loc7_.useShipSystem;
 				}
-				if(_local9.hasOwnProperty("fireBackwards")) {
-					_local7.fireBackwards = _local9.fireBackwards;
-				} else {
-					_local7.fireBackwards = false;
+				else
+				{
+					_loc8_.useShipSystem = false;
 				}
-				if(_local9.hasOwnProperty("isMissileWeapon") || _local7 is Beam) {
-					_local7.isMissileWeapon = _local9.isMissileWeapon;
-				} else {
-					_local7.isMissileWeapon = false;
+				if(_loc7_.hasOwnProperty("randomAngle"))
+				{
+					_loc8_.randomAngle = _loc7_.randomAngle;
 				}
-				if(_local9.hasOwnProperty("hasChargeUp")) {
-					_local7.hasChargeUp = _local9.hasChargeUp;
-				} else {
-					_local7.hasChargeUp = false;
+				else
+				{
+					_loc8_.randomAngle = false;
 				}
-				if(_local9.hasOwnProperty("specialCondition") && _local9.specialCondition != "") {
-					_local7.specialCondition = _local9.specialCondition;
-					if(_local9.hasOwnProperty("specialBonusPercentage")) {
-						_local7.specialBonusPercentage = _local9.specialBonusPercentage;
-					} else {
-						_local7.specialBonusPercentage = 0;
+				if(_loc7_.hasOwnProperty("fireBackwards"))
+				{
+					_loc8_.fireBackwards = _loc7_.fireBackwards;
+				}
+				else
+				{
+					_loc8_.fireBackwards = false;
+				}
+				if(_loc7_.hasOwnProperty("isMissileWeapon") || _loc8_ is Beam)
+				{
+					_loc8_.isMissileWeapon = _loc7_.isMissileWeapon;
+				}
+				else
+				{
+					_loc8_.isMissileWeapon = false;
+				}
+				if(_loc7_.hasOwnProperty("hasChargeUp"))
+				{
+					_loc8_.hasChargeUp = _loc7_.hasChargeUp;
+				}
+				else
+				{
+					_loc8_.hasChargeUp = false;
+				}
+				if(_loc7_.hasOwnProperty("specialCondition") && _loc7_.specialCondition != "")
+				{
+					_loc8_.specialCondition = _loc7_.specialCondition;
+					if(_loc7_.hasOwnProperty("specialBonusPercentage"))
+					{
+						_loc8_.specialBonusPercentage = _loc7_.specialBonusPercentage;
+					}
+					else
+					{
+						_loc8_.specialBonusPercentage = 0;
 					}
 				}
-				if(_local9.hasOwnProperty("maxChargeDuration")) {
-					_local7.chargeUpTimeMax = _local9.maxChargeDuration;
-				} else {
-					_local7.chargeUpTimeMax = 750;
+				if(_loc7_.hasOwnProperty("maxChargeDuration"))
+				{
+					_loc8_.chargeUpTimeMax = _loc7_.maxChargeDuration;
 				}
-				if(techLevel > 0) {
-					_local10 = _local9.techLevels[techLevel - 1];
-					_local7.projectileFunction = _local9.projectile == null ? "" : _local10.projectile;
-				} else {
-					_local7.projectileFunction = _local9.projectile == null ? "" : _local9.projectile;
+				else
+				{
+					_loc8_.chargeUpTimeMax = 750;
 				}
-				_local7.alive = true;
+				if(techLevel > 0)
+				{
+					_loc11_ = _loc7_.techLevels[techLevel - 1];
+					_loc8_.projectileFunction = _loc7_.projectile == null ? "" : _loc11_.projectile;
+				}
+				else
+				{
+					_loc8_.projectileFunction = _loc7_.projectile == null ? "" : _loc7_.projectile;
+				}
+				_loc8_.alive = true;
 			}
-			return _local7;
+			return _loc8_;
 		}
 	}
 }

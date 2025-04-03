@@ -1,5 +1,7 @@
-package io {
-	public interface IInput {
+package io
+{
+	public interface IInput
+	{
 		function get isMousePressed() : Boolean;
 		
 		function get isMouseRightPressed() : Boolean;

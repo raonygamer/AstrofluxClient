@@ -1,4 +1,5 @@
-package {
+package
+{
 	import core.hud.components.InputText;
 	import feathers.controls.Button;
 	import feathers.controls.IScrollBar;
@@ -22,38 +23,51 @@ package {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class AstroTheme extends AeonDesktopTheme {
+	public class AstroTheme extends AeonDesktopTheme
+	{
 		protected static var chatTabTextFormat:TextFormat = new TextFormat("DAIDRR",12,0xffffff);
+		
 		protected var scrollBarThumbSkinTextures:Texture;
+		
 		private const inputFormat:TextFormat = new TextFormat("Verdana",12,0xffffff);
+		
 		private const toolTipFormat:TextFormat = new TextFormat("Verdana",11,0xffaa44);
+		
 		private const chatFormat:TextFormat = new TextFormat("Verdana",11,0xffffff);
+		
 		private const shopListFormat:TextFormat = new TextFormat("DAIDRR",14,16689475);
+		
 		private const artifactSetupDefaultFormat:TextFormat = new TextFormat("DAIDRR",10,0xb0b0b0);
+		
 		private const artifactSetupSelectedFormat:TextFormat = new TextFormat("DAIDRR",10,0xffffff);
 		
-		public function AstroTheme() {
+		public function AstroTheme()
+		{
 			super();
 			Starling.current.stage.color = 0;
 			Starling.current.nativeStage.color = 0;
 		}
 		
-		protected static function simpleScrollBarFactory() : IScrollBar {
+		protected static function simpleScrollBarFactory() : IScrollBar
+		{
 			return new SimpleScrollBar();
 		}
 		
-		override protected function initializeStage() : void {
+		override protected function initializeStage() : void
+		{
 			super.initializeStage();
 		}
 		
-		override protected function initializeTextures() : void {
+		override protected function initializeTextures() : void
+		{
 			super.initializeTextures();
-			var _local1:ITextureManager = TextureLocator.getService();
-			var _local2:TextureAtlas = _local1.getTextureAtlas("texture_gui1_test.png");
-			scrollBarThumbSkinTextures = _local2.getTexture("simple-scroll-bar-thumb-skin");
+			var _loc2_:ITextureManager = TextureLocator.getService();
+			var _loc1_:TextureAtlas = _loc2_.getTextureAtlas("texture_gui1_test.png");
+			scrollBarThumbSkinTextures = _loc1_.getTexture("simple-scroll-bar-thumb-skin");
 		}
 		
-		override protected function initializeStyleProviders() : void {
+		override protected function initializeStyleProviders() : void
+		{
 			super.initializeStyleProviders();
 			this.getStyleProviderForClass(InputText).defaultStyleFunction = inputTextInitializer;
 			this.getStyleProviderForClass(TextInput).setFunctionForStyleName("chat",chatInput);
@@ -66,7 +80,8 @@ package {
 			this.getStyleProviderForClass(TabBar).setFunctionForStyleName("chat_tabs",chatTabs);
 		}
 		
-		override protected function setScrollerStyles(scroller:Scroller) : void {
+		override protected function setScrollerStyles(scroller:Scroller) : void
+		{
 			super.setScrollerStyles(scroller);
 			scroller.verticalScrollBarFactory = simpleScrollBarFactory;
 			scroller.horizontalScrollPolicy = "off";
@@ -75,11 +90,12 @@ package {
 			scroller.verticalScrollStep = 30;
 		}
 		
-		override protected function setVerticalSimpleScrollBarThumbStyles(thumb:Button) : void {
-			var _local2:ImageSkin = new ImageSkin(this.scrollBarThumbSkinTextures);
-			_local2.scale9Grid = new Rectangle(4,4,4,4);
-			_local2.scale = 0.5;
-			thumb.defaultSkin = _local2;
+		override protected function setVerticalSimpleScrollBarThumbStyles(thumb:Button) : void
+		{
+			var _loc2_:ImageSkin = new ImageSkin(this.scrollBarThumbSkinTextures);
+			_loc2_.scale9Grid = new Rectangle(4,4,4,4);
+			_loc2_.scale = 0.5;
+			thumb.defaultSkin = _loc2_;
 			thumb.horizontalAlign = "left";
 			thumb.paddingLeft = this.smallGutterSize;
 			thumb.minTouchWidth = thumb.minTouchHeight = 12;
@@ -87,12 +103,14 @@ package {
 			thumb.useHandCursor = true;
 		}
 		
-		protected function inputTextInitializer(input:InputText) : void {
+		protected function inputTextInitializer(input:InputText) : void
+		{
 			input.textEditorProperties.textFormat = inputFormat;
 			input.textEditorProperties.wordWrap = true;
 		}
 		
-		protected function labelTooltip(label:Label) : void {
+		protected function labelTooltip(label:Label) : void
+		{
 			label.textRendererFactory = textRendererFactory;
 			toolTipFormat.leading = 6;
 			label.textRendererProperties.textFormat = toolTipFormat;
@@ -100,7 +118,8 @@ package {
 			label.textRendererProperties.isHTML = true;
 		}
 		
-		protected function labelChat(label:Label) : void {
+		protected function labelChat(label:Label) : void
+		{
 			label.textRendererFactory = textRendererFactory;
 			label.textRendererProperties.textFormat = chatFormat;
 			label.textRendererProperties.wordWrap = true;
@@ -109,20 +128,22 @@ package {
 			label.touchable = false;
 		}
 		
-		private function shopList(list:List) : void {
+		private function shopList(list:List) : void
+		{
 			super.setListStyles(list);
 			list.hasElasticEdges = false;
 			list.customItemRendererStyleName = "shop";
 			list.backgroundSkin = null;
 		}
 		
-		protected function shopItemRendererInitializer(renderer:BaseDefaultItemRenderer) : void {
-			var _local2:ImageSkin = new ImageSkin();
-			_local2.defaultColor = 0;
-			_local2.selectedColor = 1717572;
-			_local2.setColorForState("hover",793121);
-			_local2.setColorForState("down",793121);
-			renderer.defaultSkin = _local2;
+		protected function shopItemRendererInitializer(renderer:BaseDefaultItemRenderer) : void
+		{
+			var _loc2_:ImageSkin = new ImageSkin();
+			_loc2_.defaultColor = 0;
+			_loc2_.selectedColor = 1717572;
+			_loc2_.setColorForState("hover",793121);
+			_loc2_.setColorForState("down",793121);
+			renderer.defaultSkin = _loc2_;
 			renderer.horizontalAlign = "left";
 			renderer.verticalAlign = "middle";
 			renderer.iconPosition = "left";
@@ -138,18 +159,20 @@ package {
 			renderer.iconLoaderFactory = this.shopImageLoaderFactory;
 		}
 		
-		protected function shopImageLoaderFactory() : ImageLoader {
+		protected function shopImageLoaderFactory() : ImageLoader
+		{
 			return new ImageLoader();
 		}
 		
-		protected function artifactSetupButton(button:ToggleButton) : void {
-			var _local2:ITextureManager = TextureLocator.getService();
-			var _local3:ImageSkin = new ImageSkin();
-			_local3.defaultTexture = _local2.getTextureGUIByTextureName("setup_button");
-			_local3.selectedTexture = _local2.getTextureGUIByTextureName("active_setup_button");
-			_local3.setTextureForState("down",_local2.getTextureGUIByTextureName("active_setup_button"));
-			_local3.scale9Grid = new Rectangle(1,1,12,17);
-			button.defaultSkin = _local3;
+		protected function artifactSetupButton(button:ToggleButton) : void
+		{
+			var _loc3_:ITextureManager = TextureLocator.getService();
+			var _loc2_:ImageSkin = new ImageSkin();
+			_loc2_.defaultTexture = _loc3_.getTextureGUIByTextureName("setup_button");
+			_loc2_.selectedTexture = _loc3_.getTextureGUIByTextureName("active_setup_button");
+			_loc2_.setTextureForState("down",_loc3_.getTextureGUIByTextureName("active_setup_button"));
+			_loc2_.scale9Grid = new Rectangle(1,1,12,17);
+			button.defaultSkin = _loc2_;
 			button.isToggle = true;
 			button.labelFactory = textRendererFactory;
 			button.defaultLabelProperties.textFormat = artifactSetupDefaultFormat;
@@ -161,7 +184,8 @@ package {
 			button.gap = 0;
 		}
 		
-		protected function chatTabs(tabBar:TabBar) : void {
+		protected function chatTabs(tabBar:TabBar) : void
+		{
 			tabBar.distributeTabSizes = false;
 			tabBar.horizontalAlign = "left";
 			tabBar.direction = "horizontal";
@@ -170,12 +194,13 @@ package {
 			tabBar.height = 24;
 		}
 		
-		protected function chatTab(tab:ToggleButton) : void {
-			var _local2:ImageSkin = new ImageSkin();
-			_local2.defaultColor = 0;
-			_local2.selectedColor = 4212299;
-			_local2.setColorForState("hover",3356216);
-			tab.defaultSkin = _local2;
+		protected function chatTab(tab:ToggleButton) : void
+		{
+			var _loc2_:ImageSkin = new ImageSkin();
+			_loc2_.defaultColor = 0;
+			_loc2_.selectedColor = 4212299;
+			_loc2_.setColorForState("hover",3356216);
+			tab.defaultSkin = _loc2_;
 			tab.isToggle = true;
 			tab.labelFactory = textRendererFactory;
 			tab.defaultLabelProperties.textFormat = chatTabTextFormat;
@@ -186,16 +211,17 @@ package {
 			tab.useHandCursor = true;
 		}
 		
-		protected function chatInput(input:TextInput) : void {
+		protected function chatInput(input:TextInput) : void
+		{
 			input.maxChars = 150;
 			input.paddingLeft = 8;
 			input.paddingTop = 3;
 			input.textEditorProperties.textFormat = new TextFormat("Verdana",12,0xffffff);
 			input.textEditorProperties.wordWrap = false;
 			input.textEditorProperties.multiline = false;
-			var _local2:ImageSkin = new ImageSkin();
-			_local2.defaultColor = 3685954;
-			input.backgroundSkin = _local2;
+			var _loc2_:ImageSkin = new ImageSkin();
+			_loc2_.defaultColor = 3685954;
+			input.backgroundSkin = _loc2_;
 		}
 	}
 }

@@ -1,9 +1,11 @@
-package startSetup {
+package startSetup
+{
 	import core.hud.components.Text;
 	import starling.display.Sprite;
 	import starling.display.Stage;
 	
-	public interface IStartSetup {
+	public interface IStartSetup
+	{
 		function get timer() : Date;
 		
 		function set timeStart(value:int) : void;

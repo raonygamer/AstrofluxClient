@@ -1,4 +1,5 @@
-package core.turret {
+package core.turret
+{
 	import core.boss.Boss;
 	import core.boss.Trigger;
 	import core.scene.Game;
@@ -8,52 +9,71 @@ package core.turret {
 	import flash.geom.Point;
 	import generics.Util;
 	
-	public class Turret extends Unit {
+	public class Turret extends Unit
+	{
 		public var weapon:Weapon;
+		
 		public var aimSkill:Number;
+		
 		public var aimArc:Number;
+		
 		public var target:Ship;
+		
 		public var visionRange:int;
+		
 		public var offset:Point;
+		
 		public var startAngle:Number;
+		
 		public var angleTargetPos:Point;
+		
 		public var rotationSpeed:Number;
 		
-		public function Turret(g:Game) {
+		public function Turret(g:Game)
+		{
 			weaponPos = new Point();
 			super(g);
 		}
 		
-		override public function update() : void {
-			if(!alive || !active) {
-				if(weapon != null) {
+		override public function update() : void
+		{
+			if(!alive || !active)
+			{
+				if(weapon != null)
+				{
 					weapon.fire = false;
 				}
 				return;
 			}
-			if(parentObj is Boss) {
-				for each(var _local1:* in triggers) {
-					_local1.tryActivateTrigger(this,Boss(parentObj));
+			if(parentObj is Boss)
+			{
+				for each(var _loc2_ in triggers)
+				{
+					_loc2_.tryActivateTrigger(this,Boss(parentObj));
 				}
 			}
-			var _local2:Number = parentObj.rotation;
-			_pos.x = offset.x * Math.cos(_local2) - offset.y * Math.sin(_local2) + parentObj.x;
-			_pos.y = offset.x * Math.sin(_local2) + offset.y * Math.cos(_local2) + parentObj.y;
+			var _loc1_:Number = parentObj.rotation;
+			_pos.x = offset.x * Math.cos(_loc1_) - offset.y * Math.sin(_loc1_) + parentObj.x;
+			_pos.y = offset.x * Math.sin(_loc1_) + offset.y * Math.cos(_loc1_) + parentObj.y;
 			stateMachine.update();
-			if(lastDmgText != null) {
+			if(lastDmgText != null)
+			{
 				lastDmgText.x = _pos.x;
 				lastDmgText.y = _pos.y - 20 + lastDmgTextOffset;
 				lastDmgTextOffset += lastDmgText.speed.y * 33 / 1000;
-				if(lastDmgTime < g.time - 1000) {
+				if(lastDmgTime < g.time - 1000)
+				{
 					lastDmgTextOffset = 0;
 					lastDmgText = null;
 				}
 			}
-			if(lastHealText != null) {
+			if(lastHealText != null)
+			{
 				lastHealText.x = _pos.x;
 				lastHealText.y = _pos.y - 5 + lastHealTextOffset;
 				lastHealTextOffset += lastHealText.speed.y * 33 / 1000;
-				if(lastHealTime < g.time - 1000) {
+				if(lastHealTime < g.time - 1000)
+				{
 					lastHealTextOffset = 0;
 					lastHealText = null;
 				}
@@ -61,70 +81,96 @@ package core.turret {
 			super.update();
 		}
 		
-		public function updateRotation() : void {
-			var _local7:Number = NaN;
-			var _local6:Number = NaN;
-			var _local4:Number = NaN;
-			var _local3:Number = NaN;
-			var _local1:int = 33;
-			var _local5:Number = rotationSpeed * _local1 / 1000;
-			var _local2:Number = parentObj.rotation;
-			if(aimArc == 0) {
-				_rotation = Util.clampRadians(startAngle + _local2);
+		public function updateRotation() : void
+		{
+			var _loc3_:Number = NaN;
+			var _loc4_:Number = NaN;
+			var _loc6_:Number = NaN;
+			var _loc7_:Number = NaN;
+			var _loc1_:int = 33;
+			var _loc5_:Number = rotationSpeed * _loc1_ / 1000;
+			var _loc2_:Number = parentObj.rotation;
+			if(aimArc == 0)
+			{
+				_rotation = Util.clampRadians(startAngle + _loc2_);
 			}
-			if(aimArc == 2 * 3.141592653589793) {
-				if(angleTargetPos != null) {
-					_local7 = Util.clampRadians(Math.atan2(angleTargetPos.y - _pos.y,angleTargetPos.x - _pos.x));
-				} else {
-					_local7 = Util.clampRadians(startAngle + _local2);
+			if(aimArc == 2 * 3.141592653589793)
+			{
+				if(angleTargetPos != null)
+				{
+					_loc3_ = Util.clampRadians(Math.atan2(angleTargetPos.y - _pos.y,angleTargetPos.x - _pos.x));
 				}
-				_local6 = Util.angleDifference(_rotation,_local7 + 3.141592653589793);
-				if(_local6 > 0 && _local6 < 3.141592653589793 - _local5) {
-					_rotation += _local5;
-					_rotation = Util.clampRadians(_rotation);
-				} else if(_local6 <= 0 && _local6 > -3.141592653589793 + _local5) {
-					_rotation -= _local5;
-					_rotation = Util.clampRadians(_rotation);
-				} else {
-					_rotation = Util.clampRadians(_local7);
+				else
+				{
+					_loc3_ = Util.clampRadians(startAngle + _loc2_);
 				}
-			} else {
-				_local4 = Util.clampRadians(startAngle + _local2 - aimArc / 2);
-				if(angleTargetPos != null) {
-					_local7 = Util.clampRadians(Math.atan2(angleTargetPos.y - _pos.y,angleTargetPos.x - _pos.x) - _local4);
-				} else {
-					_local7 = Util.clampRadians(startAngle + _local2 - _local4);
-				}
-				_local3 = Util.clampRadians(_rotation - _local4);
-				if(_local7 < 0 || _local7 > aimArc) {
-					_local7 = Util.clampRadians(startAngle + _local2 - _local4);
-				}
-				if(_local3 < _local7 - _local5) {
-					_rotation += _local5;
+				_loc4_ = Util.angleDifference(_rotation,_loc3_ + 3.141592653589793);
+				if(_loc4_ > 0 && _loc4_ < 3.141592653589793 - _loc5_)
+				{
+					_rotation += _loc5_;
 					_rotation = Util.clampRadians(_rotation);
-				} else if(_local3 > _local7 + _local5) {
-					_rotation -= _local5;
+				}
+				else if(_loc4_ <= 0 && _loc4_ > -3.141592653589793 + _loc5_)
+				{
+					_rotation -= _loc5_;
 					_rotation = Util.clampRadians(_rotation);
-				} else {
-					_rotation = Util.clampRadians(_local7 + _local4);
+				}
+				else
+				{
+					_rotation = Util.clampRadians(_loc3_);
+				}
+			}
+			else
+			{
+				_loc6_ = Util.clampRadians(startAngle + _loc2_ - aimArc / 2);
+				if(angleTargetPos != null)
+				{
+					_loc3_ = Util.clampRadians(Math.atan2(angleTargetPos.y - _pos.y,angleTargetPos.x - _pos.x) - _loc6_);
+				}
+				else
+				{
+					_loc3_ = Util.clampRadians(startAngle + _loc2_ - _loc6_);
+				}
+				_loc7_ = Util.clampRadians(_rotation - _loc6_);
+				if(_loc3_ < 0 || _loc3_ > aimArc)
+				{
+					_loc3_ = Util.clampRadians(startAngle + _loc2_ - _loc6_);
+				}
+				if(_loc7_ < _loc3_ - _loc5_)
+				{
+					_rotation += _loc5_;
+					_rotation = Util.clampRadians(_rotation);
+				}
+				else if(_loc7_ > _loc3_ + _loc5_)
+				{
+					_rotation -= _loc5_;
+					_rotation = Util.clampRadians(_rotation);
+				}
+				else
+				{
+					_rotation = Util.clampRadians(_loc3_ + _loc6_);
 				}
 			}
 		}
 		
-		public function updateWeapons() : void {
-			if(weapon != null) {
+		public function updateWeapons() : void
+		{
+			if(weapon != null)
+			{
 				weapon.update();
 			}
 		}
 		
-		override public function destroy(explode:Boolean = true) : void {
+		override public function destroy(explode:Boolean = true) : void
+		{
 			hpBar.visible = false;
 			shieldBar.visible = false;
 			visible = false;
 			super.destroy(explode);
 		}
 		
-		public function rebuild() : void {
+		public function rebuild() : void
+		{
 			hp = hpMax;
 			shieldHp = shieldHpMax;
 			hpBar.visible = true;
@@ -133,15 +179,18 @@ package core.turret {
 			alive = true;
 		}
 		
-		override public function set id(value:int) : void {
+		override public function set id(value:int) : void
+		{
 			super.id = value;
 		}
 		
-		override public function get id() : int {
+		override public function get id() : int
+		{
 			return super.id;
 		}
 		
-		override public function get type() : String {
+		override public function get type() : String
+		{
 			return "turret";
 		}
 	}

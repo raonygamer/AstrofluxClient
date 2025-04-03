@@ -1,35 +1,40 @@
-package core.states.menuStates {
+package core.states.menuStates
+{
 	import core.hud.components.Text;
 	import core.hud.components.techTree.TechTree;
 	import core.player.Player;
 	import core.scene.Game;
 	import core.states.DisplayState;
 	
-	public class UpgradesState extends DisplayState {
+	public class UpgradesState extends DisplayState
+	{
 		private var techTree:TechTree;
+		
 		private var p:Player;
 		
-		public function UpgradesState(g:Game, p:Player) {
+		public function UpgradesState(g:Game, p:Player)
+		{
 			super(g,HomeState);
 			this.p = p;
 		}
 		
-		override public function enter() : void {
+		override public function enter() : void
+		{
 			super.enter();
-			var _local1:Text = new Text();
-			_local1.width = 5 * 60;
-			_local1.wordWrap = true;
-			_local1.font = "Verdana";
-			_local1.size = 12;
-			_local1.color = 0xaaaaaa;
-			_local1.x = 45;
-			_local1.y = 80;
-			_local1.text = "Upgrades can be bought at the upgrade station.";
-			addChild(_local1);
+			var _loc1_:Text = new Text();
+			_loc1_.width = 5 * 60;
+			_loc1_.wordWrap = true;
+			_loc1_.font = "Verdana";
+			_loc1_.size = 12;
+			_loc1_.color = 0xaaaaaa;
+			_loc1_.x = 45;
+			_loc1_.y = 80;
+			_loc1_.text = "Upgrades can be bought at the upgrade station.";
+			addChild(_loc1_);
 			techTree = new TechTree(g,400);
 			techTree.load();
 			techTree.x = 30;
-			techTree.y = _local1.y + _local1.height;
+			techTree.y = _loc1_.y + _loc1_.height;
 			addChild(techTree);
 		}
 	}

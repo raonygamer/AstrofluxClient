@@ -1,4 +1,5 @@
-package core.states.AIStates {
+package core.states.AIStates
+{
 	import core.boss.Boss;
 	import core.scene.Game;
 	import core.states.IState;
@@ -9,47 +10,64 @@ package core.states.AIStates {
 	import core.weapon.Weapon;
 	import flash.geom.Point;
 	
-	public class AIBoss implements IState {
+	public class AIBoss implements IState
+	{
 		private var b:Boss;
+		
 		private var g:Game;
+		
 		private var courseSendTime:Number;
+		
 		private var courseSendInterval:Number = 3000;
+		
 		private var rotationSpeedCurrent:Number = 0;
+		
 		private var nextRegen:Number;
+		
 		private var sm:StateMachine;
 		
-		public function AIBoss(g:Game, b:Boss) {
+		public function AIBoss(g:Game, b:Boss)
+		{
 			super();
 			this.g = g;
 			this.b = b;
 		}
 		
-		public function enter() : void {
+		public function enter() : void
+		{
 			b.course.accelerate = true;
 			nextRegen = g.time + 1000;
 			courseSendTime = g.time + courseSendInterval;
 		}
 		
-		public function execute() : void {
-			var _local1:Weapon = null;
-			var _local4:Beam = null;
-			if(!b.alive) {
+		public function execute() : void
+		{
+			var _loc4_:Weapon = null;
+			var _loc1_:Beam = null;
+			if(!b.alive)
+			{
 				return;
 			}
-			if(nextRegen < g.time) {
-				for each(var _local2:Unit in b.allComponents) {
-					if(_local2.alive && _local2.active && _local2.hp < _local2.hpMax && _local2.disableHealEndtime < g.time) {
-						_local2.hp += b.hpRegen;
-						if(_local2.hp > _local2.hpMax) {
-							_local2.hp = _local2.hpMax;
+			if(nextRegen < g.time)
+			{
+				for each(var _loc2_ in b.allComponents)
+				{
+					if(_loc2_.alive && _loc2_.active && _loc2_.hp < _loc2_.hpMax && _loc2_.disableHealEndtime < g.time)
+					{
+						_loc2_.hp += b.hpRegen;
+						if(_loc2_.hp > _loc2_.hpMax)
+						{
+							_loc2_.hp = _loc2_.hpMax;
 						}
 					}
 				}
 				g.hud.bossHealth.update();
 				nextRegen = g.time + 1000;
 			}
-			if(b.teleportExitTime != 0) {
-				if(b.teleportExitTime < g.time) {
+			if(b.teleportExitTime != 0)
+			{
+				if(b.teleportExitTime < g.time)
+				{
 					b.overrideConvergeTarget(b.teleportExitPoint.x,b.teleportExitPoint.y);
 					b.teleportExitTime = 0;
 					b.endTeleportEffect();
@@ -58,36 +76,48 @@ package core.states.AIStates {
 				b.course.accelerate = false;
 				return;
 			}
-			if(b.bodyTarget != null && b.bodyDestroyStart != 0) {
-				if(b.bodyDestroyEnd != 0 && b.bodyDestroyEnd < g.time) {
+			if(b.bodyTarget != null && b.bodyDestroyStart != 0)
+			{
+				if(b.bodyDestroyEnd != 0 && b.bodyDestroyEnd < g.time)
+				{
 					b.bodyTarget.explode();
 					b.bodyTarget = null;
 					b.bodyDestroyStart = 0;
 					b.bodyDestroyEnd = 0;
 				}
-				for each(var _local3:Turret in b.turrets) {
-					_local1 = _local3.weapon;
-					if(_local1 is Beam) {
-						_local4 = _local1 as Beam;
-						_local4.fireAtBody(b.bodyTarget);
+				for each(var _loc3_ in b.turrets)
+				{
+					_loc4_ = _loc3_.weapon;
+					if(_loc4_ is Beam)
+					{
+						_loc1_ = _loc4_ as Beam;
+						_loc1_.fireAtBody(b.bodyTarget);
 					}
 				}
 			}
-			if(b.target == null) {
-				if(b.currentWaypoint != null) {
+			if(b.target == null)
+			{
+				if(b.currentWaypoint != null)
+				{
 					b.course.accelerate = true;
 					b.angleTargetPos = b.currentWaypoint.pos;
-				} else {
+				}
+				else
+				{
 					b.course.accelerate = false;
 					b.angleTargetPos = null;
 				}
-			} else {
+			}
+			else
+			{
 				b.course.accelerate = true;
 				b.angleTargetPos = new Point(b.target.pos.x,b.target.pos.y);
 			}
 			b.updateHeading(b.course);
-			if(b.holonomic || b.rotationForced) {
-				if(b.rotationSpeed > 0 && rotationSpeedCurrent < b.rotationSpeed || b.rotationSpeed < 0 && rotationSpeedCurrent > b.rotationSpeed) {
+			if(b.holonomic || b.rotationForced)
+			{
+				if(b.rotationSpeed > 0 && rotationSpeedCurrent < b.rotationSpeed || b.rotationSpeed < 0 && rotationSpeedCurrent > b.rotationSpeed)
+				{
 					rotationSpeedCurrent += 0.05 * b.rotationSpeed;
 				}
 				b.course.rotation += rotationSpeedCurrent * 33 / 1000;
@@ -97,15 +127,18 @@ package core.states.AIStates {
 			b.rotation = b.course.rotation;
 		}
 		
-		public function exit() : void {
+		public function exit() : void
+		{
 		}
 		
-		public function set stateMachine(sm:StateMachine) : void {
+		public function set stateMachine(sm:StateMachine) : void
+		{
 			this.sm = sm;
 		}
 		
-		public function get type() : String {
-			return "AIChase";
+		public function get type() : String
+		{
+			return "AIBoss";
 		}
 	}
 }

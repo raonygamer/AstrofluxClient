@@ -1,4 +1,5 @@
-package core.hud.components.pvp {
+package core.hud.components.pvp
+{
 	import core.hud.components.Text;
 	import core.player.Player;
 	import core.scene.Game;
@@ -11,49 +12,75 @@ package core.hud.components.pvp {
 	import starling.textures.Texture;
 	import textures.TextureLocator;
 	
-	public class DominationManager extends PvpManager {
+	public class DominationManager extends PvpManager
+	{
 		public var zones:Vector.<DominationZone> = new Vector.<DominationZone>();
+		
 		public var safeZones:Vector.<TeamSafeZone> = new Vector.<TeamSafeZone>();
+		
 		private var score:Vector.<int> = new Vector.<int>();
+		
 		private var scoreTextBlueTeam:Text;
+		
 		private var scoreTextRedTeam:Text;
+		
 		private const SCORE_LIMIT:Number = 1000;
+		
 		private const BAR_MAX_WIDTH:Number = 96;
+		
 		private var blueTeamBar:Quad = new Quad(100,24,0x222222);
+		
 		private var blueTeamBarBackground:Quad = new Quad(96,20,0x222288);
+		
 		private var blueTeamBarFill:Quad = new Quad(1,20,0x4444ff);
+		
 		private var blueZone1:Image;
+		
 		private var blueZone2:Image;
+		
 		private var blueZone3:Image;
+		
 		private var blueZone4:Image;
+		
 		private var blueZone5:Image;
+		
 		private var redTeamBar:Quad = new Quad(100,24,0x222222);
+		
 		private var redTeamBarBackground:Quad = new Quad(96,20,0x880000);
+		
 		private var redTeamBarFill:Quad = new Quad(1,20,0xff4444);
+		
 		private var redZone1:Image;
+		
 		private var redZone2:Image;
+		
 		private var redZone3:Image;
+		
 		private var redZone4:Image;
+		
 		private var redZone5:Image;
+		
 		private var container:Sprite = new Sprite();
+		
 		private var id:int = 1;
 		
-		public function DominationManager(g:Game) {
+		public function DominationManager(g:Game)
+		{
 			g.addMessageHandler("updateDominationStatus",m_updateDominationStatus);
 			super(g,false);
 			score.push(0);
 			score.push(0);
-			var _local2:Texture = TextureLocator.getService().getTextureGUIByTextureName("bullet_crew");
-			blueZone1 = new Image(_local2);
-			blueZone2 = new Image(_local2);
-			blueZone3 = new Image(_local2);
-			blueZone4 = new Image(_local2);
-			blueZone5 = new Image(_local2);
-			redZone1 = new Image(_local2);
-			redZone2 = new Image(_local2);
-			redZone3 = new Image(_local2);
-			redZone4 = new Image(_local2);
-			redZone5 = new Image(_local2);
+			var _loc2_:Texture = TextureLocator.getService().getTextureGUIByTextureName("bullet_crew");
+			blueZone1 = new Image(_loc2_);
+			blueZone2 = new Image(_loc2_);
+			blueZone3 = new Image(_loc2_);
+			blueZone4 = new Image(_loc2_);
+			blueZone5 = new Image(_loc2_);
+			redZone1 = new Image(_loc2_);
+			redZone2 = new Image(_loc2_);
+			redZone3 = new Image(_loc2_);
+			redZone4 = new Image(_loc2_);
+			redZone5 = new Image(_loc2_);
 			blueZone1.color = blueZone2.color = blueZone3.color = blueZone4.color = blueZone5.color = redZone1.color = redZone2.color = redZone3.color = redZone4.color = redZone5.color = 0x222222;
 			blueZone1.y = blueZone2.y = blueZone3.y = blueZone4.y = blueZone5.y = redZone1.y = redZone2.y = redZone3.y = redZone4.y = redZone5.y = 26;
 			blueZone1.x = -12;
@@ -112,241 +139,318 @@ package core.hud.components.pvp {
 			resize();
 		}
 		
-		override public function update() : void {
-			var _local5:int = 0;
-			var _local4:int = 0;
-			if(!isLoaded) {
+		override public function update() : void
+		{
+			var _loc2_:int = 0;
+			var _loc4_:int = 0;
+			if(!isLoaded)
+			{
 				loadMap();
 			}
-			if(requestTime < g.time && (roomStartTime == 0 || g.playerManager.players.length > scoreList.length)) {
+			if(requestTime < g.time && (roomStartTime == 0 || g.playerManager.players.length > scoreList.length))
+			{
 				requestTime = g.time + 2000;
 				g.send("requestInitPlayers");
 			}
 			map.update();
-			switch(matchState) {
+			switch(matchState)
+			{
 				case 0:
-					if(timerText != null) {
+					if(timerText != null)
+					{
 						timerText.htmlText = "Starting in: <FONT COLOR=\'#7777ff\'>" + formatTime((matchStartTime - g.time) / 1000) + "</FONT>";
 					}
-					if(matchStartTime != 0 && matchStartTime < g.time) {
+					if(matchStartTime != 0 && matchStartTime < g.time)
+					{
 						matchState = 2;
 						g.textManager.createPvpText("The Match begins! Fight!",0,50);
 					}
-					for each(var _local2:* in g.playerManager.players) {
-						_local2.inSafeZone = true;
+					for each(var _loc1_ in g.playerManager.players)
+					{
+						_loc1_.inSafeZone = true;
 					}
 					break;
 				case 2:
-					if(timerText != null) {
+					if(timerText != null)
+					{
 						timerText.text = formatTime((matchEndTime - g.time) / 1000).toString();
 					}
-					if(g.me != null) {
-						_local5 = 0;
-						_local4 = 0;
-						if(g.me.team == 0) {
-							_local4 = 0;
-							_local5 = 1;
-						} else {
-							_local4 = 1;
-							_local5 = 0;
+					if(g.me != null)
+					{
+						_loc2_ = 0;
+						_loc4_ = 0;
+						if(g.me.team == 0)
+						{
+							_loc4_ = 0;
+							_loc2_ = 1;
 						}
-						if(scoreTextBlueTeam != null) {
-							blueTeamBarFill.width = score[_local4] / 1000 * 96;
+						else
+						{
+							_loc4_ = 1;
+							_loc2_ = 0;
+						}
+						if(scoreTextBlueTeam != null)
+						{
+							blueTeamBarFill.width = score[_loc4_] / 1000 * 96;
 							blueTeamBarFill.x = -blueTeamBarFill.width - 2;
-							scoreTextBlueTeam.text = score[_local4].toString();
+							scoreTextBlueTeam.text = score[_loc4_].toString();
 						}
-						if(scoreTextRedTeam != null) {
-							redTeamBarFill.width = score[_local5] / 1000 * 96;
-							scoreTextRedTeam.text = score[_local5].toString();
+						if(scoreTextRedTeam != null)
+						{
+							redTeamBarFill.width = score[_loc2_] / 1000 * 96;
+							scoreTextRedTeam.text = score[_loc2_].toString();
 						}
-						for each(var _local1:* in g.playerManager.players) {
-							_local1.inSafeZone = false;
+						for each(var _loc3_ in g.playerManager.players)
+						{
+							_loc3_.inSafeZone = false;
 						}
-						for each(var _local3:* in safeZones) {
-							_local3.updateZone();
+						for each(var _loc5_ in safeZones)
+						{
+							_loc5_.updateZone();
 						}
-						if(zones.length > 4) {
-							if(zones[4].ownerTeam == _local4) {
+						if(zones.length > 4)
+						{
+							if(zones[4].ownerTeam == _loc4_)
+							{
 								blueZone5.color = 0x4444ff;
 								redZone5.color = 0x222222;
-							} else if(zones[4].ownerTeam == _local5) {
+							}
+							else if(zones[4].ownerTeam == _loc2_)
+							{
 								blueZone5.color = 0x222222;
 								redZone5.color = 0xff4444;
-							} else {
+							}
+							else
+							{
 								blueZone5.color = 0x222222;
 								redZone5.color = 0x222222;
 							}
 						}
-						if(zones.length > 3) {
-							if(zones[3].ownerTeam == _local4) {
+						if(zones.length > 3)
+						{
+							if(zones[3].ownerTeam == _loc4_)
+							{
 								blueZone4.color = 0x4444ff;
 								redZone4.color = 0x222222;
-							} else if(zones[3].ownerTeam == _local5) {
+							}
+							else if(zones[3].ownerTeam == _loc2_)
+							{
 								blueZone4.color = 0x222222;
 								redZone4.color = 0xff4444;
-							} else {
+							}
+							else
+							{
 								blueZone4.color = 0x222222;
 								redZone4.color = 0x222222;
 							}
 						}
-						if(zones[2].ownerTeam == _local4) {
+						if(zones[2].ownerTeam == _loc4_)
+						{
 							blueZone1.color = 0x4444ff;
 							redZone1.color = 0x222222;
-						} else if(zones[2].ownerTeam == _local5) {
+						}
+						else if(zones[2].ownerTeam == _loc2_)
+						{
 							blueZone1.color = 0x222222;
 							redZone1.color = 0xff4444;
-						} else {
+						}
+						else
+						{
 							blueZone1.color = 0x222222;
 							redZone1.color = 0x222222;
 						}
-						if(zones[0].ownerTeam == _local4) {
+						if(zones[0].ownerTeam == _loc4_)
+						{
 							blueZone2.color = 0x4444ff;
 							redZone2.color = 0x222222;
-						} else if(zones[0].ownerTeam == _local5) {
+						}
+						else if(zones[0].ownerTeam == _loc2_)
+						{
 							blueZone2.color = 0x222222;
 							redZone2.color = 0xff4444;
-						} else {
+						}
+						else
+						{
 							blueZone2.color = 0x222222;
 							redZone2.color = 0x222222;
 						}
-						if(zones[1].ownerTeam == _local4) {
+						if(zones[1].ownerTeam == _loc4_)
+						{
 							blueZone3.color = 0x4444ff;
 							redZone3.color = 0x222222;
-						} else if(zones[1].ownerTeam == _local5) {
+						}
+						else if(zones[1].ownerTeam == _loc2_)
+						{
 							blueZone3.color = 0x222222;
 							redZone3.color = 0xff4444;
-						} else {
+						}
+						else
+						{
 							blueZone3.color = 0x222222;
 							redZone3.color = 0x222222;
 						}
 					}
 					break;
 				case 3:
-					if(timerText != null) {
+					if(timerText != null)
+					{
 						timerText.htmlText = "Closing in: <FONT COLOR=\'#7777ff\'>" + formatTime((roomEndTime - g.time) / 1000) + "</FONT>";
 					}
-					if(endGameScreenTime != 0 && endGameScreenTime < g.time) {
+					if(endGameScreenTime != 0 && endGameScreenTime < g.time)
+					{
 						g.enterState(new PvpScreenState(g));
 						endGameScreenTime = g.time + 60 * 1000;
 					}
 					break;
 				case 4:
-					if(timerText != null) {
+					if(timerText != null)
+					{
 						timerText.htmlText = "Closing in: <FONT COLOR=\'#7777ff\'>" + formatTime((roomEndTime - g.time) / 1000) + "</FONT>";
 						break;
 					}
 			}
 		}
 		
-		override public function addZones(items:Array) : void {
-			for each(var _local2:* in items) {
-				if(_local2.type == "dominationZone") {
-					addZone(_local2);
-				} else if(_local2.type == "safezoneT1") {
-					addTeamZone(_local2,0);
-				} else if(_local2.type == "safezoneT2") {
-					addTeamZone(_local2,1);
+		override public function addZones(items:Array) : void
+		{
+			for each(var _loc2_ in items)
+			{
+				if(_loc2_.type == "dominationZone")
+				{
+					addZone(_loc2_);
+				}
+				else if(_loc2_.type == "safezoneT1")
+				{
+					addTeamZone(_loc2_,0);
+				}
+				else if(_loc2_.type == "safezoneT2")
+				{
+					addTeamZone(_loc2_,1);
 				}
 			}
-			if(zones.length < 4) {
+			if(zones.length < 4)
+			{
 				blueZone4.visible = false;
 				redZone4.visible = false;
 			}
-			if(zones.length < 5) {
+			if(zones.length < 5)
+			{
 				blueZone5.visible = false;
 				redZone5.visible = false;
 			}
 		}
 		
-		private function addTeamZone(obj:Object, team:int) : void {
+		private function addTeamZone(obj:Object, team:int) : void
+		{
 			safeZones.push(new TeamSafeZone(g,obj,team));
 		}
 		
-		private function addZone(obj:Object) : void {
+		private function addZone(obj:Object) : void
+		{
 			zones.push(new DominationZone(g,obj,id));
 			id += 1;
 		}
 		
-		public function getDZ(id:*) : DominationZone {
-			for each(var _local2:* in zones) {
-				if(_local2.id == id) {
-					return _local2;
+		public function getDZ(id:*) : DominationZone
+		{
+			for each(var _loc2_ in zones)
+			{
+				if(_loc2_.id == id)
+				{
+					return _loc2_;
 				}
 			}
 			return null;
 		}
 		
-		override public function hideText() : void {
+		override public function hideText() : void
+		{
 		}
 		
-		override public function showText() : void {
+		override public function showText() : void
+		{
 		}
 		
-		override protected function m_gameEnded(m:Message) : void {
-			var _local3:Number = NaN;
-			var _local6:int = 0;
-			var _local2:int = m.getInt(_local6++);
+		override protected function m_gameEnded(m:Message) : void
+		{
+			var _loc6_:Number = NaN;
+			var _loc5_:int = 0;
+			var _loc3_:int = m.getInt(_loc5_++);
 			matchEnded = true;
-			matchEndTime = m.getNumber(_local6++);
+			matchEndTime = m.getNumber(_loc5_++);
 			endGameScreenTime = matchEndTime + 5000;
-			roomEndTime = m.getNumber(_local6++);
-			saveScore(m,_local6);
-			for each(var _local5:* in g.playerManager.players) {
-				if(_local5.ship != null) {
-					_local5.ship.hp = _local5.ship.hpMax;
-					_local5.ship.shieldHp = _local5.ship.shieldHpMax;
+			roomEndTime = m.getNumber(_loc5_++);
+			saveScore(m,_loc5_);
+			for each(var _loc2_ in g.playerManager.players)
+			{
+				if(_loc2_.ship != null)
+				{
+					_loc2_.ship.hp = _loc2_.ship.hpMax;
+					_loc2_.ship.shieldHp = _loc2_.ship.shieldHpMax;
 				}
 			}
-			if(_local2 == g.me.team) {
+			if(_loc3_ == g.me.team)
+			{
 				g.textManager.createPvpText("The Match has Ended!",-50,40,0x5555ff);
 				g.textManager.createPvpText("The blue team won!",0,40,0x5555ff);
-			} else {
+			}
+			else
+			{
 				g.textManager.createPvpText("The Match has Ended!",-50,40,0xff5555);
 				g.textManager.createPvpText("The blue team won!",0,40,0xff5555);
 			}
 			Game.trackEvent("pvp","pvp dom won",g.me.name,g.me.level);
-			var _local4:PvpScoreHolder = getScoreHolder(g.me.id,g.me.name);
-			if(_local4 == null) {
+			var _loc4_:PvpScoreHolder = getScoreHolder(g.me.id,g.me.name);
+			if(_loc4_ == null)
+			{
 				return;
 			}
-			if(_local4.deaths == 0) {
-				_local3 = _local4.kills * 2;
-			} else {
-				_local3 = _local4.kills / _local4.deaths;
+			if(_loc4_.deaths == 0)
+			{
+				_loc6_ = _loc4_.kills * 2;
+			}
+			else
+			{
+				_loc6_ = _loc4_.kills / _loc4_.deaths;
 			}
 			g.enterState(new PvpScreenState(g));
 			endGameScreenTime = g.time + 60 * 1000;
 		}
 		
-		override protected function m_updateScore(m:Message) : void {
+		override protected function m_updateScore(m:Message) : void
+		{
 			saveScore(m,0);
 		}
 		
-		protected function m_updateDominationStatus(m:Message) : void {
-			var _local2:int = 0;
-			var _local3:DominationZone = null;
-			var _local4:int = 0;
-			matchState = m.getInt(_local4++);
-			score[0] = m.getInt(_local4++);
-			score[1] = m.getInt(_local4++);
-			_local4;
-			while(_local4 < m.length) {
-				_local2 = m.getInt(_local4++);
-				_local3 = getDZ(_local2);
-				_local3.ownerTeam = m.getInt(_local4++);
-				_local3.capCounter = m.getInt(_local4++);
-				_local3.nrTeam[0] = m.getInt(_local4++);
-				_local3.nrTeam[1] = m.getInt(_local4);
-				_local3.updateZone();
-				_local4++;
+		protected function m_updateDominationStatus(m:Message) : void
+		{
+			var _loc4_:int = 0;
+			var _loc2_:DominationZone = null;
+			var _loc3_:int = 0;
+			matchState = m.getInt(_loc3_++);
+			score[0] = m.getInt(_loc3_++);
+			score[1] = m.getInt(_loc3_++);
+			_loc3_;
+			while(_loc3_ < m.length)
+			{
+				_loc4_ = m.getInt(_loc3_++);
+				_loc2_ = getDZ(_loc4_);
+				_loc2_.ownerTeam = m.getInt(_loc3_++);
+				_loc2_.capCounter = m.getInt(_loc3_++);
+				_loc2_.nrTeam[0] = m.getInt(_loc3_++);
+				_loc2_.nrTeam[1] = m.getInt(_loc3_);
+				_loc2_.updateZone();
+				_loc3_++;
 			}
 		}
 		
-		override public function resize(e:Event = null) : void {
+		override public function resize(e:Event = null) : void
+		{
 			container.y = 20;
 			container.x = g.stage.stageWidth / 2;
 			super.resize();
-			if(timerText != null) {
+			if(timerText != null)
+			{
 				timerText.x = redTeamBarBackground.x + redTeamBarBackground.width + 5;
 				timerText.y = 2;
 			}

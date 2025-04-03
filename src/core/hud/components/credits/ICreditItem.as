@@ -1,5 +1,7 @@
-package core.hud.components.credits {
-	public interface ICreditItem {
+package core.hud.components.credits
+{
+	public interface ICreditItem
+	{
 		function select() : void;
 		
 		function deselect() : void;

@@ -1,4 +1,5 @@
-package core.hud.components {
+package core.hud.components
+{
 	import com.greensock.TweenMax;
 	import sound.ISound;
 	import sound.SoundLocator;
@@ -9,74 +10,103 @@ package core.hud.components {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class ButtonHud extends DisplayObjectContainer {
+	public class ButtonHud extends DisplayObjectContainer
+	{
 		public static const TYPE_MAP:String = "button_map.png";
+		
 		public static const TYPE_SHIP:String = "button_ship.png";
+		
 		public static const TYPE_CARGO:String = "button_cargo.png";
+		
 		public static const TYPE_SETTINGS:String = "button_settings.png";
+		
 		public static const TYPE_PVP:String = "button_pvp.png";
+		
 		public static const TYPE_ARTIFACTS:String = "button_artifacts.png";
+		
 		public static const TYPE_LEADERBOARD:String = "button_leaderboard.png";
+		
 		public static const TYPE_ENCOUNTERS:String = "button_encounters.png";
+		
 		public static const TYPE_PAY:String = "button_pay.png";
+		
 		public static const TYPE_MISSIONS:String = "button_missions.png";
+		
 		public static const TYPE_NEW_MISSION:String = "button_new_mission.png";
+		
 		public static const TYPE_SHOP_BG:String = "button_shop_bg";
+		
 		public static const TYPE_PLAYERS:String = "button_players.png";
+		
 		public static const TYPE_PVP_MENU:String = "button_pvpmatch.png";
+		
 		public static const TYPE_HUD_PVP:String = "button_play_pvp.png";
+		
 		public static const TYPE_JOIN_PVP:String = "button_join_pvp.png";
+		
 		private var clickCallback:Function;
+		
 		private var image:Image;
+		
 		private var hoverImage:Image;
+		
 		protected var hintNewContainer:Image;
+		
 		private var _enabled:Boolean = true;
+		
 		private var tw:TweenMax;
 		
-		public function ButtonHud(clickCallback:Function, buttonType:String = "button_ship.png", loadCallback:Function = null) {
+		public function ButtonHud(clickCallback:Function, buttonType:String = "button_ship.png", loadCallback:Function = null)
+		{
 			super();
 			useHandCursor = true;
 			this.clickCallback = clickCallback;
-			var _local4:ITextureManager = TextureLocator.getService();
-			image = new Image(_local4.getTextureGUIByTextureName(buttonType));
+			var _loc5_:ITextureManager = TextureLocator.getService();
+			image = new Image(_loc5_.getTextureGUIByTextureName(buttonType));
 			hoverImage = new Image(image.texture);
 			hoverImage.blendMode = "add";
 			hoverImage.visible = false;
 			hoverImage.touchable = false;
 			addChild(image);
 			addChild(hoverImage);
-			var _local5:Texture = _local4.getTextureGUIByTextureName("notification.png");
-			hintNewContainer = new Image(_local5);
+			var _loc4_:Texture = _loc5_.getTextureGUIByTextureName("notification.png");
+			hintNewContainer = new Image(_loc4_);
 			hintNewContainer.x = 12;
 			hintNewContainer.y = -4;
 			hintNewContainer.touchable = false;
 			hintNewContainer.visible = false;
 			addChild(hintNewContainer);
 			addEventListener("touch",onTouch);
-			if(loadCallback != null) {
+			if(loadCallback != null)
+			{
 				loadCallback();
 			}
 		}
 		
-		protected function mOver(e:TouchEvent) : void {
+		protected function mOver(e:TouchEvent) : void
+		{
 			hoverImage.visible = true;
 		}
 		
-		protected function set color(value:uint) : void {
+		protected function set color(value:uint) : void
+		{
 			image.color = value;
 		}
 		
-		protected function mOut(e:TouchEvent) : void {
+		protected function mOut(e:TouchEvent) : void
+		{
 			hoverImage.visible = false;
 		}
 		
-		public function set enabled(value:Boolean) : void {
+		public function set enabled(value:Boolean) : void
+		{
 			useHandCursor = value;
 			alpha = value ? 1 : 0.5;
 			_enabled = value;
 		}
 		
-		public function flash() : void {
+		public function flash() : void
+		{
 			var flashImage:Image = new Image(image.texture);
 			flashImage.blendMode = "screen";
 			flashImage.touchable = false;
@@ -92,40 +122,52 @@ package core.hud.components {
 				"alpha":0,
 				"scaleX":1,
 				"scaleY":1,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					removeChild(flashImage);
 				}
 			});
 		}
 		
-		public function click(e:TouchEvent = null) : void {
-			var _local2:ISound = SoundLocator.getService();
-			_local2.play("3hVYqbNNSUWoDGk_pK1BdQ");
+		public function click(e:TouchEvent = null) : void
+		{
+			var _loc2_:ISound = SoundLocator.getService();
+			_loc2_.play("3hVYqbNNSUWoDGk_pK1BdQ");
 			hoverImage.visible = false;
 			hintNewContainer.visible = false;
-			if(clickCallback != null) {
+			if(clickCallback != null)
+			{
 				clickCallback(e);
 			}
 		}
 		
-		public function onTouch(e:TouchEvent) : void {
-			if(!_enabled) {
+		public function onTouch(e:TouchEvent) : void
+		{
+			if(!_enabled)
+			{
 				return;
 			}
-			if(e.getTouch(this,"ended")) {
+			if(e.getTouch(this,"ended"))
+			{
 				click(e);
-			} else if(e.interactsWith(this)) {
+			}
+			else if(e.interactsWith(this))
+			{
 				mOver(e);
-			} else if(!e.interactsWith(this)) {
+			}
+			else if(!e.interactsWith(this))
+			{
 				mOut(e);
 			}
 		}
 		
-		public function hintNew() : void {
+		public function hintNew() : void
+		{
 			hintNewContainer.visible = true;
 		}
 		
-		public function hideHintNew() : void {
+		public function hideHintNew() : void
+		{
 			hintNewContainer.visible = false;
 		}
 	}

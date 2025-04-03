@@ -1,15 +1,20 @@
-package core.hud.components.map {
+package core.hud.components.map
+{
 	import core.deathLine.DeathLine;
 	import core.hud.components.Line;
 	import core.scene.Game;
 	import starling.display.Sprite;
 	
-	public class MapDeathLine {
+	public class MapDeathLine
+	{
 		private var line:Line;
+		
 		private var scale:Number = 0.4;
+		
 		private var g:Game;
 		
-		public function MapDeathLine(g:Game, container:Sprite, deathLine:DeathLine, color:uint) {
+		public function MapDeathLine(g:Game, container:Sprite, deathLine:DeathLine, color:uint)
+		{
 			super();
 			this.g = g;
 			this.line = g.linePool.getLine();
@@ -22,11 +27,14 @@ package core.hud.components.map {
 			container.addChild(this.line);
 		}
 		
-		public function update() : void {
+		public function update() : void
+		{
 		}
 		
-		public function dispose() : void {
-			if(g.linePool != null) {
+		public function dispose() : void
+		{
+			if(g.linePool != null)
+			{
 				g.linePool.removeLine(line);
 			}
 		}

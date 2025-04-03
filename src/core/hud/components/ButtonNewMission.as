@@ -1,16 +1,21 @@
-package core.hud.components {
+package core.hud.components
+{
 	import com.greensock.TweenMax;
 	import core.scene.Game;
 	import starling.display.Image;
 	import starling.events.TouchEvent;
 	import textures.TextureLocator;
 	
-	public class ButtonNewMission extends ButtonHud {
+	public class ButtonNewMission extends ButtonHud
+	{
 		private var g:Game;
+		
 		private var tween:TweenMax;
+		
 		private var hintArrow:Image;
 		
-		public function ButtonNewMission(clickCallback:Function, g:Game) {
+		public function ButtonNewMission(clickCallback:Function, g:Game)
+		{
 			super(clickCallback,"button_new_mission.png");
 			this.g = g;
 			hintArrow = new Image(TextureLocator.getService().getTextureGUIByTextureName("hint_arrow.png"));
@@ -23,8 +28,10 @@ package core.hud.components {
 			hintArrow.color = 0xffaa88;
 		}
 		
-		public function show() : void {
-			if(tween != null) {
+		public function show() : void
+		{
+			if(tween != null)
+			{
 				tween.kill();
 			}
 			visible = true;
@@ -35,9 +42,11 @@ package core.hud.components {
 			hintArrow.visible = false;
 		}
 		
-		override public function click(e:TouchEvent = null) : void {
+		override public function click(e:TouchEvent = null) : void
+		{
 			super.click(e);
-			if(tween != null) {
+			if(tween != null)
+			{
 				tween.kill();
 				tween = null;
 			}
@@ -46,8 +55,10 @@ package core.hud.components {
 			hintArrow.visible = false;
 		}
 		
-		private function fadeInOut() : void {
-			if(tween != null) {
+		private function fadeInOut() : void
+		{
+			if(tween != null)
+			{
 				tween.kill();
 			}
 			alpha = 1;
@@ -58,14 +69,17 @@ package core.hud.components {
 				"alpha":0.35,
 				"yoyo":false,
 				"repeat":-1,
-				"onUpdate":function():void {
+				"onUpdate":function():void
+				{
 					hintArrow.y = -120 + alpha * (60);
 				}
 			});
 		}
 		
-		public function hide() : void {
-			if(tween != null) {
+		public function hide() : void
+		{
+			if(tween != null)
+			{
 				tween.kill();
 			}
 			alpha = 1;
@@ -73,8 +87,10 @@ package core.hud.components {
 			hintArrow.visible = false;
 		}
 		
-		override public function dispose() : void {
-			if(tween != null) {
+		override public function dispose() : void
+		{
+			if(tween != null)
+			{
 				tween.kill();
 			}
 			super.dispose();

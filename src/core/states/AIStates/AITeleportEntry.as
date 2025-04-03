@@ -1,4 +1,5 @@
-package core.states.AIStates {
+package core.states.AIStates
+{
 	import core.particle.Emitter;
 	import core.particle.EmitterFactory;
 	import core.scene.Game;
@@ -8,24 +9,32 @@ package core.states.AIStates {
 	import generics.Random;
 	import movement.Heading;
 	
-	public class AITeleportEntry implements IState {
+	public class AITeleportEntry implements IState
+	{
 		private var g:Game;
+		
 		private var s:EnemyShip;
+		
 		private var sm:StateMachine;
+		
 		private var targetX:Number;
+		
 		private var targetY:Number;
+		
 		private var emitters1:Vector.<Emitter>;
 		
-		public function AITeleportEntry(g:Game, s:EnemyShip, course:Heading) {
+		public function AITeleportEntry(g:Game, s:EnemyShip, course:Heading)
+		{
 			super();
 			targetX = course.pos.x.valueOf();
 			targetY = course.pos.y.valueOf();
-			var _local4:Random = new Random(s.id);
+			var _loc4_:Random = new Random(s.id);
 			s.course.pos.x = 2411242;
 			s.course.pos.y = 8942522;
-			s.course.rotation = 2 * 3.141592653589793 * _local4.randomNumber();
+			s.course.rotation = 2 * 3.141592653589793 * _loc4_.randomNumber();
 			s.clearConvergeTarget();
-			if(isNaN(s.pos.x)) {
+			if(isNaN(s.pos.x))
+			{
 				trace("NaN entry: " + s.name);
 				return;
 			}
@@ -33,18 +42,22 @@ package core.states.AIStates {
 			this.s = s;
 		}
 		
-		public function enter() : void {
+		public function enter() : void
+		{
 			s.invulnerable = true;
 			s.visible = false;
 			emitters1 = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw",g,targetX,targetY,null,true);
 		}
 		
-		public function execute() : void {
+		public function execute() : void
+		{
 		}
 		
-		public function exit() : void {
-			for each(var _local1:* in emitters1) {
-				_local1.killEmitter();
+		public function exit() : void
+		{
+			for each(var _loc1_ in emitters1)
+			{
+				_loc1_.killEmitter();
 			}
 			s.course.pos.x = targetX;
 			s.course.pos.y = targetY;
@@ -54,16 +67,19 @@ package core.states.AIStates {
 			s.invulnerable = false;
 			s.nextDistanceCalculation = -1;
 			g.emitterManager.forceUpdate(s);
-			if(s.shieldRegenCounter > -3000) {
+			if(s.shieldRegenCounter > -3000)
+			{
 				s.shieldRegenCounter = -3000;
 			}
 		}
 		
-		public function set stateMachine(sm:StateMachine) : void {
+		public function set stateMachine(sm:StateMachine) : void
+		{
 			this.sm = sm;
 		}
 		
-		public function get type() : String {
+		public function get type() : String
+		{
 			return "AITeleportEntry";
 		}
 	}

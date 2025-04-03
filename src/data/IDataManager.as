@@ -1,8 +1,10 @@
-package data {
+package data
+{
 	import core.artifact.Artifact;
 	import playerio.Client;
 	
-	public interface IDataManager {
+	public interface IDataManager
+	{
 		function getArtifacts() : Vector.<Artifact>;
 		
 		function setClient(value:Client) : void;

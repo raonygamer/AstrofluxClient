@@ -1,4 +1,5 @@
-package core.states.gameStates {
+package core.states.gameStates
+{
 	import core.GameObject;
 	import core.credits.CreditManager;
 	import core.hud.components.Button;
@@ -20,21 +21,31 @@ package core.states.gameStates {
 	import starling.events.TouchEvent;
 	import starling.filters.ColorMatrixFilter;
 	
-	public class LandedPaintShop extends LandedState {
+	public class LandedPaintShop extends LandedState
+	{
 		private var preview:GameObject;
+		
 		private var sliderShipHue:Slider;
+		
 		private var sliderShipBrightness:Slider;
+		
 		private var sliderShipSaturation:Slider;
+		
 		private var sliderShipContrast:Slider;
+		
 		private var sliderEngineHue:Slider;
+		
 		private var fleetObj:FleetObj;
+		
 		private var emitters:Vector.<Emitter> = new Vector.<Emitter>();
 		
-		public function LandedPaintShop(g:Game, body:Body) {
+		public function LandedPaintShop(g:Game, body:Body)
+		{
 			super(g,body,body.name);
 		}
 		
-		override public function enter() : void {
+		override public function enter() : void
+		{
 			var obj:Object;
 			var labelShipHue:Text;
 			var labelShipBrightness:Text;
@@ -61,13 +72,14 @@ package core.states.gameStates {
 			sliderShipHue.value = fleetObj.shipHue;
 			sliderShipHue.direction == "horizontal";
 			sliderShipHue.useHandCursor = true;
-			sliderShipHue.addEventListener("change",function(param1:Event):void {
-				var _local2:ColorMatrixFilter = new ColorMatrixFilter();
-				_local2.adjustHue(sliderShipHue.value);
-				_local2.adjustBrightness(sliderShipBrightness.value);
-				_local2.adjustSaturation(sliderShipSaturation.value);
-				_local2.adjustContrast(sliderShipContrast.value);
-				preview.movieClip.filter = _local2;
+			sliderShipHue.addEventListener("change",function(param1:Event):void
+			{
+				var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
+				_loc2_.adjustHue(sliderShipHue.value);
+				_loc2_.adjustBrightness(sliderShipBrightness.value);
+				_loc2_.adjustSaturation(sliderShipSaturation.value);
+				_loc2_.adjustContrast(sliderShipContrast.value);
+				preview.movieClip.filter = _loc2_;
 			});
 			labelShipBrightness = new Text();
 			labelShipBrightness.text = Localize.t("Ship brightness");
@@ -83,13 +95,14 @@ package core.states.gameStates {
 			sliderShipBrightness.value = fleetObj.shipBrightness;
 			sliderShipBrightness.direction == "horizontal";
 			sliderShipBrightness.useHandCursor = true;
-			sliderShipBrightness.addEventListener("change",function(param1:Event):void {
-				var _local2:ColorMatrixFilter = new ColorMatrixFilter();
-				_local2.adjustHue(sliderShipHue.value);
-				_local2.adjustBrightness(sliderShipBrightness.value);
-				_local2.adjustSaturation(sliderShipSaturation.value);
-				_local2.adjustContrast(sliderShipContrast.value);
-				preview.movieClip.filter = _local2;
+			sliderShipBrightness.addEventListener("change",function(param1:Event):void
+			{
+				var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
+				_loc2_.adjustHue(sliderShipHue.value);
+				_loc2_.adjustBrightness(sliderShipBrightness.value);
+				_loc2_.adjustSaturation(sliderShipSaturation.value);
+				_loc2_.adjustContrast(sliderShipContrast.value);
+				preview.movieClip.filter = _loc2_;
 			});
 			labelShipSaturation = new Text();
 			labelShipSaturation.text = Localize.t("Ship saturation");
@@ -105,13 +118,14 @@ package core.states.gameStates {
 			sliderShipSaturation.value = fleetObj.shipSaturation;
 			sliderShipSaturation.direction == "horizontal";
 			sliderShipSaturation.useHandCursor = true;
-			sliderShipSaturation.addEventListener("change",function(param1:Event):void {
-				var _local2:ColorMatrixFilter = new ColorMatrixFilter();
-				_local2.adjustHue(sliderShipHue.value);
-				_local2.adjustBrightness(sliderShipBrightness.value);
-				_local2.adjustSaturation(sliderShipSaturation.value);
-				_local2.adjustContrast(sliderShipContrast.value);
-				preview.movieClip.filter = _local2;
+			sliderShipSaturation.addEventListener("change",function(param1:Event):void
+			{
+				var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
+				_loc2_.adjustHue(sliderShipHue.value);
+				_loc2_.adjustBrightness(sliderShipBrightness.value);
+				_loc2_.adjustSaturation(sliderShipSaturation.value);
+				_loc2_.adjustContrast(sliderShipContrast.value);
+				preview.movieClip.filter = _loc2_;
 			});
 			labelShipContrast = new Text();
 			labelShipContrast.text = Localize.t("Ship contrast");
@@ -127,13 +141,14 @@ package core.states.gameStates {
 			sliderShipContrast.value = fleetObj.shipContrast;
 			sliderShipContrast.direction == "horizontal";
 			sliderShipContrast.useHandCursor = true;
-			sliderShipContrast.addEventListener("change",function(param1:Event):void {
-				var _local2:ColorMatrixFilter = new ColorMatrixFilter();
-				_local2.adjustHue(sliderShipHue.value);
-				_local2.adjustBrightness(sliderShipBrightness.value);
-				_local2.adjustSaturation(sliderShipSaturation.value);
-				_local2.adjustContrast(sliderShipContrast.value);
-				preview.movieClip.filter = _local2;
+			sliderShipContrast.addEventListener("change",function(param1:Event):void
+			{
+				var _loc2_:ColorMatrixFilter = new ColorMatrixFilter();
+				_loc2_.adjustHue(sliderShipHue.value);
+				_loc2_.adjustBrightness(sliderShipBrightness.value);
+				_loc2_.adjustSaturation(sliderShipSaturation.value);
+				_loc2_.adjustContrast(sliderShipContrast.value);
+				preview.movieClip.filter = _loc2_;
 			});
 			labelEngineHue = new Text();
 			labelEngineHue.text = Localize.t("Engine color");
@@ -149,26 +164,33 @@ package core.states.gameStates {
 			sliderEngineHue.value = fleetObj.engineHue;
 			sliderEngineHue.direction == "horizontal";
 			sliderEngineHue.useHandCursor = true;
-			sliderEngineHue.addEventListener("change",function(param1:Event):void {
-				for each(var _local2:* in emitters) {
-					_local2.changeHue(sliderEngineHue.value);
+			sliderEngineHue.addEventListener("change",function(param1:Event):void
+			{
+				for each(var _loc2_ in emitters)
+				{
+					_loc2_.changeHue(sliderEngineHue.value);
 				}
 			});
-			if(me.freePaintJobs > 0) {
-				buyWithFluxButton = new Button(function(param1:TouchEvent):void {
+			if(me.freePaintJobs > 0)
+			{
+				buyWithFluxButton = new Button(function(param1:TouchEvent):void
+				{
 					var e:TouchEvent = param1;
 					var confirmBox:PopupConfirmMessage = new PopupConfirmMessage();
 					confirmBox.text = "Are you sure you want to buy the paint job? You have <FONT COLOR=\'#adff2f\'>" + me.freePaintJobs + "</FONT> free paint jobs left.";
 					g.addChildToOverlay(confirmBox,true);
-					confirmBox.addEventListener("accept",function():void {
+					confirmBox.addEventListener("accept",function():void
+					{
 						var m:Message = g.createMessage("buyPaintJob",sliderShipHue.value,sliderShipBrightness.value,sliderShipSaturation.value,sliderShipContrast.value,sliderEngineHue.value);
-						g.rpcMessage(m,function(param1:Message):void {
+						g.rpcMessage(m,function(param1:Message):void
+						{
 							boughtPaintJob(param1);
 							confirmBox.removeEventListeners();
 							g.removeChildFromOverlay(confirmBox,true);
 						});
 					});
-					confirmBox.addEventListener("close",function():void {
+					confirmBox.addEventListener("close",function():void
+					{
 						buyWithFluxButton.enabled = true;
 						confirmBox.removeEventListeners();
 						g.removeChildFromOverlay(confirmBox,true);
@@ -179,21 +201,28 @@ package core.states.gameStates {
 				freePaintJobs.x = 395;
 				freePaintJobs.y = 445;
 				addChild(freePaintJobs);
-			} else {
-				buyWithFluxButton = new Button(function(param1:TouchEvent):void {
+			}
+			else
+			{
+				buyWithFluxButton = new Button(function(param1:TouchEvent):void
+				{
 					var e:TouchEvent = param1;
-					g.creditManager.refresh(function():void {
+					g.creditManager.refresh(function():void
+					{
 						var confirmBuyWithFlux:CreditBuyBox = new CreditBuyBox(g,CreditManager.getCostPaintJob(),Localize.t("Are you sure you want to buy the paint job?"));
 						g.addChildToOverlay(confirmBuyWithFlux);
-						confirmBuyWithFlux.addEventListener("accept",function():void {
+						confirmBuyWithFlux.addEventListener("accept",function():void
+						{
 							var m:Message = g.createMessage("buyPaintJob",sliderShipHue.value,sliderShipBrightness.value,sliderShipSaturation.value,sliderShipContrast.value,sliderEngineHue.value);
-							g.rpcMessage(m,function(param1:Message):void {
+							g.rpcMessage(m,function(param1:Message):void
+							{
 								boughtPaintJob(param1);
 								confirmBuyWithFlux.removeEventListeners();
 								g.removeChildFromOverlay(confirmBuyWithFlux,true);
 							});
 						});
-						confirmBuyWithFlux.addEventListener("close",function():void {
+						confirmBuyWithFlux.addEventListener("close",function():void
+						{
 							buyWithFluxButton.enabled = true;
 							confirmBuyWithFlux.removeEventListeners();
 							g.removeChildFromOverlay(confirmBuyWithFlux,true);
@@ -215,13 +244,16 @@ package core.states.gameStates {
 			addChild(labelEngineHue);
 			addChild(sliderEngineHue);
 			loadCompleted();
-			if(RymdenRunt.isBuggedFlashVersion) {
+			if(RymdenRunt.isBuggedFlashVersion)
+			{
 				g.showErrorDialog("Sorry but the repaint stations is currently closed due to a bug in your version of Flash (version 23). We are expecting Adobe to release a new version the coming days.",false,leave);
 			}
 		}
 		
-		private function boughtPaintJob(m:Message) : void {
-			if(!m.getBoolean(0)) {
+		private function boughtPaintJob(m:Message) : void
+		{
+			if(!m.getBoolean(0))
+			{
 				g.showErrorDialog(m.getString(1));
 				return;
 			}
@@ -231,82 +263,98 @@ package core.states.gameStates {
 			fleetObj.shipSaturation = sliderShipSaturation.value;
 			fleetObj.shipContrast = sliderShipContrast.value;
 			fleetObj.engineHue = sliderEngineHue.value;
-			if(g.me.freePaintJobs > 0) {
+			if(g.me.freePaintJobs > 0)
+			{
 				g.me.freePaintJobs--;
 			}
 			leave();
 		}
 		
-		private function addShip() : void {
-			var _local1:* = null;
-			var _local4:* = undefined;
-			var _local6:Sprite = new Sprite();
-			var _local9:Object = dataManager.loadKey("Skins",g.me.activeSkin);
-			var _local8:Object = g.dataManager.loadKey("Ships",_local9.ship);
-			var _local7:Object = g.dataManager.loadKey("Engines",_local9.engine);
+		private function addShip() : void
+		{
+			var _loc4_:* = null;
+			var _loc2_:* = undefined;
+			var _loc1_:Sprite = new Sprite();
+			var _loc5_:Object = dataManager.loadKey("Skins",g.me.activeSkin);
+			var _loc9_:Object = g.dataManager.loadKey("Ships",_loc5_.ship);
+			var _loc7_:Object = g.dataManager.loadKey("Engines",_loc5_.engine);
 			preview = new GameObject();
-			preview.switchTexturesByObj(_local8);
-			var _local3:Number = !!fleetObj.engineHue ? fleetObj.engineHue : 0;
+			preview.switchTexturesByObj(_loc9_);
+			var _loc8_:Number = !!fleetObj.engineHue ? fleetObj.engineHue : 0;
 			preview.movieClip.filter = ShipFactory.createPlayerShipColorMatrixFilter(fleetObj);
-			var _local2:Vector.<Emitter> = EmitterFactory.create(_local7.effect,g,_local8.enginePosX,0,preview,true,true,true,_local6);
-			var _local5:Sprite = new Sprite();
-			preview.canvas = _local5;
+			var _loc6_:Vector.<Emitter> = EmitterFactory.create(_loc7_.effect,g,_loc9_.enginePosX,0,preview,true,true,true,_loc1_);
+			var _loc3_:Sprite = new Sprite();
+			preview.canvas = _loc3_;
 			preview.addToCanvas();
-			_local5.x = 380;
-			_local5.y = 100;
-			addChild(_local5);
-			if(_local7.dual) {
-				_local4 = EmitterFactory.create(_local7.effect,g,_local8.enginePosX,0,preview,true,true,true,_local6);
-				for each(_local1 in _local2) {
-					_local1.global = true;
-					_local1.delay = 0;
-					_local1.followTarget = false;
-					_local1.posX = _local5.x + preview.pivotX * 2 - _local8.enginePosX - _local5.width;
-					_local1.posY = _local5.y + preview.pivotY - _local5.height / 2 + _local7.dualDistance / 2;
-					_local1.angle = Util.degreesToRadians(3 * 60);
-					emitters.push(_local1);
+			_loc3_.x = 380;
+			_loc3_.y = 100;
+			addChild(_loc3_);
+			if(_loc7_.dual)
+			{
+				_loc2_ = EmitterFactory.create(_loc7_.effect,g,_loc9_.enginePosX,0,preview,true,true,true,_loc1_);
+				for each(_loc4_ in _loc6_)
+				{
+					_loc4_.global = true;
+					_loc4_.delay = 0;
+					_loc4_.followTarget = false;
+					_loc4_.posX = _loc3_.x + preview.pivotX * 2 - _loc9_.enginePosX - _loc3_.width;
+					_loc4_.posY = _loc3_.y + preview.pivotY - _loc3_.height / 2 + _loc7_.dualDistance / 2;
+					_loc4_.angle = Util.degreesToRadians(3 * 60);
+					emitters.push(_loc4_);
 				}
-				for each(_local1 in _local4) {
-					_local1.global = true;
-					_local1.delay = 0;
-					_local1.followTarget = false;
-					_local1.posX = _local5.x + preview.pivotX * 2 - _local8.enginePosX - _local5.width;
-					_local1.posY = _local5.y + preview.pivotY - _local5.height / 2 - _local7.dualDistance / 2;
-					_local1.angle = Util.degreesToRadians(3 * 60);
-					emitters.push(_local1);
-				}
-			} else {
-				for each(_local1 in _local2) {
-					_local1.global = true;
-					_local1.delay = 0;
-					_local1.followTarget = false;
-					_local1.posX = _local5.x + preview.pivotX - _local5.width;
-					_local1.posY = _local5.y + preview.pivotY - _local5.height / 2;
-					_local1.angle = Util.degreesToRadians(3 * 60);
-					emitters.push(_local1);
+				for each(_loc4_ in _loc2_)
+				{
+					_loc4_.global = true;
+					_loc4_.delay = 0;
+					_loc4_.followTarget = false;
+					_loc4_.posX = _loc3_.x + preview.pivotX * 2 - _loc9_.enginePosX - _loc3_.width;
+					_loc4_.posY = _loc3_.y + preview.pivotY - _loc3_.height / 2 - _loc7_.dualDistance / 2;
+					_loc4_.angle = Util.degreesToRadians(3 * 60);
+					emitters.push(_loc4_);
 				}
 			}
-			if(_local7.changeThrustColors) {
-				for each(var _local10:* in emitters) {
-					_local10.startColor = _local7.thrustStartColor;
-					_local10.finishColor = _local7.thrustFinishColor;
-					_local10.changeHue(_local3);
-				}
-			} else {
-				for each(_local10 in emitters) {
-					_local10.changeHue(_local3);
+			else
+			{
+				for each(_loc4_ in _loc6_)
+				{
+					_loc4_.global = true;
+					_loc4_.delay = 0;
+					_loc4_.followTarget = false;
+					_loc4_.posX = _loc3_.x + preview.pivotX - _loc3_.width;
+					_loc4_.posY = _loc3_.y + preview.pivotY - _loc3_.height / 2;
+					_loc4_.angle = Util.degreesToRadians(3 * 60);
+					emitters.push(_loc4_);
 				}
 			}
-			addChild(_local6);
+			if(_loc7_.changeThrustColors)
+			{
+				for each(var _loc10_ in emitters)
+				{
+					_loc10_.startColor = _loc7_.thrustStartColor;
+					_loc10_.finishColor = _loc7_.thrustFinishColor;
+					_loc10_.changeHue(_loc8_);
+				}
+			}
+			else
+			{
+				for each(_loc10_ in emitters)
+				{
+					_loc10_.changeHue(_loc8_);
+				}
+			}
+			addChild(_loc1_);
 		}
 		
-		override public function execute() : void {
+		override public function execute() : void
+		{
 			super.execute();
 		}
 		
-		override public function exit(callback:Function) : void {
-			for each(var _local2:* in emitters) {
-				_local2.killEmitter();
+		override public function exit(callback:Function) : void
+		{
+			for each(var _loc2_ in emitters)
+			{
+				_loc2_.killEmitter();
 			}
 			super.exit(callback);
 		}

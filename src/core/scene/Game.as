@@ -1,4 +1,5 @@
-package core.scene {
+package core.scene
+{
 	import com.google.analytics.AnalyticsTracker;
 	import com.google.analytics.GATracker;
 	import com.greensock.TweenMax;
@@ -92,132 +93,222 @@ package core.scene {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class Game extends SceneBase {
+	public class Game extends SceneBase
+	{
 		public static const TICK_LENGTH:int = 33;
+		
 		public static const SOUND_DISTANCE:int = 250000;
+		
 		public static const FRICTION:Number = 0.009;
+		
 		public static const MAX_LEVEL:Number = 150;
+		
 		public static const SAFEZONEFULLREGENTIME:int = 10;
+		
 		public static const DEFENSEBONUS:int = 8;
+		
 		public static const DMGBONUS:int = 8;
+		
 		public static const REGENBONUS:int = 1;
+		
 		public static const SYNC_FREQUENCY:Number = 50000;
+		
 		public static var instance:Game;
+		
 		private static var tracker:AnalyticsTracker;
+		
 		public static var highSettings:Boolean = true;
+		
 		public static var lastActive:int;
+		
 		public static var assets:AssetManager = new AssetManager();
+		
 		public var solarSystem:SolarSystem;
+		
 		public var parallaxManager:ParallaxManager;
+		
 		public var playerManager:PlayerManager;
+		
 		public var unitManager:UnitManager;
+		
 		public var shipManager:ShipManager;
+		
 		public var ribbonTrailPool:RibbonTrailPool;
+		
 		public var linePool:LinePool;
+		
 		public var beamLinePool:BeamLinePool;
+		
 		public var bossManager:BossManager;
+		
 		public var emitterManager:EmitterManager;
+		
 		public var weaponManager:WeaponManager;
+		
 		public var projectileManager:ProjectileManager;
+		
 		public var bodyManager:BodyManager;
+		
 		public var spawnManager:SpawnManager;
+		
 		public var dailyManager:DailyManager;
+		
 		public var turretManager:TurretManager;
+		
 		public var messagePackHandler:MessagePackHandler;
+		
 		public var deathLineManager:DeathLineManager;
+		
 		public var gameStateMachine:GameStateMachine;
+		
 		public var hud:Hud;
+		
 		public var textManager:TextManager;
+		
 		public var dropManager:DropManager;
+		
 		public var commandManager:CommandManager;
+		
 		public var groupManager:GroupManager;
+		
 		public var friendManager:FriendManager;
+		
 		public var tutorial:Tutorial;
+		
 		public var creditManager:CreditManager;
+		
 		public var messageLog:MessageLog;
+		
 		public var chatInput:ChatInputText;
+		
 		public var dataManager:IDataManager;
+		
 		public var textureManager:ITextureManager;
+		
 		public var queueManager:QueueManager;
+		
 		public var pvpManager:PvpManager;
+		
 		public var controlZoneManager:ControlZoneManager;
+		
 		public var salesManager:SalesManager;
+		
 		public var quality:int = 10;
+		
 		private var initSolarSystemComplete:Boolean = false;
+		
 		private var initPlayerComplete:Boolean = false;
+		
 		private var initEnemyPlayersComplete:Boolean = false;
+		
 		private var initEnemiesComplete:Boolean = false;
+		
 		private var initDropsComplete:Boolean = false;
+		
 		private var initServerComplete:Boolean = false;
+		
 		private var isTOSPopup:Boolean = false;
+		
 		private var isSaleSpinner:Boolean = false;
+		
 		private var nextSync:Number;
+		
 		private var welcomeText:ScreenTextField = new ScreenTextField(450,100);
+		
 		private var solarSystemData:Text = new Text();
+		
 		private var requestID:String = "";
+		
 		public var gameStartedTime:Number = 0;
+		
 		private var enableTrackFPS:Boolean = false;
+		
 		private var runningFPS:int = -1;
+		
 		private var frameCount:int = 0;
+		
 		private var totalTime:Number = 0;
+		
 		private var elapsedTime:Number = 0;
+		
 		private var qualityText:Text;
+		
 		private var synchedEnemies:Boolean = false;
+		
 		private var tweenCount:int = 0;
+		
 		private var rot:Number = 0;
+		
 		private var disconnectPopup:PopupMessage;
+		
 		private var loadingSprite:Sprite = new Sprite();
+		
 		private var loadingFadeTween:TweenMax;
 		
-		public function Game(client:Client, serviceConnection:Connection, connection:Connection, room:Room) {
+		public function Game(client:Client, serviceConnection:Connection, connection:Connection, room:Room)
+		{
 			super(client,serviceConnection,connection,room);
 			addMessageHandler("sdf",m_sdf);
 			addServiceMessageHandler("blg",m_blg);
-			addMessageHandler("test",function():void {
+			addMessageHandler("test",function():void
+			{
 				trace("TEST RECEIVED");
 			});
 			instance = this;
 		}
 		
-		public static function trackPageView(msg:String) : void {
-			try {
-				if(tracker == null) {
+		public static function trackPageView(msg:String) : void
+		{
+			try
+			{
+				if(tracker == null)
+				{
 					tracker = new GATracker(Starling.current.nativeStage,"UA-32570398-1","AS3",false);
 				}
 				tracker.trackPageview("/" + msg);
 			}
-			catch(e:Error) {
+			catch(e:Error)
+			{
 			}
 		}
 		
-		public static function trackEvent(category:String, action:String, label:String = null, value:Number = NaN) : void {
-			try {
-				if(tracker == null) {
+		public static function trackEvent(category:String, action:String, label:String = null, value:Number = NaN) : void
+		{
+			try
+			{
+				if(tracker == null)
+				{
 					tracker = new GATracker(Starling.current.nativeStage,"UA-32570398-1","AS3",false);
 				}
 				tracker.trackEvent(category,action,label,value);
 			}
-			catch(e:Error) {
+			catch(e:Error)
+			{
 			}
 		}
 		
-		public static function isFacebookUser() : Boolean {
+		public static function isFacebookUser() : Boolean
+		{
 			return Login.currentState == "facebook";
 		}
 		
-		public static function isKongregateUser() : Boolean {
+		public static function isKongregateUser() : Boolean
+		{
 			return Login.currentState == "kongregate";
 		}
 		
-		public static function playerPerformedAction() : void {
+		public static function playerPerformedAction() : void
+		{
 			lastActive = new Date().time;
 		}
 		
-		private function trackServerEvent(m:Message) : void {
+		private function trackServerEvent(m:Message) : void
+		{
 			trackEvent(m.getString(0),m.getString(1),m.getString(2),m.getNumber(3));
 		}
 		
-		override protected function init(e:starling.events.Event = null) : void {
+		override protected function init(e:starling.events.Event = null) : void
+		{
 			super.init(e);
 			dataManager = DataLocator.getService();
 			textureManager = TextureLocator.getService();
@@ -253,21 +344,26 @@ package core.scene {
 			textManager.loadHandlers();
 		}
 		
-		override protected function onJoinAndClockSynched(e:starling.events.Event = null) : void {
+		override protected function onJoinAndClockSynched(e:starling.events.Event = null) : void
+		{
 			this.canvas.visible = false;
 			Console.write("onJoinAndClockSynched ");
 			super.onJoinAndClockSynched(e);
-			try {
+			try
+			{
 				ExternalInterface.addCallback("fbLike",onFBLike);
 				ExternalInterface.marshallExceptions = true;
 			}
-			catch(e:Error) {
+			catch(e:Error)
+			{
 			}
-			try {
+			try
+			{
 				Security.allowDomain("*");
 				Security.allowInsecureDomain("*");
 			}
-			catch(e:Error) {
+			catch(e:Error)
+			{
 			}
 			gameStateMachine.clock = clock;
 			Console.write("Joining... adding init handlers");
@@ -283,23 +379,27 @@ package core.scene {
 			send("initSolarSystem");
 		}
 		
-		private function handleRequestID(response:Object) : void {
-			var _local2:String = null;
-			var _local3:Object = null;
-			if(response != null && Boolean(response.hasOwnProperty("from")) && response.from.hasOwnProperty("id")) {
+		private function handleRequestID(response:Object) : void
+		{
+			var _loc2_:String = null;
+			var _loc3_:Object = null;
+			if(response != null && Boolean(response.hasOwnProperty("from")) && response.from.hasOwnProperty("id"))
+			{
 				Game.trackEvent("FBinvite","invite feedback","joined game",1);
-				_local2 = response.from.id;
-				_local2 = "fb" + _local2;
-				me.inviter_id = _local2;
-				send("FBinviteAccepted",_local2);
-				sendToServiceRoom("requestUpdateInviteReward",_local2);
-				_local3 = {"method":"delete"};
-				FB.api("/" + requestID,handleRequestID,_local3,"POST");
+				_loc2_ = response.from.id;
+				_loc2_ = "fb" + _loc2_;
+				me.inviter_id = _loc2_;
+				send("FBinviteAccepted",_loc2_);
+				sendToServiceRoom("requestUpdateInviteReward",_loc2_);
+				_loc3_ = {"method":"delete"};
+				FB.api("/" + requestID,handleRequestID,_loc3_,"POST");
 			}
 		}
 		
-		private function onInitSolarSystem(m:Message) : void {
-			if(settings == null) {
+		private function onInitSolarSystem(m:Message) : void
+		{
+			if(settings == null)
+			{
 				settings = new Settings();
 			}
 			settings.sb = this;
@@ -311,11 +411,15 @@ package core.scene {
 			send("initGame");
 		}
 		
-		private function onInitPlayer(m:Message) : void {
-			try {
-				rpcServiceRoom("requestRating",(function():* {
+		private function onInitPlayer(m:Message) : void
+		{
+			try
+			{
+				rpcServiceRoom("requestRating",(function():*
+				{
 					var rpcHandler:Function;
-					return rpcHandler = function(param1:Message):void {
+					return rpcHandler = function(param1:Message):void
+					{
 						me.ranking = param1.getInt(0);
 						me.rating = param1.getNumber(1);
 					};
@@ -327,44 +431,57 @@ package core.scene {
 				updateServiceRoom();
 				tryRunGameLoop();
 			}
-			catch(e:Error) {
+			catch(e:Error)
+			{
 				trace("ERROR" + e.getStackTrace());
 				client.errorLog.writeError(e.toString()," player init failed: " + client.connectUserId,e.getStackTrace(),{});
 			}
 		}
 		
-		private function onInitEnemyPlayers(m:Message, startIndex:int = 0) : void {
-			if(m.length == 0) {
+		private function onInitEnemyPlayers(m:Message, startIndex:int = 0) : void
+		{
+			if(m.length == 0)
+			{
 				completeOnInitEnemyPlayers();
 				return;
 			}
-			var _local3:int = playerManager.initPlayer(m,startIndex);
-			if(_local3 < m.length - 1) {
-				onInitEnemyPlayers(m,_local3);
-			} else {
+			var _loc3_:int = playerManager.initPlayer(m,startIndex);
+			if(_loc3_ < m.length - 1)
+			{
+				onInitEnemyPlayers(m,_loc3_);
+			}
+			else
+			{
 				completeOnInitEnemyPlayers();
 			}
 		}
 		
-		private function completeOnInitEnemyPlayers() : void {
+		private function completeOnInitEnemyPlayers() : void
+		{
 			initEnemyPlayersComplete = true;
 			Console.write("Init enemy players complete");
 			tryRunGameLoop();
 		}
 		
-		public function toggleHighGraphics(value:Boolean) : void {
+		public function toggleHighGraphics(value:Boolean) : void
+		{
 			highSettings = value;
-			if(value) {
+			if(value)
+			{
 				Emitter.setHighGraphics();
-			} else {
+			}
+			else
+			{
 				Emitter.setLowGraphics();
-				for each(var _local2:* in bodyManager.bodies) {
-					_local2.turnOffEffects();
+				for each(var _loc2_ in bodyManager.bodies)
+				{
+					_loc2_.turnOffEffects();
 				}
 			}
 		}
 		
-		private function onInitEnemies(m:Message) : void {
+		private function onInitEnemies(m:Message) : void
+		{
 			Console.write("Init enemies received");
 			shipManager.addEarlyMessageHandlers();
 			shipManager.initEnemies(m);
@@ -373,19 +490,23 @@ package core.scene {
 			tryRunGameLoop();
 		}
 		
-		private function onInitDrops(m:Message) : void {
+		private function onInitDrops(m:Message) : void
+		{
 			initDropsComplete = true;
 			tryRunGameLoop();
 		}
 		
-		private function onInitServerComplete(m:Message) : void {
+		private function onInitServerComplete(m:Message) : void
+		{
 			Console.write("Init server complete");
 			initServerComplete = true;
 			tryRunGameLoop();
 		}
 		
-		private function tryRunGameLoop() : void {
-			if(initSolarSystemComplete && initPlayerComplete && initEnemyPlayersComplete && initEnemiesComplete && initDropsComplete && initServerComplete) {
+		private function tryRunGameLoop() : void
+		{
+			if(initSolarSystemComplete && initPlayerComplete && initEnemyPlayersComplete && initEnemiesComplete && initDropsComplete && initServerComplete)
+			{
 				hud.load();
 				hud.healthAndShield.update();
 				send("initSyncEnemies");
@@ -393,21 +514,26 @@ package core.scene {
 			}
 		}
 		
-		private function tryOpenTOSPopup() : void {
+		private function tryOpenTOSPopup() : void
+		{
 			var tosPopup:TOSPopup;
-			if(Login.currentState == "steam") {
+			if(Login.currentState == "steam")
+			{
 				return;
 			}
-			if(!me.hasCorrectTOSVersion && !Login.isNewPlayer) {
+			if(!me.hasCorrectTOSVersion && !Login.isNewPlayer)
+			{
 				isTOSPopup = true;
 				tosPopup = new TOSPopup(this);
 				addChildToOverlay(tosPopup);
-				tosPopup.addEventListener("accept",function(param1:starling.events.Event):void {
+				tosPopup.addEventListener("accept",function(param1:starling.events.Event):void
+				{
 					removeChildFromOverlay(tosPopup,true);
 					sendAccept();
 					me.hasCorrectTOSVersion = true;
 				});
-				tosPopup.addEventListener("close",function(param1:starling.events.Event):void {
+				tosPopup.addEventListener("close",function(param1:starling.events.Event):void
+				{
 					removeChildFromOverlay(tosPopup,true);
 					hud.show = false;
 					exit();
@@ -415,24 +541,29 @@ package core.scene {
 			}
 		}
 		
-		public function tryOpenSaleSpinner() : void {
+		public function tryOpenSaleSpinner() : void
+		{
 			var salePopup:SaleSpinner;
-			if(me.hasCorrectTOSVersion && salesManager.isSale()) {
+			if(me.hasCorrectTOSVersion && salesManager.isSale())
+			{
 				Login.isSaleSpinner = true;
 				Console.write("opened sale spinner");
 				salePopup = new SaleSpinner(this);
 				addChildToOverlay(salePopup);
-				salePopup.addEventListener("close",function(param1:starling.events.Event):void {
+				salePopup.addEventListener("close",function(param1:starling.events.Event):void
+				{
 					removeChildFromOverlay(salePopup,true);
 				});
 			}
 		}
 		
-		public function sendAccept() : void {
+		public function sendAccept() : void
+		{
 			send("acceptedTOS",3);
 		}
 		
-		private function runGameLoop() : void {
+		private function runGameLoop() : void
+		{
 			var clanApplicationCheck:ClanApplicationCheck;
 			var pleaseRate:PopupMessage;
 			gameStartedTime = new Date().time;
@@ -459,14 +590,19 @@ package core.scene {
 			chatInput = new ChatInputText(this,stage.stageWidth / 2 - 150,stage.stageHeight - 150,400,25);
 			addChildToOverlay(chatInput);
 			nextSync = time + 50000;
-			if(Login.currentState == "facebook" && Boolean(RymdenRunt.parameters.hasOwnProperty("request_ids"))) {
+			if(Login.currentState == "facebook" && Boolean(RymdenRunt.parameters.hasOwnProperty("request_ids")))
+			{
 				requestID = RymdenRunt.parameters.request_ids;
 				FB.api("/" + RymdenRunt.parameters.request_ids,handleRequestID);
 			}
-			if(!me.isLanded) {
-				if(me.showIntro) {
+			if(!me.isLanded)
+			{
+				if(me.showIntro)
+				{
 					tryEnterIntro();
-				} else {
+				}
+				else
+				{
 					hud.initMissionsButtons();
 					drawWelcomeText();
 					enterState(new RoamingState(this));
@@ -474,29 +610,35 @@ package core.scene {
 					me.requestInviteReward();
 					me.requestLikeReward();
 				}
-			} else {
+			}
+			else
+			{
 				enterLandedState();
 				me.requestRewardsOnLogin();
 				me.requestLikeReward();
 				me.requestInviteReward();
 				hud.initMissionsButtons();
 			}
-			if(!me.showIntro) {
+			if(!me.showIntro)
+			{
 				clanApplicationCheck = new ClanApplicationCheck(this);
 				clanApplicationCheck.check();
 			}
-			if(Login.currentState == "kongregate" && !me.kongRated && me.level > 10) {
+			if(Login.currentState == "kongregate" && !me.kongRated && me.level > 10)
+			{
 				me.sendKongRated();
 				pleaseRate = new PopupMessage("Close");
 				pleaseRate.text = "<FONT COLOR=\'#ffff44\' SIZE=\'16\'>Hello Captain!\n\n</FONT>Great having you onboard and also, great job this far.\n\nYou can help us a lot by giving us a 5 star rating.\n\nThanks /The Astroflux team!";
-				pleaseRate.addEventListener("close",function(param1:starling.events.Event):void {
+				pleaseRate.addEventListener("close",function(param1:starling.events.Event):void
+				{
 					pleaseRate.removeEventListeners();
 					removeChildFromOverlay(pleaseRate);
 				});
 				addChildToOverlay(pleaseRate);
 				pleaseRate.y += 60;
 			}
-			if(RymdenRunt.parameters.querystring_c) {
+			if(RymdenRunt.parameters.querystring_c)
+			{
 				send("segment","campaign: " + RymdenRunt.parameters.querystring_c);
 			}
 			lastActive = new Date().time;
@@ -506,48 +648,69 @@ package core.scene {
 			startSystemMusic();
 		}
 		
-		private function trackFPS() : void {
-			if(runningFPS < 3) {
+		private function trackFPS() : void
+		{
+			if(runningFPS < 3)
+			{
 				return;
 			}
-			if(!enableTrackFPS) {
+			if(!enableTrackFPS)
+			{
 				return;
 			}
-			if(solarSystem == null) {
+			if(solarSystem == null)
+			{
 				return;
 			}
-			if(me.isWarpJumping) {
+			if(me.isWarpJumping)
+			{
 				return;
 			}
-			if(!RymdenRunt.isInFocus) {
+			if(!RymdenRunt.isInFocus)
+			{
 				return;
 			}
-			var _local2:int = new Date().time - lastActive;
-			if(_local2 > 10000) {
+			var _loc1_:int = new Date().time - lastActive;
+			if(_loc1_ > 10000)
+			{
 				return;
 			}
-			var _local1:String = "";
-			if(runningFPS < 10) {
-				_local1 = "0-10 FPS";
-			} else if(runningFPS < 20) {
-				_local1 = "10-20 FPS";
-			} else if(runningFPS < 30) {
-				_local1 = "20-30 FPS";
-			} else if(runningFPS < 40) {
-				_local1 = "30-40 FPS";
-			} else if(runningFPS < 50) {
-				_local1 = "40-50 FPS";
-			} else if(runningFPS < 60) {
-				_local1 = "50-60 FPS";
+			var _loc2_:String = "";
+			if(runningFPS < 10)
+			{
+				_loc2_ = "0-10 FPS";
 			}
-			Game.trackEvent("FPS in system",solarSystem.name,_local1,runningFPS);
+			else if(runningFPS < 20)
+			{
+				_loc2_ = "10-20 FPS";
+			}
+			else if(runningFPS < 30)
+			{
+				_loc2_ = "20-30 FPS";
+			}
+			else if(runningFPS < 40)
+			{
+				_loc2_ = "30-40 FPS";
+			}
+			else if(runningFPS < 50)
+			{
+				_loc2_ = "40-50 FPS";
+			}
+			else if(runningFPS < 60)
+			{
+				_loc2_ = "50-60 FPS";
+			}
+			Game.trackEvent("FPS in system",solarSystem.name,_loc2_,runningFPS);
 		}
 		
-		private function initTrackFPS() : void {
-			if("".length > 0) {
+		private function initTrackFPS() : void
+		{
+			if("".length > 0)
+			{
 				return;
 			}
-			TweenMax.delayedCall(60,function():void {
+			TweenMax.delayedCall(60,function():void
+			{
 				frameCount = 0;
 				totalTime = 0;
 				elapsedTime = 0;
@@ -555,30 +718,39 @@ package core.scene {
 			});
 		}
 		
-		private function updateFPS(event:EnterFrameEvent) : void {
+		private function updateFPS(event:EnterFrameEvent) : void
+		{
 			totalTime += event.passedTime;
 			elapsedTime += event.passedTime;
-			if(++frameCount % (60) == 0) {
+			if(++frameCount % (60) == 0)
+			{
 				runningFPS = frameCount / totalTime;
 				frameCount = 0;
 				totalTime = 0;
-				if(elapsedTime > 2 * 60) {
+				if(elapsedTime > 2 * 60)
+				{
 					trackFPS();
 					elapsedTime = 0;
 				}
-				if(runningFPS > 50 && quality < 10) {
+				if(runningFPS > 50 && quality < 10)
+				{
 					quality++;
-				} else if(runningFPS < 40 && quality > 0) {
+				}
+				else if(runningFPS < 40 && quality > 0)
+				{
 					quality--;
 				}
-				if(qualityText) {
+				if(qualityText)
+				{
 					qualityText.text = "" + quality;
 				}
 			}
 		}
 		
-		public function showQuality() : void {
-			if(!me.isDeveloper) {
+		public function showQuality() : void
+		{
+			if(!me.isDeveloper)
+			{
 				return;
 			}
 			Console.write("show quality");
@@ -588,34 +760,46 @@ package core.scene {
 			addChildToOverlay(qualityText);
 		}
 		
-		public function setQuality(q:int) : void {
-			if(q >= 0 && q <= 10) {
+		public function setQuality(q:int) : void
+		{
+			if(q >= 0 && q <= 10)
+			{
 				quality = q;
 			}
-			if(qualityText) {
+			if(qualityText)
+			{
 				qualityText.text = "" + q;
 			}
 		}
 		
-		private function tryEnterIntro() : void {
-			if(Login.START_SETUP_IS_DONE) {
+		private function tryEnterIntro() : void
+		{
+			if(Login.START_SETUP_IS_DONE)
+			{
 				enterState(new IntroState(this));
-			} else {
+			}
+			else
+			{
 				TweenMax.delayedCall(0.1,tryEnterIntro);
 			}
 		}
 		
-		private function disconnectIfInactive() : void {
+		private function disconnectIfInactive() : void
+		{
 			var diff:int = new Date().time - lastActive;
-			if(diff > 500 * 60 * 60) {
+			if(diff > 500 * 60 * 60)
+			{
 				this.disconnect();
 				serviceConnection.disconnect();
 				removeEventListener("enterFrame",update);
 				enableTrackFPS = false;
 				RymdenRunt.s.nativeStage.frameRate = 1;
-				showErrorDialog("Are you there captain? We lost contact. Last thing we heard on the radio was snoring sounds, you sleeping?",false,function():void {
-					showErrorDialog("Reload the game log in again.",false,function():void {
-						if(RymdenRunt.isDesktop) {
+				showErrorDialog("Are you there captain? We lost contact. Last thing we heard on the radio was snoring sounds, you sleeping?",false,function():void
+				{
+					showErrorDialog("Reload the game log in again.",false,function():void
+					{
+						if(RymdenRunt.isDesktop)
+						{
 							exitDesktop();
 						}
 					});
@@ -625,114 +809,155 @@ package core.scene {
 			TweenMax.delayedCall(1,disconnectIfInactive);
 		}
 		
-		public function enterLandedState() : void {
-			var _local1:Body = me.currentBody;
-			if(_local1.type == "planet") {
-				fadeIntoState(new LandedExplore(this,_local1));
-			} else if(_local1.type == "junk yard") {
-				fadeIntoState(new LandedRecycle(this,_local1));
-			} else if(_local1.type == "shop") {
-				fadeIntoState(new LandedWeaponFactory(this,_local1));
-			} else if(_local1.type == "research") {
-				fadeIntoState(new LandedUpgrade(this,_local1));
-			} else if(_local1.type == "warpGate") {
-				fadeIntoState(new LandedWarpGate(this,_local1));
-			} else if(_local1.type == "hangar") {
-				fadeIntoState(new LandedHangar(this,_local1));
-			} else if(_local1.type == "cantina") {
-				fadeIntoState(new LandedCantina(this,_local1));
-			} else if(_local1.type == "paintShop") {
-				fadeIntoState(new LandedPaintShop(this,_local1));
-			} else if(_local1.type == "lore") {
-				fadeIntoState(new LandedLore(this,_local1));
-			} else if(_local1.type == "pirate") {
-				fadeIntoState(new LandedPiratebay(this,_local1));
+		public function enterLandedState() : void
+		{
+			var _loc1_:Body = me.currentBody;
+			if(_loc1_.type == "planet")
+			{
+				fadeIntoState(new LandedExplore(this,_loc1_));
 			}
-			focusGameObject(_local1,true);
+			else if(_loc1_.type == "junk yard")
+			{
+				fadeIntoState(new LandedRecycle(this,_loc1_));
+			}
+			else if(_loc1_.type == "shop")
+			{
+				fadeIntoState(new LandedWeaponFactory(this,_loc1_));
+			}
+			else if(_loc1_.type == "research")
+			{
+				fadeIntoState(new LandedUpgrade(this,_loc1_));
+			}
+			else if(_loc1_.type == "warpGate")
+			{
+				fadeIntoState(new LandedWarpGate(this,_loc1_));
+			}
+			else if(_loc1_.type == "hangar")
+			{
+				fadeIntoState(new LandedHangar(this,_loc1_));
+			}
+			else if(_loc1_.type == "cantina")
+			{
+				fadeIntoState(new LandedCantina(this,_loc1_));
+			}
+			else if(_loc1_.type == "paintShop")
+			{
+				fadeIntoState(new LandedPaintShop(this,_loc1_));
+			}
+			else if(_loc1_.type == "lore")
+			{
+				fadeIntoState(new LandedLore(this,_loc1_));
+			}
+			else if(_loc1_.type == "pirate")
+			{
+				fadeIntoState(new LandedPiratebay(this,_loc1_));
+			}
+			focusGameObject(_loc1_,true);
 		}
 		
-		private function onInitSyncEnemies(m:Message) : void {
+		private function onInitSyncEnemies(m:Message) : void
+		{
 			shipManager.initSyncEnemies(m);
 			synchedEnemies = true;
 		}
 		
-		private function update(e:EnterFrameEvent) : void {
-			if(gameStateMachine != null) {
+		private function update(e:EnterFrameEvent) : void
+		{
+			if(gameStateMachine != null)
+			{
 				gameStateMachine.update();
 				updateFPS(e);
-				if(synchedEnemies) {
+				if(synchedEnemies)
+				{
 					this.canvas.visible = true;
+				}
+				parallaxManager.update();
+				ribbonTrailPool.update();
+				textManager.update();
+				queueManager.update();
+				if(!isTOSPopup)
+				{
+					tryOpenTOSPopup();
+				}
+				if(!Login.isSaleSpinner)
+				{
+					tryOpenSaleSpinner();
 				}
 			}
 		}
 		
-		public function tickUpdate() : void {
+		public function tickUpdate() : void
+		{
 			time = getServerTime();
 			playerManager.update();
-			textManager.update();
 			bodyManager.update();
 			bossManager.update();
 			dropManager.update();
 			spawnManager.update();
 			shipManager.update();
 			weaponManager.update();
-			ribbonTrailPool.update();
 			projectileManager.update();
-			queueManager.update();
 			emitterManager.update();
-			parallaxManager.update();
 			camera.update();
 			hud.update();
 			deathLineManager.update();
-			if(pvpManager != null) {
+			if(pvpManager != null)
+			{
 				pvpManager.update();
 			}
 			updateSync();
-			if(!isTOSPopup) {
-				tryOpenTOSPopup();
-			}
-			if(!Login.isSaleSpinner) {
-				tryOpenSaleSpinner();
-			}
 		}
 		
-		private function updateSync() : void {
-			if(nextSync < time) {
+		private function updateSync() : void
+		{
+			if(nextSync < time)
+			{
 				nextSync = time + 50000;
 				refreshClock();
 			}
 		}
 		
-		override protected function userJoined(m:Message) : void {
-			if(playerManager == null) {
+		override protected function userJoined(m:Message) : void
+		{
+			if(playerManager == null)
+			{
 				return;
 			}
-			if(initEnemiesComplete && playerManager.playersById[m.getString(0)] == null) {
+			if(initEnemiesComplete && playerManager.playersById[m.getString(0)] == null)
+			{
 				playerManager.initPlayer(m);
-				if(me != null && pvpManager != null) {
+				if(me != null && pvpManager != null)
+				{
 					pvpManager.updateMap(playerManager.playersById[m.getString(0)]);
 				}
 			}
 		}
 		
-		override protected function userLeft(m:Message) : void {
+		override protected function userLeft(m:Message) : void
+		{
 			playerManager.removePlayer(m);
 		}
 		
-		public function enterState(state:IGameState) : void {
-			if(gameStateMachine.inState(state)) {
+		public function enterState(state:IGameState) : void
+		{
+			if(gameStateMachine.inState(state))
+			{
 				return;
 			}
 			gameStateMachine.changeState(state);
 		}
 		
-		public function fadeIntoState(state:IGameState) : void {
-			if(gameStateMachine.inState(state)) {
+		public function fadeIntoState(state:IGameState) : void
+		{
+			if(gameStateMachine.inState(state))
+			{
 				return;
 			}
-			Login.fadeScreen.addEventListener("fadeInComplete",(function():* {
+			Login.fadeScreen.addEventListener("fadeInComplete",(function():*
+			{
 				var onFadeInComplete:Function;
-				return onFadeInComplete = function(param1:starling.events.Event):void {
+				return onFadeInComplete = function(param1:starling.events.Event):void
+				{
 					gameStateMachine.changeState(state);
 					Login.fadeScreen.removeEventListener("fadeInComplete",onFadeInComplete);
 				};
@@ -740,30 +965,37 @@ package core.scene {
 			Login.fadeScreen.fadeIn();
 		}
 		
-		public function get me() : Player {
+		public function get me() : Player
+		{
 			return playerManager.me;
 		}
 		
-		public function softDisconnect(message:String) : void {
-			if(disconnectPopup) {
+		public function softDisconnect(message:String) : void
+		{
+			if(disconnectPopup)
+			{
 				return;
 			}
 			disconnectPopup = new PopupMessage("Ok");
 			disconnectPopup.text = Localize.t(message);
 			addChildToOverlay(disconnectPopup);
-			disconnectPopup.addEventListener("close",function(param1:starling.events.Event):void {
+			disconnectPopup.addEventListener("close",function(param1:starling.events.Event):void
+			{
 				removeChildFromOverlay(disconnectPopup,true);
 				disconnectPopup = null;
 			});
 			removeEventListener("enterFrame",update);
 		}
 		
-		override protected function handleDisconnect() : void {
+		override protected function handleDisconnect() : void
+		{
 			var errorData:Object;
-			if(disconnectPopup) {
+			if(disconnectPopup)
+			{
 				return;
 			}
-			if(clock != null && solarSystem != null && me != null) {
+			if(clock != null && solarSystem != null && me != null)
+			{
 				errorData = {};
 				errorData.id = me.id;
 				errorData.solarSystem = solarSystem.name;
@@ -774,7 +1006,8 @@ package core.scene {
 			disconnectPopup = new PopupMessage("Reload");
 			disconnectPopup.text = Localize.t("You got disconnected from the server.");
 			addChildToOverlay(disconnectPopup);
-			disconnectPopup.addEventListener("close",function(param1:starling.events.Event):void {
+			disconnectPopup.addEventListener("close",function(param1:starling.events.Event):void
+			{
 				removeChildFromOverlay(disconnectPopup,true);
 				disconnectPopup = null;
 				reload();
@@ -782,24 +1015,30 @@ package core.scene {
 			removeEventListener("enterFrame",update);
 		}
 		
-		private function reload() : void {
+		private function reload() : void
+		{
 			var roomId:String;
 			var joinRoomManager:JoinRoomManager;
 			var solarsystem:String;
 			Login.fadeScreen.show();
 			roomId = this.roomId;
 			joinRoomManager = JoinRoomLocator.getService() as JoinRoomManager;
-			if(solarSystem == null) {
+			if(solarSystem == null)
+			{
 				joinRoomManager.joinCurrentSolarSystem();
 				return;
 			}
 			solarsystem = this.solarSystem.key;
-			if(serviceConnection && serviceConnection.connected) {
+			if(serviceConnection && serviceConnection.connected)
+			{
 				joinRoomManager.desiredRoomId = roomId;
 				joinRoomManager.joinGame(solarsystem,{"level":me.level});
-			} else {
+			}
+			else
+			{
 				joinRoomManager.joinServiceRoom(this.serviceRoomId);
-				joinRoomManager.addEventListener("joinedServiceRoom",function(param1:starling.events.Event):void {
+				joinRoomManager.addEventListener("joinedServiceRoom",function(param1:starling.events.Event):void
+				{
 					joinRoomManager.removeEventListeners("joinedServiceRoom");
 					joinRoomManager.desiredRoomId = roomId;
 					joinRoomManager.joinGame(solarsystem,{"level":me.level});
@@ -807,15 +1046,18 @@ package core.scene {
 			}
 		}
 		
-		public function tryJoinMatch(roomId:String, solarSystem:String) : void {
-			if(roomId == null || roomId == "" || solarSystem == null || solarSystem == "") {
+		public function tryJoinMatch(roomId:String, solarSystem:String) : void
+		{
+			if(roomId == null || roomId == "" || solarSystem == null || solarSystem == "")
+			{
 				return;
 			}
 			Game.trackEvent("pvp","match","enter",me.level);
 			send("warpToPvpMatch",roomId,solarSystem);
 		}
 		
-		public function warpJump(destination:String, roomId:String = "", systemType:String = "") : void {
+		public function warpJump(destination:String, roomId:String = "", systemType:String = "") : void
+		{
 			var joinData:Object;
 			var joinRoomManager:IJoinRoomManager;
 			removeEventListener("enterFrame",update);
@@ -824,24 +1066,31 @@ package core.scene {
 			joinData["warpJump"] = true;
 			joinData["level"] = me.level;
 			joinRoomManager = JoinRoomLocator.getService();
-			if(roomId == "reset") {
+			if(roomId == "reset")
+			{
 				joinRoomManager.desiredRoomId = null;
-			} else if(roomId != null && roomId != "") {
+			}
+			else if(roomId != null && roomId != "")
+			{
 				joinRoomManager.desiredRoomId = roomId;
 			}
-			if(systemType != "") {
+			if(systemType != "")
+			{
 				joinRoomManager.desiredSystemType = systemType;
 			}
 			Login.fadeScreen.show();
-			if(joinRoomManager.desiredSystemType == "domination" || joinRoomManager.desiredSystemType == "deathmatch") {
-				rpcServiceRoom("requestTop10PvpHighscore",function(param1:Message):void {
+			if(joinRoomManager.desiredSystemType == "domination" || joinRoomManager.desiredSystemType == "deathmatch")
+			{
+				rpcServiceRoom("requestTop10PvpHighscore",function(param1:Message):void
+				{
 					Login.fadeScreen.showHighscore(param1);
 				});
 			}
 			joinRoomManager.joinGame(destination,joinData);
 		}
 		
-		override public function exit() : void {
+		override public function exit() : void
+		{
 			Console.write("Exit Game");
 			removeEventListeners();
 			enableTrackFPS = false;
@@ -859,8 +1108,8 @@ package core.scene {
 			linePool.dispose();
 			beamLinePool.dispose();
 			tutorial.dispose();
-			var _local1:ITextureManager = TextureLocator.getService();
-			_local1.disposeCustomTextures();
+			var _loc1_:ITextureManager = TextureLocator.getService();
+			_loc1_.disposeCustomTextures();
 			camera.destroy();
 			camera = null;
 			parallaxManager = null;
@@ -893,93 +1142,113 @@ package core.scene {
 			super.exit();
 		}
 		
-		public function exitDesktop() : void {
+		public function exitDesktop() : void
+		{
 			Starling.current.stop();
 			RymdenRunt.instance.dispatchEvent(new flash.events.Event("exitgame"));
 		}
 		
-		override public function draw() : void {
-			var _local3:int = 0;
-			var _local2:GameObject = null;
+		override public function draw() : void
+		{
+			var _loc2_:int = 0;
+			var _loc1_:GameObject = null;
 			parallaxManager.draw();
-			var _local1:int = int(bodyManager.bodies.length);
-			_local3 = 0;
-			while(_local3 < _local1) {
-				_local2 = bodyManager.bodies[_local3];
-				if(_local2.isAddedToCanvas) {
-					_local2.draw();
+			var _loc3_:int = int(bodyManager.bodies.length);
+			_loc2_ = 0;
+			while(_loc2_ < _loc3_)
+			{
+				_loc1_ = bodyManager.bodies[_loc2_];
+				if(_loc1_.isAddedToCanvas)
+				{
+					_loc1_.draw();
 				}
-				_local3++;
+				_loc2_++;
 			}
-			_local1 = int(spawnManager.spawners.length);
-			_local3 = 0;
-			while(_local3 < _local1) {
-				_local2 = spawnManager.spawners[_local3];
-				if(_local2.isAddedToCanvas) {
-					_local2.draw();
+			_loc3_ = int(spawnManager.spawners.length);
+			_loc2_ = 0;
+			while(_loc2_ < _loc3_)
+			{
+				_loc1_ = spawnManager.spawners[_loc2_];
+				if(_loc1_.isAddedToCanvas)
+				{
+					_loc1_.draw();
 				}
-				_local3++;
+				_loc2_++;
 			}
-			_local1 = int(turretManager.turrets.length);
-			_local3 = 0;
-			while(_local3 < _local1) {
-				_local2 = turretManager.turrets[_local3];
-				if(_local2.isAddedToCanvas) {
-					_local2.draw();
+			_loc3_ = int(turretManager.turrets.length);
+			_loc2_ = 0;
+			while(_loc2_ < _loc3_)
+			{
+				_loc1_ = turretManager.turrets[_loc2_];
+				if(_loc1_.isAddedToCanvas)
+				{
+					_loc1_.draw();
 				}
-				_local3++;
+				_loc2_++;
 			}
-			_local1 = int(dropManager.drops.length);
-			_local3 = 0;
-			while(_local3 < _local1) {
-				_local2 = dropManager.drops[_local3];
-				if(_local2.isAddedToCanvas) {
-					_local2.draw();
+			_loc3_ = int(dropManager.drops.length);
+			_loc2_ = 0;
+			while(_loc2_ < _loc3_)
+			{
+				_loc1_ = dropManager.drops[_loc2_];
+				if(_loc1_.isAddedToCanvas)
+				{
+					_loc1_.draw();
 				}
-				_local3++;
+				_loc2_++;
 			}
-			_local1 = int(bossManager.bosses.length);
-			_local3 = 0;
-			while(_local3 < _local1) {
-				_local2 = bossManager.bosses[_local3];
-				if(_local2.isAddedToCanvas) {
-					_local2.draw();
+			_loc3_ = int(bossManager.bosses.length);
+			_loc2_ = 0;
+			while(_loc2_ < _loc3_)
+			{
+				_loc1_ = bossManager.bosses[_loc2_];
+				if(_loc1_.isAddedToCanvas)
+				{
+					_loc1_.draw();
 				}
-				_local3++;
+				_loc2_++;
 			}
-			_local1 = int(shipManager.ships.length);
-			_local3 = 0;
-			while(_local3 < _local1) {
-				_local2 = shipManager.ships[_local3];
-				if(_local2.isAddedToCanvas) {
-					_local2.draw();
+			_loc3_ = int(shipManager.ships.length);
+			_loc2_ = 0;
+			while(_loc2_ < _loc3_)
+			{
+				_loc1_ = shipManager.ships[_loc2_];
+				if(_loc1_.isAddedToCanvas)
+				{
+					_loc1_.draw();
 				}
-				_local3++;
+				_loc2_++;
 			}
-			_local1 = int(projectileManager.projectiles.length);
-			_local3 = 0;
-			while(_local3 < _local1) {
-				_local2 = projectileManager.projectiles[_local3];
-				if(_local2.isAddedToCanvas) {
-					_local2.draw();
+			_loc3_ = int(projectileManager.projectiles.length);
+			_loc2_ = 0;
+			while(_loc2_ < _loc3_)
+			{
+				_loc1_ = projectileManager.projectiles[_loc2_];
+				if(_loc1_.isAddedToCanvas)
+				{
+					_loc1_.draw();
 				}
-				_local3++;
+				_loc2_++;
 			}
-			_local1 = int(weaponManager.weapons.length);
-			_local3 = 0;
-			while(_local3 < _local1) {
-				_local2 = weaponManager.weapons[_local3];
-				_local2.draw();
-				_local3++;
+			_loc3_ = int(weaponManager.weapons.length);
+			_loc2_ = 0;
+			while(_loc2_ < _loc3_)
+			{
+				_loc1_ = weaponManager.weapons[_loc2_];
+				_loc1_.draw();
+				_loc2_++;
 			}
 		}
 		
-		public function focusGameObject(go:GameObject, override:Boolean = true) : void {
-			if(go == null) {
+		public function focusGameObject(go:GameObject, override:Boolean = true) : void
+		{
+			if(go == null)
+			{
 				return;
 			}
 			go.draw();
-			if(override) {
+			if(override)
+			{
 				camera.jumpToFocus(go.movieClip);
 			}
 			bodyManager.forceUpdate();
@@ -991,11 +1260,15 @@ package core.scene {
 			dropManager.forceUpdate();
 		}
 		
-		private function drawWelcomeText() : void {
+		private function drawWelcomeText() : void
+		{
 			var pvpText:String;
-			if(isSystemTypeSurvival()) {
+			if(isSystemTypeSurvival())
+			{
 				welcomeText.start([["Welcome to " + solarSystem.name + ": " + hud.uberStats.uberRank]]);
-			} else {
+			}
+			else
+			{
 				welcomeText.start([["Welcome to " + solarSystem.name]]);
 			}
 			welcomeText.x = stage.stageWidth / 2 - 200;
@@ -1006,19 +1279,31 @@ package core.scene {
 			solarSystemData.color = Style.COLOR_HIGHLIGHT;
 			solarSystemData.width = 450;
 			pvpText = "PvP disabled for everyone in this system.";
-			if(solarSystem.isPvpSystemInEditor) {
+			if(solarSystem.isPvpSystemInEditor)
+			{
 				pvpText = "";
-			} else if(isSystemTypeSurvival()) {
+			}
+			else if(isSystemTypeSurvival())
+			{
 				send("uberUpdate");
 				pvpText = "You have <FONT COLOR=\'#ffffff\'>" + hud.uberStats.uberLives + "</FONT> lives left, rank <FONT COLOR=\'#ffffff\'>" + hud.uberStats.uberRank + "</FONT>.";
-			} else if(isSystemTypeClan()) {
+			}
+			else if(isSystemTypeClan())
+			{
 				pvpText = "Private clan instance.";
-			} else if(isSystemTypeHostile()) {
-				if(solarSystem.pvpLvlCap == 0) {
+			}
+			else if(isSystemTypeHostile())
+			{
+				if(solarSystem.pvpLvlCap == 0)
+				{
 					pvpText = "PvP enabled for all players.";
-				} else if(solarSystem.pvpAboveCap) {
+				}
+				else if(solarSystem.pvpAboveCap)
+				{
 					pvpText = "PvP active, only players above level <FONT COLOR=\'#ffffff\'>" + solarSystem.pvpLvlCap + "</FONT> allowed in room.";
-				} else {
+				}
+				else
+				{
 					pvpText = "PvP active, only players below level <FONT COLOR=\'#ffffff\'>" + (solarSystem.pvpLvlCap + 1) + "</FONT> allowed in room.";
 				}
 			}
@@ -1027,20 +1312,25 @@ package core.scene {
 			solarSystemData.touchable = false;
 			addChild(solarSystemData);
 			TweenMax.to(solarSystemData,2,{"alpha":2});
-			welcomeText.addEventListener("paragraphFinished",(function():* {
+			welcomeText.addEventListener("paragraphFinished",(function():*
+			{
 				var r:Function;
-				return r = function(param1:starling.events.Event):void {
+				return r = function(param1:starling.events.Event):void
+				{
 					welcomeText.removeEventListener("paragraphFinished",r);
 				};
 			})());
-			welcomeText.addEventListener("animationFinished",(function():* {
+			welcomeText.addEventListener("animationFinished",(function():*
+			{
 				var r:Function;
-				return r = function(param1:starling.events.Event):void {
+				return r = function(param1:starling.events.Event):void
+				{
 					var e:starling.events.Event = param1;
 					welcomeText.removeEventListener("animationFinished",r);
 					TweenMax.to(solarSystemData,1,{
 						"alpha":0,
-						"onComplete":function():void {
+						"onComplete":function():void
+						{
 							removeChild(solarSystemData,true);
 							removeChildFromOverlay(welcomeText,true);
 						}
@@ -1049,119 +1339,139 @@ package core.scene {
 			})());
 		}
 		
-		override protected function resize(e:starling.events.Event) : void {
-			if(stage == null) {
+		override protected function resize(e:starling.events.Event) : void
+		{
+			if(stage == null)
+			{
 				return;
 			}
 			super.resize(e);
-			if(welcomeText == null) {
+			if(welcomeText == null)
+			{
 				return;
 			}
 			welcomeText.x = stage.stageWidth / 2 - 200;
 			welcomeText.y = stage.stageHeight / 2 - 100;
-			if(solarSystemData == null) {
+			if(solarSystemData == null)
+			{
 				return;
 			}
 			solarSystemData.x = welcomeText.x;
 			solarSystemData.y = welcomeText.y + 40;
-			if(chatInput != null) {
+			if(chatInput != null)
+			{
 				chatInput.x = stage.stageWidth / 2 - 150;
 				chatInput.y = stage.stageHeight - 100;
 			}
-			if(tutorial != null) {
+			if(tutorial != null)
+			{
 				tutorial.resize();
 			}
 		}
 		
-		private function onFBLike() : void {
+		private function onFBLike() : void
+		{
 			send("fbLike");
 		}
 		
-		public function updateServiceRoom() : void {
-			var _local1:Message = serviceConnection.createMessage("updatePlayer");
-			_local1.add(solarSystem.key);
-			_local1.add(solarSystem.type);
-			_local1.add(me.name);
-			_local1.add(me.clanId);
-			_local1.add(roomId);
-			_local1.add(me.level);
-			_local1.add(me.activeSkin);
-			sendMessageToServiceRoom(_local1);
+		public function updateServiceRoom() : void
+		{
+			var _loc1_:Message = serviceConnection.createMessage("updatePlayer");
+			_loc1_.add(solarSystem.key);
+			_loc1_.add(solarSystem.type);
+			_loc1_.add(me.name);
+			_loc1_.add(me.clanId);
+			_loc1_.add(roomId);
+			_loc1_.add(me.level);
+			_loc1_.add(me.activeSkin);
+			sendMessageToServiceRoom(_loc1_);
 		}
 		
-		private function onInvasion(m:Message) : void {
+		private function onInvasion(m:Message) : void
+		{
 			textManager.createBossSpawnedText(solarSystem.getInvasionText());
 			SoundLocator.getService().play("z3gJhEGBNk-cdQCSQ0-AKA");
 		}
 		
-		public function showModalLoadingScreen(text:String) : void {
+		public function showModalLoadingScreen(text:String) : void
+		{
 			blockHotkeys = true;
-			var _local3:Quad = new Quad(stage.stageWidth,stage.stageHeight,0);
-			_local3.alpha = 0.8;
-			loadingSprite.addChild(_local3);
-			var _local2:Text = new Text();
-			_local2.size = 26;
-			_local2.htmlText = Localize.t(text);
-			loadingFadeTween = TweenMax.fromTo(_local2,2,{"alpha":1},{
+			var _loc2_:Quad = new Quad(stage.stageWidth,stage.stageHeight,0);
+			_loc2_.alpha = 0.8;
+			loadingSprite.addChild(_loc2_);
+			var _loc3_:Text = new Text();
+			_loc3_.size = 26;
+			_loc3_.htmlText = Localize.t(text);
+			loadingFadeTween = TweenMax.fromTo(_loc3_,2,{"alpha":1},{
 				"alpha":0.4,
 				"repeat":-1
 			});
-			_local2.centerPivot();
-			_local2.x = stage.stageWidth / 2;
-			_local2.y = stage.stageHeight / 2;
-			loadingSprite.addChild(_local2);
+			_loc3_.centerPivot();
+			_loc3_.x = stage.stageWidth / 2;
+			_loc3_.y = stage.stageHeight / 2;
+			loadingSprite.addChild(_loc3_);
 			addChildToOverlay(loadingSprite);
 		}
 		
-		public function hideModalLoadingScreen() : void {
+		public function hideModalLoadingScreen() : void
+		{
 			loadingFadeTween.kill();
 			blockHotkeys = false;
 			loadingSprite.removeChildren(0,-1,true);
 			removeChildFromOverlay(loadingSprite,true);
 		}
 		
-		protected function receive(event:flash.events.Event) : void {
+		protected function receive(event:flash.events.Event) : void
+		{
 			Localize.newData(event.target.data);
 			showMessageDialog("Texts are updated!");
 		}
 		
-		public function reloadTexts() : void {
-			var _local2:URLRequest = new URLRequest();
-			_local2.url = "http://astroflux.elasticbeanstalk.com/update";
-			_local2.requestHeaders = [new URLRequestHeader("Content-Type","application/json")];
-			_local2.method = "GET";
-			var _local1:URLLoader = new URLLoader();
-			_local1.addEventListener("complete",receive);
-			_local1.addEventListener("securityError",notAllowed);
-			_local1.addEventListener("ioError",notFound);
-			_local1.load(_local2);
+		public function reloadTexts() : void
+		{
+			var _loc1_:URLRequest = new URLRequest();
+			_loc1_.url = "http://astroflux.elasticbeanstalk.com/update";
+			_loc1_.requestHeaders = [new URLRequestHeader("Content-Type","application/json")];
+			_loc1_.method = "GET";
+			var _loc2_:URLLoader = new URLLoader();
+			_loc2_.addEventListener("complete",receive);
+			_loc2_.addEventListener("securityError",notAllowed);
+			_loc2_.addEventListener("ioError",notFound);
+			_loc2_.load(_loc1_);
 		}
 		
-		protected function notFound(event:flash.events.Event) : void {
+		protected function notFound(event:flash.events.Event) : void
+		{
 			showErrorDialog("not found " + event);
 		}
 		
-		protected function notAllowed(event:SecurityErrorEvent) : void {
+		protected function notAllowed(event:SecurityErrorEvent) : void
+		{
 			showErrorDialog("security error " + event);
 		}
 		
-		private function m_sdf(m:Message) : void {
+		private function m_sdf(m:Message) : void
+		{
 			sendToServiceRoom(m.type);
 		}
 		
-		private function m_blg(m:Message) : void {
+		private function m_blg(m:Message) : void
+		{
 			sendMessage(m);
 		}
 		
-		private function startSystemMusic() : void {
+		private function startSystemMusic() : void
+		{
 			Playlist.play(solarSystem.key);
 		}
 		
-		public function respawned() : void {
+		public function respawned() : void
+		{
 			Playlist.next();
 		}
 		
-		public function killed() : void {
+		public function killed() : void
+		{
 			SoundLocator.getService().stopMusic();
 			SoundLocator.getService().playMusic("y_s45d0sJkiPm6jpZFx2ow",true);
 		}

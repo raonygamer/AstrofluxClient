@@ -1,16 +1,21 @@
-package data {
-	public class DataLocator {
+package data
+{
+	public class DataLocator
+	{
 		private static var service:IDataManager;
 		
-		public function DataLocator() {
+		public function DataLocator()
+		{
 			super();
 		}
 		
-		public static function register(s:IDataManager) : void {
+		public static function register(s:IDataManager) : void
+		{
 			service = s;
 		}
 		
-		public static function getService() : IDataManager {
+		public static function getService() : IDataManager
+		{
 			return service;
 		}
 	}

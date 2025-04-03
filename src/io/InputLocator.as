@@ -1,18 +1,23 @@
-package io {
+package io
+{
 	import core.scene.Game;
 	
-	public class InputLocator {
+	public class InputLocator
+	{
 		private static var input:IInput;
 		
-		public function InputLocator(g:Game) {
+		public function InputLocator(g:Game)
+		{
 			super();
 		}
 		
-		public static function register(i:IInput) : void {
+		public static function register(i:IInput) : void
+		{
 			input = i;
 		}
 		
-		public static function getService() : IInput {
+		public static function getService() : IInput
+		{
 			return input;
 		}
 	}

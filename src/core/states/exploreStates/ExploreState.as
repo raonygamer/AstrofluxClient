@@ -1,4 +1,5 @@
-package core.states.exploreStates {
+package core.states.exploreStates
+{
 	import core.GameObject;
 	import core.controlZones.ControlZone;
 	import core.controlZones.ControlZoneManager;
@@ -26,43 +27,73 @@ package core.states.exploreStates {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class ExploreState extends DisplayState {
+	public class ExploreState extends DisplayState
+	{
 		public static var COLOR:uint = 3225899;
+		
 		private static var planetExploreAreas:Dictionary = null;
+		
 		private var min:Number = 0;
+		
 		private var max:Number = 1;
+		
 		private var value:Number = 0;
+		
 		private var _exploring:Boolean = false;
+		
 		private var exploreEffect:Vector.<Emitter>;
+		
 		private var effectBackground:Bitmap;
+		
 		private var effectContainer:Bitmap;
+		
 		private var effectTarget:GameObject;
+		
 		private var hasDrawnBody:Boolean = false;
+		
 		private var exploreText:Text;
+		
 		private var closeButton:ButtonExpandableHud;
+		
 		private var timer:Timer = new Timer(1000,1);
+		
 		private var startTime:Number = 0;
+		
 		private var finishTime:Number = 0;
+		
 		private var areaTypes:Dictionary = new Dictionary();
+		
 		private var areas:Vector.<ExploreArea>;
+		
 		private var planetGfx:Image;
+		
 		private var areaBox:Sprite;
+		
 		private var areasText:Text;
+		
 		private var exploreMap:ExploreMap;
+		
 		private var b:Body;
+		
 		private var hasCollectedReward:Boolean = false;
+		
 		private var bodyAreas:Array;
+		
 		private var exploredAreas:Array;
+		
 		private var zoneExpireTimer:HudTimer;
+		
 		private var updateInterval:int = 5;
 		
-		public function ExploreState(g:Game, b:Body) {
+		public function ExploreState(g:Game, b:Body)
+		{
 			super(g,ExploreState);
 			this.b = b;
 			zoneExpireTimer = new HudTimer(g,10);
 		}
 		
-		override public function enter() : void {
+		override public function enter() : void
+		{
 			var defX:int;
 			var planetName:TextBitmap;
 			var subHeader:TextBitmap;
@@ -82,20 +113,27 @@ package core.states.exploreStates {
 			areaBox.x = 80;
 			areaBox.y = 8 * 60;
 			bodyAreas = b.getExploreAreaTypes();
-			if(bodyAreas.length == 0) {
+			if(bodyAreas.length == 0)
+			{
 				areasText.text = "No areas to explore.";
 				areasText.color = 0xa9a9a9;
 				areasText.size = 14;
 				return;
 			}
-			for each(obj in bodyAreas) {
+			for each(obj in bodyAreas)
+			{
 				areaTypes[obj.key] = obj;
 			}
-			if(exploredAreas) {
+			if(exploredAreas)
+			{
 				createMap();
-			} else {
-				g.me.getExploredAreas(b,function(param1:Array):void {
-					if(container == null) {
+			}
+			else
+			{
+				g.me.getExploredAreas(b,function(param1:Array):void
+				{
+					if(container == null)
+					{
 						return;
 					}
 					exploredAreas = param1;
@@ -104,132 +142,146 @@ package core.states.exploreStates {
 			}
 		}
 		
-		private function addClanControl() : void {
-			var _local5:TextBitmap = null;
-			var _local9:ControlZone = g.controlZoneManager.getZoneByKey(b.key);
-			if(!_local9 || !g.isSystemTypeHostile()) {
+		private function addClanControl() : void
+		{
+			var _loc4_:TextBitmap = null;
+			var _loc3_:ControlZone = g.controlZoneManager.getZoneByKey(b.key);
+			if(!_loc3_ || !g.isSystemTypeHostile())
+			{
 				return;
 			}
-			var _local4:int = 700;
-			var _local2:int = 44;
-			var _local3:TextBitmap = new TextBitmap(_local4,_local2,"Controlled by clan:",12);
-			_local3.alignRight();
-			addChild(_local3);
-			_local2 += 15;
-			var _local6:TextBitmap = new TextBitmap(_local4,_local2,_local9.clanName,26);
-			_local6.alignRight();
-			_local6.format.color = 0xff0000;
-			addChild(_local6);
-			var _local1:ITextureManager = TextureLocator.getService();
-			var _local8:Texture = _local1.getTextureGUIByTextureName(_local9.clanLogo);
-			var _local7:Image = new Image(_local8);
-			_local7.scaleX = _local7.scaleY = 0.25;
-			_local7.color = _local9.clanColor;
-			_local7.x = _local4 - _local6.width - _local7.width - 10;
-			_local7.y = _local2 + _local6.height - _local7.height - 2;
-			addChild(_local7);
-			_local2 += 30;
-			if(_local9.releaseTime > g.time) {
-				zoneExpireTimer.start(g.time,_local9.releaseTime);
-				zoneExpireTimer.x = _local4 - 90;
-				zoneExpireTimer.y = _local2;
+			var _loc6_:int = 700;
+			var _loc2_:int = 44;
+			var _loc5_:TextBitmap = new TextBitmap(_loc6_,_loc2_,"Controlled by clan:",12);
+			_loc5_.alignRight();
+			addChild(_loc5_);
+			_loc2_ += 15;
+			var _loc9_:TextBitmap = new TextBitmap(_loc6_,_loc2_,_loc3_.clanName,26);
+			_loc9_.alignRight();
+			_loc9_.format.color = 0xff0000;
+			addChild(_loc9_);
+			var _loc7_:ITextureManager = TextureLocator.getService();
+			var _loc1_:Texture = _loc7_.getTextureGUIByTextureName(_loc3_.clanLogo);
+			var _loc8_:Image = new Image(_loc1_);
+			_loc8_.scaleX = _loc8_.scaleY = 0.25;
+			_loc8_.color = _loc3_.clanColor;
+			_loc8_.x = _loc6_ - _loc9_.width - _loc8_.width - 10;
+			_loc8_.y = _loc2_ + _loc9_.height - _loc8_.height - 2;
+			addChild(_loc8_);
+			_loc2_ += 30;
+			if(_loc3_.releaseTime > g.time)
+			{
+				zoneExpireTimer.start(g.time,_loc3_.releaseTime);
+				zoneExpireTimer.x = _loc6_ - 90;
+				zoneExpireTimer.y = _loc2_;
 				addChild(zoneExpireTimer);
-			} else {
-				_local5 = new TextBitmap(_local4,_local2,"expired",12);
-				_local5.alignRight();
-				addChild(_local5);
+			}
+			else
+			{
+				_loc4_ = new TextBitmap(_loc6_,_loc2_,"expired",12);
+				_loc4_.alignRight();
+				addChild(_loc4_);
 			}
 		}
 		
-		private function createMap() : void {
+		private function createMap() : void
+		{
 			exploreMap = new ExploreMap(g,bodyAreas,exploredAreas,b);
 			exploreMap.x = 50;
 			exploreMap.y = 110;
 			addChild(exploreMap);
 			addExploreAreas(exploreMap);
 			addChild(areaBox);
-			var _local1:Box = new Box(610,45,"normal",0.95,12);
-			_local1.x = 80;
-			_local1.y = 45;
-			addImg(_local1);
+			var _loc1_:Box = new Box(610,45,"normal",0.95,12);
+			_loc1_.x = 80;
+			_loc1_.y = 45;
+			addImg(_loc1_);
 		}
 		
-		private function showSelectTeam(e:Event) : void {
-			var _local2:ExploreArea = e.target as ExploreArea;
-			sm.changeState(new SelectTeamState(g,b,_local2));
+		private function showSelectTeam(e:Event) : void
+		{
+			var _loc2_:ExploreArea = e.target as ExploreArea;
+			sm.changeState(new SelectTeamState(g,b,_loc2_));
 		}
 		
-		private function addExploreAreas(expMap:ExploreMap) : void {
-			var _local20:* = null;
-			var _local13:Object = null;
-			var _local14:Number = NaN;
-			var _local2:Number = NaN;
-			var _local9:int = 0;
-			var _local7:Array = null;
-			var _local8:int = 0;
-			var _local18:String = null;
-			var _local11:Explore = null;
-			var _local19:int = 0;
-			var _local4:Boolean = false;
-			var _local6:Boolean = false;
-			var _local12:Boolean = false;
-			var _local5:String = null;
-			var _local17:Number = NaN;
-			var _local15:Number = NaN;
-			var _local10:Number = NaN;
-			var _local3:ExploreArea = null;
+		private function addExploreAreas(expMap:ExploreMap) : void
+		{
+			var _loc20_:* = null;
+			var _loc2_:Object = null;
+			var _loc4_:Number = NaN;
+			var _loc7_:Number = NaN;
+			var _loc14_:int = 0;
+			var _loc5_:Array = null;
+			var _loc10_:int = 0;
+			var _loc17_:String = null;
+			var _loc15_:Explore = null;
+			var _loc18_:int = 0;
+			var _loc9_:Boolean = false;
+			var _loc8_:Boolean = false;
+			var _loc11_:Boolean = false;
+			var _loc16_:String = null;
+			var _loc6_:Number = NaN;
+			var _loc12_:Number = NaN;
+			var _loc19_:Number = NaN;
+			var _loc3_:ExploreArea = null;
 			areas = new Vector.<ExploreArea>();
-			if(b.obj.exploreAreas != null) {
-				for each(var _local16:* in b.obj.exploreAreas) {
-					_local20 = _local16;
-					_local13 = areaTypes[_local20];
-					_local14 = Number(_local13.skillLevel);
-					_local2 = Number(_local13.rewardLevel);
-					_local9 = int(_local13.size);
-					_local7 = _local13.types;
-					_local8 = int(_local13.majorType);
-					_local18 = _local13.name;
-					_local11 = g.me.getExploreByKey(_local20);
-					_local19 = 0;
-					_local4 = false;
-					_local6 = false;
-					_local12 = false;
-					_local5 = null;
-					_local17 = 0;
-					_local15 = 0;
-					_local10 = 0;
-					if(_local11) {
-						_local19 = _local11.successfulEvents;
-						_local6 = _local11.finished;
-						_local4 = _local11.failed;
-						_local12 = _local11.lootClaimed;
-						_local15 = _local11.failTime;
-						_local10 = _local11.finishTime;
-						_local17 = _local11.startTime;
+			if(b.obj.exploreAreas != null)
+			{
+				for each(var _loc13_ in b.obj.exploreAreas)
+				{
+					_loc20_ = _loc13_;
+					_loc2_ = areaTypes[_loc20_];
+					_loc4_ = Number(_loc2_.skillLevel);
+					_loc7_ = Number(_loc2_.rewardLevel);
+					_loc14_ = int(_loc2_.size);
+					_loc5_ = _loc2_.types;
+					_loc10_ = int(_loc2_.majorType);
+					_loc17_ = _loc2_.name;
+					_loc15_ = g.me.getExploreByKey(_loc20_);
+					_loc18_ = 0;
+					_loc9_ = false;
+					_loc8_ = false;
+					_loc11_ = false;
+					_loc16_ = null;
+					_loc6_ = 0;
+					_loc12_ = 0;
+					_loc19_ = 0;
+					if(_loc15_)
+					{
+						_loc18_ = _loc15_.successfulEvents;
+						_loc8_ = _loc15_.finished;
+						_loc9_ = _loc15_.failed;
+						_loc11_ = _loc15_.lootClaimed;
+						_loc12_ = _loc15_.failTime;
+						_loc19_ = _loc15_.finishTime;
+						_loc6_ = _loc15_.startTime;
 					}
-					_local3 = new ExploreArea(g,expMap,b,_local20,_local5,_local14,_local2,_local9,_local8,_local7,_local18,_local19,_local4,_local6,_local12,_local15,_local10,_local17);
-					_local3.addEventListener("showSelectTeam",showSelectTeam);
-					_local3.addEventListener("showRewardScreen",showRewardScreen);
-					areas.push(_local3);
-					areaBox.addChild(_local3);
-					g.tutorial.showExploreAdvice(_local3);
-					g.tutorial.showSpecialUnlocks(_local3);
+					_loc3_ = new ExploreArea(g,expMap,b,_loc20_,_loc16_,_loc4_,_loc7_,_loc14_,_loc10_,_loc5_,_loc17_,_loc18_,_loc9_,_loc8_,_loc11_,_loc12_,_loc19_,_loc6_);
+					_loc3_.addEventListener("showSelectTeam",showSelectTeam);
+					_loc3_.addEventListener("showRewardScreen",showRewardScreen);
+					areas.push(_loc3_);
+					areaBox.addChild(_loc3_);
+					g.tutorial.showExploreAdvice(_loc3_);
+					g.tutorial.showSpecialUnlocks(_loc3_);
 				}
 			}
 		}
 		
-		public function showRewardScreen(e:Event) : void {
-			var _local2:ExploreArea = e.target as ExploreArea;
-			sm.changeState(new ReportState(g,_local2));
+		public function showRewardScreen(e:Event) : void
+		{
+			var _loc2_:ExploreArea = e.target as ExploreArea;
+			sm.changeState(new ReportState(g,_loc2_));
 		}
 		
-		private function addImg(box:Box) : void {
-			var _local2:Number = NaN;
-			if(b.texture != null) {
-				_local2 = 50 / b.texture.width;
+		private function addImg(box:Box) : void
+		{
+			var _loc2_:Number = NaN;
+			if(b.texture != null)
+			{
+				_loc2_ = 50 / b.texture.width;
 				planetGfx = new Image(b.texture);
-				planetGfx.scaleX = _local2;
-				planetGfx.scaleY = _local2;
+				planetGfx.scaleX = _loc2_;
+				planetGfx.scaleY = _loc2_;
 				planetGfx.x = 80;
 				planetGfx.y = 45;
 				addChild(planetGfx);
@@ -237,38 +289,48 @@ package core.states.exploreStates {
 			}
 		}
 		
-		override public function execute() : void {
-			if(updateInterval-- > 0) {
+		override public function execute() : void
+		{
+			if(updateInterval-- > 0)
+			{
 				return;
 			}
-			if(ControlZoneManager.claimData) {
+			if(ControlZoneManager.claimData)
+			{
 				sm.changeState(new ControlZoneState(g,b));
 			}
 			updateInterval = 5;
-			for each(var _local1:* in areas) {
-				if(areaBox.contains(_local1)) {
-					_local1.visible = false;
+			for each(var _loc1_ in areas)
+			{
+				if(areaBox.contains(_loc1_))
+				{
+					_loc1_.visible = false;
 				}
-				if(ExploreMap.selectedArea != null && ExploreMap.selectedArea.key == _local1.areaKey) {
-					_local1.visible = true;
+				if(ExploreMap.selectedArea != null && ExploreMap.selectedArea.key == _loc1_.areaKey)
+				{
+					_loc1_.visible = true;
 				}
-				_local1.update();
+				_loc1_.update();
 			}
 			zoneExpireTimer.update();
 			super.execute();
 		}
 		
-		public function stopEffect() : void {
-			for each(var _local1:* in areas) {
-				_local1.stopEffect();
+		public function stopEffect() : void
+		{
+			for each(var _loc1_ in areas)
+			{
+				_loc1_.stopEffect();
 			}
 		}
 		
-		override public function get type() : String {
+		override public function get type() : String
+		{
 			return "ExploreState";
 		}
 		
-		override public function exit() : void {
+		override public function exit() : void
+		{
 			removeChild(areaBox,true);
 			PixelHitArea.dispose();
 			ToolTip.disposeType("skill");

@@ -1,4 +1,5 @@
-package core.hud.components.credits {
+package core.hud.components.credits
+{
 	import core.hud.components.Box;
 	import core.hud.components.Button;
 	import core.hud.components.hangar.SkinItem;
@@ -10,16 +11,20 @@ package core.hud.components.credits {
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class CreditMegaPackage extends CreditPackageItem {
+	public class CreditMegaPackage extends CreditPackageItem
+	{
 		private var previewBox:Box;
+		
 		private var overlay:Quad;
 		
-		public function CreditMegaPackage(g:Game, parent:Sprite, spinner:Boolean = false) {
+		public function CreditMegaPackage(g:Game, parent:Sprite, spinner:Boolean = false)
+		{
 			super(g,parent,spinner);
 			load();
 		}
 		
-		override protected function load() : void {
+		override protected function load() : void
+		{
 			var scrollContainer:ScrollContainer;
 			var previewButton:Button;
 			var previewButton2:Button;
@@ -46,9 +51,10 @@ package core.hud.components.credits {
 			scrollContainer.x = 20;
 			scrollContainer.y = 20;
 			previewBox.addChild(scrollContainer);
-			previewButton = new Button(function():void {
-				var _local1:SkinItem = new SkinItem(g,g.dataManager.loadKey("Skins","GOUN-DLB8k6x3dliHEX0XQ"),2);
-				scrollContainer.addChild(_local1);
+			previewButton = new Button(function():void
+			{
+				var _loc1_:SkinItem = new SkinItem(g,g.dataManager.loadKey("Skins","GOUN-DLB8k6x3dliHEX0XQ"),2);
+				scrollContainer.addChild(_loc1_);
 				g.addChildToOverlay(overlay,true);
 				g.addChildToOverlay(previewBox,true);
 			},Localize.t("Preview"),"highlight");
@@ -57,9 +63,10 @@ package core.hud.components.credits {
 			previewButton.x = 3 * 60;
 			previewButton.size = 10;
 			infoContainer.addChild(previewButton);
-			previewButton2 = new Button(function():void {
-				var _local1:SkinItem = new SkinItem(g,g.dataManager.loadKey("Skins","qR4l2lErdUugZRSToo10fw"),2);
-				scrollContainer.addChild(_local1);
+			previewButton2 = new Button(function():void
+			{
+				var _loc1_:SkinItem = new SkinItem(g,g.dataManager.loadKey("Skins","qR4l2lErdUugZRSToo10fw"),2);
+				scrollContainer.addChild(_loc1_);
 				g.addChildToOverlay(overlay,true);
 				g.addChildToOverlay(previewBox,true);
 			},Localize.t("Preview"),"highlight");
@@ -68,9 +75,10 @@ package core.hud.components.credits {
 			previewButton2.x = 3 * 60;
 			previewButton2.size = 10;
 			infoContainer.addChild(previewButton2);
-			previewButton3 = new Button(function():void {
-				var _local1:SkinItem = new SkinItem(g,g.dataManager.loadKey("Skins","xxGYahwdREakkrJusV0zHA"),2);
-				scrollContainer.addChild(_local1);
+			previewButton3 = new Button(function():void
+			{
+				var _loc1_:SkinItem = new SkinItem(g,g.dataManager.loadKey("Skins","xxGYahwdREakkrJusV0zHA"),2);
+				scrollContainer.addChild(_loc1_);
 				g.addChildToOverlay(overlay,true);
 				g.addChildToOverlay(previewBox,true);
 			},Localize.t("Preview"),"highlight");
@@ -79,7 +87,8 @@ package core.hud.components.credits {
 			previewButton3.x = 3 * 60;
 			previewButton3.size = 10;
 			infoContainer.addChild(previewButton3);
-			closeButton = new Button(function():void {
+			closeButton = new Button(function():void
+			{
 				scrollContainer.removeChildren();
 				g.removeChildFromOverlay(overlay);
 				g.removeChildFromOverlay(previewBox);
@@ -92,14 +101,16 @@ package core.hud.components.credits {
 			g.addResizeListener(resize);
 		}
 		
-		private function resize(e:Event = null) : void {
+		private function resize(e:Event = null) : void
+		{
 			previewBox.x = g.stage.stageWidth / 2 - 200;
 			previewBox.y = g.stage.stageHeight / 2 - 250;
 			overlay.width = g.stage.stageWidth;
 			overlay.height = g.stage.stageHeight;
 		}
 		
-		override protected function onSuccess(m:Message) : void {
+		override protected function onSuccess(m:Message) : void
+		{
 			g.showMessageDialog(Localize.t("<font color=\'#88ff88\'>Thanks!</font>.<br><br><font color=\'#ffff88\'>Please reload the game to make sure everything is updated!</font>"));
 			g.me.addNewSkin(m.getString(1));
 			g.me.addNewSkin(m.getString(2));
@@ -111,11 +122,13 @@ package core.hud.components.credits {
 			updateContainers();
 		}
 		
-		override protected function updateContainers() : void {
+		override protected function updateContainers() : void
+		{
 			super.updateContainers();
 		}
 		
-		override public function dispose() : void {
+		override public function dispose() : void
+		{
 			g.removeResizeListener(resize);
 			super.dispose();
 		}

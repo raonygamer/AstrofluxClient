@@ -1,4 +1,5 @@
-package core.states.gameStates {
+package core.states.gameStates
+{
 	import core.hud.components.ButtonExpandableHud;
 	import core.scene.Game;
 	import core.scene.SceneBase;
@@ -8,35 +9,49 @@ package core.states.gameStates {
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class SettingsState extends PlayState {
+	public class SettingsState extends PlayState
+	{
 		private var goTo:String;
+		
 		private var settings:Settings;
+		
 		private var bg:Image;
+		
 		private var closeButton:ButtonExpandableHud;
+		
 		private var generalButton:ButtonExpandableHud;
+		
 		private var bindingsButton:ButtonExpandableHud;
+		
 		private var chatButton:ButtonExpandableHud;
+		
 		private var activeButton:ButtonExpandableHud;
+		
 		private var activePage:Sprite;
 		
-		public function SettingsState(g:Game, goTo:String = "") {
+		public function SettingsState(g:Game, goTo:String = "")
+		{
 			super(g);
 			this.goTo = goTo;
 			this.settings = SceneBase.settings;
 			bg = new Image(textureManager.getTextureGUIByTextureName("map_bgr.png"));
-			generalButton = new ButtonExpandableHud(function():void {
+			generalButton = new ButtonExpandableHud(function():void
+			{
 				show(SettingsGeneral,generalButton);
 			},"General");
-			bindingsButton = new ButtonExpandableHud(function():void {
+			bindingsButton = new ButtonExpandableHud(function():void
+			{
 				show(SettingsBindings,bindingsButton);
 			},"Key bindings");
-			chatButton = new ButtonExpandableHud(function():void {
+			chatButton = new ButtonExpandableHud(function():void
+			{
 				show(SettingsChat,chatButton);
 			},"Chat");
 			closeButton = new ButtonExpandableHud(close,Localize.t("close"));
 		}
 		
-		override public function enter() : void {
+		override public function enter() : void
+		{
 			super.enter();
 			g.hud.show = false;
 			drawBlackBackground();
@@ -49,7 +64,8 @@ package core.states.gameStates {
 			show(SettingsGeneral,generalButton);
 		}
 		
-		override public function resize(e:Event = null) : void {
+		override public function resize(e:Event = null) : void
+		{
 			super.resize();
 			container.x = g.stage.stageWidth / 2 - bg.width / 2;
 			container.y = g.stage.stageHeight / 2 - bg.height / 2;
@@ -63,27 +79,34 @@ package core.states.gameStates {
 			closeButton.x = container.x + 760 - 46 - closeButton.width;
 		}
 		
-		override public function execute() : void {
+		override public function execute() : void
+		{
 			updateInput();
 			super.execute();
 		}
 		
-		private function updateInput() : void {
-			if(!loaded) {
+		private function updateInput() : void
+		{
+			if(!loaded)
+			{
 				return;
 			}
 			checkAccelerate(true);
-			if(keybinds.isEscPressed || keybinds.isInputPressed(8)) {
+			if(keybinds.isEscPressed || keybinds.isInputPressed(8))
+			{
 				close();
 			}
 		}
 		
-		private function show(Page:Class, button:ButtonExpandableHud) : void {
-			if(activeButton == button) {
+		private function show(Page:Class, button:ButtonExpandableHud) : void
+		{
+			if(activeButton == button)
+			{
 				activeButton.enabled = true;
 				return;
 			}
-			if(activePage) {
+			if(activePage)
+			{
 				container.removeChild(activePage,true);
 			}
 			activePage = new Page(g);
@@ -91,7 +114,8 @@ package core.states.gameStates {
 			updateButtons(button);
 		}
 		
-		private function updateButtons(button:ButtonExpandableHud) : void {
+		private function updateButtons(button:ButtonExpandableHud) : void
+		{
 			generalButton.select = button == generalButton;
 			bindingsButton.select = button == bindingsButton;
 			chatButton.select = button == chatButton;
@@ -99,12 +123,14 @@ package core.states.gameStates {
 			activeButton.enabled = true;
 		}
 		
-		private function close() : void {
+		private function close() : void
+		{
 			g.removeChildFromMenu(generalButton);
 			g.removeChildFromMenu(bindingsButton);
 			g.removeChildFromMenu(chatButton);
 			g.removeChildFromMenu(closeButton);
-			if(activePage) {
+			if(activePage)
+			{
 				container.removeChild(activePage,true);
 			}
 			clearBackground();

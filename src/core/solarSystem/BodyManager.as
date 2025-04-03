@@ -1,20 +1,30 @@
-package core.solarSystem {
+package core.solarSystem
+{
 	import core.scene.Game;
 	import debug.Console;
 	import flash.utils.Dictionary;
 	import playerio.Message;
 	
-	public class BodyManager {
+	public class BodyManager
+	{
 		private static const MAX_ORBIT_DIFF:Number = 10;
+		
 		public var bodiesById:Dictionary;
+		
 		public var bodies:Vector.<Body>;
+		
 		public var roots:Vector.<Body>;
+		
 		public var visibleBodies:Vector.<Body>;
+		
 		private var startTime:Number;
+		
 		private var bodyId:int = 0;
+		
 		private var g:Game;
 		
-		public function BodyManager(m:Game) {
+		public function BodyManager(m:Game)
+		{
 			super();
 			this.g = m;
 			bodies = new Vector.<Body>();
@@ -23,107 +33,125 @@ package core.solarSystem {
 			visibleBodies = new Vector.<Body>();
 		}
 		
-		public function addMessageHandlers() : void {
+		public function addMessageHandlers() : void
+		{
 		}
 		
-		public function update() : void {
-			var _local2:Body = null;
-			var _local3:int = 0;
-			if(g.me == null || g.me.ship == null) {
+		public function update() : void
+		{
+			var _loc3_:Body = null;
+			var _loc1_:int = 0;
+			if(g.me == null || g.me.ship == null)
+			{
 				return;
 			}
-			var _local1:int = int(roots.length);
-			_local3 = _local1 - 1;
-			while(_local3 > -1) {
-				_local2 = roots[_local3];
-				_local2.updateBody(startTime);
-				_local3--;
+			var _loc2_:int = int(roots.length);
+			_loc1_ = _loc2_ - 1;
+			while(_loc1_ > -1)
+			{
+				_loc3_ = roots[_loc1_];
+				_loc3_.updateBody(startTime);
+				_loc1_--;
 			}
 		}
 		
-		public function forceUpdate() : void {
-			var _local2:Body = null;
-			var _local3:int = 0;
-			var _local1:int = int(bodies.length);
-			_local3 = _local1 - 1;
-			while(_local3 > -1) {
-				_local2 = bodies[_local3];
-				_local2.nextDistanceCalculation = 0;
-				_local3--;
+		public function forceUpdate() : void
+		{
+			var _loc3_:Body = null;
+			var _loc1_:int = 0;
+			var _loc2_:int = int(bodies.length);
+			_loc1_ = _loc2_ - 1;
+			while(_loc1_ > -1)
+			{
+				_loc3_ = bodies[_loc1_];
+				_loc3_.nextDistanceCalculation = 0;
+				_loc1_--;
 			}
 		}
 		
-		public function getBodyByKey(key:String) : Body {
-			for each(var _local2:* in bodies) {
-				if(_local2.key == key) {
-					return _local2;
+		public function getBodyByKey(key:String) : Body
+		{
+			for each(var _loc2_ in bodies)
+			{
+				if(_loc2_.key == key)
+				{
+					return _loc2_;
 				}
 			}
 			return null;
 		}
 		
-		public function getBody() : Body {
-			var _local1:Body = new Body(g);
-			bodies.push(_local1);
-			return _local1;
+		public function getBody() : Body
+		{
+			var _loc1_:Body = new Body(g);
+			bodies.push(_loc1_);
+			return _loc1_;
 		}
 		
-		public function getRoot() : Body {
-			var _local1:Body = getBody();
-			roots.push(_local1);
-			return _local1;
+		public function getRoot() : Body
+		{
+			var _loc1_:Body = getBody();
+			roots.push(_loc1_);
+			return _loc1_;
 		}
 		
-		public function syncBodies(m:Message, index:int, endIndex:int) : void {
-			var _local5:* = 0;
-			var _local4:Body = null;
-			_local5 = index;
-			while(_local5 < endIndex) {
-				_local4 = getBodyByKey(m.getString(_local5));
-				if(_local4 == null) {
+		public function syncBodies(m:Message, index:int, endIndex:int) : void
+		{
+			var _loc5_:* = 0;
+			var _loc4_:Body = null;
+			_loc5_ = index;
+			while(_loc5_ < endIndex)
+			{
+				_loc4_ = getBodyByKey(m.getString(_loc5_));
+				if(_loc4_ == null)
+				{
 					Console.write("Body is null in sync.");
 				}
-				_local5 += 2;
+				_loc5_ += 2;
 			}
 		}
 		
-		public function initSolarSystem(m:Message) : void {
-			var _local9:* = 0;
-			var _local8:String = m.getString(0);
+		public function initSolarSystem(m:Message) : void
+		{
+			var _loc7_:* = 0;
+			var _loc8_:String = m.getString(0);
 			startTime = m.getNumber(2);
 			g.hud.uberStats.uberRank = m.getNumber(3);
 			g.hud.uberStats.uberLives = m.getNumber(4);
-			BodyFactory.createSolarSystem(g,_local8);
+			BodyFactory.createSolarSystem(g,_loc8_);
 			g.solarSystem.pvpAboveCap = m.getBoolean(1);
-			_local9 = 5;
-			var _local5:int = m.getInt(_local9++);
-			var _local6:int = _local5 * 5 + _local9;
-			while(_local9 < _local6) {
-				g.deathLineManager.addLine(m.getInt(_local9),m.getInt(_local9 + 1),m.getInt(_local9 + 2),m.getInt(_local9 + 3),m.getString(_local9 + 4));
-				_local9 += 5;
+			_loc7_ = 5;
+			var _loc4_:int = m.getInt(_loc7_++);
+			var _loc6_:int = _loc4_ * 5 + _loc7_;
+			while(_loc7_ < _loc6_)
+			{
+				g.deathLineManager.addLine(m.getInt(_loc7_),m.getInt(_loc7_ + 1),m.getInt(_loc7_ + 2),m.getInt(_loc7_ + 3),m.getString(_loc7_ + 4));
+				_loc7_ += 5;
 			}
-			var _local4:int = m.getInt(_local9++);
-			_local6 = _local4 * 4 + _local9;
-			g.bossManager.initBosses(m,_local9,_local6);
-			_local9 = _local6;
-			var _local7:int = m.getInt(_local9++);
-			_local6 = _local7 * 5 + _local9;
-			g.spawnManager.syncSpawners(m,_local9,_local6);
-			_local9 = _local6;
-			var _local2:int = m.getInt(_local9++);
-			_local6 = _local2 * 5 + _local9;
-			g.turretManager.syncTurret(m,_local9,_local6);
-			_local9 = _local6;
-			var _local3:int = m.getInt(_local9++);
-			_local6 = _local3 * 2 + _local9;
-			g.bodyManager.syncBodies(m,_local9,_local6);
-			_local9 = _local6;
+			var _loc2_:int = m.getInt(_loc7_++);
+			_loc6_ = _loc2_ * 4 + _loc7_;
+			g.bossManager.initBosses(m,_loc7_,_loc6_);
+			_loc7_ = _loc6_;
+			var _loc5_:int = m.getInt(_loc7_++);
+			_loc6_ = _loc5_ * 5 + _loc7_;
+			g.spawnManager.syncSpawners(m,_loc7_,_loc6_);
+			_loc7_ = _loc6_;
+			var _loc3_:int = m.getInt(_loc7_++);
+			_loc6_ = _loc3_ * 5 + _loc7_;
+			g.turretManager.syncTurret(m,_loc7_,_loc6_);
+			_loc7_ = _loc6_;
+			var _loc9_:int = m.getInt(_loc7_++);
+			_loc6_ = _loc9_ * 2 + _loc7_;
+			g.bodyManager.syncBodies(m,_loc7_,_loc6_);
+			_loc7_ = _loc6_;
 		}
 		
-		public function dispose() : void {
+		public function dispose() : void
+		{
 			bodiesById = null;
-			for each(var _local1:* in bodies) {
-				_local1.reset();
+			for each(var _loc1_ in bodies)
+			{
+				_loc1_.reset();
 			}
 			bodies = null;
 		}

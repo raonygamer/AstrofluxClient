@@ -1,24 +1,32 @@
-package core.hud.components {
+package core.hud.components
+{
 	import starling.display.Image;
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class Line extends Image {
+	public class Line extends Image
+	{
 		private var overlap:Boolean;
+		
 		public var toX:Number;
+		
 		public var toY:Number;
+		
 		private var oldTextureName:String;
 		
-		public function Line(textureName:String = "line1") {
-			var _local2:ITextureManager = TextureLocator.getService();
-			super(_local2.getTextureMainByTextureName(textureName));
+		public function Line(textureName:String = "line1")
+		{
+			var _loc2_:ITextureManager = TextureLocator.getService();
+			super(_loc2_.getTextureMainByTextureName(textureName));
 		}
 		
-		public function init(textureName:String = "line1", thickness:int = 1, color:uint = 16777215, alpha:Number = 1, overlap:Boolean = false) : void {
-			var _local6:ITextureManager = null;
-			if(oldTextureName != textureName) {
-				_local6 = TextureLocator.getService();
-				this.texture = _local6.getTextureMainByTextureName(textureName);
+		public function init(textureName:String = "line1", thickness:int = 1, color:uint = 16777215, alpha:Number = 1, overlap:Boolean = false) : void
+		{
+			var _loc6_:ITextureManager = null;
+			if(oldTextureName != textureName)
+			{
+				_loc6_ = TextureLocator.getService();
+				this.texture = _loc6_.getTextureMainByTextureName(textureName);
 				this.readjustSize(texture.width,texture.height);
 				pivotY = texture.height / 2;
 			}
@@ -31,28 +39,32 @@ package core.hud.components {
 			this.visible = true;
 		}
 		
-		public function lineTo(toX:Number, toY:Number) : void {
+		public function lineTo(toX:Number, toY:Number) : void
+		{
 			this.toX = toX;
 			this.toY = toY;
-			var _local3:Number = toX - x;
-			var _local5:Number = toY - y;
-			var _local4:Number = Math.sqrt(_local3 * _local3 + _local5 * _local5);
-			if(_local4 == 0) {
+			var _loc3_:Number = toX - x;
+			var _loc5_:Number = toY - y;
+			var _loc4_:Number = Math.sqrt(_loc3_ * _loc3_ + _loc5_ * _loc5_);
+			if(_loc4_ == 0)
+			{
 				return;
 			}
 			this.rotation = 0;
-			width = overlap ? _local4 + height : _local4;
-			this.rotation = Math.atan2(_local5,_local3);
+			width = overlap ? _loc4_ + height : _loc4_;
+			this.rotation = Math.atan2(_loc5_,_loc3_);
 		}
 		
-		public function set thickness(value:Number) : void {
-			var _local2:Number = this.rotation;
+		public function set thickness(value:Number) : void
+		{
+			var _loc2_:Number = this.rotation;
 			this.rotation = 0;
 			height = value;
-			this.rotation = _local2;
+			this.rotation = _loc2_;
 		}
 		
-		override public function dispose() : void {
+		override public function dispose() : void
+		{
 			super.dispose();
 		}
 	}

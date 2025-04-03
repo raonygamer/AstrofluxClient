@@ -1,57 +1,70 @@
-package core.spawner {
+package core.spawner
+{
 	import core.boss.Boss;
 	import core.scene.Game;
 	
-	public class SpawnFactory {
-		public function SpawnFactory() {
+	public class SpawnFactory
+	{
+		public function SpawnFactory()
+		{
 			super();
 		}
 		
-		public static function createSpawner(obj:Object, key:String, g:Game, b:Boss = null) : Spawner {
-			var _local5:Spawner = g.spawnManager.getSpawner(obj.type);
-			_local5.obj = obj;
-			_local5.isHostile = true;
-			if(obj.hasOwnProperty("AIFaction1") && obj.AIFaction1 != "") {
-				_local5.factions.push(obj.AIFaction1);
+		public static function createSpawner(obj:Object, key:String, g:Game, b:Boss = null) : Spawner
+		{
+			var _loc5_:Spawner = g.spawnManager.getSpawner(obj.type);
+			_loc5_.obj = obj;
+			_loc5_.isHostile = true;
+			if(obj.hasOwnProperty("AIFaction1") && obj.AIFaction1 != "")
+			{
+				_loc5_.factions.push(obj.AIFaction1);
 			}
-			if(obj.hasOwnProperty("AIFaction2") && obj.AIFaction2 != "") {
-				_local5.factions.push(obj.AIFaction2);
+			if(obj.hasOwnProperty("AIFaction2") && obj.AIFaction2 != "")
+			{
+				_loc5_.factions.push(obj.AIFaction2);
 			}
-			_local5.bodyName = obj.name;
-			_local5.key = key;
-			_local5.objKey = obj.key;
-			_local5.innerRadius = obj.innerRadius;
-			_local5.outerRadius = obj.outerRadius;
-			_local5.collisionRadius = obj.collisionRadius;
-			_local5.orbitRadius = obj.orbitRadius;
-			_local5.spawnerType = obj.type;
-			if(_local5.orbitRadius == 0) {
-				_local5.angleVelocity = 0;
-			} else {
-				_local5.angleVelocity = 1 / (_local5.orbitRadius * 3.141592653589793);
+			_loc5_.bodyName = obj.name;
+			_loc5_.key = key;
+			_loc5_.objKey = obj.key;
+			_loc5_.innerRadius = obj.innerRadius;
+			_loc5_.outerRadius = obj.outerRadius;
+			_loc5_.collisionRadius = obj.collisionRadius;
+			_loc5_.orbitRadius = obj.orbitRadius;
+			_loc5_.spawnerType = obj.type;
+			if(_loc5_.orbitRadius == 0)
+			{
+				_loc5_.angleVelocity = 0;
 			}
-			_local5.rotationSpeed = 0;
-			_local5.hidden = obj.hidden;
-			_local5.level = obj.level;
-			_local5.hp = obj.hp;
-			_local5.hpMax = _local5.hp;
-			_local5.shieldHp = obj.shieldHp;
-			_local5.shieldHpMax = _local5.shieldHp;
-			_local5.tryAdjustUberStats(b);
-			_local5.initialHardenedShield = b == null ? true : false;
-			_local5.explosionSound = obj.explosionSound;
-			_local5.explosionEffect = obj.explosionEffect;
-			if(_local5.isMech() && obj.explosionEffect == null) {
-				_local5.explosionEffect = "Vk5Hgk-n2UqelveFMqdCfw";
-			} else if(_local5.spawnerType == "organic" && obj.explosionEffect == null) {
-				_local5.explosionEffect = "QZPBVWcMEUqxnySWvkwTAw";
+			else
+			{
+				_loc5_.angleVelocity = 1 / (_loc5_.orbitRadius * 3.141592653589793);
 			}
-			_local5.switchTexturesByObj(obj);
-			if(obj.turrets != null) {
-				_local5.addTurrets(obj);
+			_loc5_.rotationSpeed = 0;
+			_loc5_.hidden = obj.hidden;
+			_loc5_.level = obj.level;
+			_loc5_.hp = obj.hp;
+			_loc5_.hpMax = _loc5_.hp;
+			_loc5_.shieldHp = obj.shieldHp;
+			_loc5_.shieldHpMax = _loc5_.shieldHp;
+			_loc5_.tryAdjustUberStats(b);
+			_loc5_.initialHardenedShield = b == null ? true : false;
+			_loc5_.explosionSound = obj.explosionSound;
+			_loc5_.explosionEffect = obj.explosionEffect;
+			if(_loc5_.isMech() && obj.explosionEffect == null)
+			{
+				_loc5_.explosionEffect = "Vk5Hgk-n2UqelveFMqdCfw";
 			}
-			_local5.alive = true;
-			return _local5;
+			else if(_loc5_.spawnerType == "organic" && obj.explosionEffect == null)
+			{
+				_loc5_.explosionEffect = "QZPBVWcMEUqxnySWvkwTAw";
+			}
+			_loc5_.switchTexturesByObj(obj);
+			if(obj.turrets != null)
+			{
+				_loc5_.addTurrets(obj);
+			}
+			_loc5_.alive = true;
+			return _loc5_;
 		}
 	}
 }

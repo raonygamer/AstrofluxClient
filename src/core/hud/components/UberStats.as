@@ -1,4 +1,5 @@
-package core.hud.components {
+package core.hud.components
+{
 	import core.scene.Game;
 	import flash.utils.Dictionary;
 	import playerio.Message;
@@ -7,37 +8,66 @@ package core.hud.components {
 	import starling.text.TextField;
 	import starling.text.TextFormat;
 	
-	public class UberStats extends Sprite {
+	public class UberStats extends Sprite
+	{
 		private var g:Game;
+		
 		public var uberMaxLevel:Number = 100;
+		
 		public var uberMinLevel:Number = 1;
+		
 		public var uberDifficultyAtTopRank:Number = 2000;
+		
 		public var uberTopRank:Number = 10;
+		
 		public var uberLevel:Number = 0;
+		
 		public var uberLives:Number = 3;
+		
 		public var uberRank:Number = 0;
+		
 		private var oldScore:Number = 0;
+		
 		private var oldXpLeft:int = 0;
+		
 		private var oldBossesLeft:int = 0;
+		
 		private var oldMiniBossesLeft:int = 0;
+		
 		private var oldSpawnerLeft:int = 0;
+		
 		private var oldUberRank:int = 0;
+		
 		private var optionalRank:int = 3;
+		
 		private var scoreTime:Number = 0;
+		
 		private var lives:Dictionary = new Dictionary();
+		
 		private var rankText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
+		
 		private var challengeText:TextBitmap = new TextBitmap();
+		
 		private var missionText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
+		
 		private var optionalMissionText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
+		
 		private var xpText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
+		
 		private var optionalText:TextBitmap = new TextBitmap();
+		
 		private var scoreText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
+		
 		private var highscoreText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
+		
 		private var lifes:TextBitmap = new TextBitmap();
+		
 		private var oldCompleted:Boolean = false;
+		
 		private var oldOptionalCompleted:Boolean = false;
 		
-		public function UberStats(g:Game) {
+		public function UberStats(g:Game)
+		{
 			super();
 			this.g = g;
 			addChild(rankText);
@@ -51,78 +81,94 @@ package core.hud.components {
 			addChild(lifes);
 		}
 		
-		public function update(m:Message) : void {
-			var _local22:int = 0;
-			var _local24:* = 0;
-			var _local9:Object = null;
-			var _local3:TextBitmap = null;
-			var _local27:int = 0;
-			uberRank = m.getNumber(_local27++);
-			uberLevel = m.getNumber(_local27++);
-			var _local6:int = m.getInt(_local27++);
-			var _local5:Number = m.getNumber(_local27++);
-			var _local17:Number = m.getNumber(_local27++);
-			var _local12:int = m.getInt(_local27++);
-			var _local26:int = m.getInt(_local27++);
-			var _local15:int = m.getInt(_local27++);
-			var _local4:int = m.getInt(_local27++);
-			var _local20:int = m.getInt(_local27++);
-			var _local10:int = m.getInt(_local27++);
-			var _local2:int = m.getInt(_local27++);
-			var _local11:String = m.getString(_local27++);
-			var _local25:String = m.getString(_local27++);
-			var _local16:Boolean = m.getBoolean(_local27++);
-			var _local7:Boolean = m.getBoolean(_local27++);
-			var _local21:int = m.getInt(_local27++);
-			var _local18:Array = [];
-			if(uberRank == oldUberRank + 1) {
+		public function update(m:Message) : void
+		{
+			var _loc14_:int = 0;
+			var _loc13_:* = 0;
+			var _loc27_:Object = null;
+			var _loc18_:TextBitmap = null;
+			var _loc23_:int = 0;
+			uberRank = m.getNumber(_loc23_++);
+			uberLevel = m.getNumber(_loc23_++);
+			var _loc22_:int = m.getInt(_loc23_++);
+			var _loc7_:Number = m.getNumber(_loc23_++);
+			var _loc20_:Number = m.getNumber(_loc23_++);
+			var _loc3_:int = m.getInt(_loc23_++);
+			var _loc24_:int = m.getInt(_loc23_++);
+			var _loc8_:int = m.getInt(_loc23_++);
+			var _loc9_:int = m.getInt(_loc23_++);
+			var _loc15_:int = m.getInt(_loc23_++);
+			var _loc26_:int = m.getInt(_loc23_++);
+			var _loc6_:int = m.getInt(_loc23_++);
+			var _loc4_:String = m.getString(_loc23_++);
+			var _loc10_:String = m.getString(_loc23_++);
+			var _loc16_:Boolean = m.getBoolean(_loc23_++);
+			var _loc25_:Boolean = m.getBoolean(_loc23_++);
+			var _loc2_:int = m.getInt(_loc23_++);
+			var _loc21_:Array = [];
+			if(uberRank == oldUberRank + 1)
+			{
 				g.textManager.createUberRankCompleteText("START RANK " + uberRank + "");
 				SoundLocator.getService().play("5wAlzsUCPEKqX7tAdCw3UA");
 			}
-			if(_local16 && !oldCompleted) {
+			if(_loc16_ && !oldCompleted)
+			{
 				g.textManager.createUberRankCompleteText("RANK " + uberRank + " COMPLETE!");
 				SoundLocator.getService().play("5wAlzsUCPEKqX7tAdCw3UA");
 			}
-			if(_local7 && !oldOptionalCompleted && uberRank >= optionalRank) {
+			if(_loc25_ && !oldOptionalCompleted && uberRank >= optionalRank)
+			{
 				g.textManager.createUberExtraLifeText("EXTRA LIFE!");
 				SoundLocator.getService().play("5wAlzsUCPEKqX7tAdCw3UA");
 			}
-			if(oldScore < _local17 && _local5 > _local17) {
+			if(oldScore < _loc20_ && _loc7_ > _loc20_)
+			{
 				g.textManager.createUberExtraLifeText("NEW HIGHSCORE!");
 				SoundLocator.getService().play("5wAlzsUCPEKqX7tAdCw3UA");
 			}
-			var _local13:int = _local12 - _local6;
-			var _local19:int = _local15 - _local26;
-			var _local14:int = _local20 - _local4;
-			var _local8:int = _local2 - _local10;
-			if(_local19 < oldBossesLeft && (_local25 == "boss" && uberRank >= optionalRank || _local11 == "boss")) {
-				g.textManager.createUberTaskText(_local26 + " of " + _local15 + " bosses destroyed!");
+			var _loc5_:int = _loc3_ - _loc22_;
+			var _loc17_:int = _loc8_ - _loc24_;
+			var _loc12_:int = _loc15_ - _loc9_;
+			var _loc11_:int = _loc6_ - _loc26_;
+			if(_loc17_ < oldBossesLeft && (_loc10_ == "boss" && uberRank >= optionalRank || _loc4_ == "boss"))
+			{
+				g.textManager.createUberTaskText(_loc24_ + " of " + _loc8_ + " bosses destroyed!");
 				SoundLocator.getService().play("F3RA7-UJ6EKLT6WeJyKq-w");
 			}
-			if(_local14 < oldMiniBossesLeft && (_local25 == "miniboss" && uberRank >= optionalRank || _local11 == "miniboss")) {
-				g.textManager.createUberTaskText(_local4 + " of " + _local20 + " mini bosses killed!");
+			if(_loc12_ < oldMiniBossesLeft && (_loc10_ == "miniboss" && uberRank >= optionalRank || _loc4_ == "miniboss"))
+			{
+				g.textManager.createUberTaskText(_loc9_ + " of " + _loc15_ + " mini bosses killed!");
 				SoundLocator.getService().play("F3RA7-UJ6EKLT6WeJyKq-w");
 			}
-			if(_local8 < oldSpawnerLeft && (_local25 == "spawner" && uberRank >= optionalRank || _local11 == "spawner")) {
-				g.textManager.createUberTaskText(_local10 + " of " + _local2 + " spawners smashed!");
+			if(_loc11_ < oldSpawnerLeft && (_loc10_ == "spawner" && uberRank >= optionalRank || _loc4_ == "spawner"))
+			{
+				g.textManager.createUberTaskText(_loc26_ + " of " + _loc6_ + " spawners smashed!");
 				SoundLocator.getService().play("F3RA7-UJ6EKLT6WeJyKq-w");
 			}
-			if(g.time > scoreTime && _local5 > oldScore) {
-				g.textManager.createScoreText(_local5 - oldScore);
+			if(g.time > scoreTime && _loc7_ > oldScore)
+			{
+				g.textManager.createScoreText(_loc7_ - oldScore);
 			}
-			var _local23:String = "<FONT COLOR=\'#88FF88\'>complete</FONT>";
+			var _loc19_:String = "<FONT COLOR=\'#88FF88\'>complete</FONT>";
 			missionText.format.size = 14;
 			missionText.format.color = Style.COLOR_HIGHLIGHT;
 			missionText.format.horizontalAlign = "right";
 			missionText.alignPivot("right");
 			missionText.isHtmlText = true;
-			if(_local11 == "boss") {
-				missionText.text = "Bosses: <FONT COLOR=\'#FFFFFF\'>" + (_local19 == 0 ? _local23 : _local26 + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _local15) + "</FONT></FONT>";
-			} else if(_local11 == "miniboss") {
-				missionText.text = "Mini Bosses: <FONT COLOR=\'#FFFFFF\'>" + (_local14 == 0 ? _local23 : _local4 + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _local20) + "</FONT></FONT>";
-			} else if(_local11 == "spawner") {
-				missionText.text = "Spawners: <FONT COLOR=\'#FFFFFF\'>" + (_local8 == 0 ? _local23 : _local10 + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _local2) + "</FONT></FONT>";
-			} else {
+			if(_loc4_ == "boss")
+			{
+				missionText.text = "Bosses: <FONT COLOR=\'#FFFFFF\'>" + (_loc17_ == 0 ? _loc19_ : _loc24_ + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _loc8_) + "</FONT></FONT>";
+			}
+			else if(_loc4_ == "miniboss")
+			{
+				missionText.text = "Mini Bosses: <FONT COLOR=\'#FFFFFF\'>" + (_loc12_ == 0 ? _loc19_ : _loc9_ + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _loc15_) + "</FONT></FONT>";
+			}
+			else if(_loc4_ == "spawner")
+			{
+				missionText.text = "Spawners: <FONT COLOR=\'#FFFFFF\'>" + (_loc11_ == 0 ? _loc19_ : _loc26_ + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _loc6_) + "</FONT></FONT>";
+			}
+			else
+			{
 				missionText.text = "";
 			}
 			rankText.format.color = Style.COLOR_HIGHLIGHT;
@@ -138,7 +184,7 @@ package core.hud.components {
 			xpText.isHtmlText = true;
 			xpText.format.horizontalAlign = "right";
 			xpText.alignPivot("right");
-			xpText.text = "Troons: <FONT COLOR=\'#FFFFFF\'>" + (_local13 == 0 ? _local23 : Math.floor(_local6 / 10) + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + Math.floor(_local12 / 10)) + "</FONT></FONT>";
+			xpText.text = "Troons: <FONT COLOR=\'#FFFFFF\'>" + (_loc5_ == 0 ? _loc19_ : Math.floor(_loc22_ / 10) + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + Math.floor(_loc3_ / 10)) + "</FONT></FONT>";
 			xpText.y = challengeText.y + challengeText.height + 5;
 			missionText.y = xpText.y + xpText.height + 5;
 			optionalText.text = "(extra life)";
@@ -150,17 +196,25 @@ package core.hud.components {
 			optionalMissionText.format.horizontalAlign = "right";
 			optionalMissionText.alignPivot("right");
 			optionalMissionText.y = optionalText.y + optionalText.height + 5;
-			if(_local25 == "boss") {
-				optionalMissionText.text = "Bosses: <FONT COLOR=\'#FFFFFF\'>" + (_local19 == 0 ? _local23 : _local26 + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _local15) + "</FONT></FONT>";
-			} else if(_local25 == "miniboss") {
-				optionalMissionText.text = "Mini Bosses: <FONT COLOR=\'#FFFFFF\'>" + (_local14 == 0 ? _local23 : _local4 + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _local20) + "</FONT></FONT>";
-			} else if(_local25 == "spawner") {
-				optionalMissionText.text = "Spawners: <FONT COLOR=\'#FFFFFF\'>" + (_local8 == 0 ? _local23 : _local10 + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _local2) + "</FONT></FONT>";
+			if(_loc10_ == "boss")
+			{
+				optionalMissionText.text = "Bosses: <FONT COLOR=\'#FFFFFF\'>" + (_loc17_ == 0 ? _loc19_ : _loc24_ + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _loc8_) + "</FONT></FONT>";
 			}
-			if(uberRank >= optionalRank) {
+			else if(_loc10_ == "miniboss")
+			{
+				optionalMissionText.text = "Mini Bosses: <FONT COLOR=\'#FFFFFF\'>" + (_loc12_ == 0 ? _loc19_ : _loc9_ + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _loc15_) + "</FONT></FONT>";
+			}
+			else if(_loc10_ == "spawner")
+			{
+				optionalMissionText.text = "Spawners: <FONT COLOR=\'#FFFFFF\'>" + (_loc11_ == 0 ? _loc19_ : _loc26_ + "<FONT SIZE=\'10\' COLOR=\'#AAAAAA\'>/ " + _loc6_) + "</FONT></FONT>";
+			}
+			if(uberRank >= optionalRank)
+			{
 				optionalText.visible = true;
 				optionalMissionText.visible = true;
-			} else {
+			}
+			else
+			{
 				optionalText.visible = false;
 				optionalMissionText.visible = false;
 			}
@@ -169,79 +223,89 @@ package core.hud.components {
 			scoreText.isHtmlText = true;
 			scoreText.format.horizontalAlign = "right";
 			scoreText.alignPivot("right");
-			scoreText.text = "Total Troons: <FONT COLOR=\'#FF44aa\'>" + Math.floor(_local5) + "</FONT>";
+			scoreText.text = "Total Troons: <FONT COLOR=\'#FF44aa\'>" + Math.floor(_loc7_) + "</FONT>";
 			scoreText.y = optionalMissionText.y + optionalMissionText.height + 25;
 			highscoreText.format.color = Style.COLOR_HIGHLIGHT;
 			highscoreText.isHtmlText = true;
 			highscoreText.format.horizontalAlign = "right";
 			highscoreText.alignPivot("right");
-			highscoreText.text = "Highscore: <FONT COLOR=\'#FFFFFF\'>" + Math.floor(_local17) + "</FONT>";
+			highscoreText.text = "Highscore: <FONT COLOR=\'#FFFFFF\'>" + Math.floor(_loc20_) + "</FONT>";
 			highscoreText.y = scoreText.y + scoreText.height + 5;
 			lifes.text = "Lives";
 			lifes.format.color = 0xaaaaaa;
 			lifes.y = highscoreText.y + highscoreText.height + 25;
 			lifes.alignRight();
-			_local22 = 0;
-			_local24 = _local27;
-			while(_local24 < _local27 + 3 * _local21) {
-				_local9 = {};
-				_local9.key = m.getString(_local24);
-				_local9.name = m.getString(_local24 + 1);
-				_local9.lives = m.getInt(_local24 + 2);
-				lives[_local9.key] = _local9.lives;
-				_local18.push(_local9);
-				_local3 = TextBitmap(getChildByName(_local9.key));
-				if(_local3 == null) {
-					_local3 = new TextBitmap();
-					addChild(_local3);
+			_loc14_ = 0;
+			_loc13_ = _loc23_;
+			while(_loc13_ < _loc23_ + 3 * _loc2_)
+			{
+				_loc27_ = {};
+				_loc27_.key = m.getString(_loc13_);
+				_loc27_.name = m.getString(_loc13_ + 1);
+				_loc27_.lives = m.getInt(_loc13_ + 2);
+				lives[_loc27_.key] = _loc27_.lives;
+				_loc21_.push(_loc27_);
+				_loc18_ = TextBitmap(getChildByName(_loc27_.key));
+				if(_loc18_ == null)
+				{
+					_loc18_ = new TextBitmap();
+					addChild(_loc18_);
 				}
-				_local3.name = _local9.key;
-				_local3.text = _local9.name + ": " + _local9.lives;
-				_local3.y = lifes.y + lifes.height + 2 + _local22 * (lifes.height + 2);
-				_local3.alignRight();
-				_local22++;
-				_local24 += 3;
+				_loc18_.name = _loc27_.key;
+				_loc18_.text = _loc27_.name + ": " + _loc27_.lives;
+				_loc18_.y = lifes.y + lifes.height + 2 + _loc14_ * (lifes.height + 2);
+				_loc18_.alignRight();
+				_loc14_++;
+				_loc13_ += 3;
 			}
-			oldXpLeft = _local13;
-			oldBossesLeft = _local19;
-			oldMiniBossesLeft = _local14;
-			oldSpawnerLeft = _local8;
-			oldCompleted = _local16;
-			oldOptionalCompleted = _local7;
+			oldXpLeft = _loc5_;
+			oldBossesLeft = _loc17_;
+			oldMiniBossesLeft = _loc12_;
+			oldSpawnerLeft = _loc11_;
+			oldCompleted = _loc16_;
+			oldOptionalCompleted = _loc25_;
 			oldUberRank = uberRank;
-			if(g.time > scoreTime) {
+			if(g.time > scoreTime)
+			{
 				scoreTime = g.time + 1000;
-				oldScore = _local5;
+				oldScore = _loc7_;
 			}
 		}
 		
-		public function CalculateUberRankFromLevel(level:Number) : Number {
-			var _local2:int = uberMaxLevel - uberMinLevel;
-			if(level <= uberMinLevel + _local2 * 0.9) {
-				return (level - uberMinLevel) * uberTopRank / (_local2 * 0.9);
+		public function CalculateUberRankFromLevel(level:Number) : Number
+		{
+			var _loc2_:int = uberMaxLevel - uberMinLevel;
+			if(level <= uberMinLevel + _loc2_ * 0.9)
+			{
+				return (level - uberMinLevel) * uberTopRank / (_loc2_ * 0.9);
 			}
-			return (level - uberMinLevel - _local2 * 0.9) * uberTopRank / (_local2 * 0.1) + uberTopRank;
+			return (level - uberMinLevel - _loc2_ * 0.9) * uberTopRank / (_loc2_ * 0.1) + uberTopRank;
 		}
 		
-		public function CalculateUberLevelFromRank(rank:Number) : Number {
-			var _local2:Number = NaN;
-			var _local3:int = uberMaxLevel - uberMinLevel;
-			if(rank <= uberTopRank) {
-				return uberMinLevel + _local3 * 0.9 * (rank / uberTopRank);
+		public function CalculateUberLevelFromRank(rank:Number) : Number
+		{
+			var _loc2_:Number = NaN;
+			var _loc3_:int = uberMaxLevel - uberMinLevel;
+			if(rank <= uberTopRank)
+			{
+				return uberMinLevel + _loc3_ * 0.9 * (rank / uberTopRank);
 			}
-			_local2 = uberMinLevel + _local3 * 0.9 + _local3 * 0.1 * ((rank - uberTopRank) / uberTopRank);
-			return _local2 > uberMaxLevel ? uberMaxLevel : _local2;
+			_loc2_ = uberMinLevel + _loc3_ * 0.9 + _loc3_ * 0.1 * ((rank - uberTopRank) / uberTopRank);
+			return _loc2_ > uberMaxLevel ? uberMaxLevel : _loc2_;
 		}
 		
-		public function CalculateUberDifficultyFromRank(rank:Number, originalLevel:Number) : Number {
-			var _local3:Number = 1 / Math.pow(originalLevel,1.2);
-			if(rank <= uberTopRank) {
-				return 1 + uberDifficultyAtTopRank * (rank / uberTopRank) * _local3;
+		public function CalculateUberDifficultyFromRank(rank:Number, originalLevel:Number) : Number
+		{
+			var _loc3_:Number = 1 / Math.pow(originalLevel,1.2);
+			if(rank <= uberTopRank)
+			{
+				return 1 + uberDifficultyAtTopRank * (rank / uberTopRank) * _loc3_;
 			}
-			return 1 + uberDifficultyAtTopRank * _local3 * Math.pow(1.2,rank - uberTopRank);
+			return 1 + uberDifficultyAtTopRank * _loc3_ * Math.pow(1.2,rank - uberTopRank);
 		}
 		
-		public function getMyLives() : int {
+		public function getMyLives() : int
+		{
 			return lives[g.me.id];
 		}
 	}

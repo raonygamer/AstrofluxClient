@@ -1,4 +1,5 @@
-package core.hud.components.techTree {
+package core.hud.components.techTree
+{
 	import com.greensock.TweenMax;
 	import core.credits.CreditManager;
 	import core.hud.components.Button;
@@ -25,43 +26,78 @@ package core.hud.components.techTree {
 	import starling.events.Event;
 	import starling.events.TouchEvent;
 	
-	public class TechTree extends Sprite {
+	public class TechTree extends Sprite
+	{
 		private static const UPGRADE_LEVEL_REQUIREMENTS:Array = [1,2,4,8,12,16];
+		
 		private var container:ScrollContainer = new ScrollContainer();
+		
 		private var myCargo:Cargo;
+		
 		private var _nrOfUpgrades:Vector.<int> = Vector.<int>([0,0,0,0,0,0,0]);
+		
 		private var upgradeCallback:Function;
+		
 		private var buyWithResourcesButton:Button;
+		
 		private var switchEliteTechButton:Button;
+		
 		private var buyWithFluxButton:Button;
+		
 		private var resetButton:Button;
+		
 		private var resetPackageButton:Button;
+		
 		private var cheatButton:Button;
+		
 		private var confirmBox:LootPopupConfirmMessage;
+		
 		public var techBars:Vector.<TechBar> = new Vector.<TechBar>();
+		
 		public var techSelectedForUpgrade:TechLevelIcon = null;
+		
 		public var eliteTechSelectedForUpgrade:EliteTechIcon = null;
+		
 		private var eliteSlider:Slider = new Slider();
+		
 		private var eliteSliderLabel:Text = new Text();
+		
 		private var canUpgrade:Boolean;
+		
 		private var g:Game;
+		
 		private var me:Player;
+		
 		private var scrollHeight:Number;
+		
 		private var upgradeInfo:Sprite = new Sprite();
+		
 		private var nameText:Text = new Text();
+		
 		private var description:Text = new Text();
+		
 		private var descriptionNextLevel:Text = new Text();
+		
 		private var eliteUpgradeHeading:TextBitmap = new TextBitmap();
+		
 		private var mineralType1Cost:PriceCommodities = null;
+		
 		private var mineralType2Cost:PriceCommodities = null;
+		
 		private var mineralType3Cost:PriceCommodities = null;
+		
 		private var mineralType4Cost:PriceCommodities = null;
+		
 		private var autoUpdateEliteUpgradeStartValue:int = 0;
+		
 		private var upgradeEliteLevelTo:int = 1;
+		
 		private var isUpgradingEliteTech:Boolean = false;
+		
 		private var fluxReset:int = 0;
 		
-		public function TechTree(g:Game, scrollHeight:Number = 400, canUpgrade:Boolean = false, upgradeCallback:Function = null) {
+		public function TechTree(g:Game, scrollHeight:Number = 400, canUpgrade:Boolean = false, upgradeCallback:Function = null)
+		{
 			super();
 			this.g = g;
 			this.me = g.me;
@@ -75,15 +111,18 @@ package core.hud.components.techTree {
 			descriptionNextLevel.font = "Verdana";
 		}
 		
-		public static function hasRequiredLevel(upgradeLevel:int, playerLevel:int) : Boolean {
+		public static function hasRequiredLevel(upgradeLevel:int, playerLevel:int) : Boolean
+		{
 			return getRequiredLevel(upgradeLevel) <= playerLevel;
 		}
 		
-		public static function getRequiredLevel(upgradeLevel:int) : int {
+		public static function getRequiredLevel(upgradeLevel:int) : int
+		{
 			return TechTree.UPGRADE_LEVEL_REQUIREMENTS[upgradeLevel - 1];
 		}
 		
-		public function load() : void {
+		public function load() : void
+		{
 			var techSkills:Vector.<TechSkill>;
 			var i:int;
 			var tl:TechSkill;
@@ -94,12 +133,14 @@ package core.hud.components.techTree {
 			hideEliteSlider();
 			techSkills = g.me.techSkills;
 			i = 0;
-			while(i < techSkills.length) {
+			while(i < techSkills.length)
+			{
 				tl = techSkills[i];
 				techBar = new TechBar(g,tl,me,canUpgrade);
 				techBar.x = 20;
 				techBar.y = i * 45;
-				if(canUpgrade) {
+				if(canUpgrade)
+				{
 					techBar.addEventListener("mClick",click);
 				}
 				techBar.addEventListener("mOver",over);
@@ -128,16 +169,20 @@ package core.hud.components.techTree {
 			resetPackageButton.x = resetButton.x + resetButton.width + 10;
 			resetPackageButton.y = 410;
 			resetPackageButton.enabled = g.me.nrOfUpgrades[0] > 0 && !isUpgradingEliteTech;
-			if(g.me.isDeveloper) {
+			resetPackageButton.visible = !g.me.hasSupporter();
+			if(g.me.isDeveloper)
+			{
 				cheatButton = new Button(cheat,"Cheat","negative");
 				cheatButton.visible = false;
 				cheatButton.y = 410;
 				cheatButton.x = 350;
 				addChild(cheatButton);
 			}
-			if(canUpgrade) {
+			if(canUpgrade)
+			{
 				addChild(buyWithResourcesButton);
-				if(g.me.level >= 1) {
+				if(g.me.level >= 1)
+				{
 					addChild(resetButton);
 					addChild(resetPackageButton);
 					addChild(buyWithFluxButton);
@@ -152,25 +197,32 @@ package core.hud.components.techTree {
 			upgradeInfo.addChild(eliteSlider);
 			addChild(upgradeInfo);
 			upgradeInfo.visible = false;
-			eliteSlider.addEventListener("change",function(param1:Event):void {
+			eliteSlider.addEventListener("change",function(param1:Event):void
+			{
 				updateEliteUpgradeLevels();
 				updateUpgradeInfo();
 				updateEliteTechUpgradeInfo(eliteTechSelectedForUpgrade);
 			});
 		}
 		
-		private function handleClickBuyWithFlux(e:TouchEvent) : void {
-			g.creditManager.refresh(function():void {
+		private function handleClickBuyWithFlux(e:TouchEvent) : void
+		{
+			g.creditManager.refresh(function():void
+			{
 				var confirmBuyWithFlux:CreditBuyBox;
-				if(techSelectedForUpgrade != null) {
+				if(techSelectedForUpgrade != null)
+				{
 					confirmBuyWithFlux = new CreditBuyBox(g,CreditManager.getCostUpgrade(techSelectedForUpgrade.level),"Are you sure you want to buy this upgrade?");
 					confirmBuyUpgradeWithFlux(e,confirmBuyWithFlux);
-				} else {
+				}
+				else
+				{
 					confirmBuyWithFlux = new CreditBuyBox(g,EliteTechs.getFluxCostRange(eliteTechSelectedForUpgrade.level + 1,eliteSlider.value),"Are you sure you want to buy this upgrade?");
 					confirmBuyEliteUpgradeWithFlux(e,confirmBuyWithFlux);
 				}
 				g.addChildToOverlay(confirmBuyWithFlux);
-				confirmBuyWithFlux.addEventListener("close",function():void {
+				confirmBuyWithFlux.addEventListener("close",function():void
+				{
 					buyWithFluxButton.enabled = true;
 					confirmBuyWithFlux.removeEventListeners();
 					g.removeChildFromOverlay(confirmBuyWithFlux,true);
@@ -178,11 +230,14 @@ package core.hud.components.techTree {
 			});
 		}
 		
-		private function confirmBuyUpgradeWithFlux(e:TouchEvent, confirmBuyWithFlux:CreditBuyBox) : void {
-			confirmBuyWithFlux.addEventListener("accept",function():void {
+		private function confirmBuyUpgradeWithFlux(e:TouchEvent, confirmBuyWithFlux:CreditBuyBox) : void
+		{
+			confirmBuyWithFlux.addEventListener("accept",function():void
+			{
 				var tsfu:TechLevelIcon = techSelectedForUpgrade;
 				Game.trackEvent("used flux","bought upgrade","number " + techSelectedForUpgrade.level,CreditManager.getCostUpgrade(techSelectedForUpgrade.level));
-				TweenMax.delayedCall(1.2,function():void {
+				TweenMax.delayedCall(1.2,function():void
+				{
 					Game.trackEvent("upgrades","Techs",tsfu.name + " " + tsfu.level,g.me.level);
 				});
 				buyUpgradeWithFlux(e);
@@ -190,11 +245,14 @@ package core.hud.components.techTree {
 			});
 		}
 		
-		private function confirmBuyEliteUpgradeWithFlux(e:TouchEvent, confirmBuyWithFlux:CreditBuyBox) : void {
-			confirmBuyWithFlux.addEventListener("accept",function():void {
+		private function confirmBuyEliteUpgradeWithFlux(e:TouchEvent, confirmBuyWithFlux:CreditBuyBox) : void
+		{
+			confirmBuyWithFlux.addEventListener("accept",function():void
+			{
 				var etsfu:EliteTechIcon = eliteTechSelectedForUpgrade;
 				Game.trackEvent("used flux","bought elite upgrade","number " + eliteTechSelectedForUpgrade.level,EliteTechs.getFluxCostRange(eliteTechSelectedForUpgrade.level + 1,eliteSlider.value));
-				TweenMax.delayedCall(1.2,function():void {
+				TweenMax.delayedCall(1.2,function():void
+				{
 					Game.trackEvent("upgrades","EliteTechs",etsfu.name + " " + etsfu.level,g.me.level);
 				});
 				autoUpdateEliteUpgradeStartValue = eliteSlider.value;
@@ -203,8 +261,10 @@ package core.hud.components.techTree {
 			});
 		}
 		
-		private function updateSliderPos(xPos:int, yPos:int) : void {
-			if(eliteSliderLabel == null) {
+		private function updateSliderPos(xPos:int, yPos:int) : void
+		{
+			if(eliteSliderLabel == null)
+			{
 				return;
 			}
 			eliteSliderLabel.y = yPos;
@@ -213,7 +273,8 @@ package core.hud.components.techTree {
 			eliteSlider.x = xPos;
 		}
 		
-		private function addSlider(s:Slider, value:Number, label:String, xPos:int, yPos:int) : void {
+		private function addSlider(s:Slider, value:Number, label:String, xPos:int, yPos:int) : void
+		{
 			s.minimum = 1;
 			s.maximum = 100;
 			s.step = 1;
@@ -224,19 +285,24 @@ package core.hud.components.techTree {
 			eliteSliderLabel.htmlText = label;
 		}
 		
-		public function get nrOfUpgrades() : Vector.<int> {
+		public function get nrOfUpgrades() : Vector.<int>
+		{
 			return _nrOfUpgrades;
 		}
 		
-		private function changeEliteTech(e:TouchEvent) : void {
+		private function changeEliteTech(e:TouchEvent) : void
+		{
 			var popup:EliteTechPopupMenu;
 			autoUpdateEliteUpgradeStartValue = 0;
-			if(eliteTechSelectedForUpgrade != null) {
+			if(eliteTechSelectedForUpgrade != null)
+			{
 				popup = new EliteTechPopupMenu(g,eliteTechSelectedForUpgrade);
 				g.addChildToOverlay(popup);
-				popup.addEventListener("close",(function():* {
+				popup.addEventListener("close",(function():*
+				{
 					var closePopup:Function;
-					return closePopup = function(param1:Event):void {
+					return closePopup = function(param1:Event):void
+					{
 						g.removeChildFromOverlay(popup);
 						popup.removeEventListeners();
 					};
@@ -246,19 +312,26 @@ package core.hud.components.techTree {
 			}
 		}
 		
-		private function click(e:Event) : void {
-			if(e.target is TechLevelIcon) {
+		private function click(e:Event) : void
+		{
+			if(e.target is TechLevelIcon)
+			{
 				handleClickTechIcon(e.target as TechLevelIcon);
-			} else if(e.target is EliteTechIcon) {
+			}
+			else if(e.target is EliteTechIcon)
+			{
 				handleClickEliteTechIcon(e.target as EliteTechIcon);
 			}
 		}
 		
-		private function handleClickTechIcon(tli:TechLevelIcon) : void {
+		private function handleClickTechIcon(tli:TechLevelIcon) : void
+		{
 			hideEliteSlider();
-			if(techSelectedForUpgrade != null) {
+			if(techSelectedForUpgrade != null)
+			{
 				techSelectedForUpgrade.updateState("can be upgraded");
-				if(techSelectedForUpgrade == tli) {
+				if(techSelectedForUpgrade == tli)
+				{
 					techSelectedForUpgrade = null;
 					buyWithResourcesButton.visible = false;
 					buyWithFluxButton.visible = false;
@@ -266,7 +339,9 @@ package core.hud.components.techTree {
 					switchEliteTechButton.visible = false;
 					return;
 				}
-			} else if(eliteTechSelectedForUpgrade != null) {
+			}
+			else if(eliteTechSelectedForUpgrade != null)
+			{
 				eliteTechSelectedForUpgrade.updateState("special selected and can be upgraded");
 				eliteTechSelectedForUpgrade = null;
 			}
@@ -274,9 +349,12 @@ package core.hud.components.techTree {
 			buyWithResourcesButton.visible = true;
 			buyWithFluxButton.visible = true;
 			switchEliteTechButton.visible = false;
-			if(!canAfford(tli)) {
+			if(!canAfford(tli))
+			{
 				buyWithResourcesButton.enabled = false;
-			} else {
+			}
+			else
+			{
 				buyWithResourcesButton.enabled = true;
 			}
 			buyWithResourcesButton.text = "Buy";
@@ -284,26 +362,34 @@ package core.hud.components.techTree {
 			updateTechUpgradeInfo(techSelectedForUpgrade);
 		}
 		
-		private function hideEliteSlider() : void {
-			if(eliteSlider == null) {
+		private function hideEliteSlider() : void
+		{
+			if(eliteSlider == null)
+			{
 				return;
 			}
 			eliteSlider.visible = false;
 			eliteSliderLabel.visible = false;
 		}
 		
-		private function showEliteSlider() : void {
+		private function showEliteSlider() : void
+		{
 			eliteSlider.visible = true;
 			eliteSliderLabel.visible = true;
 		}
 		
-		private function handleClickEliteTechIcon(eti:EliteTechIcon) : void {
-			if(techSelectedForUpgrade != null) {
+		private function handleClickEliteTechIcon(eti:EliteTechIcon) : void
+		{
+			if(techSelectedForUpgrade != null)
+			{
 				techSelectedForUpgrade.updateState("can be upgraded");
 				techSelectedForUpgrade = null;
-			} else if(eliteTechSelectedForUpgrade != null) {
+			}
+			else if(eliteTechSelectedForUpgrade != null)
+			{
 				eliteTechSelectedForUpgrade.updateState("special selected and can be upgraded");
-				if(eliteTechSelectedForUpgrade == eti && !isUpgradingEliteTech) {
+				if(eliteTechSelectedForUpgrade == eti && !isUpgradingEliteTech)
+				{
 					eliteTechSelectedForUpgrade = null;
 					buyWithResourcesButton.visible = false;
 					buyWithFluxButton.visible = false;
@@ -314,12 +400,16 @@ package core.hud.components.techTree {
 				}
 			}
 			eliteTechSelectedForUpgrade = eti;
-			if(this.eliteTechSelectedForUpgrade.level < 100 && !isUpgradingEliteTech) {
+			if(this.eliteTechSelectedForUpgrade.level < 100 && !isUpgradingEliteTech)
+			{
 				buyWithResourcesButton.visible = true;
 				buyWithFluxButton.visible = true;
-				if(!canAffordET(eti)) {
+				if(!canAffordET(eti))
+				{
 					buyWithResourcesButton.enabled = false;
-				} else {
+				}
+				else
+				{
 					buyWithResourcesButton.enabled = true;
 				}
 				switchEliteTechButton.y = -48 - switchEliteTechButton.height;
@@ -327,7 +417,9 @@ package core.hud.components.techTree {
 				eliteSlider.maximum = 100;
 				eliteSlider.minimum = eliteTechSelectedForUpgrade.level + 1;
 				eliteSlider.value = eliteSlider.minimum;
-			} else {
+			}
+			else
+			{
 				buyWithResourcesButton.visible = false;
 				buyWithFluxButton.visible = false;
 				switchEliteTechButton.visible = false;
@@ -335,7 +427,8 @@ package core.hud.components.techTree {
 				hideEliteSlider();
 				resetButton.enabled = false;
 			}
-			if(!isUpgradingEliteTech) {
+			if(!isUpgradingEliteTech)
+			{
 				switchEliteTechButton.visible = true;
 				switchEliteTechButton.enabled = true;
 			}
@@ -345,66 +438,79 @@ package core.hud.components.techTree {
 			updateEliteUpgradeLevels();
 		}
 		
-		private function updateEliteUpgradeLevels() : void {
+		private function updateEliteUpgradeLevels() : void
+		{
 			eliteSlider.minimum = eliteTechSelectedForUpgrade.level + 1;
 			eliteSlider.maximum = 100;
 			eliteSlider.step = 1;
 			upgradeEliteLevelTo = eliteSlider.value;
 		}
 		
-		private function over(e:Event) : void {
-			var _local2:TechLevelIcon = null;
-			var _local3:EliteTechIcon = null;
-			if(techSelectedForUpgrade != null || eliteTechSelectedForUpgrade != null) {
+		private function over(e:Event) : void
+		{
+			var _loc2_:TechLevelIcon = null;
+			var _loc3_:EliteTechIcon = null;
+			if(techSelectedForUpgrade != null || eliteTechSelectedForUpgrade != null)
+			{
 				return;
 			}
 			eliteSlider.visible = false;
 			eliteSliderLabel.visible = false;
-			if(e.target is TechLevelIcon) {
-				_local2 = e.target as TechLevelIcon;
-				updateTechUpgradeInfo(_local2);
-			} else if(e.target is EliteTechIcon) {
-				_local3 = e.target as EliteTechIcon;
-				updateEliteTechUpgradeInfo(_local3);
+			if(e.target is TechLevelIcon)
+			{
+				_loc2_ = e.target as TechLevelIcon;
+				updateTechUpgradeInfo(_loc2_);
+			}
+			else if(e.target is EliteTechIcon)
+			{
+				_loc3_ = e.target as EliteTechIcon;
+				updateEliteTechUpgradeInfo(_loc3_);
 			}
 		}
 		
-		private function out(e:Event) : void {
-			if(techSelectedForUpgrade != null || eliteTechSelectedForUpgrade != null) {
+		private function out(e:Event) : void
+		{
+			if(techSelectedForUpgrade != null || eliteTechSelectedForUpgrade != null)
+			{
 				return;
 			}
 			upgradeInfo.visible = false;
 		}
 		
-		private function updateUpgradeInfo() : void {
-			if(descriptionNextLevel == null || eliteTechSelectedForUpgrade == null) {
+		private function updateUpgradeInfo() : void
+		{
+			if(descriptionNextLevel == null || eliteTechSelectedForUpgrade == null)
+			{
 				return;
 			}
-			var _local2:String = Localize.t("Upgrade to level [amount]");
-			var _local1:int = 1;
-			if(eliteSlider != null) {
-				_local1 = eliteSlider.value;
+			var _loc1_:String = Localize.t("Upgrade to level [amount]");
+			var _loc2_:int = 1;
+			if(eliteSlider != null)
+			{
+				_loc2_ = eliteSlider.value;
 			}
-			_local2 = _local2.replace("[amount]",_local1);
-			eliteUpgradeHeading.text = _local2;
+			_loc1_ = _loc1_.replace("[amount]",_loc2_);
+			eliteUpgradeHeading.text = _loc1_;
 			eliteUpgradeHeading.format.color = 0xffaa44;
 			eliteUpgradeHeading.format.size = 16;
-			descriptionNextLevel.htmlText = eliteTechSelectedForUpgrade.getDescriptionNextLevel(_local1);
+			descriptionNextLevel.htmlText = eliteTechSelectedForUpgrade.getDescriptionNextLevel(_loc2_);
 		}
 		
-		private function updateEliteTechUpgradeInfo(eti:EliteTechIcon) : void {
-			var _local9:String = null;
-			var _local7:int = 0;
-			var _local8:int = 0;
-			var _local5:int = 0;
-			var _local12:int = 0;
-			var _local3:* = 0;
-			var _local6:int = 0;
-			var _local2:int = 0;
-			var _local10:int = 0;
-			var _local4:int = 0;
-			var _local11:Number = NaN;
-			if(g.me.isDeveloper && eti.level < 100) {
+		private function updateEliteTechUpgradeInfo(eti:EliteTechIcon) : void
+		{
+			var _loc7_:String = null;
+			var _loc3_:int = 0;
+			var _loc4_:int = 0;
+			var _loc6_:int = 0;
+			var _loc10_:int = 0;
+			var _loc5_:* = 0;
+			var _loc11_:int = 0;
+			var _loc12_:int = 0;
+			var _loc2_:int = 0;
+			var _loc8_:int = 0;
+			var _loc9_:Number = NaN;
+			if(g.me.isDeveloper && eti.level < 100)
+			{
 				cheatButton.enabled = true;
 				cheatButton.visible = true;
 			}
@@ -424,14 +530,17 @@ package core.hud.components.techTree {
 			description.y = 0;
 			nameText.visible = false;
 			switchEliteTechButton.y = description.y + description.height + 20;
-			if(eti.level == 100) {
+			if(eti.level == 100)
+			{
 				switchEliteTechButton.visible = false;
 			}
-			if(eti.level < 100 && eti.techSkill.activeEliteTech != null && eti.techSkill.activeEliteTech != "") {
-				_local9 = eti.mineralType1;
-				_local7 = eliteSlider.value;
-				if(_local7 < eti.level + 1) {
-					_local7 = eti.level + 1;
+			if(eti.level < 100 && eti.techSkill.activeEliteTech != null && eti.techSkill.activeEliteTech != "")
+			{
+				_loc7_ = eti.mineralType1;
+				_loc3_ = eliteSlider.value;
+				if(_loc3_ < eti.level + 1)
+				{
+					_loc3_ = eti.level + 1;
 				}
 				descriptionNextLevel.x = 2;
 				descriptionNextLevel.width = 270;
@@ -440,68 +549,79 @@ package core.hud.components.techTree {
 				descriptionNextLevel.visible = true;
 				descriptionNextLevel.size = 12;
 				updateUpgradeInfo();
-				_local8 = container.y + container.height;
-				_local8 = _local8 + -buyWithResourcesButton.height;
-				if(buyWithResourcesButton.visible) {
-					buyWithResourcesButton.y = _local8;
-					buyWithFluxButton.y = _local8;
+				_loc4_ = container.y + container.height;
+				_loc4_ = _loc4_ + -buyWithResourcesButton.height;
+				if(buyWithResourcesButton.visible)
+				{
+					buyWithResourcesButton.y = _loc4_;
+					buyWithFluxButton.y = _loc4_;
 				}
-				_local8 += -15;
-				_local5 = EliteTechs.getResource1CostRange(eti.level + 1,_local7);
-				if(_local5 > 0 && _local9 != null) {
-					_local12 = eti.level + 1;
-					_local3 = _local7;
-					_local6 = eti.getCostForResource("d6H3w_34pk2ghaQcXYBDag",_local12,_local3);
-					_local2 = eti.getCostForResource("H5qybQDy9UindMh9yYIeqg",_local12,_local3);
-					_local10 = eti.getCostForResource("gO_f-y0QEU68vVwJ_XVmOg",_local12,_local3);
-					_local4 = 2;
-					_local11 = 0.3;
-					if(_local10 >= 0) {
-						mineralType4Cost = new PriceCommodities(g,"gO_f-y0QEU68vVwJ_XVmOg",_local10,"Verdana",12);
-						mineralType4Cost.x = _local4;
-						_local8 += -mineralType4Cost.height;
-						mineralType4Cost.y = _local8;
+				_loc4_ += -15;
+				_loc6_ = EliteTechs.getResource1CostRange(eti.level + 1,_loc3_);
+				if(_loc6_ > 0 && _loc7_ != null)
+				{
+					_loc10_ = eti.level + 1;
+					_loc5_ = _loc3_;
+					_loc11_ = eti.getCostForResource("d6H3w_34pk2ghaQcXYBDag",_loc10_,_loc5_);
+					_loc12_ = eti.getCostForResource("H5qybQDy9UindMh9yYIeqg",_loc10_,_loc5_);
+					_loc2_ = eti.getCostForResource("gO_f-y0QEU68vVwJ_XVmOg",_loc10_,_loc5_);
+					_loc8_ = 2;
+					_loc9_ = 0.3;
+					if(_loc2_ >= 0)
+					{
+						mineralType4Cost = new PriceCommodities(g,"gO_f-y0QEU68vVwJ_XVmOg",_loc2_,"Verdana",12);
+						mineralType4Cost.x = _loc8_;
+						_loc4_ += -mineralType4Cost.height;
+						mineralType4Cost.y = _loc4_;
 						mineralType4Cost.visible = true;
-						if(_local10 == 0) {
-							mineralType4Cost.alpha = _local11;
+						if(_loc2_ == 0)
+						{
+							mineralType4Cost.alpha = _loc9_;
 						}
 						upgradeInfo.addChild(mineralType4Cost);
 					}
-					if(_local2 >= 0) {
-						mineralType3Cost = new PriceCommodities(g,"H5qybQDy9UindMh9yYIeqg",_local2,"Verdana",12);
-						mineralType3Cost.x = _local4;
-						_local8 += -mineralType3Cost.height;
-						mineralType3Cost.y = _local8;
+					if(_loc12_ >= 0)
+					{
+						mineralType3Cost = new PriceCommodities(g,"H5qybQDy9UindMh9yYIeqg",_loc12_,"Verdana",12);
+						mineralType3Cost.x = _loc8_;
+						_loc4_ += -mineralType3Cost.height;
+						mineralType3Cost.y = _loc4_;
 						mineralType3Cost.visible = true;
-						if(_local2 == 0) {
-							mineralType3Cost.alpha = _local11;
+						if(_loc12_ == 0)
+						{
+							mineralType3Cost.alpha = _loc9_;
 						}
 						upgradeInfo.addChild(mineralType3Cost);
 					}
-					if(_local6 >= 0) {
-						mineralType2Cost = new PriceCommodities(g,"d6H3w_34pk2ghaQcXYBDag",_local6,"Verdana",12);
-						mineralType2Cost.x = _local4;
-						_local8 += -mineralType2Cost.height;
-						mineralType2Cost.y = _local8;
+					if(_loc11_ >= 0)
+					{
+						mineralType2Cost = new PriceCommodities(g,"d6H3w_34pk2ghaQcXYBDag",_loc11_,"Verdana",12);
+						mineralType2Cost.x = _loc8_;
+						_loc4_ += -mineralType2Cost.height;
+						mineralType2Cost.y = _loc4_;
 						mineralType2Cost.visible = true;
-						if(_local6 == 0) {
-							mineralType2Cost.alpha = _local11;
+						if(_loc11_ == 0)
+						{
+							mineralType2Cost.alpha = _loc9_;
 						}
 						upgradeInfo.addChild(mineralType2Cost);
 					}
-					mineralType1Cost = new PriceCommodities(g,_local9,_local5,"Verdana",12);
+					mineralType1Cost = new PriceCommodities(g,_loc7_,_loc6_,"Verdana",12);
 					mineralType1Cost.x = 2;
-					_local8 += -mineralType1Cost.height;
-					mineralType1Cost.y = _local8;
+					_loc4_ += -mineralType1Cost.height;
+					mineralType1Cost.y = _loc4_;
 					mineralType1Cost.visible = true;
 					upgradeInfo.addChild(mineralType1Cost);
-					buyWithFluxButton.text = "Buy for " + EliteTechs.getFluxCostRange(eti.level + 1,_local7) + " Flux";
-					_local8 += -105;
-					eliteUpgradeHeading.y = _local8 - eliteUpgradeHeading.height;
+					buyWithFluxButton.text = "Buy for " + EliteTechs.getFluxCostRange(eti.level + 1,_loc3_) + " Flux";
+					_loc4_ += -105;
+					eliteUpgradeHeading.y = _loc4_ - eliteUpgradeHeading.height;
 					updateSliderPos(0,eliteUpgradeHeading.y + eliteSlider.height);
-					if(!isUpgradingEliteTech && eliteTechSelectedForUpgrade != null) {
+					if(!isUpgradingEliteTech && eliteTechSelectedForUpgrade != null)
+					{
 						showEliteSlider();
-					} else {
+					}
+					else
+					{
 						hideEliteSlider();
 					}
 					eliteUpgradeHeading.visible = true;
@@ -510,14 +630,15 @@ package core.hud.components.techTree {
 			}
 		}
 		
-		private function updateTechUpgradeInfo(tli:TechLevelIcon) : void {
-			var _local4:String = null;
-			var _local6:int = 0;
-			var _local8:String = null;
-			var _local5:int = 0;
-			var _local9:String = null;
-			var _local7:String = null;
-			var _local3:int = 0;
+		private function updateTechUpgradeInfo(tli:TechLevelIcon) : void
+		{
+			var _loc9_:String = null;
+			var _loc3_:int = 0;
+			var _loc6_:String = null;
+			var _loc4_:int = 0;
+			var _loc7_:String = null;
+			var _loc5_:String = null;
+			var _loc8_:int = 0;
 			upgradeInfo.visible = true;
 			upgradeInfo.x = 410;
 			description.visible = false;
@@ -532,73 +653,92 @@ package core.hud.components.techTree {
 			description.color = 0xaaaaaa;
 			description.visible = true;
 			description.size = 12;
-			if(tli.level == 0) {
-				if(tli.table == "BasicTechs") {
-					_local4 = tli.description;
+			if(tli.level == 0)
+			{
+				if(tli.table == "BasicTechs")
+				{
+					_loc9_ = tli.description;
 				}
-				for each(var _local2:* in me.weaponData) {
-					if(_local2.key == tli.tech) {
-						_local4 = _local2.desc;
+				for each(var _loc2_ in me.weaponData)
+				{
+					if(_loc2_.key == tli.tech)
+					{
+						_loc9_ = _loc2_.desc;
 					}
 				}
-			} else {
-				_local4 = tli.description;
+			}
+			else
+			{
+				_loc9_ = tli.description;
 			}
 			description.htmlText = "<FONT COLOR=\'#ffaa44\' size=\'16\'>" + tli.upgradeName + "</FONT>\n";
-			description.htmlText += _local4;
+			description.htmlText += _loc9_;
 			description.y = nameText.y + nameText.height;
 			nameText.visible = true;
-			if(tli.level > 0) {
-				_local6 = description.y + description.height + 25;
-				_local8 = tli.mineralType1;
-				_local5 = getMineralType1Cost(tli.level,tli.playerLevel);
-				if(_local5 > 0 && _local8 != null && tli.playerLevel < tli.level) {
-					_local9 = hasRequiredLevel(tli.level,me.level) ? "" : "<FONT COLOR=\'#ff4444\' SIZE=\'18\'>Requires level " + getRequiredLevel(tli.level) + "</FONT>\n";
-					_local4 = _local9 + _local4;
-					mineralType1Cost = new PriceCommodities(g,_local8,_local5,"Verdana",12);
+			if(tli.level > 0)
+			{
+				_loc3_ = description.y + description.height + 25;
+				_loc6_ = tli.mineralType1;
+				_loc4_ = getMineralType1Cost(tli.level,tli.playerLevel);
+				if(_loc4_ > 0 && _loc6_ != null && tli.playerLevel < tli.level)
+				{
+					_loc7_ = hasRequiredLevel(tli.level,me.level) ? "" : "<FONT COLOR=\'#ff4444\' SIZE=\'18\'>Requires level " + getRequiredLevel(tli.level) + "</FONT>\n";
+					_loc9_ = _loc7_ + _loc9_;
+					mineralType1Cost = new PriceCommodities(g,_loc6_,_loc4_,"Verdana",12);
 					mineralType1Cost.x = 2;
-					mineralType1Cost.y = _local6;
+					mineralType1Cost.y = _loc3_;
 					mineralType1Cost.visible = true;
 					upgradeInfo.addChild(mineralType1Cost);
-					_local6 += mineralType1Cost.height;
-					_local7 = tli.mineralType2;
-					_local3 = getMineralType2Cost(tli.level);
-					if(_local3 > 0 && _local7 != null) {
-						mineralType2Cost = new PriceCommodities(g,_local7,_local3,"Verdana",12);
+					_loc3_ += mineralType1Cost.height;
+					_loc5_ = tli.mineralType2;
+					_loc8_ = getMineralType2Cost(tli.level);
+					if(_loc8_ > 0 && _loc5_ != null)
+					{
+						mineralType2Cost = new PriceCommodities(g,_loc5_,_loc8_,"Verdana",12);
 						mineralType2Cost.x = 2;
-						mineralType2Cost.y = _local6;
+						mineralType2Cost.y = _loc3_;
 						mineralType2Cost.visible = true;
 						upgradeInfo.addChild(mineralType2Cost);
-						_local6 += 16;
+						_loc3_ += 16;
 					}
 				}
 			}
-			buyWithResourcesButton.y = _local6 + 25;
-			buyWithFluxButton.y = _local6 + 25;
+			buyWithResourcesButton.y = _loc3_ + 25;
+			buyWithFluxButton.y = _loc3_ + 25;
 		}
 		
-		private function removeMineralCosts() : void {
-			if(mineralType1Cost != null && upgradeInfo.contains(mineralType1Cost)) {
+		private function removeMineralCosts() : void
+		{
+			if(mineralType1Cost != null && upgradeInfo.contains(mineralType1Cost))
+			{
 				upgradeInfo.removeChild(mineralType1Cost);
 			}
-			if(mineralType2Cost != null && upgradeInfo.contains(mineralType2Cost)) {
+			if(mineralType2Cost != null && upgradeInfo.contains(mineralType2Cost))
+			{
 				upgradeInfo.removeChild(mineralType2Cost);
 			}
-			if(mineralType3Cost != null && upgradeInfo.contains(mineralType3Cost)) {
+			if(mineralType3Cost != null && upgradeInfo.contains(mineralType3Cost))
+			{
 				upgradeInfo.removeChild(mineralType3Cost);
 			}
-			if(mineralType4Cost != null && upgradeInfo.contains(mineralType4Cost)) {
+			if(mineralType4Cost != null && upgradeInfo.contains(mineralType4Cost))
+			{
 				upgradeInfo.removeChild(mineralType4Cost);
 			}
 		}
 		
-		private function buyResetPackage(e:TouchEvent) : void {
-			g.creditManager.refresh(function():void {
+		private function buyResetPackage(e:TouchEvent) : void
+		{
+			g.creditManager.refresh(function():void
+			{
 				var resets:int = 10;
-				var confirmBox:CreditBuyBox = new CreditBuyBox(g,1000,"Do you want to buy " + resets + " resets?");
-				confirmBox.addEventListener("accept",function():void {
-					g.rpc("buyResetPackage",function(param1:Message):void {
-						if(param1.getBoolean(0)) {
+				var confirmBox:CreditBuyBox = new CreditBuyBox(g,100,"Do you want to buy " + resets + " resets?");
+				confirmBox.addEventListener("accept",function():void
+				{
+					g.rpc("buyResetPackage",function(param1:Message):void
+					{
+						if(param1.getBoolean(0))
+						{
 							g.me.freeResets += resets;
 							g.showMessageDialog("Your purchase was successful! \nYou have " + g.me.freeResets + " resets.");
 						}
@@ -607,7 +747,8 @@ package core.hud.components.techTree {
 					g.removeChildFromOverlay(confirmBox,true);
 					resetPackageButton.enabled = true;
 				});
-				confirmBox.addEventListener("close",function():void {
+				confirmBox.addEventListener("close",function():void
+				{
 					confirmBox.removeEventListeners();
 					g.removeChildFromOverlay(confirmBox,true);
 					resetPackageButton.enabled = true;
@@ -616,35 +757,44 @@ package core.hud.components.techTree {
 			});
 		}
 		
-		private function buyReset(e:TouchEvent) : void {
-			if(g.me.nrOfUpgrades[0] == 0) {
+		private function buyReset(e:TouchEvent) : void
+		{
+			if(g.me.nrOfUpgrades[0] == 0)
+			{
 				return;
 			}
-			g.creditManager.refresh(function():void {
+			g.creditManager.refresh(function():void
+			{
 				confirmBox = new LootPopupConfirmMessage();
-				var cost:int = 200;
-				g.rpc("getTotalUpgradeCost",function(param1:Message):void {
-					var _local6:int = 0;
-					var _local3:String = null;
-					var _local2:int = 0;
-					var _local4:LootItem = null;
-					var _local5:int = param1.length;
+				var cost:int = int(g.me.hasSupporter() ? 0 : 20);
+				g.rpc("getTotalUpgradeCost",function(param1:Message):void
+				{
+					var _loc3_:int = 0;
+					var _loc5_:String = null;
+					var _loc2_:int = 0;
+					var _loc4_:LootItem = null;
+					var _loc6_:int = param1.length;
 					confirmBox.text = "Are you sure you want to <FONT COLOR=\'#aa8822\'>reset</FONT> all upgrades for <FONT COLOR=\'#aa8822\'>" + cost + " flux</FONT>? The entire resource cost for this ship will be refunded." + "\n\nYou have: <FONT COLOR=\'#aa8822\'>" + CreditManager.FLUX + " flux</FONT>\n\nYou will get back:\n\n";
-					_local6 = 0;
-					while(_local6 < _local5) {
-						_local3 = param1.getString(_local6);
-						_local2 = param1.getInt(_local6 + 1);
-						_local4 = new LootItem("Commodities",_local3,_local2);
-						if(_local4.name == "Flux") {
-							fluxReset = _local2;
+					_loc3_ = 0;
+					while(_loc3_ < _loc6_)
+					{
+						_loc5_ = param1.getString(_loc3_);
+						_loc2_ = param1.getInt(_loc3_ + 1);
+						_loc4_ = new LootItem("Commodities",_loc5_,_loc2_);
+						if(_loc4_.name == "Flux")
+						{
+							fluxReset = _loc2_;
 						}
-						confirmBox.addItem(_local4);
-						_local6 += 2;
+						confirmBox.addItem(_loc4_);
+						_loc3_ += 2;
 					}
-					if(me.freeResets > 0) {
+					if(me.freeResets > 0)
+					{
 						confirmBox.text = "Are you sure you want to <FONT COLOR=\'#aa8822\'> reset </FONT> all upgrades? You have <FONT COLOR=\'#aa8822\'>" + me.freeResets + " free</FONT> reset remaining. The entire resource cost will be refunded." + "\n\nYou have: <FONT COLOR=\'#aa8822\'>" + CreditManager.FLUX + " flux</FONT>\n\nYou will get back:\n\n";
 						confirmBox.confirmButton.enabled = true;
-					} else if(cost > CreditManager.FLUX) {
+					}
+					else if(cost > CreditManager.FLUX)
+					{
 						confirmBox.confirmButton.enabled = false;
 					}
 					g.addChildToOverlay(confirmBox,true);
@@ -654,28 +804,36 @@ package core.hud.components.techTree {
 			});
 		}
 		
-		public function resetTechSkills(m:Message) : void {
+		public function resetTechSkills(m:Message) : void
+		{
 			var t:TechSkill;
 			var tb:TechBar;
-			if(m.getBoolean(0)) {
+			if(m.getBoolean(0))
+			{
 				g.creditManager.refresh();
 				g.me.nrOfUpgrades = Vector.<int>([0,0,0,0,0,0,0]);
 				_nrOfUpgrades = g.me.nrOfUpgrades;
-				if(g.me.freeResets <= 0) {
-					Game.trackEvent("used flux","bought reset","level " + g.me.level,200);
-				} else {
+				if(g.me.freeResets <= 0)
+				{
+					Game.trackEvent("used flux","bought reset","level " + g.me.level,20);
+				}
+				else
+				{
 					g.me.freeResets -= 1;
 				}
-				for each(t in g.me.techSkills) {
+				for each(t in g.me.techSkills)
+				{
 					t.level = Player.getSkinTechLevel(t.tech,g.me.activeSkin);
 					t.activeEliteTech = "";
 					t.activeEliteTechLevel = 0;
 					t.eliteTechs = new Vector.<EliteTechSkill>();
 				}
-				for each(tb in techBars) {
+				for each(tb in techBars)
+				{
 					tb.reset();
 				}
-				myCargo.reloadCargoFromServer(function():void {
+				myCargo.reloadCargoFromServer(function():void
+				{
 					upgradeInfo.visible = false;
 					enableTouch();
 					resetButton.enabled = false;
@@ -683,24 +841,30 @@ package core.hud.components.techTree {
 				switchEliteTechButton.visible = false;
 				buyWithFluxButton.visible = false;
 				buyWithResourcesButton.visible = false;
-				if(fluxReset > 0) {
+				if(fluxReset > 0)
+				{
 					Game.trackEvent("used flux","bought elite upgrade","reset",-fluxReset);
 					trace("tracked flux reset: " + -fluxReset);
 				}
-				g.showErrorDialog("Reset complete! All resources spent on this ship has been refunded. You will now take off from the upgrade station.",false,function():void {
+				g.showErrorDialog("Reset complete! All resources spent on this ship has been refunded. You will now take off from the upgrade station.",false,function():void
+				{
 					g.me.leaveBody();
 				});
-			} else {
+			}
+			else
+			{
 				enableTouch();
 				g.showErrorDialog(m.getString(1));
 			}
 		}
 		
-		private function sendResetRequest() : void {
+		private function sendResetRequest() : void
+		{
 			g.rpc("resetUpgrades",resetTechSkills);
 		}
 		
-		private function onAcceptReset(e:Event) : void {
+		private function onAcceptReset(e:Event) : void
+		{
 			disableTouch();
 			sendResetRequest();
 			resetButton.enabled = false;
@@ -708,90 +872,103 @@ package core.hud.components.techTree {
 			confirmBox.removeEventListeners();
 		}
 		
-		private function onCloseReset(e:Event) : void {
+		private function onCloseReset(e:Event) : void
+		{
 			g.removeChildFromOverlay(confirmBox,true);
 			resetButton.enabled = true;
 			confirmBox.removeEventListeners();
 		}
 		
-		private function cheat(e:TouchEvent) : void {
-			var _local2:Message = null;
+		private function cheat(e:TouchEvent) : void
+		{
+			var _loc2_:Message = null;
 			disableTouch();
 			cheatButton.enabled = false;
 			cheatButton.visible = false;
-			if(eliteTechSelectedForUpgrade != null) {
-				_local2 = g.createMessage("cheatUpgrade");
-				_local2.add(eliteTechSelectedForUpgrade.table);
-				_local2.add(eliteTechSelectedForUpgrade.tech);
-				_local2.add(eliteTechSelectedForUpgrade.techSkill.activeEliteTech);
-				_local2.add(100);
-				g.rpcMessage(_local2,upgradedEliteTech);
+			if(eliteTechSelectedForUpgrade != null)
+			{
+				_loc2_ = g.createMessage("cheatUpgrade");
+				_loc2_.add(eliteTechSelectedForUpgrade.table);
+				_loc2_.add(eliteTechSelectedForUpgrade.tech);
+				_loc2_.add(eliteTechSelectedForUpgrade.techSkill.activeEliteTech);
+				_loc2_.add(100);
+				g.rpcMessage(_loc2_,upgradedEliteTech);
 			}
 		}
 		
-		private function buyUpgrade(e:TouchEvent) : void {
-			var _local3:Message = null;
-			var _local2:int = 0;
+		private function buyUpgrade(e:TouchEvent) : void
+		{
+			var _loc3_:Message = null;
+			var _loc2_:int = 0;
 			disableTouch();
 			buyWithResourcesButton.enabled = false;
 			buyWithFluxButton.enabled = false;
-			if(techSelectedForUpgrade != null) {
-				_local3 = g.createMessage("upgrade");
-				_local3.add(techSelectedForUpgrade.table);
-				_local3.add(techSelectedForUpgrade.tech);
-				_local3.add(techSelectedForUpgrade.level);
+			if(techSelectedForUpgrade != null)
+			{
+				_loc3_ = g.createMessage("upgrade");
+				_loc3_.add(techSelectedForUpgrade.table);
+				_loc3_.add(techSelectedForUpgrade.tech);
+				_loc3_.add(techSelectedForUpgrade.level);
 				Game.trackEvent("upgrades","Techs",techSelectedForUpgrade.name + " " + techSelectedForUpgrade.level,g.me.level);
-				g.rpcMessage(_local3,upgraded);
-			} else if(eliteTechSelectedForUpgrade != null) {
-				_local3 = g.createMessage("upgradeEliteTech");
-				_local3.add(eliteTechSelectedForUpgrade.table);
-				_local3.add(eliteTechSelectedForUpgrade.tech);
-				_local3.add(eliteTechSelectedForUpgrade.techSkill.activeEliteTech);
-				_local3.add(eliteTechSelectedForUpgrade.techSkill.activeEliteTechLevel + 1);
-				_local2 = eliteSlider.value;
-				autoUpdateEliteUpgradeStartValue = _local2;
-				_local3.add(_local2);
-				Game.trackEvent("upgrades","EliteTechs",eliteTechSelectedForUpgrade.name + " " + eliteTechSelectedForUpgrade.level + " to " + _local2,g.me.level);
-				g.rpcMessage(_local3,upgradedEliteTech);
+				g.rpcMessage(_loc3_,upgraded);
+			}
+			else if(eliteTechSelectedForUpgrade != null)
+			{
+				_loc3_ = g.createMessage("upgradeEliteTech");
+				_loc3_.add(eliteTechSelectedForUpgrade.table);
+				_loc3_.add(eliteTechSelectedForUpgrade.tech);
+				_loc3_.add(eliteTechSelectedForUpgrade.techSkill.activeEliteTech);
+				_loc3_.add(eliteTechSelectedForUpgrade.techSkill.activeEliteTechLevel + 1);
+				_loc2_ = eliteSlider.value;
+				autoUpdateEliteUpgradeStartValue = _loc2_;
+				_loc3_.add(_loc2_);
+				Game.trackEvent("upgrades","EliteTechs",eliteTechSelectedForUpgrade.name + " " + eliteTechSelectedForUpgrade.level + " to " + _loc2_,g.me.level);
+				g.rpcMessage(_loc3_,upgradedEliteTech);
 			}
 		}
 		
-		private function buyUpgradeWithFlux(e:TouchEvent) : void {
+		private function buyUpgradeWithFlux(e:TouchEvent) : void
+		{
 			disableTouch();
 			buyWithResourcesButton.enabled = false;
 			buyWithFluxButton.enabled = false;
-			var _local2:Message = g.createMessage("buyUpgradeWithFlux");
-			_local2.add(techSelectedForUpgrade.table);
-			_local2.add(techSelectedForUpgrade.tech);
-			_local2.add(techSelectedForUpgrade.level);
-			g.rpcMessage(_local2,upgraded);
+			var _loc2_:Message = g.createMessage("buyUpgradeWithFlux");
+			_loc2_.add(techSelectedForUpgrade.table);
+			_loc2_.add(techSelectedForUpgrade.tech);
+			_loc2_.add(techSelectedForUpgrade.level);
+			g.rpcMessage(_loc2_,upgraded);
 		}
 		
-		private function buyEliteUpgradeWithFlux(e:TouchEvent) : void {
+		private function buyEliteUpgradeWithFlux(e:TouchEvent) : void
+		{
 			isUpgradingEliteTech = true;
 			disableTouch();
 			buyWithResourcesButton.enabled = false;
 			buyWithFluxButton.enabled = false;
-			var _local4:Message = g.createMessage("buyEliteTechUpgradeWithFlux");
-			_local4.add(eliteTechSelectedForUpgrade.table);
-			_local4.add(eliteTechSelectedForUpgrade.tech);
-			_local4.add(eliteTechSelectedForUpgrade.techSkill.activeEliteTech);
-			var _local3:int = eliteTechSelectedForUpgrade.techSkill.activeEliteTechLevel + 1;
-			var _local2:* = _local3;
-			if(eliteSlider.value == 100) {
-				_local2 = 100;
+			var _loc4_:Message = g.createMessage("buyEliteTechUpgradeWithFlux");
+			_loc4_.add(eliteTechSelectedForUpgrade.table);
+			_loc4_.add(eliteTechSelectedForUpgrade.tech);
+			_loc4_.add(eliteTechSelectedForUpgrade.techSkill.activeEliteTech);
+			var _loc2_:int = eliteTechSelectedForUpgrade.techSkill.activeEliteTechLevel + 1;
+			var _loc3_:* = _loc2_;
+			if(eliteSlider.value == 100)
+			{
+				_loc3_ = 100;
 			}
-			_local4.add(_local3);
-			_local4.add(_local2);
-			g.rpcMessage(_local4,upgradedEliteTech);
+			_loc4_.add(_loc2_);
+			_loc4_.add(_loc3_);
+			g.rpcMessage(_loc4_,upgradedEliteTech);
 		}
 		
-		private function upgradedEliteTech(m:Message) : void {
-			if(m.getBoolean(0)) {
+		private function upgradedEliteTech(m:Message) : void
+		{
+			if(m.getBoolean(0))
+			{
 				Console.write("Upgrade successful!");
 				SoundLocator.getService().play("7zeIcPFb-UWzgtR_3nrZ8Q");
 				g.creditManager.refresh();
-				myCargo.reloadCargoFromServer(function():void {
+				myCargo.reloadCargoFromServer(function():void
+				{
 					var tech:String;
 					var eliteTech:String;
 					var level:int;
@@ -804,7 +981,8 @@ package core.hud.components.techTree {
 					eliteTech = m.getString(2);
 					level = m.getInt(3);
 					eti = eliteTechSelectedForUpgrade;
-					if(eliteTechSelectedForUpgrade.tech == tech) {
+					if(eliteTechSelectedForUpgrade.tech == tech)
+					{
 						ts = eliteTechSelectedForUpgrade.techSkill;
 						ts.activeEliteTech = eliteTech;
 						ts.activeEliteTechLevel = level;
@@ -817,13 +995,16 @@ package core.hud.components.techTree {
 						"scaleY":3,
 						"rotation":3.141592653589793 * 8,
 						"delay":0.1,
-						"onComplete":function():void {
+						"onComplete":function():void
+						{
 							eti.update(level);
-							if(autoUpdateEliteUpgradeStartValue == level) {
+							if(autoUpdateEliteUpgradeStartValue == level)
+							{
 								isUpgradingEliteTech = false;
 								updateEliteTechUpgradeInfo(eti);
 								eliteTechSelectedForUpgrade = eti;
-								if(level != 100) {
+								if(level != 100)
+								{
 									buyWithFluxButton.enabled = true;
 									buyWithResourcesButton.enabled = true;
 									buyWithFluxButton.visible = true;
@@ -833,10 +1014,13 @@ package core.hud.components.techTree {
 								enableTouch();
 								updateEliteUpgradeLevels();
 								updateUpgradeInfo();
-								if(eliteSlider.minimum < 100) {
+								if(eliteSlider.minimum < 100)
+								{
 									eliteSlider.value = eliteSlider.minimum;
 								}
-							} else if(autoUpdateEliteUpgradeStartValue > level) {
+							}
+							else if(autoUpdateEliteUpgradeStartValue > level)
+							{
 								eliteTechSelectedForUpgrade = eti;
 								buyEliteUpgradeWithFlux(null);
 								hideEliteSlider();
@@ -845,22 +1029,28 @@ package core.hud.components.techTree {
 						}
 					});
 				});
-			} else {
-				if(m.length > 1) {
+			}
+			else
+			{
+				if(m.length > 1)
+				{
 					g.showErrorDialog(m.getString(1));
 				}
 				enableTouch();
 			}
 		}
 		
-		private function upgraded(m:Message) : void {
-			if(m.getBoolean(0)) {
+		private function upgraded(m:Message) : void
+		{
+			if(m.getBoolean(0))
+			{
 				Console.write("Upgrade successful!");
 				SoundLocator.getService().play("7zeIcPFb-UWzgtR_3nrZ8Q");
 				g.creditManager.refresh();
 				_nrOfUpgrades[0]++;
 				_nrOfUpgrades[techSelectedForUpgrade.level]++;
-				myCargo.reloadCargoFromServer(function():void {
+				myCargo.reloadCargoFromServer(function():void
+				{
 					var tween:TweenMax;
 					upgradeInfo.visible = false;
 					tween = TweenMax.from(techSelectedForUpgrade,1,{
@@ -868,40 +1058,49 @@ package core.hud.components.techTree {
 						"scaleY":3,
 						"rotation":3.141592653589793 * 8,
 						"delay":0.1,
-						"onComplete":function():void {
+						"onComplete":function():void
+						{
 							techSelectedForUpgrade.upgrade();
 							techSelectedForUpgrade = null;
 							enableTouch();
 						}
 					});
 				});
-			} else {
-				if(m.length > 1) {
+			}
+			else
+			{
+				if(m.length > 1)
+				{
 					g.showErrorDialog(m.getString(1));
 				}
 				enableTouch();
 				techSelectedForUpgrade = null;
 			}
-			if(g.me.nrOfUpgrades[0] == 0) {
+			if(g.me.nrOfUpgrades[0] == 0)
+			{
 				resetButton.enabled = false;
 			}
 			buyWithFluxButton.enabled = true;
 			buyWithResourcesButton.enabled = true;
 			buyWithResourcesButton.visible = false;
 			buyWithFluxButton.visible = false;
-			if(!isUpgradingEliteTech) {
+			if(!isUpgradingEliteTech)
+			{
 				resetButton.visible = true;
 			}
 		}
 		
-		public function exit() : void {
+		public function exit() : void
+		{
 			autoUpdateEliteUpgradeStartValue = 0;
 			dispose();
 		}
 		
-		override public function dispose() : void {
-			for each(var _local1:* in techBars) {
-				_local1.dispose();
+		override public function dispose() : void
+		{
+			for each(var _loc1_ in techBars)
+			{
+				_loc1_.dispose();
 			}
 			isUpgradingEliteTech = false;
 			autoUpdateEliteUpgradeStartValue = 0;
@@ -909,56 +1108,69 @@ package core.hud.components.techTree {
 			removeEventListeners();
 		}
 		
-		private function disableTouch() : void {
+		private function disableTouch() : void
+		{
 			hideEliteSlider();
-			for each(var _local1:* in techBars) {
-				_local1.touchable = false;
+			for each(var _loc1_ in techBars)
+			{
+				_loc1_.touchable = false;
 			}
 			resetButton.enabled = false;
 			switchEliteTechButton.enabled = false;
 		}
 		
-		private function enableTouch() : void {
-			for each(var _local1:* in techBars) {
-				_local1.touchable = true;
+		private function enableTouch() : void
+		{
+			for each(var _loc1_ in techBars)
+			{
+				_loc1_.touchable = true;
 			}
 			resetButton.enabled = true;
 			switchEliteTechButton.enabled = true;
 		}
 		
-		private function canAfford(tli:TechLevelIcon) : Boolean {
+		private function canAfford(tli:TechLevelIcon) : Boolean
+		{
 			return canAffordMineralType1(tli) && canAffordMineralType2(tli);
 		}
 		
-		private function canAffordET(eti:EliteTechIcon) : Boolean {
+		private function canAffordET(eti:EliteTechIcon) : Boolean
+		{
 			return canAffordETMineralType1(eti) && canAffordETMineralType2(eti);
 		}
 		
-		private function canAffordETMineralType1(eti:EliteTechIcon) : Boolean {
+		private function canAffordETMineralType1(eti:EliteTechIcon) : Boolean
+		{
 			return myCargo.hasMinerals(eti.mineralType1,EliteTechs.getResource1Cost(eti.level + 1));
 		}
 		
-		private function canAffordETMineralType2(eti:EliteTechIcon) : Boolean {
+		private function canAffordETMineralType2(eti:EliteTechIcon) : Boolean
+		{
 			eti.updateMineralType2();
 			return myCargo.hasMinerals(eti.mineralType2,EliteTechs.getResource2Cost(eti.level + 1));
 		}
 		
-		private function canAffordMineralType1(tli:TechLevelIcon) : Boolean {
+		private function canAffordMineralType1(tli:TechLevelIcon) : Boolean
+		{
 			return myCargo.hasMinerals(tli.mineralType1,getMineralType1Cost(tli.level,tli.playerLevel));
 		}
 		
-		private function canAffordMineralType2(tli:TechLevelIcon) : Boolean {
-			if(tli.mineralType2 == null) {
+		private function canAffordMineralType2(tli:TechLevelIcon) : Boolean
+		{
+			if(tli.mineralType2 == null)
+			{
 				return true;
 			}
 			return myCargo.hasMinerals(tli.mineralType2,getMineralType2Cost(tli.level));
 		}
 		
-		private function getMineralType1Cost(upgradeLevel:int, playerUpgradeLevel:int) : Number {
+		private function getMineralType1Cost(upgradeLevel:int, playerUpgradeLevel:int) : Number
+		{
 			return 400 * nrOfUpgrades[0] + Math.pow(4 * nrOfUpgrades[0],2) + 200 * Math.pow(2,upgradeLevel);
 		}
 		
-		private function getMineralType2Cost(upgradeLevel:int) : int {
+		private function getMineralType2Cost(upgradeLevel:int) : int
+		{
 			return 160 + nrOfUpgrades[upgradeLevel] * 520 + upgradeLevel * 40;
 		}
 	}

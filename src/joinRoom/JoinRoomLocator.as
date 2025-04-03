@@ -1,16 +1,21 @@
-package joinRoom {
-	public class JoinRoomLocator {
+package joinRoom
+{
+	public class JoinRoomLocator
+	{
 		private static var service:IJoinRoomManager;
 		
-		public function JoinRoomLocator() {
+		public function JoinRoomLocator()
+		{
 			super();
 		}
 		
-		public static function register(s:IJoinRoomManager) : void {
+		public static function register(s:IJoinRoomManager) : void
+		{
 			service = s;
 		}
 		
-		public static function getService() : IJoinRoomManager {
+		public static function getService() : IJoinRoomManager
+		{
 			return service;
 		}
 	}

@@ -1,4 +1,5 @@
-package core.artifact {
+package core.artifact
+{
 	import core.hud.components.Button;
 	import core.hud.components.ToolTip;
 	import core.scene.Game;
@@ -12,18 +13,28 @@ package core.artifact {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class ArtifactSorting extends Sprite {
+	public class ArtifactSorting extends Sprite
+	{
 		private var nextX:int = 20;
+		
 		private var nextY:int = 0;
+		
 		private var padding:int = 10;
+		
 		private var g:Game;
+		
 		private var types:Vector.<Object>;
+		
 		private var callback:Function;
+		
 		private var drawCount:int = 0;
+		
 		private var scrollArea:ScrollContainer;
+		
 		private var mainBody:Sprite;
 		
-		public function ArtifactSorting(g:Game, callback:Function) {
+		public function ArtifactSorting(g:Game, callback:Function)
+		{
 			var q:Quad;
 			var headline:TextField;
 			var tmp:Object;
@@ -80,25 +91,29 @@ package core.artifact {
 			newRow();
 			scrollArea.addChild(mainBody);
 			addChild(scrollArea);
-			sortLevelHigh = new Button(function():void {
+			sortLevelHigh = new Button(function():void
+			{
 				closeAndSort("levelhigh");
 			},"Strength high");
 			sortLevelHigh.x = nextX;
 			sortLevelHigh.y = 8 * 60;
 			addChild(sortLevelHigh);
-			sortLevelLow = new Button(function():void {
+			sortLevelLow = new Button(function():void
+			{
 				closeAndSort("levellow");
 			},"Strength low");
 			sortLevelLow.x = sortLevelHigh.x + sortLevelHigh.width + 20;
 			sortLevelLow.y = 8 * 60;
 			addChild(sortLevelLow);
-			sortCountAsc = new Button(function():void {
+			sortCountAsc = new Button(function():void
+			{
 				closeAndSort("statcountasc");
 			},"Modifiers high");
 			sortCountAsc.x = sortLevelLow.x + sortLevelLow.width + 20;
 			sortCountAsc.y = 8 * 60;
 			addChild(sortCountAsc);
-			sortCountDesc = new Button(function():void {
+			sortCountDesc = new Button(function():void
+			{
 				closeAndSort("statcountdesc");
 			},"Modifiers low");
 			sortCountDesc.x = sortCountAsc.x + sortCountAsc.width + 20;
@@ -106,54 +121,66 @@ package core.artifact {
 			addChild(sortCountDesc);
 		}
 		
-		private function newRow() : void {
+		private function newRow() : void
+		{
 			nextX = 20;
 			nextY += 60;
 		}
 		
-		private function drawOfSubset(name:String) : void {
-			var _local4:int = 0;
-			var _local3:Object = null;
-			var _local2:String = null;
-			_local4 = 0;
-			while(_local4 < types.length) {
-				_local3 = types[_local4];
-				_local2 = _local3.type;
-				if(!(_local2.indexOf(name) == -1 || _local2.indexOf("2") != -1 || _local2.indexOf("3") != -1)) {
-					addButton(_local3);
+		private function drawOfSubset(name:String) : void
+		{
+			var _loc2_:int = 0;
+			var _loc4_:Object = null;
+			var _loc3_:String = null;
+			_loc2_ = 0;
+			while(_loc2_ < types.length)
+			{
+				_loc4_ = types[_loc2_];
+				_loc3_ = _loc4_.type;
+				if(!(_loc3_.indexOf(name) == -1 || _loc3_.indexOf("2") != -1 || _loc3_.indexOf("3") != -1))
+				{
+					addButton(_loc4_);
 				}
-				_local4++;
+				_loc2_++;
 			}
 		}
 		
-		private function addButton(o:Object) : void {
-			var _local2:ITextureManager = TextureLocator.getService();
-			var _local4:Image = new Image(_local2.getTextureGUIByKey(o.bitmap));
-			_local4.scaleX = _local4.scaleY = 0.7;
-			_local4.x = nextX;
-			_local4.y = nextY;
-			_local4.name = o.type;
-			mainBody.addChild(_local4);
-			nextX += _local4.width + padding;
-			var _local3:ToolTip = new ToolTip(g,_local4,o.name,null,"artifactBox");
-			_local4.addEventListener("touch",onTouch);
-			_local4.addEventListener("touch",onTouch);
-			_local4.useHandCursor = true;
+		private function addButton(o:Object) : void
+		{
+			var _loc4_:ITextureManager = TextureLocator.getService();
+			var _loc3_:Image = new Image(_loc4_.getTextureGUIByKey(o.bitmap));
+			_loc3_.scaleX = _loc3_.scaleY = 0.7;
+			_loc3_.x = nextX;
+			_loc3_.y = nextY;
+			_loc3_.name = o.type;
+			mainBody.addChild(_loc3_);
+			nextX += _loc3_.width + padding;
+			var _loc2_:ToolTip = new ToolTip(g,_loc3_,o.name,null,"artifactBox");
+			_loc3_.addEventListener("touch",onTouch);
+			_loc3_.addEventListener("touch",onTouch);
+			_loc3_.useHandCursor = true;
 		}
 		
-		private function onTouch(e:TouchEvent) : void {
-			var _local2:Image = e.currentTarget as Image;
-			if(e.getTouch(_local2,"ended")) {
-				_local2.filter = null;
-				closeAndSort(_local2.name);
-			} else if(e.interactsWith(_local2)) {
-				_local2.alpha = 0.5;
-			} else if(!e.interactsWith(_local2)) {
-				_local2.alpha = 1;
+		private function onTouch(e:TouchEvent) : void
+		{
+			var _loc2_:Image = e.currentTarget as Image;
+			if(e.getTouch(_loc2_,"ended"))
+			{
+				_loc2_.filter = null;
+				closeAndSort(_loc2_.name);
+			}
+			else if(e.interactsWith(_loc2_))
+			{
+				_loc2_.alpha = 0.5;
+			}
+			else if(!e.interactsWith(_loc2_))
+			{
+				_loc2_.alpha = 1;
 			}
 		}
 		
-		private function closeAndSort(name:String) : void {
+		private function closeAndSort(name:String) : void
+		{
 			callback(name);
 			parent.removeChild(this,true);
 		}

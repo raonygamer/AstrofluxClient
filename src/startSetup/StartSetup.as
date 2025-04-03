@@ -1,4 +1,5 @@
-package startSetup {
+package startSetup
+{
 	import com.greensock.TweenMax;
 	import com.greensock.easing.Circ;
 	import com.greensock.easing.Expo;
@@ -20,104 +21,151 @@ package startSetup {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class StartSetup extends Sprite implements IStartSetup {
+	public class StartSetup extends Sprite implements IStartSetup
+	{
 		private var _skin:String = "hiTDnI9Ex0iLeFAktBnX0w";
+		
 		private var _pvp:Boolean = false;
+		
 		private var _split:String = "";
+		
 		public var _joinName:String = "";
+		
 		private var textureManager:ITextureManager;
+		
 		private var dataManager:IDataManager;
+		
 		private var confirmButton:Button;
+		
 		private var pvpButton:Button;
+		
 		private var stf:ScreenTextField;
+		
 		private var description:Text;
+		
 		private var space:Sprite = new Sprite();
+		
 		private var timeAdjust:Number = 1;
+		
 		private const SELECT_PVP:Boolean = false;
+		
 		private var skipWakeUpCaptain:Boolean = true;
+		
 		private var skinStats:StartShipBaseStats;
+		
 		private var pickShipButton1:PickButton;
+		
 		private var pickShipButton2:PickButton;
+		
 		private var pickShipButton3:PickButton;
+		
 		private var pm:ParallaxManager;
+		
 		private var soundManager:ISound;
+		
 		private var speedUpSpace:Boolean = false;
+		
 		private var freezeSpace:Boolean = false;
+		
 		private var logBook:Text;
+		
 		private var textIndex:int = 0;
+		
 		private var shakeTween1:TweenMax;
+		
 		private var shakeTween2:TweenMax;
+		
 		private var ships:Array = new Array(3);
+		
 		private var isRunning:Boolean;
+		
 		private var _progressText:Text = new Text();
+		
 		private var _timer:Date = new Date();
+		
 		private var _timeStart:int;
 		
-		public function StartSetup() {
+		public function StartSetup()
+		{
 			super();
 			Login.START_SETUP_IS_ACTIVE = true;
 			textureManager = TextureLocator.getService();
 			dataManager = DataLocator.getService();
-			if(stage) {
+			if(stage)
+			{
 				initSelectShip();
-			} else {
+			}
+			else
+			{
 				addEventListener("addedToStage",initSelectShip);
 			}
 		}
 		
-		public static function showProgressText(s:String) : void {
-			var _local3:IStartSetup = StartSetupLocator.getService();
-			if(!_local3) {
+		public static function showProgressText(s:String) : void
+		{
+			var _loc2_:IStartSetup = StartSetupLocator.getService();
+			if(!_loc2_)
+			{
 				return;
 			}
-			if(!_local3.timer) {
-				_local3.timeStart = getTimer();
+			if(!_loc2_.timer)
+			{
+				_loc2_.timeStart = getTimer();
 			}
-			if(!Login.START_SETUP_IS_ACTIVE) {
+			if(!Login.START_SETUP_IS_ACTIVE)
+			{
 				return;
 			}
-			_local3.progressText.color = 0xffffff;
-			var _local2:Number = getTimer() - _local3.timeStart;
-			_local2 /= 100;
-			_local3.progressText.text = s;
-			_local3.progressText.x = _local3.getStage.stageWidth / 2;
-			_local3.progressText.y = _local3.getStage.stageHeight - 40;
-			_local3.progressText.pivotX = _local3.progressText.width / 2;
-			_local3.progressText.pivotY = _local3.progressText.height / 2;
-			if(_local3.sprite.contains(_local3.progressText)) {
+			_loc2_.progressText.color = 0xffffff;
+			var _loc3_:Number = getTimer() - _loc2_.timeStart;
+			_loc3_ /= 100;
+			_loc2_.progressText.text = s;
+			_loc2_.progressText.x = _loc2_.getStage.stageWidth / 2;
+			_loc2_.progressText.y = _loc2_.getStage.stageHeight - 40;
+			_loc2_.progressText.pivotX = _loc2_.progressText.width / 2;
+			_loc2_.progressText.pivotY = _loc2_.progressText.height / 2;
+			if(_loc2_.sprite.contains(_loc2_.progressText))
+			{
 				return;
 			}
-			_local3.sprite.addChild(_local3.progressText);
+			_loc2_.sprite.addChild(_loc2_.progressText);
 		}
 		
-		public static function hideProgressText(s:String) : void {
+		public static function hideProgressText(s:String) : void
+		{
 			var instance:IStartSetup = StartSetupLocator.getService();
 			TweenMax.to(instance.progressText,1,{
 				"y":-100,
 				"alpha":0,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					instance.sprite.removeChild(instance.progressText);
 				}
 			});
 		}
 		
-		public function get skin() : String {
+		public function get skin() : String
+		{
 			return _skin;
 		}
 		
-		public function get pvp() : Boolean {
+		public function get pvp() : Boolean
+		{
 			return _pvp;
 		}
 		
-		public function get split() : String {
+		public function get split() : String
+		{
 			return _split;
 		}
 		
-		private function initSelectShip(e:Event = null) : void {
+		private function initSelectShip(e:Event = null) : void
+		{
 			var dataManager:IDataManager;
 			var obj:Object;
 			removeEventListener("addedToStage",initSelectShip);
-			if(Login.START_SETUP_IS_DONE) {
+			if(Login.START_SETUP_IS_DONE)
+			{
 				return;
 			}
 			soundManager = SoundLocator.getService();
@@ -128,68 +176,81 @@ package startSetup {
 			obj = dataManager.loadKey("SolarSystems","HrAjOBivt0SHPYtxKyiB_Q");
 			pm = new ParallaxManager(null,space,true);
 			addChild(space);
-			pm.load(obj,function():void {
+			pm.load(obj,function():void
+			{
 				var d:DisplayObject;
 				pm.randomize();
 				pm.refresh();
 				isRunning = true;
 				run();
-				for each(d in pm.nebulas) {
+				for each(d in pm.nebulas)
+				{
 					TweenMax.to(d,1 / timeAdjust,{"alpha":1});
 				}
 				selectEscapeVessel();
-				confirmButton = new Button(function():void {
+				confirmButton = new Button(function():void
+				{
 					sleepCaptain();
 				},"Go now!","positive",18);
 			});
 		}
 		
-		private function playWarningSound() : void {
-			if(!speedUpSpace) {
+		private function playWarningSound() : void
+		{
+			if(!speedUpSpace)
+			{
 				soundManager.play("z3gJhEGBNk-cdQCSQ0-AKA",null);
 			}
 		}
 		
-		private function sleepCaptain() : void {
+		private function sleepCaptain() : void
+		{
 			removeChild(confirmButton);
 			soundManager.play("IOO5z1CeyESgoUp0yIuIPQ");
 			TweenMax.to(stf,0.5,{
 				"y":100,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					TweenMax.to(description,0.5,{
 						"y":-100,
-						"onComplete":function():void {
+						"onComplete":function():void
+						{
 							removeChild(description,true);
 						}
 					});
 					TweenMax.to(pickShipButton1,0.5,{
 						"y":-100,
-						"onComplete":function():void {
+						"onComplete":function():void
+						{
 							removeChild(pickShipButton1,true);
 						}
 					});
 					TweenMax.to(pickShipButton2,0.5,{
 						"y":-100,
-						"onComplete":function():void {
+						"onComplete":function():void
+						{
 							removeChild(pickShipButton2,true);
 						}
 					});
 					TweenMax.to(pickShipButton3,0.5,{
 						"y":-100,
-						"onComplete":function():void {
+						"onComplete":function():void
+						{
 							removeChild(pickShipButton3,true);
 						}
 					});
 					TweenMax.to(skinStats,0.5,{
 						"y":-100,
-						"onComplete":function():void {
+						"onComplete":function():void
+						{
 							removeChild(skinStats,true);
 						}
 					});
 					stopShake();
 					speedUpSpace = true;
 					freezeSpace = false;
-					TweenMax.delayedCall(3 / timeAdjust,function():void {
+					TweenMax.delayedCall(3 / timeAdjust,function():void
+					{
 						TweenMax.to(stf,1 / timeAdjust,{
 							"y":-100,
 							"alpha":0
@@ -200,7 +261,8 @@ package startSetup {
 			});
 		}
 		
-		private function wakeUpCaptain() : void {
+		private function wakeUpCaptain() : void
+		{
 			speedUpSpace = false;
 			freezeSpace = false;
 			pm.randomize();
@@ -221,31 +283,39 @@ package startSetup {
 			logBook.pivotX = logBook.width / 2;
 			logBook.alpha = 0;
 			logBook.text = "We\'ve been forced to abandon our beloved and peaceful home planet Homerus. They have destroyed everything. \n\nThree of us managed to escape in one of the emergency vessels before the alien invasion. We expect to be travelling for 3 years to reach Hyperion, the closest star system. \n\nI hope we make it there. \n\nAzuron, December 12, year 2149.\nCaptain " + _joinName;
-			if(!RymdenRunt.isBuggedFlashVersion) {
+			if(!RymdenRunt.isBuggedFlashVersion)
+			{
 				logBook.filter = new GlowFilter(3725567);
 			}
 			addChild(logBook);
 			TweenMax.to(logBook,2.5 / timeAdjust,{
 				"alpha":1,
 				"delay":1,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					confirmButton.y -= 60;
 					addChild(confirmButton);
 				}
 			});
 		}
 		
-		private function run() : void {
-			if(!isRunning) {
+		private function run() : void
+		{
+			if(!isRunning)
+			{
 				return;
 			}
-			if(speedUpSpace) {
+			if(speedUpSpace)
+			{
 				pm.cx += 2;
-			} else {
+			}
+			else
+			{
 				pm.cx = 3;
 				pm.cy = 2;
 			}
-			if(freezeSpace) {
+			if(freezeSpace)
+			{
 				pm.cx = 0;
 				pm.cy = 0;
 			}
@@ -254,8 +324,10 @@ package startSetup {
 			TweenMax.delayedCall(0.05,run);
 		}
 		
-		private function addAnimatedText(text:String, duration:Number, afterDelay:Number, xAdj:int = 0, yAdj:int = 0, id:String = "", fontSize:int = 32, color:uint = 16777215, glowColor:uint = 16777215, fadeOutDelay:Number = 0) : void {
-			if(stf != null && contains(stf)) {
+		private function addAnimatedText(text:String, duration:Number, afterDelay:Number, xAdj:int = 0, yAdj:int = 0, id:String = "", fontSize:int = 32, color:uint = 16777215, glowColor:uint = 16777215, fadeOutDelay:Number = 0) : void
+		{
+			if(stf != null && contains(stf))
+			{
 				stf.onAnimationFinished();
 				removeChild(stf);
 			}
@@ -266,7 +338,8 @@ package startSetup {
 			stf.paragraphReadTime = 8 * 60;
 			stf.format.size = fontSize;
 			stf.y = yAdj;
-			if(xAdj == -1) {
+			if(xAdj == -1)
+			{
 				xAdj = stf.getFullWidth(text,fontSize);
 				xAdj = xAdj / 2;
 			}
@@ -277,7 +350,8 @@ package startSetup {
 			textIndex++;
 		}
 		
-		private function shakeTween(item:DisplayObject, repeatCount:int = 100000) : void {
+		private function shakeTween(item:DisplayObject, repeatCount:int = 100000) : void
+		{
 			shakeTween1 = TweenMax.to(item,0.1,{
 				"repeat":repeatCount - 1,
 				"y":item.y + (1 + Math.random() * 10),
@@ -293,28 +367,40 @@ package startSetup {
 			});
 		}
 		
-		private function stopShake() : void {
-			if(shakeTween1) {
+		private function stopShake() : void
+		{
+			if(shakeTween1)
+			{
 				shakeTween1.kill();
 			}
-			if(shakeTween2) {
+			if(shakeTween2)
+			{
 				shakeTween2.kill();
 			}
 			shakeTween1 = null;
 			shakeTween2 = null;
 		}
 		
-		protected function onAnimationFinished(event:Object) : void {
-			if(contains(stf)) {
+		protected function onAnimationFinished(event:Object) : void
+		{
+			if(contains(stf))
+			{
 				removeChild(stf);
 			}
-			if(stf.id == "emergency") {
+			if(stf.id == "emergency")
+			{
 				addAnimatedText("We are under attack!",50 * 60,1100,-1,2 * 60,"underAttack",42,11541783,13567494);
-			} else if(stf.id == "underAttack") {
+			}
+			else if(stf.id == "underAttack")
+			{
 				selectEscapeVessel();
-			} else if(stf.id != "selectShip") {
-				if(stf.id == "3years") {
-					if(skipWakeUpCaptain) {
+			}
+			else if(stf.id != "selectShip")
+			{
+				if(stf.id == "3years")
+				{
+					if(skipWakeUpCaptain)
+					{
 						return startGameFriendly();
 					}
 					resetStf();
@@ -326,21 +412,26 @@ package startSetup {
 			}
 		}
 		
-		private function selectEscapeVessel() : void {
+		private function selectEscapeVessel() : void
+		{
 			addAnimatedText("Quick! Select escape vessel:",10000,350 * 60,-1,100,"selectShip",26,0xffffff,0xffffff,10000);
 			TweenMax.delayedCall(1 / timeAdjust,addShips);
 			soundManager.preCacheSound("_BsBOsabf0WbIWdzrshcNg");
 		}
 		
-		private function addShips() : void {
+		private function addShips() : void
+		{
 			freezeSpace = true;
-			pickShipButton1 = new PickButton("player_aerodeck",function():void {
+			pickShipButton1 = new PickButton("player_aerodeck",function():void
+			{
 				changeSkin("hiTDnI9Ex0iLeFAktBnX0w",pickShipButton1);
 			});
-			pickShipButton2 = new PickButton("player_tramsnitter",function():void {
+			pickShipButton2 = new PickButton("player_tramsnitter",function():void
+			{
 				changeSkin("Ijt0GhS0hkS09bixHLNEYg",pickShipButton2);
 			});
-			pickShipButton3 = new PickButton("player_pixi",function():void {
+			pickShipButton3 = new PickButton("player_pixi",function():void
+			{
 				changeSkin("tx2VGh3l-U2Krrb4jmasjw",pickShipButton3);
 			});
 			fillShipsArray();
@@ -370,50 +461,63 @@ package startSetup {
 			});
 		}
 		
-		private function fillShipsArray(pos:int = 0) : void {
-			var _local2:PickButton = null;
-			var _local4:int = 0;
-			if(pos == 3) {
+		private function fillShipsArray(pos:int = 0) : void
+		{
+			var _loc2_:PickButton = null;
+			var _loc4_:int = 0;
+			if(pos == 3)
+			{
 				return;
 			}
-			var _local3:Number = Math.random();
-			if(_local3 < 0.3333333333333333) {
-				_local2 = pickShipButton1;
-			} else if(_local3 < 0.6666666666666666) {
-				_local2 = pickShipButton2;
-			} else {
-				_local2 = pickShipButton3;
+			var _loc3_:Number = Math.random();
+			if(_loc3_ < 0.3333333333333333)
+			{
+				_loc2_ = pickShipButton1;
 			}
-			_local4 = 0;
-			while(_local4 <= pos) {
-				if(ships[_local4] == _local2) {
+			else if(_loc3_ < 0.6666666666666666)
+			{
+				_loc2_ = pickShipButton2;
+			}
+			else
+			{
+				_loc2_ = pickShipButton3;
+			}
+			_loc4_ = 0;
+			while(_loc4_ <= pos)
+			{
+				if(ships[_loc4_] == _loc2_)
+				{
 					return fillShipsArray(pos);
 				}
-				_local4++;
+				_loc4_++;
 			}
-			ships[pos] = _local2;
+			ships[pos] = _loc2_;
 			pos++;
 			fillShipsArray(pos);
 		}
 		
-		private function resetStf() : void {
+		private function resetStf() : void
+		{
 			stf.onAnimationFinished();
 			stf.createFadeOutPage("")(null);
 		}
 		
-		private function changeSkin(skin:String, button:PickButton) : void {
+		private function changeSkin(skin:String, button:PickButton) : void
+		{
 			var obj:Object;
 			stf.stop();
 			pickShipButton1.deselect();
 			pickShipButton2.deselect();
 			pickShipButton3.deselect();
 			button.select();
-			if(!contains(description)) {
+			if(!contains(description))
+			{
 				description = new Text();
 				description.size = 13;
 				addChild(description);
 				description.y = 135;
-				if(!RymdenRunt.isBuggedFlashVersion) {
+				if(!RymdenRunt.isBuggedFlashVersion)
+				{
 					description.filter = new DropShadowFilter();
 				}
 				description.color = 16698179;
@@ -431,13 +535,18 @@ package startSetup {
 			this._skin = skin;
 			removeChild(skinStats);
 			obj = dataManager.loadKey("Skins",skin);
-			if(button == pickShipButton1) {
+			if(button == pickShipButton1)
+			{
 				description.text = obj.description;
 				skinStats = new StartShipBaseStats(obj,2);
-			} else if(button == pickShipButton2) {
+			}
+			else if(button == pickShipButton2)
+			{
 				description.text = obj.description;
 				skinStats = new StartShipBaseStats(obj,2);
-			} else {
+			}
+			else
+			{
 				description.text = obj.description;
 				skinStats = new StartShipBaseStats(obj,2);
 			}
@@ -448,14 +557,16 @@ package startSetup {
 			});
 			TweenMax.to(skinStats,0.5 / timeAdjust,{
 				"alpha":0,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					skinStats.x = stage.stageWidth / 2 - skinStats.width / 2;
 					skinStats.y = 5 * 60;
 					skinStats.alpha = 0;
 					addChild(skinStats);
 					TweenMax.to(skinStats,0.01,{
 						"alpha":1,
-						"onComplete":function():void {
+						"onComplete":function():void
+						{
 						}
 					});
 				}
@@ -463,48 +574,59 @@ package startSetup {
 			addAnimatedText(obj.name,50 * 60,0,-1,70,obj.name,32,0xffffff,0xffffff,0xfa0);
 		}
 		
-		public function get timer() : Date {
+		public function get timer() : Date
+		{
 			return _timer;
 		}
 		
-		public function set timeStart(value:int) : void {
+		public function set timeStart(value:int) : void
+		{
 			_timeStart = value;
 		}
 		
-		public function get timeStart() : int {
+		public function get timeStart() : int
+		{
 			return _timeStart;
 		}
 		
-		public function get progressText() : Text {
+		public function get progressText() : Text
+		{
 			return _progressText;
 		}
 		
-		public function get sprite() : Sprite {
+		public function get sprite() : Sprite
+		{
 			return this;
 		}
 		
-		public function set joinName(value:String) : void {
+		public function set joinName(value:String) : void
+		{
 			_joinName = value;
 		}
 		
-		public function get getStage() : Stage {
+		public function get getStage() : Stage
+		{
 			return stage;
 		}
 		
-		private function logBookRead(e:Event) : void {
+		private function logBookRead(e:Event) : void
+		{
 			TweenMax.to(logBook,3,{"alpha":0});
 		}
 		
-		private function startGameFriendly(e:Event = null) : void {
+		private function startGameFriendly(e:Event = null) : void
+		{
 			Login.START_SETUP_IS_DONE = true;
 			dispatchEventWith("complete");
 			confirmButton.visible = false;
-			if(logBook != null) {
+			if(logBook != null)
+			{
 				TweenMax.to(logBook,3,{"alpha":0});
 			}
 		}
 		
-		private function startGameHostile(e:Event = null) : void {
+		private function startGameHostile(e:Event = null) : void
+		{
 			Login.START_SETUP_IS_DONE = true;
 			_pvp = true;
 			dispatchEventWith("complete");

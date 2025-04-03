@@ -1,13 +1,17 @@
-package debug {
+package debug
+{
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	
-	public class Console extends Sprite {
+	public class Console extends Sprite
+	{
 		private static var text:String = "";
+		
 		public static var tf:TextField;
 		
-		public function Console() {
+		public function Console()
+		{
 			super();
 			tf = new TextField(200,800,"");
 			addChild(tf);
@@ -18,19 +22,24 @@ package debug {
 			addEventListener("enterFrame",update);
 		}
 		
-		public static function write(... rest) : void {
+		public static function write(... rest) : void
+		{
 		}
 		
-		public function show() : void {
+		public function show() : void
+		{
 			addChild(tf);
 		}
 		
-		public function hide() : void {
+		public function hide() : void
+		{
 			removeChild(tf);
 		}
 		
-		public function update(e:Event) : void {
-			if(text != null) {
+		public function update(e:Event) : void
+		{
+			if(text != null)
+			{
 				tf.text = text;
 			}
 		}

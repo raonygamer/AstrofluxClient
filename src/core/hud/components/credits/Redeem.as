@@ -1,4 +1,5 @@
-package core.hud.components.credits {
+package core.hud.components.credits
+{
 	import core.hud.components.Box;
 	import core.hud.components.Button;
 	import core.hud.components.InputText;
@@ -13,15 +14,22 @@ package core.hud.components.credits {
 	import starling.text.TextField;
 	import starling.text.TextFormat;
 	
-	public class Redeem extends Sprite {
+	public class Redeem extends Sprite
+	{
 		private var g:Game;
+		
 		private var input:InputText;
+		
 		private var box:Box = new Box(220,80,"highlight",1,15);
+		
 		private var redeemButton:Button;
+		
 		private var cancelButton:Button;
+		
 		private var label:TextField;
 		
-		public function Redeem(g:Game) {
+		public function Redeem(g:Game)
+		{
 			super();
 			this.g = g;
 			addChild(box);
@@ -43,32 +51,40 @@ package core.hud.components.credits {
 			addEventListener("addedToStage",stageAddHandler);
 		}
 		
-		private function stageAddHandler(e:Event) : void {
+		private function stageAddHandler(e:Event) : void
+		{
 			removeEventListener("addedToStage",stageAddHandler);
 			stage.addEventListener("resize",redraw);
 			redraw();
 		}
 		
-		private function onRedeem(e:TouchEvent) : void {
-			var _local3:String = input.text;
-			if(_local3 === "") {
+		private function onRedeem(e:TouchEvent) : void
+		{
+			var _loc2_:String = input.text;
+			if(_loc2_ === "")
+			{
 				redeemButton.enabled = true;
 				return;
 			}
-			var _local2:RegExp = /([0-9a-zA-Z]{4})-([0-9a-zA-Z]{4})/;
-			if(_local3.length === 9 && _local3.match(_local2).length === 1) {
-				g.rpc("redeemCode",onRedeemCode,_local3);
-			} else {
-				g.rpc("redeemPod",onRedeemPod,_local3);
+			var _loc3_:RegExp = /([0-9a-zA-Z]{4})-([0-9a-zA-Z]{4})/;
+			if(_loc2_.length === 9 && _loc2_.match(_loc3_).length === 1)
+			{
+				g.rpc("redeemCode",onRedeemCode,_loc2_);
+			}
+			else
+			{
+				g.rpc("redeemPod",onRedeemPod,_loc2_);
 			}
 		}
 		
-		private function onRedeemCode(m:Message) : void {
+		private function onRedeemCode(m:Message) : void
+		{
 			var skin:String;
 			var popup:RedeemSuccess;
 			var i:int = 0;
 			var success:Boolean = m.getBoolean(i++);
-			if(!success) {
+			if(!success)
+			{
 				label.text = Localize.t(m.getString(i));
 				label.format.color = Style.COLOR_INVALID;
 				redeemButton.enabled = true;
@@ -83,7 +99,8 @@ package core.hud.components.credits {
 			g.hud.update();
 			popup = new RedeemSuccess(g,skin);
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close",function(param1:Event):void {
+			popup.addEventListener("close",function(param1:Event):void
+			{
 				popup.removeEventListeners();
 				g.removeChildFromOverlay(popup);
 			});
@@ -91,12 +108,14 @@ package core.hud.components.credits {
 			dispatchEventWith("success");
 		}
 		
-		private function onRedeemPod(m:Message) : void {
+		private function onRedeemPod(m:Message) : void
+		{
 			var count:int;
 			var popup:PopupMessage;
 			var i:int = 0;
 			var success:Boolean = m.getBoolean(i++);
-			if(!success) {
+			if(!success)
+			{
 				label.text = Localize.t(m.getString(i));
 				label.format.color = Style.COLOR_INVALID;
 				redeemButton.enabled = true;
@@ -106,23 +125,27 @@ package core.hud.components.credits {
 			popup = new PopupMessage();
 			popup.text = "Congratulations!\n\nYou have received " + count + " pods";
 			g.addChildToOverlay(popup);
-			popup.addEventListener("close",function(param1:Event):void {
+			popup.addEventListener("close",function(param1:Event):void
+			{
 				popup.removeEventListeners();
 				g.removeChildFromOverlay(popup);
 			});
 			stage.removeEventListener("resize",redraw);
 			dispatchEventWith("success");
-			g.rpc("getPodCount",function(param1:Message):void {
+			g.rpc("getPodCount",function(param1:Message):void
+			{
 				g.hud.updatePodCount(param1.getInt(0));
 			});
 		}
 		
-		private function onCancel(e:TouchEvent) : void {
+		private function onCancel(e:TouchEvent) : void
+		{
 			stage.removeEventListener("resize",redraw);
 			dispatchEventWith("close");
 		}
 		
-		protected function redraw(e:Event = null) : void {
+		protected function redraw(e:Event = null) : void
+		{
 			box.x = Math.round(stage.stageWidth / 2 - box.width / 2);
 			box.y = Math.round(stage.stageHeight / 2 - box.height / 2);
 		}

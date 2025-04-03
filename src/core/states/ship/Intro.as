@@ -1,4 +1,5 @@
-package core.states.ship {
+package core.states.ship
+{
 	import core.particle.Emitter;
 	import core.particle.EmitterFactory;
 	import core.scene.Game;
@@ -6,16 +7,24 @@ package core.states.ship {
 	import core.states.IState;
 	import core.states.StateMachine;
 	
-	public class Intro implements IState {
+	public class Intro implements IState
+	{
 		private var ship:PlayerShip;
+		
 		private var sm:StateMachine;
+		
 		private var g:Game;
+		
 		private var hyperDriveEngaged:Boolean = true;
+		
 		private var warpJumpEffect:Vector.<Emitter>;
+		
 		private var startX:Number = 0;
+		
 		private var startY:Number = 0;
 		
-		public function Intro(g:Game, ship:PlayerShip, startX:Number, startY:Number) {
+		public function Intro(g:Game, ship:PlayerShip, startX:Number, startY:Number)
+		{
 			super();
 			this.g = g;
 			this.ship = ship;
@@ -23,43 +32,56 @@ package core.states.ship {
 			this.startY = startY;
 		}
 		
-		public function enter() : void {
+		public function enter() : void
+		{
 			warpJumpEffect = EmitterFactory.create("vtJpEIW2Z0aMfEtayo62GA",g,ship.x,ship.y,ship,true);
-			for each(var _local1:* in warpJumpEffect) {
-				_local1.fastForward(2000);
+			for each(var _loc1_ in warpJumpEffect)
+			{
+				_loc1_.fastForward(2000);
 			}
 		}
 		
-		public function execute() : void {
-			var _local2:Number = NaN;
-			if(ship.x <= startX - 20) {
-				if(ship.x >= -500) {
-					_local2 = startX - ship.x;
-					ship.x += _local2 / 33;
-					if(hyperDriveEngaged) {
-						for each(var _local1:* in warpJumpEffect) {
-							_local1.stop();
+		public function execute() : void
+		{
+			var _loc1_:Number = NaN;
+			if(ship.x <= startX - 20)
+			{
+				if(ship.x >= -500)
+				{
+					_loc1_ = startX - ship.x;
+					ship.x += _loc1_ / 33;
+					if(hyperDriveEngaged)
+					{
+						for each(var _loc2_ in warpJumpEffect)
+						{
+							_loc2_.stop();
 						}
 						hyperDriveEngaged = false;
 					}
-				} else {
+				}
+				else
+				{
 					ship.x += 15.151515151515152;
 				}
 			}
 			ship.engine.update();
 		}
 		
-		public function exit() : void {
-			for each(var _local1:* in warpJumpEffect) {
-				_local1.killEmitter();
+		public function exit() : void
+		{
+			for each(var _loc1_ in warpJumpEffect)
+			{
+				_loc1_.killEmitter();
 			}
 		}
 		
-		public function get type() : String {
+		public function get type() : String
+		{
 			return "WarpJump";
 		}
 		
-		public function set stateMachine(sm:StateMachine) : void {
+		public function set stateMachine(sm:StateMachine) : void
+		{
 			this.sm = sm;
 		}
 	}

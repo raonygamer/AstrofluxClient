@@ -1,14 +1,18 @@
-package {
+package
+{
 	import core.hud.components.TextBitmap;
 	import starling.display.Sprite;
 	import starling.text.TextField;
 	import starling.text.TextFormat;
 	
-	public class LoadingBar extends Sprite {
+	public class LoadingBar extends Sprite
+	{
 		private var status:TextBitmap;
+		
 		private var percent:TextField;
 		
-		public function LoadingBar(x:Number, y:Number) {
+		public function LoadingBar(x:Number, y:Number)
+		{
 			super();
 			this.x = x;
 			this.y = y;
@@ -22,7 +26,8 @@ package {
 			addChild(percent);
 		}
 		
-		public function update(status:String, percent:int) : void {
+		public function update(status:String, percent:int) : void
+		{
 			this.status.text = status;
 			this.percent.text = percent.toString() + "%";
 			this.status.x = -this.status.width / 2;

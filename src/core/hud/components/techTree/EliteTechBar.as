@@ -1,4 +1,5 @@
-package core.hud.components.techTree {
+package core.hud.components.techTree
+{
 	import core.hud.components.Box;
 	import core.hud.components.Text;
 	import core.player.EliteTechSkill;
@@ -11,19 +12,30 @@ package core.hud.components.techTree {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class EliteTechBar extends Sprite {
+	public class EliteTechBar extends Sprite
+	{
 		private var g:Game;
+		
 		private var icon:Image;
+
 		private var _name:Text;
+		
 		private var desc:Text;
+		
 		private var level:Text;
+		
 		private var box:Box = new Box(7 * 60,2 * 60,"light",1,2);
+		
 		private var techSkill:TechSkill;
+		
 		private var eliteTech:String;
+		
 		public var etpm:EliteTechPopupMenu = null;
+		
 		private var textureManager:ITextureManager;
 		
-		public function EliteTechBar(g:Game, nameText:String, descText:String, iconName:String, lvl:int, eliteTech:String, techSkill:TechSkill) {
+		public function EliteTechBar(g:Game, nameText:String, descText:String, iconName:String, lvl:int, eliteTech:String, techSkill:TechSkill)
+		{
 			super();
 			this.g = g;
 			this.techSkill = techSkill;
@@ -56,9 +68,12 @@ package core.hud.components.techTree {
 			desc.y = icon.height + 15;
 			_name.htmlText = nameText;
 			desc.htmlText = descText;
-			if(lvl < 1) {
+			if(lvl < 1)
+			{
 				level.htmlText = "level: 1 / 100";
-			} else {
+			}
+			else
+			{
 				level.htmlText = "level: " + lvl + " / 100";
 			}
 			level.y = 15;
@@ -73,28 +88,34 @@ package core.hud.components.techTree {
 			this.addEventListener("touch",onTouch);
 		}
 		
-		private function mouseOver(e:TouchEvent) : void {
+		private function mouseOver(e:TouchEvent) : void
+		{
 			box.alpha = 1;
 			box.useHandCursor = true;
 		}
 		
-		private function mouseOut(e:TouchEvent) : void {
+		private function mouseOut(e:TouchEvent) : void
+		{
 			box.alpha = 0.5;
 			box.useHandCursor = false;
 		}
 		
-		private function mouseClick(e:TouchEvent) : void {
-			var _local2:Boolean = false;
+		private function mouseClick(e:TouchEvent) : void
+		{
+			var _loc2_:Boolean = false;
 			touchable = false;
-			for each(var _local3:* in techSkill.eliteTechs) {
-				if(_local3.eliteTech == eliteTech) {
-					techSkill.activeEliteTech = _local3.eliteTech;
-					techSkill.activeEliteTechLevel = _local3.eliteTechLevel;
-					_local2 = true;
+			for each(var _loc3_ in techSkill.eliteTechs)
+			{
+				if(_loc3_.eliteTech == eliteTech)
+				{
+					techSkill.activeEliteTech = _loc3_.eliteTech;
+					techSkill.activeEliteTechLevel = _loc3_.eliteTechLevel;
+					_loc2_ = true;
 					break;
 				}
 			}
-			if(!_local2) {
+			if(!_loc2_)
+			{
 				techSkill.activeEliteTech = eliteTech;
 				techSkill.activeEliteTechLevel = 1;
 				techSkill.eliteTechs.push(new EliteTechSkill(eliteTech,1));
@@ -103,21 +124,29 @@ package core.hud.components.techTree {
 			etpm.disableAll();
 		}
 		
-		private function updateAndClose(m:Message) : void {
+		private function updateAndClose(m:Message) : void
+		{
 			etpm.updateAndClose(m);
 		}
 		
-		private function onTouch(e:TouchEvent) : void {
-			if(e.getTouch(this,"ended")) {
+		private function onTouch(e:TouchEvent) : void
+		{
+			if(e.getTouch(this,"ended"))
+			{
 				mouseClick(e);
-			} else if(e.interactsWith(this)) {
+			}
+			else if(e.interactsWith(this))
+			{
 				mouseOver(e);
-			} else {
+			}
+			else
+			{
 				mouseOut(e);
 			}
 		}
 		
-		override public function dispose() : void {
+		override public function dispose() : void
+		{
 			removeEventListeners();
 			super.dispose();
 		}

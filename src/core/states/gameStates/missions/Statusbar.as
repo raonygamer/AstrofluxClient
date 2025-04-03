@@ -1,4 +1,5 @@
-package core.states.gameStates.missions {
+package core.states.gameStates.missions
+{
 	import com.greensock.TweenMax;
 	import core.scene.Game;
 	import generics.Util;
@@ -13,61 +14,79 @@ package core.states.gameStates.missions {
 	import starling.text.TextField;
 	import starling.text.TextFormat;
 	
-	public class Statusbar extends Sprite {
+	public class Statusbar extends Sprite
+	{
 		private var label:TextField;
+		
 		private var g:Game;
+		
 		private var daily:Daily;
+		
 		private var bg:Image;
+		
 		private var front:Image;
 		
-		public function Statusbar(g:Game, daily:Daily) {
-			var _local4:ISound = null;
+		public function Statusbar(g:Game, daily:Daily)
+		{
+			var _loc3_:ISound = null;
 			super();
 			this.g = g;
 			this.daily = daily;
-			var _local3:String = "";
-			if(daily.level > g.me.level) {
+			var _loc4_:String = "";
+			if(daily.level > g.me.level)
+			{
 				bg = new Image(g.textureManager.getTextureGUIByTextureName("daily_ongoing_bg"));
-				_local3 = "Unlocks at level " + daily.level;
-			} else if(daily.status == 0) {
+				_loc4_ = "Unlocks at level " + daily.level;
+			}
+			else if(daily.status == 0)
+			{
 				bg = new Image(g.textureManager.getTextureGUIByTextureName("daily_ongoing_bg"));
 				front = new Image(g.textureManager.getTextureGUIByTextureName("daily_ongoing_front"));
-			} else if(daily.status == 1) {
+			}
+			else if(daily.status == 1)
+			{
 				bg = new Image(g.textureManager.getTextureGUIByTextureName("daily_completed"));
-				_local3 = "Complete - Click to collect reward!";
+				_loc4_ = "Complete - Click to collect reward!";
 				bg.addEventListener("touch",onClaim);
 				bg.useHandCursor = true;
-				_local4 = SoundLocator.getService();
-				_local4.preCacheSound("daily_claim");
-				_local4.preCacheSound("daily_reward");
-			} else {
+				_loc3_ = SoundLocator.getService();
+				_loc3_.preCacheSound("daily_claim");
+				_loc3_.preCacheSound("daily_reward");
+			}
+			else
+			{
 				bg = new Image(g.textureManager.getTextureGUIByTextureName("daily_waiting"));
 				addEventListener("enterFrame",update);
 			}
 			addChild(bg);
-			if(front) {
+			if(front)
+			{
 				addChild(front);
 			}
-			label = new TextField(this.width,this.height,_local3,new TextFormat("Verdana",11,0xffffff));
+			label = new TextField(this.width,this.height,_loc4_,new TextFormat("Verdana",11,0xffffff));
 			label.touchable = false;
 			addChild(label);
 			setRatio();
 		}
 		
-		private function setRatio() : void {
-			if(!front) {
+		private function setRatio() : void
+		{
+			if(!front)
+			{
 				return;
 			}
-			var _local2:Number = daily.progress / daily.missionGoal;
-			var _local1:Number = Math.max(0,Math.min(1,_local2));
-			front.scaleX = _local1;
-			front.setTexCoords(1,_local1,0);
-			front.setTexCoords(3,_local1,1);
-			label.text = Math.floor(_local1 * 100).toFixed().toString() + "% complete";
+			var _loc1_:Number = daily.progress / daily.missionGoal;
+			var _loc2_:Number = Math.max(0,Math.min(1,_loc1_));
+			front.scaleX = _loc2_;
+			front.setTexCoords(1,_loc2_,0);
+			front.setTexCoords(3,_loc2_,1);
+			label.text = Math.floor(_loc2_ * 100).toFixed().toString() + "% complete";
 		}
 		
-		private function onClaim(e:TouchEvent) : void {
-			if(e.getTouch(this,"ended")) {
+		private function onClaim(e:TouchEvent) : void
+		{
+			if(e.getTouch(this,"ended"))
+			{
 				label.text = "waiting ...";
 				bg.removeEventListener("touch",onClaim);
 				daily.status = 2;
@@ -75,7 +94,8 @@ package core.states.gameStates.missions {
 			}
 		}
 		
-		private function onClaimResponse(m:Message) : void {
+		private function onClaimResponse(m:Message) : void
+		{
 			var soundManager:ISound;
 			g.dailyManager.addReward(m);
 			Game.trackEvent("missions","daily",daily.name,g.me.level);
@@ -87,7 +107,8 @@ package core.states.gameStates.missions {
 				"repeat":5,
 				"yoyo":true,
 				"blur":15,
-				"onCompleteListener":function():void {
+				"onCompleteListener":function():void
+				{
 					var reward:DailyReward;
 					var xpos:int;
 					removeChild(label);
@@ -95,7 +116,8 @@ package core.states.gameStates.missions {
 					bg.filter = null;
 					TweenMax.to(bg,0.8,{
 						"width":0,
-						"onCompleteListener":function():void {
+						"onCompleteListener":function():void
+						{
 							removeChild(bg);
 							dispatchEventWith("dailyMissionClaimed");
 							soundManager.stop("daily_claim");
@@ -111,22 +133,28 @@ package core.states.gameStates.missions {
 			});
 		}
 		
-		public function update(e:EnterFrameEvent) : void {
-			if(daily.status != 2) {
+		public function update(e:EnterFrameEvent) : void
+		{
+			if(daily.status != 2)
+			{
 				return;
 			}
-			var _local2:Number = g.dailyManager.resetTime - g.time;
-			if(_local2 <= 0) {
+			var _loc2_:Number = g.dailyManager.resetTime - g.time;
+			if(_loc2_ <= 0)
+			{
 				daily.status = 0;
 				daily.progress = 0;
 				removeEventListener("enterFrame",update);
 				dispatchEventWith("dailyMissionReset");
-			} else {
-				label.text = "Available again in " + Util.getFormattedTime(_local2);
+			}
+			else
+			{
+				label.text = "Available again in " + Util.getFormattedTime(_loc2_);
 			}
 		}
 		
-		override public function dispose() : void {
+		override public function dispose() : void
+		{
 			bg.removeEventListeners();
 			removeEventListener("enterFrame",update);
 			super.dispose();

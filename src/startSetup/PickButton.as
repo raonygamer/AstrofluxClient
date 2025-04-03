@@ -1,4 +1,5 @@
-package startSetup {
+package startSetup
+{
 	import com.greensock.TweenMax;
 	import core.hud.components.Box;
 	import sound.ISound;
@@ -9,23 +10,33 @@ package startSetup {
 	import starling.filters.GlowFilter;
 	import textures.TextureLocator;
 	
-	public class PickButton extends Sprite {
+	public class PickButton extends Sprite
+	{
 		private var bgr:Box;
+		
 		private var callback:Function;
+		
 		private var image:Image;
+		
 		public var mouseOverCallback:Function = null;
+		
 		private var isSelected:Boolean = false;
+		
 		private var rotationTween:TweenMax;
 		
-		public function PickButton(imageName:String, callback:Function, isGuiTexture:Boolean = false) {
+		public function PickButton(imageName:String, callback:Function, isGuiTexture:Boolean = false)
+		{
 			super();
-			if(isGuiTexture) {
+			if(isGuiTexture)
+			{
 				image = new Image(TextureLocator.getService().getTextureGUIByTextureName(imageName));
-			} else {
+			}
+			else
+			{
 				image = new Image(TextureLocator.getService().getTextureMainByTextureName(imageName));
 			}
 			this.callback = callback;
-			var _local4:Number = 100;
+			var _loc4_:Number = 100;
 			bgr = new Box(90,90,"normal",0.8,0);
 			addChild(bgr);
 			image.pivotX = image.width / 2;
@@ -39,30 +50,39 @@ package startSetup {
 			pivotY = height / 2;
 		}
 		
-		private function onTouch(e:TouchEvent) : void {
-			var _local2:ISound = null;
-			if(isSelected) {
+		private function onTouch(e:TouchEvent) : void
+		{
+			var _loc2_:ISound = null;
+			if(isSelected)
+			{
 				return;
 			}
-			if(e.getTouch(this,"began")) {
+			if(e.getTouch(this,"began"))
+			{
 				callback();
 				e.stopPropagation();
-				_local2 = SoundLocator.getService();
-				if(_local2 != null) {
-					_local2.play("3hVYqbNNSUWoDGk_pK1BdQ");
+				_loc2_ = SoundLocator.getService();
+				if(_loc2_ != null)
+				{
+					_loc2_.play("3hVYqbNNSUWoDGk_pK1BdQ");
 				}
-			} else if(e.interactsWith(this)) {
+			}
+			else if(e.interactsWith(this))
+			{
 				callback();
 			}
 		}
 		
-		public function select() : void {
+		public function select() : void
+		{
 			isSelected = true;
 			image.alpha = 1;
 			rotationTween = TweenMax.to(image,0.7,{
 				"rotation":3.141592653589793 * 1.5,
-				"onComplete":function():void {
-					if(!RymdenRunt.isBuggedFlashVersion) {
+				"onComplete":function():void
+				{
+					if(!RymdenRunt.isBuggedFlashVersion)
+					{
 						image.filter = new GlowFilter(0xffffff,1,1,0.7);
 					}
 					image.scaleX = 1.3;
@@ -72,15 +92,18 @@ package startSetup {
 			bgr.filter = new GlowFilter(0xffffff,0.8,1,0.7);
 		}
 		
-		public function deselect() : void {
+		public function deselect() : void
+		{
 			isSelected = false;
-			if(!RymdenRunt.isBuggedFlashVersion) {
+			if(!RymdenRunt.isBuggedFlashVersion)
+			{
 				bgr.filter = new GlowFilter(0xffffff,0.4,1,0.7);
 			}
 			image.alpha = 0.4;
 			image.scaleX = 1;
 			image.scaleY = 1;
-			if(image.filter) {
+			if(image.filter)
+			{
 				image.filter.dispose();
 			}
 			image.filter = null;

@@ -1,4 +1,5 @@
-package core.hud.components {
+package core.hud.components
+{
 	import com.greensock.TweenMax;
 	import core.player.Player;
 	import core.scene.Game;
@@ -8,21 +9,34 @@ package core.hud.components {
 	import starling.text.TextField;
 	import starling.text.TextFormat;
 	
-	public class Experience extends DisplayObjectContainer {
+	public class Experience extends DisplayObjectContainer
+	{
 		private var regularXpBarColor:uint = 16777011;
+		
 		private var boostXpBarColor:uint = 3407667;
+		
 		private var xpBar:ScaleImage;
+		
 		private var bgr:ScaleImage;
+		
 		private var flashBar:ScaleImage;
+		
 		private var xpText:TextField;
+		
 		private var g:Game;
+		
 		private var p:Player;
+		
 		private var tt:ToolTip;
+		
 		private var oldXp:int = -1;
+		
 		private var oldXpBoost:Boolean = false;
+		
 		private var tw:TweenMax;
 		
-		public function Experience(g:Game) {
+		public function Experience(g:Game)
+		{
 			super();
 			this.g = g;
 			xpBar = new ScaleImage();
@@ -37,7 +51,8 @@ package core.hud.components {
 			addEventListener("removedFromStage",clean);
 		}
 		
-		public function load() : void {
+		public function load() : void
+		{
 			xpText = new TextField(70,15,Localize.t("level [level]").replace("[level]",1),new TextFormat("font13",10,0xcccccc));
 			xpText.y = -3;
 			xpText.batchable = true;
@@ -56,19 +71,27 @@ package core.hud.components {
 			g.addResizeListener(resize);
 		}
 		
-		public function update() : void {
-			if(!oldXpBoost && g.me.hasExpBoost) {
+		public function update() : void
+		{
+			if(!oldXpBoost && g.me.hasExpBoost)
+			{
 				xpBar.color = boostXpBarColor;
 				updateXpText();
-			} else if(oldXpBoost && !g.me.hasExpBoost) {
+			}
+			else if(oldXpBoost && !g.me.hasExpBoost)
+			{
 				xpBar.color = regularXpBarColor;
 				updateXpText();
 			}
-			if(oldXp != p.xp) {
+			if(oldXp != p.xp)
+			{
 				xpText.text = Localize.t("level [level]").replace("[level]",p.level);
-				if(p.xp - p.levelXpMin > (p.levelXpMax - p.levelXpMin) / 2) {
+				if(p.xp - p.levelXpMin > (p.levelXpMax - p.levelXpMin) / 2)
+				{
 					xpText.format.color = 0;
-				} else {
+				}
+				else
+				{
 					xpText.format.color = 0xcccccc;
 				}
 				updateXpText();
@@ -79,40 +102,47 @@ package core.hud.components {
 			oldXpBoost = g.me.hasExpBoost;
 		}
 		
-		private function updateXpText() : void {
+		private function updateXpText() : void
+		{
 			tt.text = Localize.t("Experience: <FONT COLOR=\'#ffffff\'>[xp] / [xpMax]</FONT>\nXP Boost: <FONT COLOR=\'#ffffff\'>[xpBoost]</FONT>").replace("[xp]",p.xp).replace("[xpMax]",p.levelXpMax).replace("[xpBoost]",g.me.hasExpBoost.toString());
 		}
 		
-		private function flash() : void {
-			if(tw != null) {
+		private function flash() : void
+		{
+			if(tw != null)
+			{
 				tw.kill();
 				addChild(flashBar);
 			}
 			flashBar.alpha = 1;
 			tw = TweenMax.to(flashBar,3,{
 				"alpha":0,
-				"onComplete":function():void {
-					if(contains(flashBar)) {
+				"onComplete":function():void
+				{
+					if(contains(flashBar))
+					{
 						removeChild(flashBar);
 					}
 				}
 			});
 		}
 		
-		private function clean(e:Event = null) : void {
+		private function clean(e:Event = null) : void
+		{
 			ToolTip.disposeType("experienceBar");
 			removeEventListener("removedFromStage",clean);
 		}
 		
-		private function resize(e:Event = null) : void {
-			var _local5:Number = g.stage.stageWidth;
-			var _local4:int = p.levelXpMax - p.levelXpMin;
-			var _local3:int = p.xp - p.levelXpMin;
-			var _local2:Number = _local5 * _local3 / _local4;
-			xpText.x = _local5 / 2 - xpText.width / 2;
-			xpBar.width = _local2;
-			bgr.width = _local5;
-			flashBar.width = _local5;
+		private function resize(e:Event = null) : void
+		{
+			var _loc2_:Number = g.stage.stageWidth;
+			var _loc3_:int = p.levelXpMax - p.levelXpMin;
+			var _loc5_:int = p.xp - p.levelXpMin;
+			var _loc4_:Number = _loc2_ * _loc5_ / _loc3_;
+			xpText.x = _loc2_ / 2 - xpText.width / 2;
+			xpBar.width = _loc4_;
+			bgr.width = _loc2_;
+			flashBar.width = _loc2_;
 		}
 	}
 }

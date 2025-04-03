@@ -1,4 +1,5 @@
-package core.hud.components {
+package core.hud.components
+{
 	import core.credits.CreditManager;
 	import core.hud.components.credits.BuyFlux;
 	import core.scene.Game;
@@ -11,12 +12,16 @@ package core.hud.components {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class BuyFluxButton extends ButtonHud {
+	public class BuyFluxButton extends ButtonHud
+	{
 		private var g:Game;
+		
 		private var creditText:TextField;
+		
 		private var fluxIcon:Image;
 		
-		public function BuyFluxButton(g:Game) {
+		public function BuyFluxButton(g:Game)
+		{
 			var textureManager:ITextureManager;
 			var payButton:ButtonHud;
 			super(openBuyFlux,"button_shop_bg");
@@ -28,7 +33,8 @@ package core.hud.components {
 			fluxIcon.x = 8;
 			fluxIcon.y = 5;
 			addChild(fluxIcon);
-			payButton = new ButtonHud(function():void {
+			payButton = new ButtonHud(function():void
+			{
 			},"button_pay.png");
 			payButton.x = 66;
 			payButton.y = 4;
@@ -40,29 +46,37 @@ package core.hud.components {
 			creditText.touchable = false;
 			creditText.batchable = true;
 			addChild(creditText);
-			g.creditManager.refresh(function():void {
+			g.creditManager.refresh(function():void
+			{
 				updateCredits();
 			});
 		}
 		
-		private function openBuyFlux(e:Event = null) : void {
+		private function openBuyFlux(e:Event = null) : void
+		{
 			var buyFlux:BuyFlux = new BuyFlux(g);
-			buyFlux.addEventListener("buyFluxClose",function():void {
+			buyFlux.addEventListener("buyFluxClose",function():void
+			{
 				buyFlux.removeEventListeners();
 				g.removeChildFromOverlay(buyFlux);
-				g.creditManager.refresh(function():void {
+				g.creditManager.refresh(function():void
+				{
 					updateCredits();
 				});
 			});
 			g.addChildToOverlay(buyFlux);
 		}
 		
-		public function updateCredits() : void {
+		public function updateCredits() : void
+		{
 			creditText.text = Util.formatAmount(CreditManager.FLUX);
-			if(CreditManager.FLUX > 9999) {
+			if(CreditManager.FLUX > 9999)
+			{
 				fluxIcon.x = 4;
 				creditText.x = 20;
-			} else {
+			}
+			else
+			{
 				fluxIcon.x = 8;
 				creditText.x = 24;
 			}

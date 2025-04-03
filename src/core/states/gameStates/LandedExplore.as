@@ -1,4 +1,5 @@
-package core.states.gameStates {
+package core.states.gameStates
+{
 	import core.player.LandedBody;
 	import core.scene.Game;
 	import core.solarSystem.Body;
@@ -9,26 +10,33 @@ package core.states.gameStates {
 	import facebook.Action;
 	import starling.display.Sprite;
 	
-	public class LandedExplore extends LandedState {
+	public class LandedExplore extends LandedState
+	{
 		private var sceneSM:DisplayStateMachine;
+		
 		private var container:Sprite;
 		
-		public function LandedExplore(g:Game, body:Body) {
-			var _local3:Boolean = false;
-			for each(var _local4:* in g.me.landedBodies) {
-				if(_local4.key == body.key) {
-					_local3 = true;
+		public function LandedExplore(g:Game, body:Body)
+		{
+			var _loc4_:Boolean = false;
+			for each(var _loc3_ in g.me.landedBodies)
+			{
+				if(_loc3_.key == body.key)
+				{
+					_loc4_ = true;
 					break;
 				}
 			}
-			if(!_local3) {
+			if(!_loc4_)
+			{
 				g.me.landedBodies.push(new LandedBody(body.key,false));
 				Action.discover(body.key);
 			}
 			super(g,body,body.name);
 		}
 		
-		override public function enter() : void {
+		override public function enter() : void
+		{
 			super.enter();
 			container = new Sprite();
 			sceneSM = new DisplayStateMachine(container);
@@ -37,29 +45,39 @@ package core.states.gameStates {
 			addChild(container);
 		}
 		
-		override public function execute() : void {
-			if(sceneSM.inState(SelectTeamState)) {
+		override public function execute() : void
+		{
+			if(sceneSM.inState(SelectTeamState))
+			{
 				leaveButton.visible = false;
-				if(keybinds.isEscPressed) {
+				if(keybinds.isEscPressed)
+				{
 					sceneSM.revertState();
 				}
-			} else if(sceneSM.inState(ReportState)) {
+			}
+			else if(sceneSM.inState(ReportState))
+			{
 				leaveButton.visible = false;
-			} else {
+			}
+			else
+			{
 				super.execute();
 				leaveButton.visible = true;
-				if(_loaded && !g.blockHotkeys && keybinds.isEscPressed || !g.chatInput.isActive() && keybinds.isInputPressed(10)) {
+				if(_loaded && !g.blockHotkeys && keybinds.isEscPressed || !g.chatInput.isActive() && keybinds.isInputPressed(10))
+				{
 					super.leave();
 				}
 			}
 		}
 		
-		override public function tickUpdate() : void {
+		override public function tickUpdate() : void
+		{
 			sceneSM.update();
 			super.tickUpdate();
 		}
 		
-		override public function exit(callback:Function) : void {
+		override public function exit(callback:Function) : void
+		{
 			sceneSM.changeState(null);
 			super.exit(callback);
 		}

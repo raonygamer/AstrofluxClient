@@ -1,4 +1,5 @@
-package core.hud.components {
+package core.hud.components
+{
 	import com.greensock.TweenMax;
 	import core.player.Player;
 	import core.scene.Game;
@@ -14,39 +15,65 @@ package core.hud.components {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class HealthAndShield extends DisplayObjectContainer {
+	public class HealthAndShield extends DisplayObjectContainer
+	{
 		private static const HP_WIDTH:Number = 120;
+		
 		private static const SHIELD_WIDTH:Number = 120;
+		
 		private var playerHPBar:Image;
+		
 		private var colorGreen:uint;
+		
 		private var colorYellow:uint;
+		
 		private var colorRed:uint;
+		
 		private var playerHPText:TextField;
+		
 		private var playerHP:Image;
+		
 		private var playerHPBarBgr:Image;
+		
 		private var playerHPBarBgrGreen:Texture;
+		
 		private var playerHPBarBgrYellow:Texture;
+		
 		private var playerHPBarBgrRed:Texture;
+		
 		private var playerShieldBar:Image;
+		
 		private var playerShieldBarBgr:Image;
+		
 		private var colorBlue:uint;
+		
 		private var playerShieldText:TextField;
+		
 		private var playerShield:Image;
+		
 		private var textureManager:ITextureManager;
+		
 		private var toolTip:ToolTip;
+		
 		private var g:Game;
+		
 		private var warningOverlay:Quad = new Quad(1,1);
+		
 		private var inLowHp:Boolean = false;
+		
 		private var lowHpTween:TweenMax = null;
+		
 		private var oldTotal:Number = 0;
 		
-		public function HealthAndShield(g:Game) {
+		public function HealthAndShield(g:Game)
+		{
 			super();
 			this.g = g;
 			textureManager = TextureLocator.getService();
 		}
 		
-		public function load() : void {
+		public function load() : void
+		{
 			warningOverlay.color = 0xff0000;
 			warningOverlay.blendMode = "add";
 			warningOverlay.width = g.stage.stageWidth;
@@ -104,76 +131,95 @@ package core.hud.components {
 			g.addResizeListener(resize);
 		}
 		
-		public function update() : void {
-			var _local5:Player = g.me;
-			var _local3:Ship = _local5.ship;
-			if(_local3 == null) {
+		public function update() : void
+		{
+			var _loc1_:Player = g.me;
+			var _loc3_:Ship = _loc1_.ship;
+			if(_loc3_ == null)
+			{
 				return;
 			}
-			var _local1:Number = _local3.hp + _local3.shieldHp + _local3.armorThreshold + _local3.shieldRegen + _local3.hpMax + _local3.shieldHpMax;
-			if(oldTotal == _local1) {
+			var _loc2_:Number = _loc3_.hp + _loc3_.shieldHp + _loc3_.armorThreshold + _loc3_.shieldRegen + _loc3_.hpMax + _loc3_.shieldHpMax;
+			if(oldTotal == _loc2_)
+			{
 				return;
 			}
-			oldTotal = _local1;
-			if(_local3.hp / _local3.hpMax < 0.25) {
+			oldTotal = _loc2_;
+			if(_loc3_.hp / _loc3_.hpMax < 0.25)
+			{
 				playerHPBarBgr.texture = playerHPBarBgrRed;
 				playerHPBar.color = colorRed;
 				playerHPText.format.color = 0xffaa88;
 				playerHP.color = 0xffaa88;
-			} else if(_local3.hp / _local3.hpMax >= 0.75) {
+			}
+			else if(_loc3_.hp / _loc3_.hpMax >= 0.75)
+			{
 				playerHPBarBgr.texture = playerHPBarBgrGreen;
 				playerHPBar.color = colorGreen;
 				playerHPText.format.color = 2311696;
 				playerHP.color = 2311696;
-			} else {
+			}
+			else
+			{
 				playerHPBarBgr.texture = playerHPBarBgrYellow;
 				playerHPBar.color = colorYellow;
 				playerHPText.format.color = 3355408;
 				playerHP.color = 3355408;
 			}
-			if((_local3.hp + _local3.shieldHp) / (_local3.hpMax + _local3.shieldHpMax) <= 0.25) {
+			if((_loc3_.hp + _loc3_.shieldHp) / (_loc3_.hpMax + _loc3_.shieldHpMax) <= 0.25)
+			{
 				startLowHpWarningEffect();
-			} else if(inLowHp) {
+			}
+			else if(inLowHp)
+			{
 				stopLowHPWarningEffect();
 			}
-			var _local6:Number = 2 * 60 * _local3.hp / _local3.hpMax;
-			if(_local6 < 0) {
-				_local6 = 0;
+			var _loc6_:Number = 2 * 60 * _loc3_.hp / _loc3_.hpMax;
+			if(_loc6_ < 0)
+			{
+				_loc6_ = 0;
 			}
-			if(_local6 > 2 * 60) {
-				_local6 = 120;
+			if(_loc6_ > 2 * 60)
+			{
+				_loc6_ = 120;
 			}
-			playerHPBar.width = _local6;
-			playerHPText.text = _local3.hp > 0 ? _local3.hp.toString() : "0";
-			var _local4:Number = 2 * 60 * _local3.shieldHp / _local3.shieldHpMax;
-			if(_local4 < 0) {
-				_local4 = 0;
+			playerHPBar.width = _loc6_;
+			playerHPText.text = _loc3_.hp > 0 ? _loc3_.hp.toString() : "0";
+			var _loc4_:Number = 2 * 60 * _loc3_.shieldHp / _loc3_.shieldHpMax;
+			if(_loc4_ < 0)
+			{
+				_loc4_ = 0;
 			}
-			if(_local4 > 2 * 60) {
-				_local4 = 120;
+			if(_loc4_ > 2 * 60)
+			{
+				_loc4_ = 120;
 			}
-			playerShieldBar.width = _local4;
-			playerShieldText.text = _local3.shieldHp > 0 ? _local3.shieldHp.toString() : "0";
-			var _local2:String = "<FONT COLOR=\'#8888ff\'>Shield regen:</FONT> <FONT COLOR=\'#ffffff\'>[regen]</FONT>\n";
-			_local2 += "Shield is good against high impact damage, if the shield holds it will reduce damage by <FONT COLOR=\'#ffffff\'>[shieldReduction]%</FONT>.\n\n";
-			_local2 += "<FONT COLOR=\'#44ff44\'>Armor:</FONT> <FONT COLOR=\'#ffffff\'>[armor]</FONT>\n";
-			_local2 += "Armor is good against rapid fire and low impact damage, the damage will be reduced by the amount of armor (max <FONT COLOR=\'#ffffff\'>[armorCapPvP]%</FONT> of damage in PvP and <FONT COLOR=\'#ffffff\'>[armorCapPvE]%</FONT> in PvE).\n";
-			toolTip.text = Localize.t(_local2).replace("[regen]",(1.75 * (_local3.shieldRegen + _local3.shieldRegenBonus)).toFixed(0)).replace("[armor]",_local3.armorThreshold).replace("[shieldReduction]",35).replace("[armorCapPvP]",75).replace("[armorCapPvE]",90);
+			playerShieldBar.width = _loc4_;
+			playerShieldText.text = _loc3_.shieldHp > 0 ? _loc3_.shieldHp.toString() : "0";
+			var _loc5_:String = "<FONT COLOR=\'#8888ff\'>Shield regen:</FONT> <FONT COLOR=\'#ffffff\'>[regen]</FONT>\n";
+			_loc5_ = _loc5_ + "Shield is good against high impact damage, if the shield holds it will reduce damage by <FONT COLOR=\'#ffffff\'>[shieldReduction]%</FONT>.\n\n";
+			_loc5_ = _loc5_ + "<FONT COLOR=\'#44ff44\'>Armor:</FONT> <FONT COLOR=\'#ffffff\'>[armor]</FONT>\n";
+			_loc5_ = _loc5_ + "Armor is good against rapid fire and low impact damage, the damage will be reduced by the amount of armor (max <FONT COLOR=\'#ffffff\'>[armorCapPvP]%</FONT> of damage in PvP and <FONT COLOR=\'#ffffff\'>[armorCapPvE]%</FONT> in PvE).\n";
+			toolTip.text = Localize.t(_loc5_).replace("[regen]",(1.75 * (_loc3_.shieldRegen + _loc3_.shieldRegenBonus)).toFixed(0)).replace("[armor]",_loc3_.armorThreshold).replace("[shieldReduction]",35).replace("[armorCapPvP]",75).replace("[armorCapPvE]",90);
 		}
 		
-		public function startLowHpWarningEffect() : void {
-			if(inLowHp) {
+		public function startLowHpWarningEffect() : void
+		{
+			if(inLowHp)
+			{
 				return;
 			}
 			inLowHp = true;
-			if(lowHpTween != null) {
+			if(lowHpTween != null)
+			{
 				lowHpTween.kill();
 				lowHpTween = null;
 			}
 			g.addChildToOverlay(warningOverlay);
 			lowHpTween = TweenMax.fromTo(warningOverlay,1,{"alpha":warningOverlay.alpha},{
 				"alpha":0.2,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					lowHpTween = TweenMax.fromTo(warningOverlay,1,{"alpha":0.2},{
 						"alpha":0.3,
 						"yoyo":true,
@@ -183,15 +229,18 @@ package core.hud.components {
 			});
 		}
 		
-		public function stopLowHPWarningEffect() : void {
+		public function stopLowHPWarningEffect() : void
+		{
 			inLowHp = false;
-			if(lowHpTween != null) {
+			if(lowHpTween != null)
+			{
 				lowHpTween.kill();
 				lowHpTween = null;
 			}
 			lowHpTween = TweenMax.fromTo(warningOverlay,1,{"alpha":warningOverlay.alpha},{
 				"alpha":0,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					g.removeChildFromOverlay(warningOverlay);
 					lowHpTween.kill();
 					lowHpTween = null;
@@ -200,7 +249,8 @@ package core.hud.components {
 			lowHpTween.resume();
 		}
 		
-		private function resize(e:Event = null) : void {
+		private function resize(e:Event = null) : void
+		{
 			warningOverlay.width = g.stage.stageWidth;
 			warningOverlay.height = g.stage.stageHeight;
 		}

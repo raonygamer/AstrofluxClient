@@ -1,4 +1,5 @@
-package core.player {
+package core.player
+{
 	import com.greensock.TweenMax;
 	import core.artifact.Artifact;
 	import core.artifact.ArtifactFactory;
@@ -23,6 +24,7 @@ package core.player {
 	import core.weapon.Beam;
 	import core.weapon.Cloak;
 	import core.weapon.Damage;
+	import core.weapon.PetSpawner;
 	import core.weapon.Teleport;
 	import core.weapon.Weapon;
 	import core.weapon.WeaponDataHolder;
@@ -36,185 +38,313 @@ package core.player {
 	import sound.SoundLocator;
 	import starling.core.Starling;
 	import starling.display.Image;
+	import starling.utils.MathUtil;
 	
-	public class Player {
+	public class Player
+	{
 		public static const SLOT_WEAPON_COST_TYPE:String = "flpbTKautkC1QzjWT28gkw";
+		
 		public static const SLOT_ARTIFACT_COST_TYPE:String = "flpbTKautkC1QzjWT28gkw";
+		
 		public static const SLOT_CREW_COST_TYPE:String = "flpbTKautkC1QzjWT28gkw";
+		
 		public static const SLOT_WEAPON:String = "slotWeapon";
+		
 		public static const SLOT_ARTIFACT:String = "slotArtifact";
+		
 		public static const SLOT_CREW:String = "slotCrew";
+		
 		public static const RESPAWN_TIME:Number = 10000;
+		
 		public static const RESPAWN_TIME_PVP:Number = 3000;
+		
 		public static const SUPPORTER_ICON_ASCII:String = "<font color=\'#ffff66\'>&#9733;</font>";
 		
 		public static const EXPBOOSTBONUS_MISSION:Number = 0.3;
+		
 		public static var friends:Vector.<Friend>;
+		
 		public static var onlineFriends:Vector.<Friend>;
+		
 		public static const SLOT_WEAPON_UNLOCK_COST:Array = [0,0,200,1000,5000];
+		
 		public static const SLOT_ARTIFACT_UNLOCK_COST:Array = [0,1000,2000,10000,25000];
+		
 		public static const SLOT_CREW_UNLOCK_COST:Array = [0,0,250,5000,25000];
+		
 		public static const ARTIFACT_CAPACITY:Array = [250,400,10 * 60,800];
+		
 		private var _name:String;
+		
 		public var isMe:Boolean = false;
+		
 		public var id:String;
+		
 		public var inviter_id:String = "";
+		
 		public var ship:PlayerShip;
+		
 		public var mirror:PlayerShip;
+		
 		public var stateMachine:StateMachine = new StateMachine();
+		
 		public var currentBody:Body;
+		
 		public var lastBody:Body;
+		
 		public var xp:int = 0;
+		
 		public var reputation:int = 0;
+		
 		public var split:String = "";
+		
 		private var _team:int = -1;
+		
 		public var respawnNextReady:Number = 0;
+		
 		public var spree:int = 0;
+		
 		public var techPoints:int = 0;
+		
 		public var clanId:String = "";
+		
 		public var clanApplicationId:String = "";
+		
 		public var troons:int = 0;
+		
 		public var rating:int = 0;
+		
 		public var ranking:int = 0;
+		
 		private var activeWeapon:String;
+		
 		public var techSkills:Vector.<TechSkill> = new Vector.<TechSkill>();
+		
 		public var weapons:Array = [];
+		
 		public var weaponsState:Array = [];
+		
 		public var weaponsHotkeys:Array = [];
+		
 		public var weaponData:Vector.<WeaponDataHolder>;
+		
 		public var selectedWeaponIndex:int = 0;
+		
 		public var unlockedWeaponSlots:int;
+		
 		public var artifactCount:int = 0;
+		
 		public var compressorLevel:int = 0;
+		
 		public var artifactCapacityLevel:int = 0;
+		
 		public var artifactAutoRecycleLevel:int = 0;
+		
 		public var activeSkin:String = "";
+		
 		public var unlockedArtifactSlots:int;
+		
 		public var artifacts:Vector.<Artifact> = new Vector.<Artifact>();
+		
 		public var activeArtifactSetup:int;
+		
 		public var artifactSetups:Array = [];
+		
 		public var unlockedCrewSlots:int;
+		
 		public var rotationSpeedMod:Number = 1;
+		
 		public var KOTSIsReady:Boolean = false;
+		
 		public var fleet:Vector.<FleetObj> = new Vector.<FleetObj>();
+		
 		public var nrOfUpgrades:Vector.<int> = Vector.<int>([0,0,0,0,0,0,0]);
+		
 		private var _level:int = 1;
+		
 		private var _inSafeZone:Boolean = false;
+		
 		private var _isWarpJumping:Boolean = false;
+		
 		public var playerKills:int = 0;
+		
 		public var enemyKills:int = 0;
+		
 		public var playerDeaths:int = 0;
+		
 		public var expBoost:Number = 0;
+		
 		public var tractorBeam:Number = 0;
+		
 		private var tractorBeamActive:Boolean = true;
+		
 		public var xpProtection:Number = 0;
+		
 		public var cargoProtection:Number = 0;
+		
 		private var cargoProtectionActive:Boolean = true;
+		
 		public var supporter:Number = 0;
+		
 		public var beginnerPackage:Boolean = false;
+		
 		public var powerPackage:Boolean = false;
+		
 		public var megaPackage:Boolean = false;
+		
 		public var explores:Vector.<Explore> = new Vector.<Explore>();
+		
 		public var missions:Vector.<Mission> = new Vector.<Mission>();
+		
 		public var dailyMissions:Array = [];
+		
 		public var crewMembers:Vector.<CrewMember> = new Vector.<CrewMember>();
+		
 		public var encounters:Vector.<String> = new Vector.<String>();
+		
 		public var triggeredMissions:Vector.<String> = new Vector.<String>();
+		
 		public var completedMissions:Object = {};
+		
 		public var warpPathLicenses:Array;
+		
 		public var solarSystemLicenses:Array;
+		
 		public var guest:Boolean = false;
+		
 		public var fbLike:Boolean = false;
+		
 		public var showIntro:Boolean = true;
+		
 		public var kongRated:Boolean = false;
+		
 		public var isDeveloper:Boolean = false;
+		
 		public var isTester:Boolean = false;
+		
 		public var isModerator:Boolean = false;
+		
 		public var isTranslator:Boolean = false;
+		
 		private var _group:Group = null;
+		
 		private var _isHostile:Boolean = false;
+		
 		public var pickUpLog:Vector.<TextParticle> = new Vector.<TextParticle>();
+		
 		public var disableLeave:Boolean;
+		
 		private var isTakingOff:Boolean = false;
+		
 		public var clanLogo:Image;
+		
 		public var clanName:String;
+		
 		public var clanRankName:String;
+		
 		public var clanLogoColor:uint;
+		
 		public var freeResets:int;
+		
 		public var freePaintJobs:int;
+		
 		public var factions:Vector.<String> = new Vector.<String>();
+		
 		public var landedBodies:Vector.<LandedBody> = new Vector.<LandedBody>();
+		
 		public var tosVersion:int;
+		
 		private var g:Game;
+		
 		private var updateInterval:int;
+		
 		public var isLanded:Boolean = false;
 		
-		public function Player(g:Game, id:String) {
+		public function Player(g:Game, id:String)
+		{
 			super();
 			this.g = g;
 			this.id = id;
 			disableLeave = false;
 		}
 		
-		public static function getSkinTechLevel(tech:String, skinKey:String) : int {
-			var _local5:IDataManager = DataLocator.getService();
-			var _local4:Object = _local5.loadKey("Skins",skinKey);
-			for each(var _local3:* in _local4.upgrades) {
-				if(_local3.tech == tech) {
-					return _local3.level;
+		public static function getSkinTechLevel(tech:String, skinKey:String) : int
+		{
+			var _loc5_:IDataManager = DataLocator.getService();
+			var _loc3_:Object = _loc5_.loadKey("Skins",skinKey);
+			for each(var _loc4_ in _loc3_.upgrades)
+			{
+				if(_loc4_.tech == tech)
+				{
+					return _loc4_.level;
 				}
 			}
 			return 0;
 		}
 		
-		public function get artifactLimit() : int {
+		public function get artifactLimit() : int
+		{
 			return ARTIFACT_CAPACITY[artifactCapacityLevel];
 		}
 		
-		public function get activeArtifacts() : Array {
+		public function get activeArtifacts() : Array
+		{
 			return artifactSetups[activeArtifactSetup] as Array;
 		}
 		
-		public function get group() : Group {
+		public function get group() : Group
+		{
 			return _group;
 		}
 		
-		public function set group(value:Group) : void {
+		public function set group(value:Group) : void
+		{
 			_group = value;
-			if(ship != null) {
+			if(ship != null)
+			{
 				ship.group = value;
 			}
 		}
 		
-		public function get isHostile() : Boolean {
+		public function get isHostile() : Boolean
+		{
 			return _isHostile;
 		}
 		
-		public function get hasCorrectTOSVersion() : Boolean {
-			if(Login.currentState === "steam") {
+		public function get hasCorrectTOSVersion() : Boolean
+		{
+			if(Login.currentState === "steam")
+			{
 				return true;
 			}
 			return tosVersion == 3;
 		}
 		
-		public function set hasCorrectTOSVersion(value:Boolean) : void {
-			if(value) {
+		public function set hasCorrectTOSVersion(value:Boolean) : void
+		{
+			if(value)
+			{
 				tosVersion = 3;
-			} else {
+			}
+			else
+			{
 				tosVersion = -1;
 			}
 		}
 		
-		public function set isHostile(value:Boolean) : void {
+		public function set isHostile(value:Boolean) : void
+		{
 			_isHostile = value;
-			if(ship != null) {
+			if(ship != null)
+			{
 				ship.isHostile = value;
 			}
 		}
 		
-		public function init(m:Message, i:int) : int {
-			var _local12:Heading = null;
-			var _local11:int = 0;
+		public function init(m:Message, i:int) : int
+		{
+			var _loc14_:Heading = null;
+			var _loc7_:int = 0;
 			_name = m.getString(i++);
 			inviter_id = m.getString(i++);
 			tosVersion = m.getInt(i++);
@@ -228,26 +358,27 @@ package core.player {
 			isHostile = m.getBoolean(i++);
 			rotationSpeedMod = m.getNumber(i++);
 			reputation = m.getInt(i++);
-			var _local13:String = m.getString(i++);
+			var _loc4_:String = m.getString(i++);
 			split = m.getString(i++);
-			var _local4:String = m.getString(i++);
+			var _loc8_:String = m.getString(i++);
 			spree = m.getInt(i++);
-			var _local3:int = m.getInt(i++);
-			var _local5:int = 0;
-			var _local14:int = 0;
-			var _local9:int = 0;
-			var _local8:int = 0;
-			var _local7:Number = 0;
-			var _local10:Number = 0;
-			if(_local3 != -1) {
-				_local14 = m.getInt(i++);
-				_local5 = m.getInt(i++);
-				_local9 = m.getInt(i++);
-				_local8 = m.getInt(i++);
-				_local7 = m.getNumber(i++);
-				_local10 = m.getNumber(i++);
-				_local12 = new Heading();
-				i = _local12.parseMessage(m,i);
+			var _loc15_:int = m.getInt(i++);
+			var _loc6_:int = 0;
+			var _loc9_:int = 0;
+			var _loc13_:int = 0;
+			var _loc5_:int = 0;
+			var _loc10_:Number = 0;
+			var _loc11_:Number = 0;
+			if(_loc15_ != -1)
+			{
+				_loc9_ = m.getInt(i++);
+				_loc6_ = m.getInt(i++);
+				_loc13_ = m.getInt(i++);
+				_loc5_ = m.getInt(i++);
+				_loc10_ = m.getNumber(i++);
+				_loc11_ = m.getNumber(i++);
+				_loc14_ = new Heading();
+				i = _loc14_.parseMessage(m,i);
 			}
 			unlockedWeaponSlots = m.getInt(i++);
 			unlockedArtifactSlots = m.getInt(i++);
@@ -274,14 +405,16 @@ package core.player {
 			freeResets = m.getInt(i++);
 			freePaintJobs = m.getInt(i++);
 			artifactCount = m.getInt(i++);
-			var _local15:int = m.getInt(i++);
-			_local11 = 0;
-			while(_local11 < _local15) {
+			var _loc12_:int = m.getInt(i++);
+			_loc7_ = 0;
+			while(_loc7_ < _loc12_)
+			{
 				factions.push(m.getString(i++));
-				_local11++;
+				_loc7_++;
 			}
 			i = initFleetFromMessage(m,i);
-			if(isMe) {
+			if(isMe)
+			{
 				i = initEncountersFromMessage(m,i);
 				i = initCompletedMissionsFromMessage(m,i);
 				i = initFinishedExploresFromMessage(m,i);
@@ -302,85 +435,106 @@ package core.player {
 				fbLike = m.getBoolean(i++);
 				g.friendManager.init(this);
 			}
-			var _local6:Body = g.bodyManager.getBodyByKey(_local4);
-			if(_local6 != null) {
+			var _loc3_:Body = g.bodyManager.getBodyByKey(_loc8_);
+			if(_loc3_ != null)
+			{
 				ship = ShipFactory.createPlayer(g,this,new PlayerShip(g),weapons);
-				startLanded(_local6);
+				startLanded(_loc3_);
 				isLanded = true;
-			} else {
-				loadShip(_local14,_local5,_local9,_local8);
-				ship.id = _local3;
-				loadCourse(_local12);
+			}
+			else
+			{
+				loadShip(_loc9_,_loc6_,_loc13_,_loc5_);
+				ship.id = _loc15_;
+				loadCourse(_loc14_);
 				enterRoaming();
 				MessageLog.writeChatMsg("join_leave",_name + " has entered the system.");
 			}
-			if(!isMe && _local5 != 0) {
-				ship.shieldHpMax = _local14;
-				ship.hpMax = _local5;
-				ship.armorThreshold = _local9;
-				ship.shieldRegen = _local8;
+			if(!isMe && _loc6_ != 0)
+			{
+				ship.shieldHpMax = _loc9_;
+				ship.hpMax = _loc6_;
+				ship.armorThreshold = _loc13_;
+				ship.shieldRegen = _loc5_;
 				ship.level = level;
 				ship.updateLabel();
-				ship.engine.speed = _local7;
-				ship.engine.acceleration = _local10;
+				ship.engine.speed = _loc10_;
+				ship.engine.acceleration = _loc11_;
 			}
-			if(supporter) {
+			if(supporter)
+			{
 				Game.trackEvent("logged in","supporter");
-			} else {
+			}
+			else
+			{
 				Game.trackEvent("logged in","not supporter");
 			}
-			g.groupManager.autoJoinOrCreateGroup(this,_local13);
+			g.groupManager.autoJoinOrCreateGroup(this,_loc4_);
 			return i;
 		}
 		
-		public function requestLikeReward() : void {
-			if(Login.hasFacebookLiked && !fbLike) {
+		public function requestLikeReward() : void
+		{
+			if(Login.hasFacebookLiked && !fbLike)
+			{
 				g.send("fbLike");
 			}
 		}
 		
-		public function requestInviteReward() : void {
+		public function requestInviteReward() : void
+		{
 			g.send("requestInviteReward");
 		}
 		
-		public function requestRewardsOnLogin() : void {
+		public function requestRewardsOnLogin() : void
+		{
 			g.rpc("requestRewardsOnLogin",requestResult);
 		}
 		
-		public function sendKongRated() : void {
+		public function sendKongRated() : void
+		{
 			kongRated = true;
 			g.send("kongRated");
 		}
 		
-		public function requestResult() : void {
+		public function requestResult() : void
+		{
 		}
 		
-		public function getExploreByKey(key:String) : Explore {
-			for each(var _local2:* in explores) {
-				if(_local2.areaKey == key) {
-					return _local2;
+		public function getExploreByKey(key:String) : Explore
+		{
+			for each(var _loc2_ in explores)
+			{
+				if(_loc2_.areaKey == key)
+				{
+					return _loc2_;
 				}
 			}
 			return null;
 		}
 		
-		public function loadShip(shieldHp:int, hp:int, armor:int, shieldRegen:int) : void {
-			var _local5:int = 0;
+		public function loadShip(shieldHp:int, hp:int, armor:int, shieldRegen:int) : void
+		{
+			var _loc5_:int = 0;
 			ship = null;
 			ship = ShipFactory.createPlayer(g,this,g.shipManager.getPlayerShip(),weapons);
-			_local5 = 0;
-			while(_local5 < ship.weapons.length) {
-				if(ship.weapons[_local5].key == activeWeapon) {
-					selectedWeaponIndex = _local5;
-					if(isMe) {
-						g.hud.weaponHotkeys.highlightWeapon(ship.weapons[_local5].hotkey);
+			_loc5_ = 0;
+			while(_loc5_ < ship.weapons.length)
+			{
+				if(ship.weapons[_loc5_].key == activeWeapon)
+				{
+					selectedWeaponIndex = _loc5_;
+					if(isMe)
+					{
+						g.hud.weaponHotkeys.highlightWeapon(ship.weapons[_loc5_].hotkey);
 					}
 					break;
 				}
-				_local5++;
+				_loc5_++;
 			}
 			activateShip();
-			if(hp != 0) {
+			if(hp != 0)
+			{
 				ship.shieldHp = shieldHp;
 				ship.hp = hp;
 				ship.armorThreshold = armor;
@@ -388,14 +542,17 @@ package core.player {
 				ship.level = level;
 				ship.updateLabel();
 			}
-			if(spree > 4 && ship != null) {
+			if(spree > 4 && ship != null)
+			{
 				ship.startKillingSpreeEffect();
 			}
 		}
 		
-		private function activateShip() : void {
+		private function activateShip() : void
+		{
 			g.shipManager.activatePlayerShip(ship);
-			if(isMe) {
+			if(isMe)
+			{
 				autoSetHotkeysForWeapons();
 				g.camera.focusTarget = ship.movieClip;
 			}
@@ -403,23 +560,31 @@ package core.player {
 			ship.enterRoaming();
 		}
 		
-		public function unloadShip() : void {
-			if(ship == null) {
+		public function unloadShip() : void
+		{
+			if(ship == null)
+			{
 				return;
 			}
 			ship.destroy(false);
-			if(mirror != null) {
+			if(mirror != null)
+			{
 				mirror.destroy(false);
 				mirror = null;
 			}
 		}
 		
-		public function update() : void {
-			if(isMe) {
+		public function update() : void
+		{
+			if(isMe)
+			{
 				updateInterval++;
-				if(updateInterval == 1) {
+				if(updateInterval == 1)
+				{
 					g.hud.bossHealth.update();
-				} else if(updateInterval == 2) {
+				}
+				else if(updateInterval == 2)
+				{
 					g.hud.powerBar.update();
 					updateInterval = 0;
 				}
@@ -427,203 +592,264 @@ package core.player {
 			stateMachine.update();
 		}
 		
-		public function setSpree(newSpree:int) : void {
-			if(spree != newSpree) {
+		public function setSpree(newSpree:int) : void
+		{
+			if(spree != newSpree)
+			{
 				spree = newSpree;
-				if(spree > 15) {
+				if(spree > 15)
+				{
 					MessageLog.writeChatMsg("death",_name + " is Godlike! With a " + spree + " frag long killing frenzy!");
-				} else if(spree > 10) {
+				}
+				else if(spree > 10)
+				{
 					MessageLog.writeChatMsg("death",_name + " is on a Rampage! " + spree + " frag long killing frenzy!");
-				} else if(spree > 4) {
+				}
+				else if(spree > 4)
+				{
 					MessageLog.writeChatMsg("death",_name + " is on a " + spree + " frag long killing frenzy!");
 				}
-				if(spree == 4 && ship != null) {
+				if(spree == 4 && ship != null)
+				{
 					ship.startKillingSpreeEffect();
 				}
 			}
 		}
 		
-		public function getExploredAreas(body:Body, callback:Function) : void {
-			if(body.obj.exploreAreas == null) {
+		public function getExploredAreas(body:Body, callback:Function) : void
+		{
+			if(body.obj.exploreAreas == null)
+			{
 				callback([]);
 				return;
 			}
-			try {
-				g.client.bigDB.loadRange("Explores","ByPlayerAndBodyAndArea",[id,body.key],null,null,100,function(param1:Array):void {
+			try
+			{
+				g.client.bigDB.loadRange("Explores","ByPlayerAndBodyAndArea",[id,body.key],null,null,100,function(param1:Array):void
+				{
 					callback(param1);
 				});
 			}
-			catch(e:Error) {
+			catch(e:Error)
+			{
 				g.client.errorLog.writeError(e.toString(),"Something went wrong when loading explores: pid: " + id + " bid:" + body.key,e.getStackTrace(),{});
 			}
 		}
 		
-		public function levelUp() : void {
+		public function levelUp() : void
+		{
 			var effect:Vector.<Emitter>;
 			var effect2:Vector.<Emitter>;
 			var soundManager:ISound;
 			level += 1;
-			if(ship == null) {
+			if(ship == null)
+			{
 				return;
 			}
-			if(level >= 10 && Login.currentState == "facebook") {
+			if(level >= 10 && Login.currentState == "facebook")
+			{
 				g.tutorial.showFacebookInviteHint();
 			}
 			setLevelBonusStats();
-			if(g.camera.isCircleOnScreen(ship.x,ship.y,5 * 60)) {
+			if(g.camera.isCircleOnScreen(ship.x,ship.y,5 * 60))
+			{
 				effect = EmitterFactory.create("wrycG8hPkEGYgMkWXyd6FQ",g,0,0,ship,false);
 				effect2 = EmitterFactory.create("6SRymw3GLkqIn6YvIGoLrw",g,0,0,ship,false);
-				if(isMe) {
-					if(g.me.split != "") {
+				if(isMe)
+				{
+					if(g.me.split != "")
+					{
 						Game.trackEvent("AB Splits","player flow",g.me.split + ": reached level " + level);
 					}
 					soundManager = SoundLocator.getService();
-					soundManager.preCacheSound("5wAlzsUCPEKqX7tAdCw3UA",function():void {
-						for each(var _local2:* in effect) {
-							_local2.play();
+					soundManager.preCacheSound("5wAlzsUCPEKqX7tAdCw3UA",function():void
+					{
+						for each(var _loc1_ in effect)
+						{
+							_loc1_.play();
 						}
-						for each(var _local1:* in effect2) {
-							_local1.play();
+						for each(var _loc2_ in effect2)
+						{
+							_loc2_.play();
 						}
 						g.textManager.createLevelUpText(level);
 						g.textManager.createLevelUpDetailsText();
 					});
 					g.updateServiceRoom();
 					Action.levelUp(level);
-					if(inviter_id != "" && level == 10) {
-						if(level == 10 || level == 2) {
+					if(inviter_id != "" && level == 10)
+					{
+						if(level == 10 || level == 2)
+						{
 							g.sendToServiceRoom("requestUpdateInviteReward",inviter_id);
 						}
-						if(level % 10 == 0) {
-							if(Login.currentState == "facebook") {
+						if(level % 10 == 0)
+						{
+							if(Login.currentState == "facebook")
+							{
 								Game.trackEvent("FBinvite","invite feedback","reached level " + level,1);
-							} else if(Login.currentState == "kongregate") {
+							}
+							else if(Login.currentState == "kongregate")
+							{
 								Game.trackEvent("KONGinvite","invite feedback","joined game",1);
 							}
 						}
 					}
-				} else {
+				}
+				else
+				{
 					MessageLog.write("<FONT COLOR=\'#44ff44\'>" + name + " reached level " + level + ".</FONT>");
 				}
 			}
 		}
 		
-		private function setLevelBonusStats() : void {
-			var _local6:int = 0;
-			var _local5:Number = NaN;
-			var _local3:* = NaN;
-			var _local4:Number = NaN;
-			var _local2:Number = NaN;
-			var _local1:int = 0;
-			if(ship != null) {
-				_local6 = level;
-				_local5 = level;
-				_local3 = _local3;
-				_local4 = _local3 / 200000;
-				_local5 += _local4;
-				if(g.solarSystem.isPvpSystemInEditor) {
-					_local5 = 100;
+		private function setLevelBonusStats() : void
+		{
+			var _loc1_:int = 0;
+			var _loc4_:Number = NaN;
+			var _loc6_:* = NaN;
+			var _loc2_:Number = NaN;
+			var _loc5_:Number = NaN;
+			var _loc3_:int = 0;
+			if(ship != null)
+			{
+				_loc1_ = level;
+				_loc4_ = level;
+				_loc6_ = _loc6_;
+				_loc2_ = _loc6_ / 200000;
+				_loc4_ += _loc2_;
+				if(g.solarSystem.isPvpSystemInEditor)
+				{
+					_loc4_ = 100;
 				}
-				if(level == 2) {
-					_local2 = 8;
-				} else {
-					_local2 = (100 + 8 * (_local5 - 1)) / (100 + 8 * (_local5 - 2)) * 100 - 100;
+				if(level == 2)
+				{
+					_loc5_ = 8;
 				}
-				_local1 = ship.hpBase * _local2 / 100;
-				ship.hpBase += _local1;
-				ship.hpMax += _local1;
-				_local1 = ship.shieldHpBase * _local2 / 100;
-				ship.shieldHpBase += _local1;
-				ship.shieldHpMax += _local1;
-				_local1 = ship.armorThresholdBase * _local2 / 100;
-				ship.armorThresholdBase += _local1;
-				ship.armorThreshold += _local1;
-				_local2 = (100 + 1 * (_local5 - 1)) / (100 + 1 * (_local5 - 2)) * 100 - 100;
-				_local1 = ship.shieldRegenBase * _local2 / 100;
-				ship.shieldRegenBase += _local1;
-				ship.shieldRegen += _local1;
-				if(level == 2) {
-					_local2 = 8;
-				} else {
-					_local2 = (100 + 8 * (_local5 - 1)) / (100 + 8 * (_local5 - 2)) * 100 - 100;
+				else
+				{
+					_loc5_ = (100 + 8 * (_loc4_ - 1)) / (100 + 8 * (_loc4_ - 2)) * 100 - 100;
+				}
+				_loc3_ = ship.hpBase * _loc5_ / 100;
+				ship.hpBase += _loc3_;
+				ship.hpMax += _loc3_;
+				_loc3_ = ship.shieldHpBase * _loc5_ / 100;
+				ship.shieldHpBase += _loc3_;
+				ship.shieldHpMax += _loc3_;
+				_loc3_ = ship.armorThresholdBase * _loc5_ / 100;
+				ship.armorThresholdBase += _loc3_;
+				ship.armorThreshold += _loc3_;
+				_loc5_ = (100 + 1 * (_loc4_ - 1)) / (100 + 1 * (_loc4_ - 2)) * 100 - 100;
+				_loc3_ = ship.shieldRegenBase * _loc5_ / 100;
+				ship.shieldRegenBase += _loc3_;
+				ship.shieldRegen += _loc3_;
+				if(level == 2)
+				{
+					_loc5_ = 8;
+				}
+				else
+				{
+					_loc5_ = (100 + 8 * (_loc4_ - 1)) / (100 + 8 * (_loc4_ - 2)) * 100 - 100;
 				}
 				refreshWeapons();
-				level = _local6;
+				level = _loc1_;
 			}
 		}
 		
-		public function increaseXp(xpGain:int, newXp:int) : void {
+		public function increaseXp(xpGain:int, newXp:int) : void
+		{
 			xp = newXp;
-			while(xp > levelXpMax) {
+			while(xp > levelXpMax)
+			{
 				levelUp();
 			}
-			if(isMe) {
+			if(isMe)
+			{
 				g.textManager.createXpText(xpGain);
 			}
 		}
 		
-		public function decreaseXp(xpLoss:int, newXp:int) : void {
+		public function decreaseXp(xpLoss:int, newXp:int) : void
+		{
 			xp = newXp;
-			if(isMe) {
+			if(isMe)
+			{
 				g.textManager.createXpText(-xpLoss);
 			}
 		}
 		
-		public function updateReputation(mod:int, rep:int) : void {
+		public function updateReputation(mod:int, rep:int) : void
+		{
 			reputation = rep;
 			Login.submitKongregateStat("Reputation",mod);
-			if(ship == null) {
+			if(ship == null)
+			{
 				return;
 			}
-			if(mod != 0) {
+			if(mod != 0)
+			{
 				g.textManager.createReputationText(mod,ship);
 			}
 		}
 		
-		public function get levelXpMax() : int {
-			if(level >= 100) {
+		public function get levelXpMax() : int
+		{
+			if(level >= 100)
+			{
 				return int((level + 2) * level * 500 * Math.pow(1.06,level - 99));
 			}
 			return (level + 2) * level * 500;
 		}
 		
-		public function get levelXpMin() : int {
-			if(level >= 100) {
+		public function get levelXpMin() : int
+		{
+			if(level >= 100)
+			{
 				return int((level + 1) * (level - 1) * 500 * Math.pow(1.06,level - 100));
 			}
-			if(level == 1) {
+			if(level == 1)
+			{
 				return 0;
 			}
 			return (level + 1) * (level - 1) * 500;
 		}
 		
-		public function loadCourse(heading:Heading) : void {
-			if(ship != null) {
+		public function loadCourse(heading:Heading) : void
+		{
+			if(ship != null)
+			{
 				ship.course = heading;
 			}
 		}
 		
-		public function get hasExpBoost() : Boolean {
-			if(isModerator) {
+		public function get hasExpBoost() : Boolean
+		{
+			if(isModerator)
+			{
 				return true;
 			}
 			return expBoost > g.time;
 		}
 		
-		public function set level(value:int) : void {
+		public function set level(value:int) : void
+		{
 			_level = value;
-			if(ship != null) {
+			if(ship != null)
+			{
 				ship.level = value;
 				ship.updateLabel();
 			}
 		}
 		
-		public function get level() : int {
+		public function get level() : int
+		{
 			return _level;
 		}
 		
-		public function initRoaming(m:Message, i:int, changeGameState:Boolean = true) : int {
-			if(stateMachine.inState(RoamingState)) {
+		public function initRoaming(m:Message, i:int, changeGameState:Boolean = true) : int
+		{
+			if(stateMachine.inState(RoamingState))
+			{
 				return i;
 			}
 			unloadShip();
@@ -631,16 +857,16 @@ package core.player {
 			xp = m.getInt(i++);
 			techPoints = m.getInt(i++);
 			isHostile = m.getBoolean(i++);
-			var _local6:String = m.getString(i++);
-			var _local5:int = m.getInt(i++);
-			var _local8:int = m.getInt(i++);
-			var _local7:int = m.getInt(i++);
-			var _local12:int = m.getInt(i++);
-			var _local11:int = m.getInt(i++);
-			var _local9:Number = m.getNumber(i++);
-			var _local10:Number = m.getNumber(i++);
-			var _local4:Heading = new Heading();
-			i = _local4.parseMessage(m,i);
+			var _loc5_:String = m.getString(i++);
+			var _loc12_:int = m.getInt(i++);
+			var _loc9_:int = m.getInt(i++);
+			var _loc7_:int = m.getInt(i++);
+			var _loc4_:int = m.getInt(i++);
+			var _loc6_:int = m.getInt(i++);
+			var _loc11_:Number = m.getNumber(i++);
+			var _loc10_:Number = m.getNumber(i++);
+			var _loc8_:Heading = new Heading();
+			i = _loc8_.parseMessage(m,i);
 			playerKills = m.getInt(i++);
 			playerDeaths = m.getInt(i++);
 			enemyKills = m.getInt(i++);
@@ -649,65 +875,78 @@ package core.player {
 			clanApplicationId = m.getString(i++);
 			troons = m.getNumber(i++);
 			i = initFleetFromMessage(m,i);
-			loadShip(_local8,_local7,_local12,_local11);
-			ship.id = _local5;
-			loadCourse(_local4);
-			if(isMe) {
+			loadShip(_loc9_,_loc7_,_loc4_,_loc6_);
+			ship.id = _loc12_;
+			loadCourse(_loc8_);
+			if(isMe)
+			{
 				applyArtifactStats();
-				ship.shieldHp = _local8;
-				ship.hp = _local7;
+				ship.shieldHp = _loc9_;
+				ship.hp = _loc7_;
 				g.hud.weaponHotkeys.refresh();
 				g.hud.abilities.refresh();
 				g.hud.healthAndShield.update();
 				g.hud.powerBar.update();
-				if(changeGameState) {
+				if(changeGameState)
+				{
 					g.fadeIntoState(new RoamingState(g));
 				}
-			} else {
-				ship.engine.speed = _local9;
-				ship.engine.acceleration = _local10;
+			}
+			else
+			{
+				ship.engine.speed = _loc11_;
+				ship.engine.acceleration = _loc10_;
 			}
 			enterRoaming();
-			g.groupManager.autoJoinOrCreateGroup(this,_local6);
+			g.groupManager.autoJoinOrCreateGroup(this,_loc5_);
 			return i;
 		}
 		
-		public function enterRoaming() : void {
+		public function enterRoaming() : void
+		{
 			isLanded = false;
 			isTakingOff = false;
-			if(!stateMachine.inState(Roaming)) {
+			if(!stateMachine.inState(Roaming))
+			{
 				stateMachine.changeState(new Roaming(this,g));
 			}
 		}
 		
-		public function startLanded(b:Body) : void {
-			if(stateMachine.inState(Landed)) {
+		public function startLanded(b:Body) : void
+		{
+			if(stateMachine.inState(Landed))
+			{
 				return;
 			}
 			stateMachine.changeState(new Landed(this,b,g));
 		}
 		
-		public function land(body:Body) : void {
+		public function land(body:Body) : void
+		{
 			var that:Player;
 			var toRot:Number;
-			if(stateMachine.inState(Landed)) {
+			if(stateMachine.inState(Landed))
+			{
 				return;
 			}
 			isLanded = true;
 			that = this;
 			toRot = 0;
-			if(ship.rotation > 3.1) {
+			if(ship.rotation > 3.1)
+			{
 				toRot = 6.2;
 			}
 			ship.engine.stop();
-			if(!isMe) {
+			if(!isMe)
+			{
 				TweenMax.to(ship,1.2,{
 					"x":body.x,
 					"y":body.y,
 					"scaleX":0.5,
 					"scaleY":0.5,
 					"rotation":toRot,
-					"onComplete":function():void {
+					"onComplete":function():void
+					{
 						stateMachine.changeState(new Landed(that,body,g));
 						ship.removeFromCanvas();
 						ship.land();
@@ -722,305 +961,350 @@ package core.player {
 				"scaleX":0.5,
 				"scaleY":0.5,
 				"rotation":toRot,
-				"onComplete":function():void {
+				"onComplete":function():void
+				{
 					stateMachine.changeState(new Landed(g.me,body,g));
 					g.enterLandedState();
 					ship.land();
-					TweenMax.delayedCall(0.5,function():void {
+					TweenMax.delayedCall(0.5,function():void
+					{
 						g.camera.zoomFocus(1,1);
 					});
 				}
 			});
 		}
 		
-		public function enterKilled(m:Message) : void {
-			if(g.solarSystem.isPvpSystemInEditor) {
+		public function enterKilled(m:Message) : void
+		{
+			if(g.solarSystem.isPvpSystemInEditor)
+			{
 				respawnNextReady = g.time + 50 * 60;
-			} else {
+			}
+			else
+			{
 				respawnNextReady = g.time + 10000;
 			}
 			stateMachine.changeState(new Killed(this,g,m));
 		}
 		
-		public function hasExploredArea(areaKey:String) : Boolean {
-			for each(var _local2:* in explores) {
-				if(areaKey == _local2.areaKey && _local2.finished && _local2.lootClaimed) {
+		public function hasExploredArea(areaKey:String) : Boolean
+		{
+			for each(var _loc2_ in explores)
+			{
+				if(areaKey == _loc2_.areaKey && _loc2_.finished && _loc2_.lootClaimed)
+				{
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		public function leaveBody() : void {
-			if(!isTakingOff) {
+		public function leaveBody() : void
+		{
+			if(!isTakingOff)
+			{
 				Console.write("Leaving body");
 				isTakingOff = true;
 				g.send("leaveBody");
 			}
 		}
 		
-		public function initMissionsFromMessage(m:Message, startIndex:int) : int {
+		public function initMissionsFromMessage(m:Message, startIndex:int) : int
+		{
 			Console.write("Init missions");
 			missions = new Vector.<Mission>();
-			var _local3:int = m.getInt(startIndex);
-			var _local4:int = startIndex + 1;
-			while(_local3 > 0) {
-				_local4 = addMission(m,_local4);
-				_local3--;
+			var _loc3_:int = m.getInt(startIndex);
+			var _loc4_:int = startIndex + 1;
+			while(_loc3_ > 0)
+			{
+				_loc4_ = addMission(m,_loc4_);
+				_loc3_--;
 			}
-			return _local4;
+			return _loc4_;
 		}
 		
-		public function addMission(m:Message, i:int) : int {
-			var _local3:Mission = new Mission();
-			_local3.id = m.getString(i++);
-			_local3.missionTypeKey = m.getString(i++);
-			_local3.type = m.getString(i++);
-			_local3.majorType = m.getString(i++);
-			_local3.count = m.getInt(i++);
-			_local3.viewed = m.getBoolean(i++);
-			_local3.finished = m.getBoolean(i++);
-			_local3.claimed = m.getBoolean(i++);
-			_local3.created = m.getNumber(i++);
-			_local3.expires = m.getNumber(i++);
-			missions.push(_local3);
+		public function addMission(m:Message, i:int) : int
+		{
+			var _loc3_:Mission = new Mission();
+			_loc3_.id = m.getString(i++);
+			_loc3_.missionTypeKey = m.getString(i++);
+			_loc3_.type = m.getString(i++);
+			_loc3_.majorType = m.getString(i++);
+			_loc3_.count = m.getInt(i++);
+			_loc3_.viewed = m.getBoolean(i++);
+			_loc3_.finished = m.getBoolean(i++);
+			_loc3_.claimed = m.getBoolean(i++);
+			_loc3_.created = m.getNumber(i++);
+			_loc3_.expires = m.getNumber(i++);
+			missions.push(_loc3_);
 			return i;
 		}
 		
-		public function hasMission(id:String) : Boolean {
-			for each(var _local2:* in missions) {
-				if(_local2.id == id) {
+		public function hasMission(id:String) : Boolean
+		{
+			for each(var _loc2_ in missions)
+			{
+				if(_loc2_.id == id)
+				{
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		public function removeMission(m:Mission) : void {
-			var _local2:int = 0;
-			_local2 = 0;
-			while(_local2 < missions.length) {
-				if(missions[_local2].missionTypeKey == m.missionTypeKey) {
-					missions.splice(_local2,1);
+		public function removeMission(m:Mission) : void
+		{
+			var _loc2_:int = 0;
+			_loc2_ = 0;
+			while(_loc2_ < missions.length)
+			{
+				if(missions[_loc2_].missionTypeKey == m.missionTypeKey)
+				{
+					missions.splice(_loc2_,1);
 					return;
 				}
-				_local2++;
+				_loc2_++;
 			}
 		}
 		
-		public function initFinishedExploresFromMessage(m:Message, startIndex:int) : int {
-			var _local3:String = null;
-			var _local7:int = 0;
-			var _local4:Explore = null;
+		public function initFinishedExploresFromMessage(m:Message, startIndex:int) : int
+		{
+			var _loc3_:String = null;
+			var _loc5_:int = 0;
+			var _loc4_:Explore = null;
 			explores = new Vector.<Explore>();
-			var _local5:int = m.getInt(startIndex);
-			var _local8:int = startIndex + 1;
-			var _local6:Object = g.dataManager.loadTable("BodyAreas");
-			while(_local5 > 0) {
-				_local3 = m.getString(_local8++);
-				_local7 = int(_local6[_local3] != null ? _local6[_local3].size : 0);
-				_local7 = _local7 + 4;
-				_local4 = new Explore();
-				_local4.key = "";
-				_local4.areaKey = _local3;
-				_local4.bodyKey = "";
-				_local4.failed = false;
-				_local4.failTime = 0;
-				_local4.finished = true;
-				_local4.finishTime = 0;
-				_local4.lootClaimed = true;
-				_local4.playerKey = id;
-				_local4.startEvent = 0;
-				_local4.startTime = 0;
-				_local4.successfulEvents = _local7;
-				explores.push(_local4);
-				_local5--;
+			var _loc6_:int = m.getInt(startIndex);
+			var _loc7_:int = startIndex + 1;
+			var _loc8_:Object = g.dataManager.loadTable("BodyAreas");
+			while(_loc6_ > 0)
+			{
+				_loc3_ = m.getString(_loc7_++);
+				_loc5_ = int(_loc8_[_loc3_] != null ? _loc8_[_loc3_].size : 0);
+				_loc5_ = _loc5_ + 4;
+				_loc4_ = new Explore();
+				_loc4_.key = "";
+				_loc4_.areaKey = _loc3_;
+				_loc4_.bodyKey = "";
+				_loc4_.failed = false;
+				_loc4_.failTime = 0;
+				_loc4_.finished = true;
+				_loc4_.finishTime = 0;
+				_loc4_.lootClaimed = true;
+				_loc4_.playerKey = id;
+				_loc4_.startEvent = 0;
+				_loc4_.startTime = 0;
+				_loc4_.successfulEvents = _loc5_;
+				explores.push(_loc4_);
+				_loc6_--;
 			}
-			return _local8;
+			return _loc7_;
 		}
 		
-		public function initExploresFromMessage(m:Message, startIndex:int) : int {
-			var _local3:Explore = null;
-			var _local4:int = m.getInt(startIndex);
-			var _local5:int = startIndex + 1;
-			while(_local4 > 0) {
-				_local3 = new Explore();
-				_local3.key = m.getString(_local5++);
-				_local3.areaKey = m.getString(_local5++);
-				_local3.bodyKey = m.getString(_local5++);
-				_local3.failed = m.getBoolean(_local5++);
-				_local3.failTime = m.getNumber(_local5++);
-				_local3.finished = m.getBoolean(_local5++);
-				_local3.finishTime = m.getNumber(_local5++);
-				_local3.lootClaimed = m.getBoolean(_local5++);
-				_local3.playerKey = m.getString(_local5++);
-				_local3.startEvent = m.getInt(_local5++);
-				_local3.startTime = m.getNumber(_local5++);
-				_local3.successfulEvents = m.getInt(_local5++);
-				explores.push(_local3);
-				_local4--;
+		public function initExploresFromMessage(m:Message, startIndex:int) : int
+		{
+			var _loc3_:Explore = null;
+			var _loc4_:int = m.getInt(startIndex);
+			var _loc5_:int = startIndex + 1;
+			while(_loc4_ > 0)
+			{
+				_loc3_ = new Explore();
+				_loc3_.key = m.getString(_loc5_++);
+				_loc3_.areaKey = m.getString(_loc5_++);
+				_loc3_.bodyKey = m.getString(_loc5_++);
+				_loc3_.failed = m.getBoolean(_loc5_++);
+				_loc3_.failTime = m.getNumber(_loc5_++);
+				_loc3_.finished = m.getBoolean(_loc5_++);
+				_loc3_.finishTime = m.getNumber(_loc5_++);
+				_loc3_.lootClaimed = m.getBoolean(_loc5_++);
+				_loc3_.playerKey = m.getString(_loc5_++);
+				_loc3_.startEvent = m.getInt(_loc5_++);
+				_loc3_.startTime = m.getNumber(_loc5_++);
+				_loc3_.successfulEvents = m.getInt(_loc5_++);
+				explores.push(_loc3_);
+				_loc4_--;
 			}
-			return _local5;
+			return _loc5_;
 		}
 		
-		public function initLandedBodiesFromMessage(m:Message, startIndex:int) : int {
-			var _local4:int = 0;
+		public function initLandedBodiesFromMessage(m:Message, startIndex:int) : int
+		{
+			var _loc3_:int = 0;
 			landedBodies = new Vector.<LandedBody>();
-			var _local3:int = m.getInt(startIndex);
-			_local4 = startIndex + 1;
-			while(_local4 < startIndex + _local3 * 2 + 1) {
-				landedBodies.push(new LandedBody(m.getString(_local4),m.getBoolean(_local4 + 1)));
-				_local4 += 2;
+			var _loc4_:int = m.getInt(startIndex);
+			_loc3_ = startIndex + 1;
+			while(_loc3_ < startIndex + _loc4_ * 2 + 1)
+			{
+				landedBodies.push(new LandedBody(m.getString(_loc3_),m.getBoolean(_loc3_ + 1)));
+				_loc3_ += 2;
 			}
-			return _local4;
+			return _loc3_;
 		}
 		
-		public function initEncountersFromMessage(m:Message, startIndex:int) : int {
-			var _local4:int = 0;
+		public function initEncountersFromMessage(m:Message, startIndex:int) : int
+		{
+			var _loc4_:int = 0;
 			encounters = new Vector.<String>();
-			var _local3:int = m.getInt(startIndex);
-			_local4 = startIndex + 1;
-			while(_local4 < startIndex + _local3 + 1) {
-				encounters.push(m.getString(_local4));
-				_local4++;
+			var _loc3_:int = m.getInt(startIndex);
+			_loc4_ = startIndex + 1;
+			while(_loc4_ < startIndex + _loc3_ + 1)
+			{
+				encounters.push(m.getString(_loc4_));
+				_loc4_++;
 			}
-			return _local4;
+			return _loc4_;
 		}
 		
-		public function initCompletedMissionsFromMessage(m:Message, startIndex:int) : int {
-			var _local4:int = 0;
+		public function initCompletedMissionsFromMessage(m:Message, startIndex:int) : int
+		{
+			var _loc4_:int = 0;
 			completedMissions = {};
-			var _local3:int = m.getInt(startIndex);
-			_local4 = startIndex + 1;
-			while(_local4 < startIndex + _local3 * 2 + 1) {
-				completedMissions[m.getString(_local4)] = m.getNumber(_local4 + 1);
-				_local4 += 2;
+			var _loc3_:int = m.getInt(startIndex);
+			_loc4_ = startIndex + 1;
+			while(_loc4_ < startIndex + _loc3_ * 2 + 1)
+			{
+				completedMissions[m.getString(_loc4_)] = m.getNumber(_loc4_ + 1);
+				_loc4_ += 2;
 			}
-			return _local4;
+			return _loc4_;
 		}
 		
-		public function initTriggeredMissionsFromMessage(m:Message, startIndex:int) : int {
-			var _local4:int = 0;
+		public function initTriggeredMissionsFromMessage(m:Message, startIndex:int) : int
+		{
+			var _loc4_:int = 0;
 			triggeredMissions = new Vector.<String>();
-			var _local3:int = m.getInt(startIndex);
-			_local4 = startIndex + 1;
-			while(_local4 < startIndex + _local3 + 1) {
-				triggeredMissions.push(m.getString(_local4));
-				_local4++;
+			var _loc3_:int = m.getInt(startIndex);
+			_loc4_ = startIndex + 1;
+			while(_loc4_ < startIndex + _loc3_ + 1)
+			{
+				triggeredMissions.push(m.getString(_loc4_));
+				_loc4_++;
 			}
-			return _local4;
+			return _loc4_;
 		}
 		
-		public function initCrewFromMessage(m:Message, startIndex:int) : int {
-			var _local7:int = 0;
-			var _local5:CrewMember = null;
-			var _local3:Array = null;
-			var _local6:Array = null;
+		public function initCrewFromMessage(m:Message, startIndex:int) : int
+		{
+			var _loc7_:int = 0;
+			var _loc5_:CrewMember = null;
+			var _loc3_:Array = null;
+			var _loc4_:Array = null;
 			crewMembers = new Vector.<CrewMember>();
-			var _local4:int = m.getInt(startIndex);
-			_local7 = startIndex + 1;
-			while(_local7 < startIndex + _local4 * 30 + 1) {
-				_local5 = new CrewMember(g);
-				_local5.seed = m.getInt(_local7++);
-				_local5.key = m.getString(_local7++);
-				_local5.name = m.getString(_local7++);
-				_local5.solarSystem = m.getString(_local7++);
-				_local5.area = m.getString(_local7++);
-				_local5.body = m.getString(_local7++);
-				_local5.imageKey = m.getString(_local7++);
-				_local5.injuryEnd = m.getNumber(_local7++);
-				_local5.injuryStart = m.getNumber(_local7++);
-				_local5.trainingEnd = m.getNumber(_local7++);
-				_local5.trainingType = m.getInt(_local7++);
-				_local5.artifactEnd = m.getNumber(_local7++);
-				_local5.artifact = m.getString(_local7++);
-				_local5.missions = m.getInt(_local7++);
-				_local5.successMissions = m.getInt(_local7++);
-				_local5.rank = m.getInt(_local7++);
-				_local5.fullLocation = m.getString(_local7++);
-				_local5.skillPoints = m.getInt(_local7++);
-				_local3 = [];
-				_local3.push(m.getNumber(_local7++));
-				_local3.push(m.getNumber(_local7++));
-				_local3.push(m.getNumber(_local7++));
-				_local5.skills = _local3;
-				_local6 = [];
-				_local6.push(m.getNumber(_local7++));
-				_local6.push(m.getNumber(_local7++));
-				_local6.push(m.getNumber(_local7++));
-				_local6.push(m.getNumber(_local7++));
-				_local6.push(m.getNumber(_local7++));
-				_local6.push(m.getNumber(_local7++));
-				_local6.push(m.getNumber(_local7++));
-				_local6.push(m.getNumber(_local7++));
-				_local6.push(m.getNumber(_local7++));
-				_local5.specials = _local6;
-				crewMembers.push(_local5);
-				_local7 += 0;
+			var _loc6_:int = m.getInt(startIndex);
+			_loc7_ = startIndex + 1;
+			while(_loc7_ < startIndex + _loc6_ * 30 + 1)
+			{
+				_loc5_ = new CrewMember(g);
+				_loc5_.seed = m.getInt(_loc7_++);
+				_loc5_.key = m.getString(_loc7_++);
+				_loc5_.name = m.getString(_loc7_++);
+				_loc5_.solarSystem = m.getString(_loc7_++);
+				_loc5_.area = m.getString(_loc7_++);
+				_loc5_.body = m.getString(_loc7_++);
+				_loc5_.imageKey = m.getString(_loc7_++);
+				_loc5_.injuryEnd = m.getNumber(_loc7_++);
+				_loc5_.injuryStart = m.getNumber(_loc7_++);
+				_loc5_.trainingEnd = m.getNumber(_loc7_++);
+				_loc5_.trainingType = m.getInt(_loc7_++);
+				_loc5_.artifactEnd = m.getNumber(_loc7_++);
+				_loc5_.artifact = m.getString(_loc7_++);
+				_loc5_.missions = m.getInt(_loc7_++);
+				_loc5_.successMissions = m.getInt(_loc7_++);
+				_loc5_.rank = m.getInt(_loc7_++);
+				_loc5_.fullLocation = m.getString(_loc7_++);
+				_loc5_.skillPoints = m.getInt(_loc7_++);
+				_loc3_ = [];
+				_loc3_.push(m.getNumber(_loc7_++));
+				_loc3_.push(m.getNumber(_loc7_++));
+				_loc3_.push(m.getNumber(_loc7_++));
+				_loc5_.skills = _loc3_;
+				_loc4_ = [];
+				_loc4_.push(m.getNumber(_loc7_++));
+				_loc4_.push(m.getNumber(_loc7_++));
+				_loc4_.push(m.getNumber(_loc7_++));
+				_loc4_.push(m.getNumber(_loc7_++));
+				_loc4_.push(m.getNumber(_loc7_++));
+				_loc4_.push(m.getNumber(_loc7_++));
+				_loc4_.push(m.getNumber(_loc7_++));
+				_loc4_.push(m.getNumber(_loc7_++));
+				_loc4_.push(m.getNumber(_loc7_++));
+				_loc5_.specials = _loc4_;
+				crewMembers.push(_loc5_);
+				_loc7_ += 0;
 			}
-			return _local7;
+			return _loc7_;
 		}
 		
-		public function initFleetFromMessage(m:Message, startIndex:int) : int {
-			var _local6:int = 0;
-			var _local4:FleetObj = null;
+		public function initFleetFromMessage(m:Message, startIndex:int) : int
+		{
+			var _loc5_:int = 0;
+			var _loc6_:FleetObj = null;
 			fleet.length = 0;
 			activeSkin = m.getString(startIndex++);
-			var _local5:int = m.getInt(startIndex++);
-			var _local3:* = startIndex;
-			_local6 = 0;
-			while(_local6 < _local5) {
-				_local4 = new FleetObj();
-				_local3 = _local4.initFromMessage(m,_local3);
-				if(_local4.skin == activeSkin) {
-					techSkills = _local4.techSkills;
-					weapons = _local4.weapons;
-					weaponsState = _local4.weaponsState;
-					weaponsHotkeys = _local4.weaponsHotkeys;
-					nrOfUpgrades = _local4.nrOfUpgrades;
-					activeArtifactSetup = _local4.activeArtifactSetup;
-					activeWeapon = _local4.activeWeapon;
+			var _loc4_:int = m.getInt(startIndex++);
+			var _loc3_:* = startIndex;
+			_loc5_ = 0;
+			while(_loc5_ < _loc4_)
+			{
+				_loc6_ = new FleetObj();
+				_loc3_ = _loc6_.initFromMessage(m,_loc3_);
+				if(_loc6_.skin == activeSkin)
+				{
+					techSkills = _loc6_.techSkills;
+					weapons = _loc6_.weapons;
+					weaponsState = _loc6_.weaponsState;
+					weaponsHotkeys = _loc6_.weaponsHotkeys;
+					nrOfUpgrades = _loc6_.nrOfUpgrades;
+					activeArtifactSetup = _loc6_.activeArtifactSetup;
+					activeWeapon = _loc6_.activeWeapon;
 				}
-				fleet.push(_local4);
-				_local6++;
+				fleet.push(_loc6_);
+				_loc5_++;
 			}
-			return _local3;
+			return _loc3_;
 		}
 		
-		public function addNewSkin(skinKey:String) : void {
-			if(hasSkin(skinKey)) {
+		public function addNewSkin(skinKey:String) : void
+		{
+			if(hasSkin(skinKey))
+			{
 				return;
 			}
-			var _local2:FleetObj = new FleetObj();
-			_local2.initFromSkin(skinKey);
-			fleet.push(_local2);
+			var _loc2_:FleetObj = new FleetObj();
+			_loc2_.initFromSkin(skinKey);
+			fleet.push(_loc2_);
 		}
 		
-		private function initWarpPathLicensesFromMessage(m:Message, i:int) : int {
-			var _local4:int = 0;
-			var _local3:int = m.getInt(i++);
+		private function initWarpPathLicensesFromMessage(m:Message, i:int) : int
+		{
+			var _loc4_:int = 0;
+			var _loc3_:int = m.getInt(i++);
 			warpPathLicenses = [];
-			_local4 = 0;
-			while(_local4 < _local3) {
+			_loc4_ = 0;
+			while(_loc4_ < _loc3_)
+			{
 				warpPathLicenses.push(m.getString(i++));
-				_local4++;
+				_loc4_++;
 			}
 			return i;
 		}
 		
-		private function initSolarSystemLicensesFromMessage(m:Message, i:int) : int {
-			var _local4:int = 0;
-			var _local3:int = m.getInt(i++);
+		private function initSolarSystemLicensesFromMessage(m:Message, i:int) : int
+		{
+			var _loc4_:int = 0;
+			var _loc3_:int = m.getInt(i++);
 			solarSystemLicenses = [];
-			_local4 = 0;
-			while(_local4 < _local3) {
+			_loc4_ = 0;
+			while(_loc4_ < _loc3_)
+			{
 				solarSystemLicenses.push(m.getString(i++));
-				_local4++;
+				_loc4_++;
 			}
+			trace("my id: " + id);
 			return i;
 		}
 		
-		private function initArtifactsFromMessage(m:Message, startIndex:int) : int {
+		private function initArtifactsFromMessage(m:Message, startIndex:int) : int
+		{
 			var setups:int;
 			var keysToLoad:Array;
 			var setup:Array;
@@ -1030,13 +1314,16 @@ package core.player {
 			artifactSetups.length = 0;
 			setups = m.getInt(startIndex++);
 			keysToLoad = [];
-			while(setups > 0) {
+			while(setups > 0)
+			{
 				setup = [];
 				count = m.getInt(startIndex++);
-				while(count > 0) {
+				while(count > 0)
+				{
 					artifactId = m.getString(startIndex++);
 					setup.push(artifactId);
-					if(keysToLoad.indexOf(artifactId) == -1 && getArtifactById(artifactId) == null) {
+					if(keysToLoad.indexOf(artifactId) == -1 && getArtifactById(artifactId) == null)
+					{
 						keysToLoad.push(artifactId);
 					}
 					count--;
@@ -1044,79 +1331,108 @@ package core.player {
 				artifactSetups.push(setup);
 				setups--;
 			}
-			if(keysToLoad.length != 0) {
-				ArtifactFactory.createArtifacts(keysToLoad,g,this,function():void {
+			if(keysToLoad.length != 0)
+			{
+				ArtifactFactory.createArtifacts(keysToLoad,g,this,function():void
+				{
 					applyArtifactStats();
 				});
-			} else {
+			}
+			else
+			{
 				Starling.juggler.delayCall(applyArtifactStats,1);
 			}
 			return startIndex;
 		}
 		
-		private function applySkinArtifact() : void {
-			var _local1:Object = DataLocator.getService().loadKey("Skins",activeSkin);
-			addArtifactStat(ArtifactFactory.createArtifactFromSkin(_local1),false);
+		private function applySkinArtifact() : void
+		{
+			var _loc1_:Object = DataLocator.getService().loadKey("Skins",activeSkin);
+			addArtifactStat(ArtifactFactory.createArtifactFromSkin(_loc1_),false);
 		}
 		
-		private function applyArtifactStats() : void {
-			var _local1:Artifact = null;
-			if(ship == null) {
+		private function applyArtifactStats() : void
+		{
+			var _loc1_:Artifact = null;
+			if(ship == null)
+			{
 				return;
 			}
 			applySkinArtifact();
-			for each(var _local2:* in activeArtifacts) {
-				_local1 = getArtifactById(_local2);
-				if(_local1 != null) {
-					addArtifactStat(_local1,false);
+			for each(var _loc2_ in activeArtifacts)
+			{
+				_loc1_ = getArtifactById(_loc2_);
+				if(_loc1_ != null)
+				{
+					addArtifactStat(_loc1_,false);
 				}
 			}
 			ship.hp = ship.hpMax;
 			ship.shieldHp = ship.shieldHpMax;
 		}
 		
-		public function changeArtifactSetup(index:int) : void {
-			var _local4:* = null;
-			var _local2:Artifact = null;
-			var _local5:int = 0;
-			var _local3:FleetObj = null;
-			for each(_local4 in activeArtifacts) {
-				_local2 = getArtifactById(_local4);
-				if(_local2 != null) {
-					removeArtifactStat(_local2,false);
+		public function changeArtifactSetup(index:int) : void
+		{
+			var _loc4_:* = null;
+			var _loc2_:Artifact = null;
+			var _loc3_:int = 0;
+			var _loc5_:FleetObj = null;
+			for each(_loc4_ in activeArtifacts)
+			{
+				_loc2_ = getArtifactById(_loc4_);
+				if(_loc2_ != null)
+				{
+					removeArtifactStat(_loc2_,false);
 				}
 			}
 			activeArtifactSetup = index;
-			_local5 = 0;
-			while(_local5 < fleet.length) {
-				_local3 = fleet[_local5];
-				if(_local3.skin == activeSkin) {
-					_local3.activeArtifactSetup = index;
+			_loc3_ = 0;
+			while(_loc3_ < fleet.length)
+			{
+				_loc5_ = fleet[_loc3_];
+				if(_loc5_.skin == activeSkin)
+				{
+					_loc5_.activeArtifactSetup = index;
 					break;
 				}
-				_local5++;
+				_loc3_++;
 			}
-			for each(_local4 in activeArtifacts) {
-				_local2 = getArtifactById(_local4);
-				if(_local2 != null) {
-					addArtifactStat(_local2,false);
+			for each(_loc4_ in activeArtifacts)
+			{
+				_loc2_ = getArtifactById(_loc4_);
+				if(_loc2_ != null)
+				{
+					addArtifactStat(_loc2_,false);
 				}
 			}
 		}
 		
-		private function loadArtifactsFromMessage(m:Message, startIndex:int, isLoot:Boolean = false) : int {
+		private function loadArtifactsFromMessage(m:Message, startIndex:int, isLoot:Boolean = false) : int
+		{
 			var id:String;
 			var nrOfArtifacts:int = m.getInt(startIndex++);
 			var i:int = 0;
-			while(i < nrOfArtifacts) {
+			while(i < nrOfArtifacts)
+			{
 				id = m.getString(startIndex++);
-				ArtifactFactory.createArtifact(id,g,this,function(param1:Artifact):void {
-					if(param1 == null) {
+				ArtifactFactory.createArtifact(id,g,this,function(param1:Artifact):void
+				{
+					if(param1 == null)
+					{
 						return;
 					}
-					if(isLoot) {
-						MessageLog.writeChatMsg("loot","<FONT COLOR=\'#4488ff\'>You found a new artifact: " + param1.name + ".</FONT>");
-						g.textManager.createDropText("You found a new Artifact!",1,20,5000,0x4488ff);
+					if(isLoot)
+					{
+						if(param1.isUnique)
+						{
+							MessageLog.writeChatMsg("loot","<FONT COLOR=\'ffaa44\'>You found a new Unique artifact: " + param1.name + ".</FONT>");
+							g.textManager.createDropText("You found a new Unique Artifact!",1,20,5000,0xffaa44);
+						}
+						else
+						{
+							MessageLog.writeChatMsg("loot","<FONT COLOR=\'#4488ff\'>You found a new artifact: " + param1.name + ".</FONT>");
+							g.textManager.createDropText("You found a new Artifact!",1,20,5000,0x4488ff);
+						}
 					}
 					artifacts.push(param1);
 				});
@@ -1125,106 +1441,145 @@ package core.player {
 			return startIndex;
 		}
 		
-		public function addWeapon(item:String) : void {
+		public function addWeapon(item:String) : void
+		{
 			weapons.push({"weapon":item});
 			addTechSkill(name,"Weapons",item);
 			refreshWeapons();
 		}
 		
-		public function pickupArtifacts(m:Message) : void {
+		public function pickupArtifacts(m:Message) : void
+		{
 			g.hud.artifactsButton.hintNew();
 			loadArtifactsFromMessage(m,0,true);
 			artifactCount += m.getInt(0);
-			if(artifactCount >= artifactLimit) {
+			if(artifactCount >= artifactLimit)
+			{
 				g.hud.showArtifactLimitText();
 			}
 		}
 		
-		public function pickupArtifact(m:Message) : void {
+		public function pickupArtifact(m:Message) : void
+		{
 			g.hud.artifactsButton.hintNew();
 			loadArtifactsFromMessage(m,0,true);
 			artifactCount += 1;
-			if(artifactCount >= artifactLimit) {
+			if(artifactCount >= artifactLimit)
+			{
 				g.hud.showArtifactLimitText();
 			}
 		}
 		
-		public function checkPickupMessage(m:Message, i:int) : void {
-			var _local6:String = null;
-			var _local3:String = null;
-			var _local7:String = null;
-			var _local4:int = 0;
-			var _local13:Boolean = false;
-			var _local10:Boolean = false;
-			if(!isMe) {
+		public function checkPickupMessage(m:Message, i:int) : void
+		{
+			var _loc11_:String = null;
+			var _loc13_:String = null;
+			var _loc3_:String = null;
+			var _loc4_:int = 0;
+			var _loc10_:Boolean = false;
+			var _loc9_:Boolean = false;
+			if(!isMe)
+			{
 				return;
 			}
-			var _local12:Boolean = m.getBoolean(i);
-			var _local5:Boolean = m.getBoolean(i + 1);
-			var _local9:Boolean = m.getBoolean(i + 2);
+			var _loc5_:Boolean = m.getBoolean(i);
+			var _loc7_:Boolean = m.getBoolean(i + 1);
+			var _loc12_:Boolean = m.getBoolean(i + 2);
 			i += 3;
-			if(_local5) {
+			if(_loc7_)
+			{
 				g.hud.artifactsButton.hintNew();
 				i = loadArtifactsFromMessage(m,i,true);
 				artifactCount += 1;
-				if(artifactCount >= artifactLimit) {
+				if(artifactCount >= artifactLimit)
+				{
 					g.hud.showArtifactLimitText();
 				}
 			}
-			if(_local12) {
+			if(_loc5_)
+			{
 				MessageLog.writeChatMsg("loot","<FONT COLOR=\'#4488ff\'>You found a Crate</FONT>");
 			}
-			if(_local9) {
+			if(_loc12_)
+			{
 				MessageLog.writeChatMsg("loot","<FONT COLOR=\'#ffcc44\'>Auto recycled artifact</FONT>");
 			}
-			var _local11:int = m.getInt(i++);
-			var _local8:int = i + _local11 * 6;
+			var _loc8_:int = m.getInt(i++);
+			var _loc6_:int = i + _loc8_ * 6;
 			i;
-			while(i < _local8) {
-				_local6 = m.getString(i);
-				_local3 = m.getString(i + 1);
-				_local7 = m.getString(i + 2);
-				_local4 = m.getInt(i + 3);
-				_local13 = m.getBoolean(i + 4);
-				_local10 = m.getBoolean(i + 5);
-				if(_local3 == "Weapons") {
-					MessageLog.writeChatMsg("loot","<FONT COLOR=\'#ff3322\'>You found a new weapon: " + _local6 + "</FONT>");
-					g.textManager.createDropText("You found the " + _local6 + "!",1,20,5000,0xff3322);
-				} else if(_local12) {
-					g.textManager.createDropText(_local6,_local4,20,5000,0xffff88);
-					MessageLog.writeChatMsg("loot",_local6 + " x" + _local4);
-					g.myCargo.addItem(_local3,_local7,_local4);
-				} else if(_local9) {
-					g.textManager.createDropText(_local6,_local4,14,5000,0xffcc44);
-					g.myCargo.addItem(_local3,_local7,_local4);
-				} else {
-					g.textManager.createDropText(_local6,_local4);
-					g.myCargo.addItem(_local3,_local7,_local4);
+			while(i < _loc6_)
+			{
+				_loc11_ = m.getString(i);
+				_loc13_ = m.getString(i + 1);
+				_loc3_ = m.getString(i + 2);
+				_loc4_ = m.getInt(i + 3);
+				_loc10_ = m.getBoolean(i + 4);
+				_loc9_ = m.getBoolean(i + 5);
+				if(_loc13_ == "Weapons")
+				{
+					MessageLog.writeChatMsg("loot","<FONT COLOR=\'#ff3322\'>You found a new weapon: " + _loc11_ + "</FONT>");
+					g.textManager.createDropText("You found the " + _loc11_ + "!",1,20,5000,0xff3322);
+				}
+				else if(_loc5_)
+				{
+					g.textManager.createDropText(_loc11_,_loc4_,20,5000,0xffff88);
+					MessageLog.writeChatMsg("loot",_loc11_ + " x" + _loc4_);
+					g.myCargo.addItem(_loc13_,_loc3_,_loc4_);
+				}
+				else if(_loc12_)
+				{
+					g.textManager.createDropText(_loc11_,_loc4_,14,5000,0xffcc44);
+					g.myCargo.addItem(_loc13_,_loc3_,_loc4_);
+				}
+				else
+				{
+					g.textManager.createDropText(_loc11_,_loc4_);
+					g.myCargo.addItem(_loc13_,_loc3_,_loc4_);
 				}
 				g.hud.cargoButton.update();
 				g.hud.resourceBox.update();
 				g.hud.cargoButton.flash();
-				if(_local13) {
-					weapons.push({"weapon":_local7});
+				if(_loc13_ == "Weapons")
+				{
+					removeAllArtifactStats();
+				}
+				if(_loc10_)
+				{
+					weapons.push({"weapon":_loc3_});
 					refreshWeapons();
 				}
-				if(_local10) {
-					addTechSkill(_local6,_local3,_local7);
+				if(_loc9_)
+				{
+					addTechSkill(_loc11_,_loc13_,_loc3_);
+				}
+				if(_loc13_ == "Weapons")
+				{
+					addAllArtifactStats();
+					if(ship != null)
+					{
+						ship.hp = ship.hpMax;
+						ship.shieldHp = ship.shieldHpMax;
+					}
 				}
 				i += 6;
 			}
 		}
 		
-		public function addTechSkill(name:String, table:String, item:String) : void {
+		public function addTechSkill(name:String, table:String, item:String) : void
+		{
 			techSkills.push(new TechSkill(name,item,table,0));
 		}
 		
-		private function refreshWeapons(autoSetHotKeys:Boolean = true) : void {
-			if(ship != null) {
+		private function refreshWeapons(autoSetHotKeys:Boolean = true) : void
+		{
+			if(ship != null)
+			{
 				ship.weaponIsChanging = true;
 				ShipFactory.CreatePlayerShipWeapon(g,this,0,weapons,ship);
-				if(isMe) {
-					if(autoSetHotKeys) {
+				if(isMe)
+				{
+					if(autoSetHotKeys)
+					{
 						autoSetHotkeysForWeapons();
 					}
 					g.hud.weaponHotkeys.refresh();
@@ -1233,264 +1588,619 @@ package core.player {
 			}
 		}
 		
-		private function autoSetHotkeysForWeapons() : void {
-			var _local2:Vector.<Weapon> = ship.weapons;
-			for each(var _local1:* in _local2) {
-				if(_local1.hotkey == 0) {
-					g.playerManager.trySetActiveWeapons(this,-1,_local1.key);
+		private function autoSetHotkeysForWeapons() : void
+		{
+			var _loc2_:Vector.<Weapon> = ship.weapons;
+			for each(var _loc1_ in _loc2_)
+			{
+				if(_loc1_.hotkey == 0)
+				{
+					g.playerManager.trySetActiveWeapons(this,-1,_loc1_.key);
 				}
 			}
 		}
 		
-		public function nrOfActiveArtifacts() : int {
+		public function nrOfActiveArtifacts() : int
+		{
 			return activeArtifacts.length;
 		}
 		
-		public function getArtifactById(artifactId:String) : Artifact {
-			var _local2:int = 0;
-			_local2 = 0;
-			while(_local2 < artifacts.length) {
-				if(artifacts[_local2].id === artifactId) {
-					return artifacts[_local2];
+		public function getArtifactById(artifactId:String) : Artifact
+		{
+			var _loc2_:int = 0;
+			_loc2_ = 0;
+			while(_loc2_ < artifacts.length)
+			{
+				if(artifacts[_loc2_].id === artifactId)
+				{
+					return artifacts[_loc2_];
 				}
-				_local2++;
+				_loc2_++;
 			}
 			return null;
 		}
 		
-		public function isActiveArtifact(a:Artifact) : Boolean {
+		public function isActiveArtifact(a:Artifact) : Boolean
+		{
 			return activeArtifacts.indexOf(a.id) != -1;
 		}
 		
-		public function isArtifactInSetup(a:Artifact) : Boolean {
-			for each(var _local2:* in artifactSetups) {
-				if(_local2.indexOf(a.id) != -1) {
+		public function isArtifactInSetup(a:Artifact) : Boolean
+		{
+			for each(var _loc2_ in artifactSetups)
+			{
+				if(_loc2_.indexOf(a.id) != -1)
+				{
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		public function addArtifactStat(a:Artifact, notifyServer:Boolean = true) : void {
+		public function addArtifactStat(a:Artifact, notifyServer:Boolean = true) : void
+		{
 			addRemoveArtifactStat(a,true,notifyServer);
 		}
 		
-		public function removeArtifactStat(a:Artifact, notifyServer:Boolean = true) : void {
+		public function removeArtifactStat(a:Artifact, notifyServer:Boolean = true) : void
+		{
 			addRemoveArtifactStat(a,false,notifyServer);
 		}
 		
-		public function toggleArtifact(a:Artifact, notifyServer:Boolean = true) : void {
-			var _local3:int = int(activeArtifacts.indexOf(a.id));
-			if(_local3 != -1) {
-				activeArtifacts.splice(_local3,1);
+		public function removeAllArtifactStats() : void
+		{
+			var _loc1_:Artifact = null;
+			for each(var _loc2_ in activeArtifacts)
+			{
+				_loc1_ = getArtifactById(_loc2_);
+				if(_loc1_ != null)
+				{
+					removeArtifactStat(_loc1_,false);
+				}
+			}
+		}
+		
+		public function addAllArtifactStats() : void
+		{
+			var _loc1_:Artifact = null;
+			for each(var _loc2_ in activeArtifacts)
+			{
+				_loc1_ = getArtifactById(_loc2_);
+				if(_loc1_ != null)
+				{
+					addArtifactStat(_loc1_,false);
+				}
+			}
+		}
+		
+		public function toggleArtifact(a:Artifact, notifyServer:Boolean = true) : void
+		{
+			var _loc3_:int = int(activeArtifacts.indexOf(a.id));
+			if(_loc3_ != -1)
+			{
+				activeArtifacts.splice(_loc3_,1);
 				removeArtifactStat(a,notifyServer);
-			} else {
+			}
+			else
+			{
 				activeArtifacts.push(a.id);
 				addArtifactStat(a,notifyServer);
 			}
 		}
 		
-		private function addRemoveArtifactStat(a:Artifact, active:Boolean, notifyServer:Boolean = true) : void {
-			var _local6:Number = NaN;
-			var _local4:* = null;
-			var _local7:int = 0;
-			if(ship == null) {
+		private function addRemoveArtifactStat(a:Artifact, active:Boolean, notifyServer:Boolean = true) : void
+		{
+			var _loc8_:* = null;
+			var _loc10_:int = 0;
+			var _loc7_:Object = null;
+			var _loc9_:String = null;
+			var _loc6_:PetSpawner = null;
+			if(ship == null)
+			{
 				return;
 			}
-			if(notifyServer) {
+			if(notifyServer)
+			{
 				g.send("toggleArtifact",a.id);
 			}
-			for each(var _local5:* in a.stats) {
-				_local6 = 1;
-				if(!active) {
-					_local6 = -1;
+			var _loc4_:Number = 1;
+			if(!active)
+			{
+				_loc4_ = -1;
+			}
+			for each(var _loc5_ in a.stats)
+			{
+				if(_loc5_.type == "healthAdd" || _loc5_.type == "healthAdd2" || _loc5_.type == "healthAdd3")
+				{
+					ship.removeConvert();
+					ship.hpMax += int(_loc4_ * 2 * _loc5_.value);
+					ship.addConvert();
 				}
-				if(_local5.type == "healthAdd" || _local5.type == "healthAdd2" || _local5.type == "healthAdd3") {
+				else if(_loc5_.type == "healthMulti")
+				{
 					ship.removeConvert();
-					ship.hpMax += int(_local6 * 2 * _local5.value);
+					ship.hpMax += int(_loc4_ * ship.hpBase * (1.35 * _loc5_.value) / 100);
 					ship.addConvert();
-				} else if(_local5.type == "healthMulti") {
+				}
+				else if(_loc5_.type == "healthRegenAdd")
+				{
 					ship.removeConvert();
-					ship.hpMax += int(_local6 * ship.hpBase * (1.35 * _local5.value) / 100);
+					ship.hpRegen += _loc4_ * 1 * _loc5_.value * 0.01;
 					ship.addConvert();
-				} else if(_local5.type == "armorAdd" || _local5.type == "armorAdd2" || _local5.type == "armorAdd3") {
-					ship.armorThreshold += int(_local6 * 7.5 * _local5.value);
-				} else if(_local5.type == "armorMulti") {
-					ship.armorThreshold += int(_local6 * ship.armorThresholdBase * _local5.value / 100);
-				} else if(_local5.type == "shieldAdd" || _local5.type == "shieldAdd2" || _local5.type == "shieldAdd3") {
+				}
+				else if(_loc5_.type == "armorAdd" || _loc5_.type == "armorAdd2" || _loc5_.type == "armorAdd3")
+				{
+					ship.armorThreshold += int(_loc4_ * 7.5 * _loc5_.value);
+				}
+				else if(_loc5_.type == "armorMulti")
+				{
+					ship.armorThreshold += int(_loc4_ * ship.armorThresholdBase * 1 * _loc5_.value / 100);
+				}
+				else if(_loc5_.type == "shieldAdd" || _loc5_.type == "shieldAdd2" || _loc5_.type == "shieldAdd3")
+				{
 					ship.removeConvert();
-					ship.shieldHpMax += int(_local6 * 1.5 * _local5.value);
-					ship.shieldRegen += int(_local6 * ship.shieldRegenBase * (0.0025 * _local5.value) / 100);
+					ship.shieldHpMax += int(_loc4_ * 1.75 * _loc5_.value);
+					ship.shieldRegen += int(_loc4_ * ship.shieldRegenBase * (0.0025 * _loc5_.value) / 100);
 					ship.addConvert();
-				} else if(_local5.type == "shieldMulti") {
+				}
+				else if(_loc5_.type == "shieldMulti")
+				{
 					ship.removeConvert();
-					ship.shieldHpMax += int(_local6 * ship.shieldHpBase * (1.35 * _local5.value) / 100);
-					ship.shieldRegen += int(_local6 * ship.shieldRegenBase * (0.25 * _local5.value) / 100);
+					ship.shieldHpMax += int(_loc4_ * ship.shieldHpBase * (1.35 * _loc5_.value) / 100);
+					ship.shieldRegen += int(_loc4_ * ship.shieldRegenBase * (0.25 * _loc5_.value) / 100);
 					ship.addConvert();
-				} else if(_local5.type == "shieldRegen") {
+				}
+				else if(_loc5_.type == "shieldRegen")
+				{
 					ship.removeConvert();
-					ship.shieldRegen += int(_local6 * ship.shieldRegenBase * _local5.value / 100);
+					ship.shieldRegen += int(_loc4_ * ship.shieldRegenBase * (1 * _loc5_.value) / 100);
 					ship.addConvert();
-				} else if(_local5.type == "corrosiveAdd" || _local5.type == "corrosiveAdd2" || _local5.type == "corrosiveAdd3") {
-					for each(_local4 in ship.weapons) {
-						_local4.dmg.addDmgInt(int(_local6 * 4 * _local5.value),2);
-						if(_local4.multiNrOfP > 1) {
-							_local4.debuffValue.addDmgInt(int(1.5 / _local4.multiNrOfP * 4 * _local6 * _local5.value),2);
-							_local4.debuffValue2.addDmgInt(int(1.5 / _local4.multiNrOfP * 4 * _local6 * _local5.value),2);
-						} else {
-							_local4.debuffValue.addDmgInt(int(_local6 * 4 * _local5.value),2);
-							_local4.debuffValue2.addDmgInt(int(_local6 * 4 * _local5.value),2);
+				}
+				else if(_loc5_.type == "corrosiveAdd" || _loc5_.type == "corrosiveAdd2" || _loc5_.type == "corrosiveAdd3")
+				{
+					for each(_loc8_ in ship.weapons)
+					{
+						_loc8_.dmg.addDmgInt(int(_loc4_ * 4 * _loc5_.value),2);
+						if(_loc8_.multiNrOfP > 1)
+						{
+							_loc8_.debuffValue.addDmgInt(int(1.5 / _loc8_.multiNrOfP * 4 * _loc4_ * _loc5_.value),2);
+							_loc8_.debuffValue2.addDmgInt(int(1.5 / _loc8_.multiNrOfP * 4 * _loc4_ * _loc5_.value),2);
+						}
+						else
+						{
+							_loc8_.debuffValue.addDmgInt(int(_loc4_ * 4 * _loc5_.value),2);
+							_loc8_.debuffValue2.addDmgInt(int(_loc4_ * 4 * _loc5_.value),2);
 						}
 					}
-				} else if(_local5.type == "corrosiveMulti") {
-					for each(_local4 in ship.weapons) {
-						_local4.dmg.addDmgPercent(_local6 * _local5.value,2);
-						_local4.debuffValue.addDmgPercent(_local6 * _local5.value,2);
-						_local4.debuffValue2.addDmgPercent(_local6 * _local5.value,2);
+				}
+				else if(_loc5_.type == "corrosiveMulti")
+				{
+					for each(_loc8_ in ship.weapons)
+					{
+						_loc8_.dmg.addDmgPercent(_loc4_ * 1 * _loc5_.value,2);
+						_loc8_.debuffValue.addDmgPercent(_loc4_ * 1 * _loc5_.value,2);
+						_loc8_.debuffValue2.addDmgPercent(_loc4_ * 1 * _loc5_.value,2);
 					}
-				} else if(_local5.type == "energyAdd" || _local5.type == "energyAdd2" || _local5.type == "energyAdd3") {
-					for each(_local4 in ship.weapons) {
-						_local4.dmg.addDmgInt(int(_local6 * 4 * _local5.value),1);
-						if(_local4.multiNrOfP > 1) {
-							_local4.debuffValue.addDmgInt(int(1.5 / _local4.multiNrOfP * _local6 * 4 * _local5.value),1);
-							_local4.debuffValue2.addDmgInt(int(1.5 / _local4.multiNrOfP * _local6 * 4 * _local5.value),1);
-						} else {
-							_local4.debuffValue.addDmgInt(int(_local6 * 4 * _local5.value),1);
-							_local4.debuffValue2.addDmgInt(int(_local6 * 4 * _local5.value),1);
+				}
+				else if(_loc5_.type == "energyAdd" || _loc5_.type == "energyAdd2" || _loc5_.type == "energyAdd3")
+				{
+					for each(_loc8_ in ship.weapons)
+					{
+						_loc8_.dmg.addDmgInt(int(_loc4_ * 4 * _loc5_.value),1);
+						if(_loc8_.multiNrOfP > 1)
+						{
+							_loc8_.debuffValue.addDmgInt(int(1.5 / _loc8_.multiNrOfP * _loc4_ * 4 * _loc5_.value),1);
+							_loc8_.debuffValue2.addDmgInt(int(1.5 / _loc8_.multiNrOfP * _loc4_ * 4 * _loc5_.value),1);
+						}
+						else
+						{
+							_loc8_.debuffValue.addDmgInt(int(_loc4_ * 4 * _loc5_.value),1);
+							_loc8_.debuffValue2.addDmgInt(int(_loc4_ * 4 * _loc5_.value),1);
 						}
 					}
-				} else if(_local5.type == "energyMulti") {
-					for each(_local4 in ship.weapons) {
-						_local4.dmg.addDmgPercent(_local6 * _local5.value,1);
-						_local4.debuffValue.addDmgPercent(_local6 * _local5.value,1);
-						_local4.debuffValue2.addDmgPercent(_local6 * _local5.value,1);
+				}
+				else if(_loc5_.type == "energyMulti")
+				{
+					for each(_loc8_ in ship.weapons)
+					{
+						_loc8_.dmg.addDmgPercent(_loc4_ * 1 * _loc5_.value,1);
+						_loc8_.debuffValue.addDmgPercent(_loc4_ * 1 * _loc5_.value,1);
+						_loc8_.debuffValue2.addDmgPercent(_loc4_ * 1 * _loc5_.value,1);
 					}
-				} else if(_local5.type == "kineticAdd" || _local5.type == "kineticAdd2" || _local5.type == "kineticAdd3") {
-					for each(_local4 in ship.weapons) {
-						_local4.dmg.addDmgInt(int(_local6 * 4 * _local5.value),0);
-						if(_local4.multiNrOfP > 1) {
-							_local4.debuffValue.addDmgInt(int(1.5 / _local4.multiNrOfP * _local6 * 4 * _local5.value),0);
-							_local4.debuffValue2.addDmgInt(int(1.5 / _local4.multiNrOfP * _local6 * 4 * _local5.value),0);
-						} else {
-							_local4.debuffValue.addDmgInt(int(_local6 * 4 * _local5.value),0);
-							_local4.debuffValue2.addDmgInt(int(_local6 * 4 * _local5.value),0);
+				}
+				else if(_loc5_.type == "kineticAdd" || _loc5_.type == "kineticAdd2" || _loc5_.type == "kineticAdd3")
+				{
+					for each(_loc8_ in ship.weapons)
+					{
+						_loc8_.dmg.addDmgInt(int(_loc4_ * 4 * _loc5_.value),0);
+						if(_loc8_.multiNrOfP > 1)
+						{
+							_loc8_.debuffValue.addDmgInt(int(1.5 / _loc8_.multiNrOfP * _loc4_ * 4 * _loc5_.value),0);
+							_loc8_.debuffValue2.addDmgInt(int(1.5 / _loc8_.multiNrOfP * _loc4_ * 4 * _loc5_.value),0);
+						}
+						else
+						{
+							_loc8_.debuffValue.addDmgInt(int(_loc4_ * 4 * _loc5_.value),0);
+							_loc8_.debuffValue2.addDmgInt(int(_loc4_ * 4 * _loc5_.value),0);
 						}
 					}
-				} else if(_local5.type == "kineticMulti") {
-					for each(_local4 in ship.weapons) {
-						_local4.dmg.addDmgPercent(_local6 * _local5.value,0);
-						_local4.debuffValue.addDmgPercent(_local6 * _local5.value,0);
-						_local4.debuffValue2.addDmgPercent(_local6 * _local5.value,0);
+				}
+				else if(_loc5_.type == "kineticMulti")
+				{
+					for each(_loc8_ in ship.weapons)
+					{
+						_loc8_.dmg.addDmgPercent(_loc4_ * 1 * _loc5_.value,0);
+						_loc8_.debuffValue.addDmgPercent(_loc4_ * 1 * _loc5_.value,0);
+						_loc8_.debuffValue2.addDmgPercent(_loc4_ * 1 * _loc5_.value,0);
 					}
-				} else if(_local5.type == "allAdd" || _local5.type == "allAdd2" || _local5.type == "allAdd3") {
-					for each(_local4 in ship.weapons) {
-						_local4.dmg.addDmgInt(int(_local6 * 1.5 * _local5.value),5);
-						if(_local4.multiNrOfP > 1) {
-							_local4.debuffValue.addDmgInt(int(1.5 / _local4.multiNrOfP * _local6 * 1.5 * _local5.value),5);
-							_local4.debuffValue2.addDmgInt(int(1.5 / _local4.multiNrOfP * _local6 * 1.5 * _local5.value),5);
-						} else {
-							_local4.debuffValue.addDmgInt(int(_local6 * 1.5 * _local5.value),5);
-							_local4.debuffValue2.addDmgInt(int(_local6 * 1.5 * _local5.value),5);
+				}
+				else if(_loc5_.type == "allAdd" || _loc5_.type == "allAdd2" || _loc5_.type == "allAdd3")
+				{
+					for each(_loc8_ in ship.weapons)
+					{
+						_loc8_.dmg.addDmgInt(int(_loc4_ * 1.5 * _loc5_.value),5);
+						if(_loc8_.multiNrOfP > 1)
+						{
+							_loc8_.debuffValue.addDmgInt(int(1.5 / _loc8_.multiNrOfP * _loc4_ * 1.5 * _loc5_.value),5);
+							_loc8_.debuffValue2.addDmgInt(int(1.5 / _loc8_.multiNrOfP * _loc4_ * 1.5 * _loc5_.value),5);
+						}
+						else
+						{
+							_loc8_.debuffValue.addDmgInt(int(_loc4_ * 1.5 * _loc5_.value),5);
+							_loc8_.debuffValue2.addDmgInt(int(_loc4_ * 1.5 * _loc5_.value),5);
 						}
 					}
-				} else if(_local5.type == "allMulti") {
-					for each(_local4 in ship.weapons) {
-						_local4.dmg.addDmgPercent(_local6 * 1.5 * _local5.value,5);
-						_local4.debuffValue.addDmgPercent(_local6 * 1.5 * _local5.value,5);
-						_local4.debuffValue2.addDmgPercent(_local6 * 1.5 * _local5.value,5);
+				}
+				else if(_loc5_.type == "allMulti")
+				{
+					for each(_loc8_ in ship.weapons)
+					{
+						_loc8_.dmg.addDmgPercent(_loc4_ * 1.5 * _loc5_.value,5);
+						_loc8_.debuffValue.addDmgPercent(_loc4_ * 1.5 * _loc5_.value,5);
+						_loc8_.debuffValue2.addDmgPercent(_loc4_ * 1.5 * _loc5_.value,5);
 					}
-				} else if(_local5.type == "allResist") {
-					_local7 = 0;
-					while(_local7 < 5) {
-						var _local9:* = _local7;
-						var _local8:* = ship.resistances[_local9] + _local6 * _local5.value * Damage.stats[5][_local7];
-						ship.resistances[_local9] = _local8;
-						if(ship.resistances[_local7] < 0) {
-							ship.resistances[_local7] = 0;
+				}
+				else if(_loc5_.type == "allResist")
+				{
+					_loc10_ = 0;
+					while(_loc10_ < 5)
+					{
+						var _loc12_:* = _loc10_;
+						var _loc11_:* = ship.resistances[_loc12_] + _loc4_ * 1 * _loc5_.value * Damage.stats[5][_loc10_];
+						ship.resistances[_loc12_] = _loc11_;
+						if(ship.resistances[_loc10_] < 0)
+						{
+							ship.resistances[_loc10_] = 0;
 						}
-						_local7++;
+						_loc10_++;
 					}
-				} else if(_local5.type == "kineticResist") {
-					var _local11:int = 0;
-					var _local10:* = ship.resistances[_local11] + _local6 * _local5.value;
-					ship.resistances[_local11] = _local10;
-					if(ship.resistances[0] < 0) {
+				}
+				else if(_loc5_.type == "kineticResist")
+				{
+					var _loc14_:int = 0;
+					var _loc13_:* = ship.resistances[_loc14_] + _loc4_ * 1 * _loc5_.value;
+					ship.resistances[_loc14_] = _loc13_;
+					if(ship.resistances[0] < 0)
+					{
 						ship.resistances[0] = 0;
 					}
-				} else if(_local5.type == "energyResist") {
-					var _local13:int = 1;
-					var _local12:* = ship.resistances[_local13] + _local6 * _local5.value;
-					ship.resistances[_local13] = _local12;
-					if(ship.resistances[1] < 0) {
+				}
+				else if(_loc5_.type == "energyResist")
+				{
+					var _loc16_:int = 1;
+					var _loc15_:* = ship.resistances[_loc16_] + _loc4_ * 1 * _loc5_.value;
+					ship.resistances[_loc16_] = _loc15_;
+					if(ship.resistances[1] < 0)
+					{
 						ship.resistances[1] = 0;
 					}
-				} else if(_local5.type == "corrosiveResist") {
-					var _local15:int = 2;
-					var _local14:* = ship.resistances[_local15] + _local6 * _local5.value;
-					ship.resistances[_local15] = _local14;
-					if(ship.resistances[2] < 0) {
+				}
+				else if(_loc5_.type == "corrosiveResist")
+				{
+					var _loc18_:int = 2;
+					var _loc17_:* = ship.resistances[_loc18_] + _loc4_ * 1 * _loc5_.value;
+					ship.resistances[_loc18_] = _loc17_;
+					if(ship.resistances[2] < 0)
+					{
 						ship.resistances[2] = 0;
 					}
-				} else if(_local5.type == "speed" || _local5.type == "speed2" || _local5.type == "speed3") {
-					ship.engine.speed /= 1 + ship.aritfact_speed;
-					ship.aritfact_speed += _local6 * 0.001 * 2 * _local5.value;
-					ship.engine.speed *= 1 + ship.aritfact_speed;
-				} else if(_local5.type == "refire" || _local5.type == "refire2" || _local5.type == "refire3") {
-					_local7 = 0;
-					while(_local7 < ship.weapons.length) {
-						if(ship.weapons[_local7] is Teleport) {
-							ship.weapons[_local7].speed /= 1 + 0.5 * ship.aritfact_refire;
-						} else if(!(ship.weapons[_local7] is Cloak)) {
-							ship.weapons[_local7].reloadTime *= 1 + ship.aritfact_refire;
-							ship.weapons[_local7].heatCost *= 1 + ship.aritfact_refire;
+				}
+				else if(_loc5_.type == "speed" || _loc5_.type == "speed2" || _loc5_.type == "speed3" || _loc5_.type == "velocityCore")
+				{
+					ship.engine.speed /= 1 + ship.artifact_speed;
+					ship.artifact_speed += _loc4_ * 0.001 * 2 * _loc5_.value;
+					ship.engine.speed *= 1 + ship.artifact_speed;
+				}
+				else if(_loc5_.type == "refire" || _loc5_.type == "refire2" || _loc5_.type == "refire3")
+				{
+					_loc10_ = 0;
+					while(_loc10_ < ship.weapons.length)
+					{
+						if(ship.weapons[_loc10_] is Teleport)
+						{
+							ship.weapons[_loc10_].speed /= 1 + 0.5 * ship.artifact_refire;
 						}
-						_local7++;
-					}
-					ship.aritfact_refire += _local6 * 3 * 0.001 * _local5.value;
-					_local7 = 0;
-					while(_local7 < ship.weapons.length) {
-						if(ship.weapons[_local7] is Teleport) {
-							ship.weapons[_local7].speed *= 1 + 0.5 * ship.aritfact_refire;
-						} else if(!(ship.weapons[_local7] is Cloak)) {
-							ship.weapons[_local7].reloadTime /= 1 + ship.aritfact_refire;
-							ship.weapons[_local7].heatCost /= 1 + ship.aritfact_refire;
+						else if(!(ship.weapons[_loc10_] is Cloak))
+						{
+							ship.weapons[_loc10_].reloadTime *= 1 + ship.artifact_refire;
+							ship.weapons[_loc10_].heatCost *= 1 + ship.artifact_refire;
 						}
-						_local7++;
+						_loc10_++;
 					}
-				} else if(_local5.type == "convHp") {
+					ship.artifact_refire += _loc4_ * 3 * 0.001 * _loc5_.value;
+					_loc10_ = 0;
+					while(_loc10_ < ship.weapons.length)
+					{
+						if(ship.weapons[_loc10_] is Teleport)
+						{
+							ship.weapons[_loc10_].speed *= 1 + 0.5 * ship.artifact_refire;
+						}
+						else if(!(ship.weapons[_loc10_] is Cloak))
+						{
+							ship.weapons[_loc10_].reloadTime /= 1 + ship.artifact_refire;
+							ship.weapons[_loc10_].heatCost /= 1 + ship.artifact_refire;
+						}
+						_loc10_++;
+					}
+				}
+				else if(_loc5_.type == "convHp")
+				{
 					ship.removeConvert();
-					ship.aritfact_convAmount -= _local6 * 0.001 * _local5.value;
+					ship.artifact_convAmount -= _loc4_ * 0.001 * _loc5_.value;
 					ship.addConvert();
-				} else if(_local5.type == "convShield") {
+				}
+				else if(_loc5_.type == "convShield")
+				{
 					ship.removeConvert();
-					ship.aritfact_convAmount += _local6 * 0.001 * _local5.value;
+					ship.artifact_convAmount += _loc4_ * 0.001 * _loc5_.value;
 					ship.addConvert();
-				} else if(_local5.type == "powerReg" || _local5.type == "powerReg2" || _local5.type == "powerReg3") {
-					ship.powerRegBonus += _local6 * 0.001 * 1.5 * _local5.value;
-					ship.weaponHeat.setBonuses(ship.maxPower + ship.aritfact_powerMax,ship.powerRegBonus + ship.aritfact_poweReg);
-				} else if(_local5.type == "powerMax") {
-					ship.aritfact_powerMax += _local6 * 0.01 * 1.5 * _local5.value;
-					ship.weaponHeat.setBonuses(ship.maxPower + ship.aritfact_powerMax,ship.powerRegBonus + ship.aritfact_poweReg);
-				} else if(_local5.type == "cooldown" || _local5.type == "cooldown2" || _local5.type == "cooldown3") {
-					_local7 = 0;
-					while(_local7 < ship.weapons.length) {
-						if(ship.weapons[_local7] is Teleport || ship.weapons[_local7] is Cloak) {
-							ship.weapons[_local7].reloadTime *= 1 + ship.aritfact_cooldownReduction;
+				}
+				else if(_loc5_.type == "powerReg" || _loc5_.type == "powerReg2" || _loc5_.type == "powerReg3")
+				{
+					ship.powerRegBonus += _loc4_ * 0.001 * 1.5 * _loc5_.value;
+					ship.weaponHeat.setBonuses(ship.maxPower + ship.artifact_powerMax,ship.powerRegBonus + ship.artifact_powerRegen);
+				}
+				else if(_loc5_.type == "powerMax")
+				{
+					ship.artifact_powerMax += _loc4_ * 0.01 * 1.5 * _loc5_.value;
+					ship.weaponHeat.setBonuses(ship.maxPower + ship.artifact_powerMax,ship.powerRegBonus + ship.artifact_powerRegen);
+				}
+				else if(_loc5_.type == "cooldown" || _loc5_.type == "cooldown2" || _loc5_.type == "cooldown3")
+				{
+					_loc10_ = 0;
+					while(_loc10_ < ship.weapons.length)
+					{
+						if(ship.weapons[_loc10_] is Teleport || ship.weapons[_loc10_] is Cloak)
+						{
+							ship.weapons[_loc10_].reloadTime *= 1 + ship.artifact_cooldownReduction;
 						}
-						_local7++;
+						_loc10_++;
 					}
-					ship.aritfact_cooldownReduction += _local6 * 0.001 * _local5.value;
-					_local7 = 0;
-					while(_local7 < ship.weapons.length) {
-						if(ship.weapons[_local7] is Teleport || ship.weapons[_local7] is Cloak) {
-							ship.weapons[_local7].reloadTime /= 1 + ship.aritfact_cooldownReduction;
+					ship.artifact_cooldownReduction += _loc4_ * 1 * 0.001 * _loc5_.value;
+					_loc10_ = 0;
+					while(_loc10_ < ship.weapons.length)
+					{
+						if(ship.weapons[_loc10_] is Teleport || ship.weapons[_loc10_] is Cloak)
+						{
+							ship.weapons[_loc10_].reloadTime /= 1 + ship.artifact_cooldownReduction;
 						}
-						_local7++;
+						_loc10_++;
+					}
+				}
+				else if(_loc5_.type != "kineticChanceToPenetrateShield")
+				{
+					if(_loc5_.type != "corrosiveChanceToIgnite")
+					{
+						if(_loc5_.type != "energyChanceToShieldOverload")
+						{
+							if(_loc5_.type != "increaseRecyleRate")
+							{
+								if(_loc5_.type == "upgrade")
+								{
+									_loc7_ = ship.obj;
+									_loc9_ = ship.name;
+									if(_loc9_.indexOf("Nexar") != -1)
+									{
+										break;
+									}
+									ship.removeConvert();
+									if(_loc7_.armor < 20)
+									{
+										ship.armorThreshold += _loc4_ * MathUtil.min(ship.armorThresholdBase * (20 / _loc7_.armor) * 0.8,ship.armorThresholdBase * 2);
+									}
+									if(_loc7_.hp < 800)
+									{
+										ship.hpMax += _loc4_ * MathUtil.min(ship.hpBase * (800 / _loc7_.hp) * 0.8,ship.hpBase * 2);
+									}
+									if(_loc7_.shieldHp < 800)
+									{
+										ship.shieldHpMax += _loc4_ * MathUtil.min(ship.shieldHpBase * (800 / _loc7_.shieldHp) * 0.8,ship.shieldHpBase * 2);
+									}
+									if(_loc7_.shieldRegen * 1.5 < 80)
+									{
+										ship.shieldRegen += _loc4_ * MathUtil.min(ship.shieldRegenBase * (80 / _loc7_.shieldRegen * 1.5) * 0.8,ship.shieldRegenBase * 2);
+									}
+									ship.addConvert();
+								}
+								else if(_loc5_.type != "recycleCatalyst")
+								{
+									if(_loc5_.type == "slowDown")
+									{
+										if(_loc4_ > 0)
+										{
+											for each(_loc8_ in ship.weapons)
+											{
+												_loc8_.addDebuff(11,4,new Damage(_loc5_.value,8),"F4806EAE-35F4-6E5D-5938-EAC8248D4702");
+											}
+										}
+										else
+										{
+											for each(_loc8_ in ship.weapons)
+											{
+												_loc8_.removeDebuff(11,new Damage(_loc5_.value,8));
+											}
+										}
+									}
+									else if(_loc5_.type == "beamAndMissileDoesBonusDamage")
+									{
+										for each(_loc8_ in ship.weapons)
+										{
+											if(_loc8_ is Beam || _loc8_.isMissileWeapon)
+											{
+												_loc8_.dmg.addDmgPercent(_loc4_ * _loc5_.value,5);
+												_loc8_.debuffValue.addDmgPercent(_loc4_ * _loc5_.value,5);
+												_loc8_.debuffValue2.addDmgPercent(_loc4_ * _loc5_.value,5);
+											}
+										}
+									}
+									else if(_loc5_.type == "overmind")
+									{
+										for each(_loc8_ in ship.weapons)
+										{
+											if(_loc8_ is PetSpawner)
+											{
+												_loc6_ = _loc8_ as PetSpawner;
+												if(_loc4_ > 0)
+												{
+													_loc6_.maxPets *= 2;
+												}
+												else
+												{
+													_loc6_.maxPets /= 2;
+												}
+											}
+										}
+									}
+									else if(_loc5_.type != "thermofangCore")
+									{
+										if(_loc5_.type == "lucaniteCore")
+										{
+											if(_loc4_ > 0)
+											{
+												for each(_loc8_ in ship.weapons)
+												{
+													_loc8_.addDebuff(7,4,new Damage(_loc5_.value,8),"xYk7ubyao0uh8j9SDJYeWw");
+												}
+											}
+											else
+											{
+												for each(_loc8_ in ship.weapons)
+												{
+													_loc8_.removeDebuff(7,new Damage(_loc5_.value,8));
+												}
+											}
+										}
+										else if(_loc5_.type != "mantisCore")
+										{
+											if(_loc5_.type == "reduceKineticResistance")
+											{
+												if(_loc4_ > 0)
+												{
+													for each(_loc8_ in ship.weapons)
+													{
+														_loc8_.addDebuff(8,4,new Damage(_loc5_.value,8),"Tk7JFixDAkuw6mB-BLXQwg");
+													}
+												}
+												else
+												{
+													for each(_loc8_ in ship.weapons)
+													{
+														_loc8_.removeDebuff(8,new Damage(_loc5_.value,8));
+													}
+												}
+											}
+											else if(_loc5_.type == "reduceCorrosiveResistance")
+											{
+												if(_loc4_ > 0)
+												{
+													for each(_loc8_ in ship.weapons)
+													{
+														_loc8_.addDebuff(10,4,new Damage(_loc5_.value,8),"U4WOoDzOV0iXNmVwM3SELA");
+													}
+												}
+												else
+												{
+													for each(_loc8_ in ship.weapons)
+													{
+														_loc8_.removeDebuff(10,new Damage(_loc5_.value,8));
+													}
+												}
+											}
+											else if(_loc5_.type == "reduceEnergyResistance")
+											{
+												if(_loc4_ > 0)
+												{
+													for each(_loc8_ in ship.weapons)
+													{
+														_loc8_.addDebuff(9,4,new Damage(_loc5_.value,8),"9kIM0A-0d0uPHMjJ1qg5pg");
+													}
+												}
+												else
+												{
+													for each(_loc8_ in ship.weapons)
+													{
+														_loc8_.removeDebuff(9,new Damage(_loc5_.value,8));
+													}
+												}
+											}
+											else if(_loc5_.type != "crownOfXhersix")
+											{
+												if(_loc5_.type != "veilOfYhgvis")
+												{
+													if(_loc5_.type != "fistOfZharix")
+													{
+														if(_loc5_.type == "dotDamageUnique" || _loc5_.type == "dotDamage")
+														{
+															for each(_loc8_ in ship.weapons)
+															{
+																_loc8_.debuffValue.addDmgPercent(_loc4_ * 1 * _loc5_.value,5);
+																_loc8_.debuffValue2.addDmgPercent(_loc4_ * 1 * _loc5_.value,5);
+															}
+														}
+														else if(_loc5_.type == "dotDuration")
+														{
+															for each(_loc8_ in ship.weapons)
+															{
+																_loc8_.debuffDuration += _loc4_ * 1 * _loc5_.value * 0.01;
+																_loc8_.debuffDuration2 += _loc4_ * 1 * _loc5_.value * 0.01;
+															}
+														}
+														else if(_loc5_.type == "directDamageUnique" || _loc5_.type == "directDamage")
+														{
+															for each(_loc8_ in ship.weapons)
+															{
+																_loc8_.dmg.addDmgPercent(_loc4_ * 1 * _loc5_.value,5);
+															}
+														}
+														else if(_loc5_.type == "healthVamp")
+														{
+															for each(_loc8_ in ship.weapons)
+															{
+																_loc8_.healthVamp += _loc4_ * _loc5_.value * 1;
+															}
+														}
+														else if(_loc5_.type == "shieldVamp")
+														{
+															for each(_loc8_ in ship.weapons)
+															{
+																_loc8_.shieldVamp += _loc4_ * _loc5_.value * 1;
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 			}
-			if(isMe) {
-				if(!g.hud.isLoaded) {
+			if(isMe)
+			{
+				if(!g.hud.isLoaded)
+				{
 					return;
 				}
 				g.hud.healthAndShield.update();
@@ -1499,425 +2209,538 @@ package core.player {
 			}
 		}
 		
-		public function hasTechSkill(table:String, tech:String) : Boolean {
-			for each(var _local3:* in techSkills) {
-				if(_local3.table == table && _local3.tech == tech) {
+		public function hasTechSkill(table:String, tech:String) : Boolean
+		{
+			for each(var _loc3_ in techSkills)
+			{
+				if(_loc3_.table == table && _loc3_.tech == tech)
+				{
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		public function changeWeapon(m:Message, i:int) : void {
-			var _local8:int = 0;
-			var _local6:FleetObj = null;
-			var _local3:Weapon = null;
-			var _local4:int = m.getInt(i + 1);
-			var _local5:String = m.getString(i + 2);
-			if(_local5 != null && _local5 != "") {
-				activeWeapon = _local5;
-				_local8 = 0;
-				while(_local8 < fleet.length) {
-					_local6 = fleet[_local8];
-					if(_local6.skin == activeSkin) {
-						_local6.activeWeapon = _local5;
+		public function changeWeapon(m:Message, i:int) : void
+		{
+			var _loc6_:int = 0;
+			var _loc7_:FleetObj = null;
+			var _loc4_:Weapon = null;
+			var _loc5_:int = m.getInt(i + 1);
+			var _loc3_:String = m.getString(i + 2);
+			if(_loc3_ != null && _loc3_ != "")
+			{
+				activeWeapon = _loc3_;
+				_loc6_ = 0;
+				while(_loc6_ < fleet.length)
+				{
+					_loc7_ = fleet[_loc6_];
+					if(_loc7_.skin == activeSkin)
+					{
+						_loc7_.activeWeapon = _loc3_;
 						break;
 					}
-					_local8++;
+					_loc6_++;
 				}
 			}
-			if(ship == null) {
+			if(ship == null)
+			{
 				return;
 			}
-			selectedWeaponIndex = _local4;
+			selectedWeaponIndex = _loc5_;
 			ship.weaponIsChanging = false;
-			for each(var _local7:* in weapons) {
-				if(_local7 is Weapon) {
-					_local3 = _local7 as Weapon;
-					_local3.fire = false;
+			for each(var _loc8_ in weapons)
+			{
+				if(_loc8_ is Weapon)
+				{
+					_loc4_ = _loc8_ as Weapon;
+					_loc4_.fire = false;
 				}
 			}
-			if(isMe) {
-				g.hud.weaponHotkeys.highlightWeapon(ship.weapons[_local4].hotkey);
+			if(isMe)
+			{
+				g.hud.weaponHotkeys.highlightWeapon(ship.weapons[_loc5_].hotkey);
 			}
 		}
 		
-		public function sendChangeWeapon(weaponUsedHotkey:int) : void {
-			var _local3:int = 0;
-			if(weaponUsedHotkey != 0 && ship != null) {
-				_local3 = 0;
-				while(_local3 < ship.weapons.length) {
-					if(ship.weapons[_local3].active && ship.weapons[_local3].hotkey == weaponUsedHotkey) {
+		public function sendChangeWeapon(weaponUsedHotkey:int) : void
+		{
+			var _loc3_:int = 0;
+			if(weaponUsedHotkey != 0 && ship != null)
+			{
+				_loc3_ = 0;
+				while(_loc3_ < ship.weapons.length)
+				{
+					if(ship.weapons[_loc3_].active && ship.weapons[_loc3_].hotkey == weaponUsedHotkey)
+					{
 						ship.weaponIsChanging = true;
-						for each(var _local2:* in ship.weapons) {
-							_local2.fire = false;
+						for each(var _loc2_ in ship.weapons)
+						{
+							_loc2_.fire = false;
 						}
-						selectedWeaponIndex = _local3;
-						g.send("changeWeapon",_local3);
+						selectedWeaponIndex = _loc3_;
+						g.send("changeWeapon",_loc3_);
 						return;
 					}
-					_local3++;
+					_loc3_++;
 				}
 			}
 		}
 		
-		public function tryUnlockSlot(type:String, index:int, callback:Function) : void {
-			if(type == "slotCrew" && index + 1 < 4) {
+		public function tryUnlockSlot(type:String, index:int, callback:Function) : void
+		{
+			if(type == "slotCrew" && index + 1 < 4)
+			{
 				return;
 			}
-			g.rpc("tryUnlockSlot",function(param1:Message):void {
-				var _local4:String = param1.getString(0);
-				var _local2:int = param1.getInt(1);
-				var _local5:int = 0;
-				var _local3:String = "";
-				if(_local4 == "slotWeapon") {
-					_local5 = int(SLOT_WEAPON_UNLOCK_COST[_local2 - 1]);
-					_local3 = "flpbTKautkC1QzjWT28gkw";
-					unlockedWeaponSlots = _local2;
-					if(ship != null) {
-						ship.unlockedWeaponSlots = _local2;
+			g.rpc("tryUnlockSlot",function(param1:Message):void
+			{
+				var _loc5_:String = param1.getString(0);
+				var _loc4_:int = param1.getInt(1);
+				var _loc3_:int = 0;
+				var _loc2_:String = "";
+				if(_loc5_ == "slotWeapon")
+				{
+					_loc3_ = int(SLOT_WEAPON_UNLOCK_COST[_loc4_ - 1]);
+					_loc2_ = "flpbTKautkC1QzjWT28gkw";
+					unlockedWeaponSlots = _loc4_;
+					if(ship != null)
+					{
+						ship.unlockedWeaponSlots = _loc4_;
 					}
-				} else if(_local4 == "slotArtifact") {
-					_local5 = int(SLOT_ARTIFACT_UNLOCK_COST[_local2 - 1]);
-					_local3 = "flpbTKautkC1QzjWT28gkw";
-					unlockedArtifactSlots = _local2;
-				} else if(_local4 == "slotCrew") {
-					_local5 = int(SLOT_CREW_UNLOCK_COST[_local2 - 1]);
-					_local3 = "flpbTKautkC1QzjWT28gkw";
-					unlockedCrewSlots = _local2;
 				}
-				g.myCargo.removeMinerals(_local3,_local5);
+				else if(_loc5_ == "slotArtifact")
+				{
+					_loc3_ = int(SLOT_ARTIFACT_UNLOCK_COST[_loc4_ - 1]);
+					_loc2_ = "flpbTKautkC1QzjWT28gkw";
+					unlockedArtifactSlots = _loc4_;
+				}
+				else if(_loc5_ == "slotCrew")
+				{
+					_loc3_ = int(SLOT_CREW_UNLOCK_COST[_loc4_ - 1]);
+					_loc2_ = "flpbTKautkC1QzjWT28gkw";
+					unlockedCrewSlots = _loc4_;
+				}
+				g.myCargo.removeMinerals(_loc2_,_loc3_);
 				callback();
 			},type,index);
 		}
 		
-		public function get team() : int {
+		public function get team() : int
+		{
 			return _team;
 		}
 		
-		public function set team(value:int) : void {
+		public function set team(value:int) : void
+		{
 			_team = value;
-			if(ship != null) {
+			if(ship != null)
+			{
 				ship.team = value;
 				ship.updateLabel();
 			}
 		}
 		
-		public function get name() : String {
+		public function get name() : String
+		{
 			return _name;
 		}
 		
-		public function set name(value:String) : void {
+		public function set name(value:String) : void
+		{
 			_name = value;
 		}
 		
-		public function get inSafeZone() : Boolean {
+		public function get inSafeZone() : Boolean
+		{
 			return _inSafeZone;
 		}
 		
-		public function set inSafeZone(value:Boolean) : void {
+		public function set inSafeZone(value:Boolean) : void
+		{
 			_inSafeZone = value;
 		}
 		
-		public function set isWarpJumping(value:Boolean) : void {
+		public function set isWarpJumping(value:Boolean) : void
+		{
 			_isWarpJumping = value;
 		}
 		
-		public function get isWarpJumping() : Boolean {
+		public function get isWarpJumping() : Boolean
+		{
 			return _isWarpJumping;
 		}
 		
-		public function get invulnarable() : Boolean {
-			if(_inSafeZone || _isWarpJumping) {
+		public function get invulnarable() : Boolean
+		{
+			if(_inSafeZone || _isWarpJumping)
+			{
 				return true;
 			}
 			return false;
 		}
 		
-		public function saveWeaponData(weapList:Vector.<Weapon>) : void {
-			var _local4:WeaponDataHolder = null;
-			var _local3:String = "";
+		public function saveWeaponData(weapList:Vector.<Weapon>) : void
+		{
+			var _loc2_:WeaponDataHolder = null;
+			var _loc4_:String = "";
 			weaponData = new Vector.<WeaponDataHolder>();
-			for each(var _local2:* in weapList) {
-				_local3 = _local2.getDescription(_local2 is Beam);
-				_local4 = new WeaponDataHolder(_local2.key,_local3);
-				weaponData.push(_local4);
+			for each(var _loc3_ in weapList)
+			{
+				_loc4_ = _loc3_.getDescription(_loc3_ is Beam);
+				_loc2_ = new WeaponDataHolder(_loc3_.key,_loc4_);
+				weaponData.push(_loc2_);
 			}
 		}
 		
-		public function get commandable() : Boolean {
-			if(ship == null || !ship.alive || isLanded || isWarpJumping) {
+		public function get commandable() : Boolean
+		{
+			if(ship == null || !ship.alive || isLanded || isWarpJumping)
+			{
 				return false;
 			}
 			return true;
 		}
 		
-		public function getWeaponByHotkey(i:int) : Weapon {
-			if(ship == null) {
+		public function getWeaponByHotkey(i:int) : Weapon
+		{
+			if(ship == null)
+			{
 				return null;
 			}
-			for each(var _local2:* in ship.weapons) {
-				if(_local2.active && _local2.hotkey == i) {
-					return _local2;
+			for each(var _loc2_ in ship.weapons)
+			{
+				if(_loc2_.active && _loc2_.hotkey == i)
+				{
+					return _loc2_;
 				}
 			}
 			return null;
 		}
 		
-		public function getCrewMember(key:String) : CrewMember {
-			for each(var _local2:* in crewMembers) {
-				if(_local2.key == key) {
-					return _local2;
+		public function getCrewMember(key:String) : CrewMember
+		{
+			for each(var _loc2_ in crewMembers)
+			{
+				if(_loc2_.key == key)
+				{
+					return _loc2_;
 				}
 			}
 			return null;
 		}
 		
-		public function getCrewMembersBySolarSystem(solarSystemKey:String) : Vector.<CrewMember> {
-			var _local3:Vector.<CrewMember> = new Vector.<CrewMember>();
-			for each(var _local2:* in crewMembers) {
-				if(_local2.solarSystem == solarSystemKey) {
-					_local3.push(_local2);
+		public function getCrewMembersBySolarSystem(solarSystemKey:String) : Vector.<CrewMember>
+		{
+			var _loc3_:Vector.<CrewMember> = new Vector.<CrewMember>();
+			for each(var _loc2_ in crewMembers)
+			{
+				if(_loc2_.solarSystem == solarSystemKey)
+				{
+					_loc3_.push(_loc2_);
 				}
 			}
-			return _local3;
+			return _loc3_;
 		}
 		
-		public function isFriendWith(p:Player) : Boolean {
-			for each(var _local2:* in friends) {
-				if(_local2.id == p.id) {
+		public function isFriendWith(p:Player) : Boolean
+		{
+			for each(var _loc2_ in friends)
+			{
+				if(_loc2_.id == p.id)
+				{
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		public function removeMissionById(id:String) : void {
-			var _local2:Mission = getMissionById(id);
-			if(_local2 != null) {
-				removeMission(_local2);
+		public function removeMissionById(id:String) : void
+		{
+			var _loc2_:Mission = getMissionById(id);
+			if(_loc2_ != null)
+			{
+				removeMission(_loc2_);
 			}
 		}
 		
-		private function getMissionById(id:String) : Mission {
-			for each(var _local2:* in missions) {
-				if(_local2.id == id) {
-					return _local2;
+		private function getMissionById(id:String) : Mission
+		{
+			for each(var _loc2_ in missions)
+			{
+				if(_loc2_.id == id)
+				{
+					return _loc2_;
 				}
 			}
 			return null;
 		}
 		
-		public function updateMission(m:Message, i:int) : void {
+		public function updateMission(m:Message, i:int) : void
+		{
 			var missionType:Object;
 			var id:String = m.getString(i);
 			var missionTypeKey:String = m.getString(i + 1);
 			var mission:Mission = getMissionById(id);
-			if(mission == null) {
+			if(mission == null)
+			{
 				return;
 			}
-			if(missionTypeKey == "KG4YJCr9tU6IH0rJRYo7HQ") {
+			if(missionTypeKey == "KG4YJCr9tU6IH0rJRYo7HQ")
+			{
 				g.hud.compas.clear();
-				TweenMax.delayedCall(1.5,function():void {
-					var _local1:Boolean = false;
-					for each(var _local3:* in g.bodyManager.bodies) {
-						if(_local3.key == "SWqDETtcD0i6Wc3s81yccQ" || _local3.key == "U8PYtFoC5U6c2A_gar9j2A" || _local3.key == "TLYpHghGOU6FaZtxDiVXBA") {
-							for each(var _local2:* in _local3.spawners) {
-								if(_local2.alive) {
-									_local1 = true;
-									g.hud.compas.addHintArrowByKey(_local3.key);
+				TweenMax.delayedCall(1.5,function():void
+				{
+					var _loc1_:Boolean = false;
+					for each(var _loc2_ in g.bodyManager.bodies)
+					{
+						if(_loc2_.key == "SWqDETtcD0i6Wc3s81yccQ" || _loc2_.key == "U8PYtFoC5U6c2A_gar9j2A" || _loc2_.key == "TLYpHghGOU6FaZtxDiVXBA")
+						{
+							for each(var _loc3_ in _loc2_.spawners)
+							{
+								if(_loc3_.alive)
+								{
+									_loc1_ = true;
+									g.hud.compas.addHintArrowByKey(_loc2_.key);
 									break;
 								}
 							}
-							if(_local1) {
+							if(_loc1_)
+							{
 								break;
 							}
 						}
 					}
 				});
 			}
-			if(missionTypeKey == "s1l0zM-6lkq9l1jlGDBy4w") {
+			if(missionTypeKey == "s1l0zM-6lkq9l1jlGDBy4w")
+			{
 				g.hud.compas.clear();
 			}
 			g.hud.missionsButton.flash();
 			mission.count = m.getInt(i + 2);
 			missionType = mission.getMissionType();
-			if(missionType != null && missionType.value != null) {
+			if(missionType != null && missionType.value != null)
+			{
 				g.textManager.createMissionUpdateText(mission.count,missionType.value);
 			}
 			mission.finished = m.getBoolean(i + 3);
-			if(mission.finished) {
+			if(mission.finished)
+			{
 				g.hud.missionsButton.hintFinished();
 				g.textManager.createMissionFinishedText();
-				if(missionType.completeDescription != null) {
+				if(missionType.completeDescription != null)
+				{
 					g.tutorial.showMissionCompleteText(mission,missionType.drop,missionType.completeDescription);
 				}
 			}
-			if(missionTypeKey == "puc60G5hKUypAIaEB4cAaA" || missionTypeKey == "mZsWmk4BUkunoD6w35aOjg" || missionTypeKey == "TYs2gVcB8UmyxfXqtIvTQA" || missionTypeKey == "m1gVvWQOGUmrFE6k4U9HOQ") {
+			if(missionTypeKey == "puc60G5hKUypAIaEB4cAaA" || missionTypeKey == "mZsWmk4BUkunoD6w35aOjg" || missionTypeKey == "TYs2gVcB8UmyxfXqtIvTQA" || missionTypeKey == "m1gVvWQOGUmrFE6k4U9HOQ")
+			{
 				g.hud.compas.clear();
 			}
 		}
 		
-		public function toggleTractorBeam() : void {
+		public function toggleTractorBeam() : void
+		{
 			tractorBeamActive = !tractorBeamActive;
 		}
 		
-		public function isTractorBeamActive() : Boolean {
-			if(!hasTractorBeam()) {
+		public function isTractorBeamActive() : Boolean
+		{
+			if(!hasTractorBeam())
+			{
 				return false;
 			}
 			return tractorBeamActive;
 		}
 		
-		public function hasTractorBeam() : Boolean {
-			if(g.time == 0) {
+		public function hasTractorBeam() : Boolean
+		{
+			if(g.time == 0)
+			{
 				return false;
 			}
-			if(isModerator) {
+			if(isModerator)
+			{
 				return true;
 			}
 			return tractorBeam > g.time;
 		}
 		
-		public function hasXpProtection() : Boolean {
-			if(g.time == 0) {
+		public function hasXpProtection() : Boolean
+		{
+			if(g.time == 0)
+			{
 				return false;
 			}
-			if(level <= 15) {
+			if(level <= 15)
+			{
 				return true;
 			}
-			if(isModerator) {
+			if(isModerator)
+			{
 				return true;
 			}
 			return xpProtection > g.time;
 		}
 		
-		public function toggleCargoProtection() : void {
+		public function toggleCargoProtection() : void
+		{
 			cargoProtectionActive = !cargoProtectionActive;
 		}
 		
-		public function isCargoProtectionActive() : Boolean {
-			if(!hasCargoProtection()) {
+		public function isCargoProtectionActive() : Boolean
+		{
+			if(!hasCargoProtection())
+			{
 				return false;
 			}
 			return cargoProtectionActive;
 		}
 		
-		public function hasCargoProtection() : Boolean {
-			if(g.time == 0) {
+		public function hasCargoProtection() : Boolean
+		{
+			if(g.time == 0)
+			{
 				return false;
 			}
-			if(isModerator) {
+			if(isModerator)
+			{
 				return true;
 			}
 			return cargoProtection > g.time;
 		}
 		
-		public function hasSupporter() : Boolean {
-			if(g.time == 0) {
+		public function hasSupporter() : Boolean
+		{
+			if(g.time == 0)
+			{
 				return false;
 			}
-			if(isModerator) {
+			if(isModerator)
+			{
 				return true;
 			}
 			return supporter > g.time;
 		}
 		
-		public function changeSkin(skin:String) : void {
-			var _local3:int = 0;
-			var _local2:FleetObj = null;
-			_local3 = 0;
-			while(_local3 < fleet.length) {
-				_local2 = fleet[_local3];
-				if(skin == _local2.skin) {
+		public function changeSkin(skin:String) : void
+		{
+			var _loc2_:int = 0;
+			var _loc3_:FleetObj = null;
+			_loc2_ = 0;
+			while(_loc2_ < fleet.length)
+			{
+				_loc3_ = fleet[_loc2_];
+				if(skin == _loc3_.skin)
+				{
 					activeSkin = skin;
 					g.send("changeSkin",skin);
-					techSkills = _local2.techSkills;
-					weapons = _local2.weapons;
-					weaponsState = _local2.weaponsState;
-					weaponsHotkeys = _local2.weaponsHotkeys;
-					nrOfUpgrades = _local2.nrOfUpgrades;
-					activeArtifactSetup = _local2.activeArtifactSetup;
-					activeWeapon = _local2.activeWeapon;
+					techSkills = _loc3_.techSkills;
+					weapons = _loc3_.weapons;
+					weaponsState = _loc3_.weaponsState;
+					weaponsHotkeys = _loc3_.weaponsHotkeys;
+					nrOfUpgrades = _loc3_.nrOfUpgrades;
+					activeArtifactSetup = _loc3_.activeArtifactSetup;
+					activeWeapon = _loc3_.activeWeapon;
 					selectedWeaponIndex = 0;
-					_local2.lastUsed = g.time;
+					_loc3_.lastUsed = g.time;
 					unloadShip();
 					ship = ShipFactory.createPlayer(g,this,g.shipManager.getPlayerShip(),weapons);
 					applyArtifactStats();
 					return;
 				}
-				_local3++;
+				_loc2_++;
 			}
 		}
 		
-		public function respawnReady() : Boolean {
+		public function respawnReady() : Boolean
+		{
 			return respawnNextReady < g.time && respawnNextReady > 0;
 		}
 		
-		public function hasSkin(skin:String) : Boolean {
-			for each(var _local2:* in fleet) {
-				if(skin == _local2.skin) {
+		public function hasSkin(skin:String) : Boolean
+		{
+			for each(var _loc2_ in fleet)
+			{
+				if(skin == _loc2_.skin)
+				{
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		public function addEncounter(m:Message) : void {
-			var _local3:Object = null;
-			var _local4:String = m.getString(0);
-			var _local2:int = m.getInt(1);
-			if(_local4.search("enemy_") != -1) {
-				_local3 = DataLocator.getService().loadKey("Enemies",_local4.replace("enemy_",""));
-				if(_local3.hasOwnProperty("miniBoss") && _local3.miniBoss) {
-					Game.trackEvent("encounters",_local3.name,name,level);
+		public function addEncounter(m:Message) : void
+		{
+			var _loc3_:Object = null;
+			var _loc4_:String = m.getString(0);
+			var _loc2_:int = m.getInt(1);
+			if(_loc4_.search("enemy_") != -1)
+			{
+				_loc3_ = DataLocator.getService().loadKey("Enemies",_loc4_.replace("enemy_",""));
+				if(_loc3_.hasOwnProperty("miniBoss") && _loc3_.miniBoss)
+				{
+					Game.trackEvent("encounters",_loc3_.name,name,level);
 				}
-			} else if(_local4.search("boss_") != -1) {
-				_local3 = DataLocator.getService().loadKey("Bosses",_local4.replace("boss_",""));
-				Game.trackEvent("encounters",_local3.name,name,level);
 			}
-			encounters.push(_local4);
-			Action.encounter(_local4);
+			else if(_loc4_.search("boss_") != -1)
+			{
+				_loc3_ = DataLocator.getService().loadKey("Bosses",_loc4_.replace("boss_",""));
+				Game.trackEvent("encounters",_loc3_.name,name,level);
+			}
+			encounters.push(_loc4_);
+			Action.encounter(_loc4_);
 			MessageLog.write("<FONT COLOR=\'#44ff44\'>New Encounter!</FONT>");
-			MessageLog.write(_local3.name);
-			MessageLog.write("+" + _local2 + " bonus xp");
+			MessageLog.write(_loc3_.name);
+			MessageLog.write("+" + _loc2_ + " bonus xp");
 			g.hud.encountersButton.flash();
 			g.hud.encountersButton.hintNew();
-			g.textManager.createBonusXpText(_local2);
+			g.textManager.createBonusXpText(_loc2_);
 		}
 		
-		public function getFleetObj(skin:String) : FleetObj {
-			for each(var _local2:* in fleet) {
-				if(_local2.skin == skin) {
-					return _local2;
+		public function getFleetObj(skin:String) : FleetObj
+		{
+			for each(var _loc2_ in fleet)
+			{
+				if(_loc2_.skin == skin)
+				{
+					return _loc2_;
 				}
 			}
 			return null;
 		}
 		
-		public function getActiveFleetObj() : FleetObj {
+		public function getActiveFleetObj() : FleetObj
+		{
 			return getFleetObj(activeSkin);
 		}
 		
-		public function addCompletedMission(missionTypeKey:String, bestTime:Number) : void {
+		public function addCompletedMission(missionTypeKey:String, bestTime:Number) : void
+		{
 			completedMissions[missionTypeKey] = bestTime;
 			g.textManager.createMissionBestTimeText();
 		}
 		
-		public function addTriggeredMission(typeKey:String) : void {
+		public function addTriggeredMission(typeKey:String) : void
+		{
 			triggeredMissions.push(typeKey);
 		}
 		
-		public function hasTriggeredMission(typeKey:String) : Boolean {
-			for each(var _local2:* in triggeredMissions) {
-				if(_local2 == typeKey) {
+		public function hasTriggeredMission(typeKey:String) : Boolean
+		{
+			for each(var _loc2_ in triggeredMissions)
+			{
+				if(_loc2_ == typeKey)
+				{
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		public function dispose() : void {
+		public function dispose() : void
+		{
 			g = null;
 			ship = null;
 			stateMachine = null;

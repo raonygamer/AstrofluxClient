@@ -1,4 +1,5 @@
-package core.states.gameStates {
+package core.states.gameStates
+{
 	import core.hud.components.TextBitmap;
 	import core.scene.Game;
 	import debug.Console;
@@ -8,43 +9,58 @@ package core.states.gameStates {
 	import starling.display.DisplayObject;
 	import starling.events.TouchEvent;
 	
-	public class GoWarpState extends PlayState {
-		public function GoWarpState(g:Game) {
+	public class GoWarpState extends PlayState
+	{
+		public function GoWarpState(g:Game)
+		{
 			super(g);
 		}
 		
-		override public function enter() : void {
+		override public function enter() : void
+		{
 			super.enter();
 			g.hud.show = false;
-			g.client.multiplayer.listRooms("game",{},150,0,handleRooms,function(param1:PlayerIOError):void {
+			g.client.multiplayer.listRooms("game",{},150,0,handleRooms,function(param1:PlayerIOError):void
+			{
 				Console.write("Error: " + param1);
 			});
 		}
 		
-		private function handleRooms(rooms:Array) : void {
+		private function handleRooms(rooms:Array) : void
+		{
 			var roomInfoText:TextBitmap;
 			var ri:RoomInfo;
 			var maxLimit:int = 15;
 			var i:int = 0;
 			var j:int = 0;
 			var k:int = 1;
-			rooms.sort(function(param1:Object, param2:Object):int {
-				var _local3:int = 0;
-				if(param1.data.Name > param2.data.Name) {
-					_local3 = 1;
-				} else {
-					_local3 = -1;
+			rooms.sort(function(param1:Object, param2:Object):int
+			{
+				var _loc3_:int = 0;
+				if(param1.data.Name > param2.data.Name)
+				{
+					_loc3_ = 1;
 				}
-				if(param1.data.version > param2.data.version) {
-					_local3 = -1;
-				} else if(param1.data.version < param2.data.version) {
-					_local3 = 1;
+				else
+				{
+					_loc3_ = -1;
 				}
-				return _local3;
+				if(param1.data.version > param2.data.version)
+				{
+					_loc3_ = -1;
+				}
+				else if(param1.data.version < param2.data.version)
+				{
+					_loc3_ = 1;
+				}
+				return _loc3_;
 			});
-			for each(ri in rooms) {
-				if(!(ri.data.version != 1388 && !g.me.isDeveloper)) {
-					if(!(ri.data.clanInstance == "true" && !g.me.isDeveloper)) {
+			for each(ri in rooms)
+			{
+				if(!(ri.data.version != 1388 && !g.me.isDeveloper))
+				{
+					if(!(ri.data.clanInstance == "true" && !g.me.isDeveloper))
+					{
 						roomInfoText = new TextBitmap();
 						roomInfoText.text += k + ". ";
 						roomInfoText.text += ri.data.version + ", ";
@@ -60,7 +76,8 @@ package core.states.gameStates {
 						addChild(roomInfoText);
 						i++;
 						k++;
-						if(i % 20 == 0) {
+						if(i % 20 == 0)
+						{
 							j++;
 							i = 0;
 						}
@@ -70,18 +87,24 @@ package core.states.gameStates {
 			loadCompleted();
 		}
 		
-		public function createOnTouch(ri:RoomInfo) : Function {
-			return function(param1:TouchEvent):void {
-				if(param1.getTouch(param1.currentTarget as DisplayObject,"began")) {
+		public function createOnTouch(ri:RoomInfo) : Function
+		{
+			return function(param1:TouchEvent):void
+			{
+				if(param1.getTouch(param1.currentTarget as DisplayObject,"began"))
+				{
 					JoinRoomLocator.getService().desiredRoomId = ri.id;
 					g.send("modWarp",ri.data.Name);
 				}
 			};
 		}
 		
-		override public function execute() : void {
-			if(loaded) {
-				if(keybinds.isEscPressed) {
+		override public function execute() : void
+		{
+			if(loaded)
+			{
+				if(keybinds.isEscPressed)
+				{
 					sm.changeState(new RoamingState(g));
 				}
 				updateCommands();
@@ -89,7 +112,8 @@ package core.states.gameStates {
 			super.execute();
 		}
 		
-		override public function exit(callback:Function) : void {
+		override public function exit(callback:Function) : void
+		{
 			container.removeChildren(0,-1,true);
 			super.exit(callback);
 		}

@@ -1,4 +1,5 @@
-package core.hud.components.dialogs {
+package core.hud.components.dialogs
+{
 	import core.credits.CreditManager;
 	import core.hud.components.Box;
 	import core.hud.components.Button;
@@ -22,30 +23,52 @@ package core.hud.components.dialogs {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class CrewJoinOffer extends Sprite {
+	public class CrewJoinOffer extends Sprite
+	{
 		private static const HEIGHT:int = 128;
+		
 		private static const WIDTH:int = 112;
+		
 		private var overlay:Sprite;
+		
 		private var bgr:Quad;
+		
 		private var infoBox:Box;
+		
 		private var infoText:Text;
+		
 		private var declineButton:Button;
+		
 		private var acceptButton:Button;
+		
 		private var laterButton:Button;
+		
 		private var body:Body;
+		
 		private var img:Image;
+		
 		private var g:Game;
+		
 		private var p:Player;
+		
 		private var level:int;
+		
 		private var crewMember:CrewMember;
+		
 		private var femaleNames:Array;
+		
 		private var femaleImages:Array;
+		
 		private var maleNames:Array;
+		
 		private var maleImages:Array;
+		
 		private var priceSkill:int;
+		
 		private var confirmBuyWithFlux:CreditBuyBox;
 		
-		public function CrewJoinOffer(g:Game, crewMember:CrewMember, body:Body = null, text:String = "") {
+		public function CrewJoinOffer(g:Game, crewMember:CrewMember, body:Body = null, text:String = "")
+		{
 			var imgKey:String;
 			var textureManager:ITextureManager;
 			var fluxCost:Number;
@@ -59,13 +82,17 @@ package core.hud.components.dialogs {
 			p = g.me;
 			level = p.level;
 			g.addChildToOverlay(overlay,true);
-			if(this.crewMember.imageKey == null || this.crewMember.name == null) {
+			if(this.crewMember.imageKey == null || this.crewMember.name == null)
+			{
 				loadCrewData();
-				if(Math.random() > 0.5) {
+				if(Math.random() > 0.5)
+				{
 					crewMember.name = getUniqueName(femaleNames);
 					imgKey = getUniqueImage(femaleImages);
 					crewMember.imageKey = imgKey;
-				} else {
+				}
+				else
+				{
 					crewMember.name = getUniqueName(maleNames);
 					imgKey = getUniqueImage(maleImages);
 					crewMember.imageKey = imgKey;
@@ -84,10 +111,14 @@ package core.hud.components.dialogs {
 			infoText.size = 10;
 			infoText.wordWrap = true;
 			infoText.width = 220;
-			if(text == "") {
+			if(text == "")
+			{
 				infoText.text = crewMember.name + " offers to join your crew and help explore the galaxy.";
-			} else {
-				while(text.indexOf("[name]") != -1) {
+			}
+			else
+			{
+				while(text.indexOf("[name]") != -1)
+				{
 					text = text.replace("[name]",crewMember.name);
 				}
 				infoText.text = text;
@@ -106,22 +137,29 @@ package core.hud.components.dialogs {
 			acceptButton.visible = body == null ? true : false;
 			addSkills(infoBox);
 			fluxCost = CreditManager.getCostCrew();
-			if(text != "") {
+			if(text != "")
+			{
 				fluxCost = 0;
 			}
-			if(p.crewMembers.length >= p.unlockedCrewSlots) {
+			if(p.crewMembers.length >= p.unlockedCrewSlots)
+			{
 				fluxCost += CreditManager.getCostCrewSlot(p.unlockedCrewSlots + 1);
 			}
-			if(fluxCost > 0) {
-				fluxButton = new Button(function():void {
-					g.creditManager.refresh(function():void {
+			if(fluxCost > 0)
+			{
+				fluxButton = new Button(function():void
+				{
+					g.creditManager.refresh(function():void
+					{
 						confirmBuyWithFlux = new CreditBuyBox(g,fluxCost,"Are you sure you want to buy this crew?");
 						g.addChildToOverlay(confirmBuyWithFlux);
-						confirmBuyWithFlux.addEventListener("accept",function():void {
+						confirmBuyWithFlux.addEventListener("accept",function():void
+						{
 							g.rpc("buyCrewWithFlux",buyCrewResult,body.key,crewMember.name,crewMember.imageKey);
 							confirmBuyWithFlux.removeEventListeners();
 						});
-						confirmBuyWithFlux.addEventListener("close",function():void {
+						confirmBuyWithFlux.addEventListener("close",function():void
+						{
 							fluxButton.enabled = true;
 							confirmBuyWithFlux.removeEventListeners();
 							g.removeChildFromOverlay(confirmBuyWithFlux,true);
@@ -131,7 +169,8 @@ package core.hud.components.dialogs {
 				fluxButton.x = laterButton.x - 5 - fluxButton.width;
 				fluxButton.y = 200;
 				infoBox.addChild(fluxButton);
-				if(p.crewMembers.length >= 5) {
+				if(p.crewMembers.length >= 5)
+				{
 					fluxButton.enabled = false;
 				}
 			}
@@ -139,190 +178,231 @@ package core.hud.components.dialogs {
 			overlay.addChild(bgr);
 			overlay.addChild(infoBox);
 			infoBox.addChild(infoText);
-			if(body != null) {
+			if(body != null)
+			{
 				infoBox.addChild(laterButton);
 				infoBox.addChild(declineButton);
-			} else {
+			}
+			else
+			{
 				infoBox.addChild(acceptButton);
 			}
 			g.addResizeListener(resize);
 			addEventListener("removedFromStage",clean);
 		}
 		
-		private function loadCrewData() : void {
-			var _local2:IDataManager = DataLocator.getService();
-			var _local1:Object = _local2.loadKey("CrewData","CrewDataObject1337");
-			femaleNames = _local1.femaleNames;
-			femaleImages = _local1.femaleImages;
-			maleNames = _local1.maleNames;
-			maleImages = _local1.maleImages;
+		private function loadCrewData() : void
+		{
+			var _loc2_:IDataManager = DataLocator.getService();
+			var _loc1_:Object = _loc2_.loadKey("CrewData","CrewDataObject1337");
+			femaleNames = _loc1_.femaleNames;
+			femaleImages = _loc1_.femaleImages;
+			maleNames = _loc1_.maleNames;
+			maleImages = _loc1_.maleImages;
 		}
 		
-		private function getUniqueName(names:Array) : String {
-			var _local5:int = 0;
-			var _local4:String = null;
-			var _local3:int = Math.random() * names.length;
-			var _local2:int = Math.random() * names.length;
-			_local5 = 0;
-			while(_local5 < names.length) {
-				_local2 = _local5 + _local3;
-				if(_local2 >= names.length) {
-					_local2 -= names.length;
+		private function getUniqueName(names:Array) : String
+		{
+			var _loc5_:int = 0;
+			var _loc3_:String = null;
+			var _loc2_:int = Math.random() * names.length;
+			var _loc4_:int = Math.random() * names.length;
+			_loc5_ = 0;
+			while(_loc5_ < names.length)
+			{
+				_loc4_ = _loc5_ + _loc2_;
+				if(_loc4_ >= names.length)
+				{
+					_loc4_ -= names.length;
 				}
-				_local4 = names[_local2] as String;
-				if(!containsName(_local4,p.crewMembers)) {
-					return _local4;
+				_loc3_ = names[_loc4_] as String;
+				if(!containsName(_loc3_,p.crewMembers))
+				{
+					return _loc3_;
 				}
-				_local5++;
+				_loc5_++;
 			}
-			return names[_local3] as String;
+			return names[_loc2_] as String;
 		}
 		
-		private function getUniqueImage(imgs:Array) : String {
-			var _local5:int = 0;
-			var _local4:String = null;
-			var _local3:int = Math.random() * imgs.length;
-			var _local2:int = Math.random() * imgs.length;
-			_local5 = 0;
-			while(_local5 < imgs.length) {
-				_local2 = _local5 + _local3;
-				if(_local2 >= imgs.length) {
-					_local2 -= imgs.length;
+		private function getUniqueImage(imgs:Array) : String
+		{
+			var _loc5_:int = 0;
+			var _loc3_:String = null;
+			var _loc2_:int = Math.random() * imgs.length;
+			var _loc4_:int = Math.random() * imgs.length;
+			_loc5_ = 0;
+			while(_loc5_ < imgs.length)
+			{
+				_loc4_ = _loc5_ + _loc2_;
+				if(_loc4_ >= imgs.length)
+				{
+					_loc4_ -= imgs.length;
 				}
-				_local4 = imgs[_local2] as String;
-				if(!containsImage(_local4,p.crewMembers)) {
-					return _local4;
+				_loc3_ = imgs[_loc4_] as String;
+				if(!containsImage(_loc3_,p.crewMembers))
+				{
+					return _loc3_;
 				}
-				_local5++;
+				_loc5_++;
 			}
-			return imgs[_local3] as String;
+			return imgs[_loc2_] as String;
 		}
 		
-		private function containsName(n:String, v:Vector.<CrewMember>) : Boolean {
-			for each(var _local3:* in v) {
-				if(_local3.name == n) {
+		private function containsName(n:String, v:Vector.<CrewMember>) : Boolean
+		{
+			for each(var _loc3_ in v)
+			{
+				if(_loc3_.name == n)
+				{
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		private function containsImage(img:String, v:Vector.<CrewMember>) : Boolean {
-			for each(var _local3:* in v) {
-				if(_local3.imageKey == img) {
+		private function containsImage(img:String, v:Vector.<CrewMember>) : Boolean
+		{
+			for each(var _loc3_ in v)
+			{
+				if(_loc3_.imageKey == img)
+				{
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		private function addSkills(box:Box) : void {
-			var _local5:int = 0;
-			var _local6:int = 0;
-			var _local4:int = 0;
-			var _local9:int = 0;
-			var _local3:String = null;
-			var _local2:Text = null;
-			if(body != null) {
-				_local5 = 70;
-				_local6 = 90;
-			} else {
-				_local5 = 160;
-				_local6 = 3 * 60;
+		private function addSkills(box:Box) : void
+		{
+			var _loc6_:int = 0;
+			var _loc7_:int = 0;
+			var _loc11_:int = 0;
+			var _loc9_:int = 0;
+			var _loc3_:String = null;
+			var _loc4_:Text = null;
+			if(body != null)
+			{
+				_loc6_ = 70;
+				_loc7_ = 90;
 			}
-			var _local11:int = 192;
-			var _local8:int = 192;
-			var _local7:int = 0;
-			var _local10:int = 0;
-			_local9 = 0;
-			while(_local9 < 9) {
-				if((_local9 + 3) % 3 == 0) {
-					_local4 = (_local9 + 3) / 3 - 1;
-					_local3 = Area.SKILLTYPEHTML[_local4];
-					addSkillIcon(box,_local11,_local5,CrewDisplayBox.IMAGES_SKILLS[_local4],Area.SKILLTYPE[_local4]);
-					_local2 = new Text(_local11 + 15 + 3,_local5 + 6);
-					_local2.color = Area.COLORTYPE[_local4];
-					priceSkill += 10 * (crewMember.skills[_local4] * ((level - 1) * 10 + 40) + 1);
-					if(crewMember.skills[_local4] >= 0.6) {
-						_local7++;
-					}
-					if(body != null) {
-						_local2.htmlText = (crewMember.skills[_local4] * ((level - 1) * 10 + 40) + 1).toFixed(1);
-					} else {
-						_local2.htmlText = (crewMember.skills[_local4] + 1).toString();
-					}
-					_local2.size = 11;
-					box.addChild(_local2);
-					_local11 += 35 + _local2.width;
-				}
-				if(crewMember.specials[_local9] == 1) {
-					_local10++;
-					addSkillIcon(box,_local8,_local6,CrewDisplayBox.IMAGES_SPECIALS[_local9],Area.SPECIALTYPE[_local9]);
-					_local8 += 22;
-				}
-				_local9++;
+			else
+			{
+				_loc6_ = 160;
+				_loc7_ = 3 * 60;
 			}
-			priceSkill *= Math.pow(2,_local7 - 1);
-			priceSkill *= 1 + 0.5 * _local10;
+			var _loc8_:int = 192;
+			var _loc10_:int = 192;
+			var _loc5_:int = 0;
+			var _loc2_:int = 0;
+			_loc9_ = 0;
+			while(_loc9_ < 9)
+			{
+				if((_loc9_ + 3) % 3 == 0)
+				{
+					_loc11_ = (_loc9_ + 3) / 3 - 1;
+					_loc3_ = Area.SKILLTYPEHTML[_loc11_];
+					addSkillIcon(box,_loc8_,_loc6_,CrewDisplayBox.IMAGES_SKILLS[_loc11_],Area.SKILLTYPE[_loc11_]);
+					_loc4_ = new Text(_loc8_ + 15 + 3,_loc6_ + 6);
+					_loc4_.color = Area.COLORTYPE[_loc11_];
+					priceSkill += 10 * (crewMember.skills[_loc11_] * ((level - 1) * 10 + 40) + 1);
+					if(crewMember.skills[_loc11_] >= 0.6)
+					{
+						_loc5_++;
+					}
+					if(body != null)
+					{
+						_loc4_.htmlText = (crewMember.skills[_loc11_] * ((level - 1) * 10 + 40) + 1).toFixed(1);
+					}
+					else
+					{
+						_loc4_.htmlText = (crewMember.skills[_loc11_] + 1).toString();
+					}
+					_loc4_.size = 11;
+					box.addChild(_loc4_);
+					_loc8_ += 35 + _loc4_.width;
+				}
+				if(crewMember.specials[_loc9_] == 1)
+				{
+					_loc2_++;
+					addSkillIcon(box,_loc10_,_loc7_,CrewDisplayBox.IMAGES_SPECIALS[_loc9_],Area.SPECIALTYPE[_loc9_]);
+					_loc10_ += 22;
+				}
+				_loc9_++;
+			}
+			priceSkill *= Math.pow(2,_loc5_ - 1);
+			priceSkill *= 1 + 0.5 * _loc2_;
 		}
 		
-		private function addSkillIcon(box:Box, xpos:int, ypos:int, image:String, skilltype:String, gray:Boolean = false) : void {
-			var _local7:ITextureManager = TextureLocator.getService();
-			var _local9:Image = new Image(_local7.getTextureGUIByTextureName(image));
-			_local9.x = xpos + 4;
-			_local9.y = ypos + 8;
-			var _local8:Sprite = new Sprite();
-			_local8.addChild(_local9);
-			box.addChild(_local8);
-			new ToolTip(g,_local8,skilltype,null,"crewJoin");
+		private function addSkillIcon(box:Box, xpos:int, ypos:int, image:String, skilltype:String, gray:Boolean = false) : void
+		{
+			var _loc9_:ITextureManager = TextureLocator.getService();
+			var _loc7_:Image = new Image(_loc9_.getTextureGUIByTextureName(image));
+			_loc7_.x = xpos + 4;
+			_loc7_.y = ypos + 8;
+			var _loc8_:Sprite = new Sprite();
+			_loc8_.addChild(_loc7_);
+			box.addChild(_loc8_);
+			new ToolTip(g,_loc8_,skilltype,null,"crewJoin");
 		}
 		
-		private function decline(e:TouchEvent) : void {
+		private function decline(e:TouchEvent) : void
+		{
 			ToolTip.disposeType("crewJoin");
 			visible = false;
 			g.removeChildFromOverlay(overlay);
 		}
 		
-		private function later(e:TouchEvent) : void {
+		private function later(e:TouchEvent) : void
+		{
 			ToolTip.disposeType("crewJoin");
 			visible = false;
 			g.removeChildFromOverlay(overlay);
 		}
 		
-		private function accept(e:TouchEvent) : void {
+		private function accept(e:TouchEvent) : void
+		{
 			acceptButton.enabled = false;
-			if(body == null) {
+			if(body == null)
+			{
 				g.rpc("acceptCrewMember",buyCrewResult,crewMember.name,crewMember.imageKey);
 			}
 		}
 		
-		private function buyCrewResult(m:Message) : void {
-			var _local2:String = null;
-			var _local3:int = 0;
-			var _local4:CrewMember = null;
-			if(m.getBoolean(0) == true) {
+		private function buyCrewResult(m:Message) : void
+		{
+			var _loc3_:String = null;
+			var _loc2_:int = 0;
+			var _loc4_:CrewMember = null;
+			if(m.getBoolean(0) == true)
+			{
 				g.infoMessageDialog(m.getString(1));
-				_local2 = m.getString(2);
-				_local3 = m.getInt(3);
-				if(_local2 != "" && _local3 > 0) {
-					g.myCargo.removeMinerals(_local2,_local3);
+				_loc3_ = m.getString(2);
+				_loc2_ = m.getInt(3);
+				if(_loc3_ != "" && _loc2_ > 0)
+				{
+					g.myCargo.removeMinerals(_loc3_,_loc2_);
 				}
-				if(p.crewMembers.length < 5 && p.unlockedCrewSlots == p.crewMembers.length) {
+				if(p.crewMembers.length < 5 && p.unlockedCrewSlots == p.crewMembers.length)
+				{
 					p.unlockedCrewSlots++;
 				}
 				p.initCrewFromMessage(m,4);
-				_local4 = p.crewMembers[p.crewMembers.length - 1];
-				Action.hire(_local4.imageKey,_local4.name);
+				_loc4_ = p.crewMembers[p.crewMembers.length - 1];
+				Action.hire(_loc4_.imageKey,_loc4_.name);
 				g.creditManager.refresh();
 				ToolTip.disposeType("crewJoin");
 				visible = false;
 				g.removeChildFromOverlay(overlay);
-			} else {
+			}
+			else
+			{
 				g.showErrorDialog(m.getString(1));
 			}
 		}
 		
-		private function resize(e:Event = null) : void {
+		private function resize(e:Event = null) : void
+		{
 			bgr.alpha = 0.8;
 			bgr.width = g.stage.stageWidth;
 			bgr.height = g.stage.stageHeight;
@@ -330,7 +410,8 @@ package core.hud.components.dialogs {
 			infoBox.y = g.stage.stageHeight / 2 - infoBox.height / 2;
 		}
 		
-		private function clean(e:Event) : void {
+		private function clean(e:Event) : void
+		{
 			removeEventListener("removedFromStage",clean);
 			g.removeResizeListener(resize);
 		}

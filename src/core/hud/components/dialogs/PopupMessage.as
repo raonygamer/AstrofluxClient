@@ -1,4 +1,5 @@
-package core.hud.components.dialogs {
+package core.hud.components.dialogs
+{
 	import core.hud.components.Box;
 	import core.hud.components.Button;
 	import core.hud.components.Text;
@@ -8,14 +9,20 @@ package core.hud.components.dialogs {
 	import starling.events.KeyboardEvent;
 	import starling.events.TouchEvent;
 	
-	public class PopupMessage extends Sprite {
+	public class PopupMessage extends Sprite
+	{
 		protected var textField:Text;
+		
 		protected var box:Box = new Box(200,100,"highlight",1,15);
+		
 		public var closeButton:Button;
+		
 		public var callback:Function;
+		
 		protected var bgr:Quad = new Quad(100,100,0x22000000);
 		
-		public function PopupMessage(closeText:String = "OK", borderColor:uint = 5592405) {
+		public function PopupMessage(closeText:String = "OK", borderColor:uint = 5592405)
+		{
 			super();
 			textField = new Text();
 			textField.size = 12;
@@ -31,7 +38,8 @@ package core.hud.components.dialogs {
 			addEventListener("addedToStage",stageAddHandler);
 		}
 		
-		private function stageAddHandler(e:Event) : void {
+		private function stageAddHandler(e:Event) : void
+		{
 			addEventListener("removedFromStage",clean);
 			stage.addEventListener("keyDown",keyDown);
 			stage.addEventListener("resize",redraw);
@@ -40,48 +48,58 @@ package core.hud.components.dialogs {
 			redraw();
 		}
 		
-		public function enableCloseButton(value:Boolean) : void {
+		public function enableCloseButton(value:Boolean) : void
+		{
 			closeButton.enabled = value;
 		}
 		
-		protected function keyDown(e:KeyboardEvent) : void {
-			if(e.keyCode == 13) {
+		protected function keyDown(e:KeyboardEvent) : void
+		{
+			if(e.keyCode == 13)
+			{
 				e.stopImmediatePropagation();
 				close();
 			}
 		}
 		
-		protected function close(e:TouchEvent = null) : void {
+		protected function close(e:TouchEvent = null) : void
+		{
 			dispatchEventWith("close");
 			removeEventListeners();
-			if(callback != null) {
+			if(callback != null)
+			{
 				callback();
 			}
 		}
 		
-		public function set text(newText:String) : void {
+		public function set text(newText:String) : void
+		{
 			textField.htmlText = newText;
-			if(stage) {
+			if(stage)
+			{
 				redraw();
 			}
 		}
 		
-		protected function redraw(e:Event = null) : void {
-			if(stage == null) {
+		protected function redraw(e:Event = null) : void
+		{
+			if(stage == null)
+			{
 				return;
 			}
 			closeButton.y = Math.round(textField.height + 15);
 			closeButton.x = Math.round(textField.width / 2 - closeButton.width / 2);
-			var _local2:int = closeButton.y + closeButton.height - 3;
+			var _loc2_:int = closeButton.y + closeButton.height - 3;
 			box.width = textField.width;
-			box.height = _local2;
+			box.height = _loc2_;
 			box.x = Math.round(stage.stageWidth / 2 - box.width / 2);
 			box.y = Math.round(stage.stageHeight / 2 - box.height / 2);
 			bgr.width = stage.stageWidth;
 			bgr.height = stage.stageHeight;
 		}
 		
-		protected function clean(e:Event) : void {
+		protected function clean(e:Event) : void
+		{
 			stage.removeEventListener("resize",redraw);
 			stage.removeEventListener("keyDown",keyDown);
 			removeEventListener("removedFromStage",clean);

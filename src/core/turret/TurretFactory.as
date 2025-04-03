@@ -1,4 +1,5 @@
-package core.turret {
+package core.turret
+{
 	import core.boss.Boss;
 	import core.scene.Game;
 	import core.ship.ShipFactory;
@@ -8,62 +9,75 @@ package core.turret {
 	import data.IDataManager;
 	import generics.Util;
 	
-	public class TurretFactory {
-		public function TurretFactory() {
+	public class TurretFactory
+	{
+		public function TurretFactory()
+		{
 			super();
 		}
 		
-		public static function createTurret(obj:Object, key:String, g:Game, b:Boss = null) : Turret {
-			var _local8:Number = NaN;
-			var _local5:Weapon = null;
-			var _local9:IDataManager = DataLocator.getService();
-			var _local7:Object = _local9.loadKey("Turrets",key);
-			var _local6:Turret = g.turretManager.getTurret();
-			if(_local7.aimArc == 6 * 60) {
-				_local6.aimArc = 3.141592653589793 * 2;
-			} else {
-				_local6.aimArc = Util.degreesToRadians(_local7.aimArc);
+		public static function createTurret(obj:Object, key:String, g:Game, b:Boss = null) : Turret
+		{
+			var _loc6_:Number = NaN;
+			var _loc7_:Weapon = null;
+			var _loc8_:IDataManager = DataLocator.getService();
+			var _loc9_:Object = _loc8_.loadKey("Turrets",key);
+			var _loc5_:Turret = g.turretManager.getTurret();
+			if(_loc9_.aimArc == 6 * 60)
+			{
+				_loc5_.aimArc = 3.141592653589793 * 2;
 			}
-			_local6.aimSkill = _local7.aimSkill;
-			_local6.rotationSpeed = _local7.rotationSpeed;
-			_local6.name = _local7.name;
-			_local6.xp = _local7.xp;
-			_local6.level = _local7.level;
-			_local6.isHostile = true;
-			if(obj.hasOwnProperty("AIFaction1") && obj.AIFaction1 != "") {
-				_local6.factions.push(obj.AIFaction1);
+			else
+			{
+				_loc5_.aimArc = Util.degreesToRadians(_loc9_.aimArc);
 			}
-			if(obj.hasOwnProperty("AIFaction2") && obj.AIFaction2 != "") {
-				_local6.factions.push(obj.AIFaction2);
+			_loc5_.aimSkill = _loc9_.aimSkill;
+			_loc5_.rotationSpeed = _loc9_.rotationSpeed;
+			_loc5_.name = _loc9_.name;
+			_loc5_.xp = _loc9_.xp;
+			_loc5_.level = _loc9_.level;
+			_loc5_.isHostile = true;
+			if(obj.hasOwnProperty("AIFaction1") && obj.AIFaction1 != "")
+			{
+				_loc5_.factions.push(obj.AIFaction1);
 			}
-			_local6.forcedRotation = _local7.forcedRotation;
-			if(_local6.forcedRotation) {
-				_local6.forcedRotationSpeed = _local7.forcedRotationSpeed;
-				_local6.forcedRotationAim = _local7.forcedRotationAim;
+			if(obj.hasOwnProperty("AIFaction2") && obj.AIFaction2 != "")
+			{
+				_loc5_.factions.push(obj.AIFaction2);
 			}
-			ShipFactory.createBody(_local7.body,g,_local6);
-			if(g.isSystemTypeSurvival() && b != null) {
-				_local6.level = b.level;
+			_loc5_.forcedRotation = _loc9_.forcedRotation;
+			if(_loc5_.forcedRotation)
+			{
+				_loc5_.forcedRotationSpeed = _loc9_.forcedRotationSpeed;
+				_loc5_.forcedRotationAim = _loc9_.forcedRotationAim;
 			}
-			if(g.isSystemTypeSurvival() && _local6.level < g.hud.uberStats.uberLevel) {
-				_local8 = g.hud.uberStats.CalculateUberRankFromLevel(_local6.level);
-				_local6.uberDifficulty = g.hud.uberStats.CalculateUberDifficultyFromRank(g.hud.uberStats.uberRank - _local8,_local6.level);
-				_local6.uberLevelFactor = 1 + (g.hud.uberStats.uberLevel - _local6.level) / 100;
-				if(b != null) {
-					_local6.uberDifficulty *= g.hud.uberStats.uberRank / 2 + 1;
+			ShipFactory.createBody(_loc9_.body,g,_loc5_);
+			if(g.isSystemTypeSurvival() && b != null)
+			{
+				_loc5_.level = b.level;
+			}
+			if(g.isSystemTypeSurvival() && _loc5_.level < g.hud.uberStats.uberLevel)
+			{
+				_loc6_ = g.hud.uberStats.CalculateUberRankFromLevel(_loc5_.level);
+				_loc5_.uberDifficulty = g.hud.uberStats.CalculateUberDifficultyFromRank(g.hud.uberStats.uberRank - _loc6_,_loc5_.level);
+				_loc5_.uberLevelFactor = 1 + (g.hud.uberStats.uberLevel - _loc5_.level) / 100;
+				if(b != null)
+				{
+					_loc5_.uberDifficulty *= g.hud.uberStats.uberRank / 2 + 1;
 				}
-				_local6.xp *= _local6.uberLevelFactor;
-				_local6.level = g.hud.uberStats.uberLevel;
-				_local6.hp = _local6.hpMax = _local6.hpMax * _local6.uberDifficulty;
-				_local6.shieldHp = _local6.shieldHpMax = _local6.shieldHpMax * _local6.uberDifficulty;
+				_loc5_.xp *= _loc5_.uberLevelFactor;
+				_loc5_.level = g.hud.uberStats.uberLevel;
+				_loc5_.hp = _loc5_.hpMax = _loc5_.hpMax * _loc5_.uberDifficulty;
+				_loc5_.shieldHp = _loc5_.shieldHpMax = _loc5_.shieldHpMax * _loc5_.uberDifficulty;
 			}
-			_local6.pos.x = 1000000;
-			_local6.pos.y = 1000000;
-			if(_local7.hasOwnProperty("weapon")) {
-				_local5 = WeaponFactory.create(_local7.weapon,g,_local6,0);
-				_local6.weapon = _local5;
+			_loc5_.pos.x = 1000000;
+			_loc5_.pos.y = 1000000;
+			if(_loc9_.hasOwnProperty("weapon"))
+			{
+				_loc7_ = WeaponFactory.create(_loc9_.weapon,g,_loc5_,0);
+				_loc5_.weapon = _loc7_;
 			}
-			return _local6;
+			return _loc5_;
 		}
 	}
 }

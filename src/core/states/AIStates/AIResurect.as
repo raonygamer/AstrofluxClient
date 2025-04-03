@@ -1,4 +1,5 @@
-package core.states.AIStates {
+package core.states.AIStates
+{
 	import core.hud.components.chat.MessageLog;
 	import core.particle.Emitter;
 	import core.particle.EmitterFactory;
@@ -8,26 +9,37 @@ package core.states.AIStates {
 	import core.states.StateMachine;
 	import core.unit.Unit;
 	
-	public class AIResurect implements IState {
+	public class AIResurect implements IState
+	{
 		private var g:Game;
+		
 		private var s:EnemyShip;
+		
 		private var sm:StateMachine;
+		
 		private var target:Unit;
+		
 		private var targetX:Number;
+		
 		private var targetY:Number;
+		
 		private var duration:Number;
+		
 		private var emitters1:Vector.<Emitter>;
+		
 		private var emitters2:Vector.<Emitter>;
 		
-		public function AIResurect(g:Game, s:EnemyShip) {
+		public function AIResurect(g:Game, s:EnemyShip)
+		{
 			super();
 			this.g = g;
 			this.s = s;
 		}
 		
-		public function enter() : void {
-			var _local1:String = s.name + " used nanobot reconstruction!";
-			MessageLog.write(_local1);
+		public function enter() : void
+		{
+			var _loc1_:String = s.name + " used nanobot reconstruction!";
+			MessageLog.write(_loc1_);
 			s.course.speed.x = 0;
 			s.course.speed.y = 0;
 			s.course.accelerate = false;
@@ -39,25 +51,31 @@ package core.states.AIStates {
 			emitters2 = EmitterFactory.create("5BSaDIEYj0mEuVkMVp1JGw",g,targetX,targetY,null,true);
 		}
 		
-		public function execute() : void {
+		public function execute() : void
+		{
 		}
 		
-		public function exit() : void {
+		public function exit() : void
+		{
 			s.hp = s.hpMax;
 			s.shieldHp = s.shieldHpMax;
-			for each(var _local1:* in emitters1) {
-				_local1.killEmitter();
+			for each(var _loc1_ in emitters1)
+			{
+				_loc1_.killEmitter();
 			}
-			for each(_local1 in emitters2) {
-				_local1.killEmitter();
+			for each(_loc1_ in emitters2)
+			{
+				_loc1_.killEmitter();
 			}
 		}
 		
-		public function set stateMachine(sm:StateMachine) : void {
+		public function set stateMachine(sm:StateMachine) : void
+		{
 			this.sm = sm;
 		}
 		
-		public function get type() : String {
+		public function get type() : String
+		{
 			return "AITeleport";
 		}
 	}

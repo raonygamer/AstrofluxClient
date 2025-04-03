@@ -1,7 +1,9 @@
-package joinRoom {
+package joinRoom
+{
 	import core.player.Player;
 	
-	public interface IJoinRoomManager {
+	public interface IJoinRoomManager
+	{
 		function init() : void;
 		
 		function joinServiceRoom(id:String) : void;

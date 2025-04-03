@@ -1,4 +1,5 @@
-package core.hud.components.techTree {
+package core.hud.components.techTree
+{
 	import core.hud.components.Box;
 	import core.hud.components.Button;
 	import core.player.EliteTechs;
@@ -15,18 +16,28 @@ package core.hud.components.techTree {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class EliteTechPopupMenu extends Sprite {
+	public class EliteTechPopupMenu extends Sprite
+	{
 		private var container:ScrollContainer = new ScrollContainer();
+		
 		private var box:Box = new Box(460,430,"highlight",1,15);
+		
 		private var closeButton:Button;
+		
 		private var g:Game;
+		
 		private var eti:EliteTechIcon;
+		
 		private var textureManager:ITextureManager;
+		
 		private var dataManager:IDataManager;
+		
 		private var eliteTechs:Vector.<EliteTechBar> = new Vector.<EliteTechBar>();
+		
 		protected var bgr:Quad = new Quad(100,100,0x22000000);
 		
-		public function EliteTechPopupMenu(g:Game, eti:EliteTechIcon) {
+		public function EliteTechPopupMenu(g:Game, eti:EliteTechIcon)
+		{
 			super();
 			this.g = g;
 			this.eti = eti;
@@ -38,10 +49,11 @@ package core.hud.components.techTree {
 			addEventListener("addedToStage",stageAddHandler);
 		}
 		
-		private function load() : void {
-			var _local3:int = 0;
-			var _local2:TechSkill = eti.techSkill;
-			var _local4:Object = dataManager.loadKey(_local2.table,_local2.tech);
+		private function load() : void
+		{
+			var _loc2_:int = 0;
+			var _loc4_:TechSkill = eti.techSkill;
+			var _loc3_:Object = dataManager.loadKey(_loc4_.table,_loc4_.tech);
 			container.width = 450;
 			container.height = 385;
 			container.x = 10;
@@ -49,37 +61,45 @@ package core.hud.components.techTree {
 			box.addChild(container);
 			closeButton = new Button(close,"Cancel");
 			box.addChild(closeButton);
-			if(_local4.hasOwnProperty("eliteTechs")) {
-				eliteTechs = EliteTechs.getEliteTechBarList(g,_local2,_local4);
+			if(_loc3_.hasOwnProperty("eliteTechs"))
+			{
+				eliteTechs = EliteTechs.getEliteTechBarList(g,_loc4_,_loc3_);
 			}
-			for each(var _local1:* in eliteTechs) {
-				_local1.y = _local3;
-				_local1.x = 5;
-				_local1.etpm = this;
-				container.addChild(_local1);
-				_local3 += _local1.height + 10;
+			for each(var _loc1_ in eliteTechs)
+			{
+				_loc1_.y = _loc2_;
+				_loc1_.x = 5;
+				_loc1_.etpm = this;
+				container.addChild(_loc1_);
+				_loc2_ += _loc1_.height + 10;
 			}
 			addChild(bgr);
 			addChild(box);
 		}
 		
-		public function updateAndClose(m:Message) : void {
-			if(!m.getBoolean(0)) {
+		public function updateAndClose(m:Message) : void
+		{
+			if(!m.getBoolean(0))
+			{
 				return;
 			}
 			eti.update(m.getInt(1));
 			close();
 		}
 		
-		public function disableAll() : void {
-			for each(var _local1:* in eliteTechs) {
-				_local1.touchable = false;
+		public function disableAll() : void
+		{
+			for each(var _loc1_ in eliteTechs)
+			{
+				_loc1_.touchable = false;
 			}
 			closeButton.touchable = false;
 		}
 		
-		protected function redraw(e:Event = null) : void {
-			if(stage == null) {
+		protected function redraw(e:Event = null) : void
+		{
+			if(stage == null)
+			{
 				return;
 			}
 			closeButton.y = Math.round(box.height - 50);
@@ -90,7 +110,8 @@ package core.hud.components.techTree {
 			bgr.height = stage.stageHeight;
 		}
 		
-		private function stageAddHandler(e:Event) : void {
+		private function stageAddHandler(e:Event) : void
+		{
 			addEventListener("removedFromStage",clean);
 			stage.addEventListener("resize",redraw);
 			bgr.width = stage.stageWidth;
@@ -98,12 +119,14 @@ package core.hud.components.techTree {
 			redraw();
 		}
 		
-		protected function close(e:TouchEvent = null) : void {
+		protected function close(e:TouchEvent = null) : void
+		{
 			dispatchEventWith("close");
 			removeEventListeners();
 		}
 		
-		protected function clean(e:Event) : void {
+		protected function clean(e:Event) : void
+		{
 			stage.removeEventListener("resize",redraw);
 			removeEventListener("removedFromStage",clean);
 			removeEventListener("addedToStage",stageAddHandler);

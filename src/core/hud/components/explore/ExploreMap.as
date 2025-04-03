@@ -1,4 +1,5 @@
-package core.hud.components.explore {
+package core.hud.components.explore
+{
 	import core.scene.Game;
 	import core.solarSystem.Body;
 	import debug.Console;
@@ -13,640 +14,818 @@ package core.hud.components.explore {
 	import textures.TextureLocator;
 	import textures.TextureManager;
 	
-	public class ExploreMap extends starling.display.Sprite {
+	public class ExploreMap extends starling.display.Sprite
+	{
 		public static var selectedArea:Object = null;
+		
 		public static var forceSelectAreaKey:String = null;
+		
 		private static const X_SIZE:int = 130;
+		
 		private static const Y_SIZE:int = 45;
+		
 		private static const FINAL_X_SIZE:int = 660;
+		
 		private static const FINAL_Y_SIZE:int = 660;
+		
 		private static const STEPS_OF_POSTPROCCESSING:int = 0;
+		
 		private static const directions:Vector.<Vector.<int>> = Vector.<Vector.<int>>([Vector.<int>([0,1]),Vector.<int>([1,1]),Vector.<int>([1,0]),Vector.<int>([1,-1]),Vector.<int>([0,-1]),Vector.<int>([-1,-1]),Vector.<int>([-1,0]),Vector.<int>([-1,1])]);
+		
 		public var areas:Array;
+		
 		private var explored:Array;
+		
 		private var done:Boolean;
+		
 		private var seed:Number;
+		
 		private var g:Game;
+		
 		private var r:Random;
+		
 		private var m:Vector.<Vector.<int>>;
+		
 		public var shell:Vector.<Vector.<Point>>;
+		
 		private var grid:Vector.<Vector.<Point>>;
+		
 		private var lastPos:int;
+		
 		private var raw_areas:Array;
+		
 		private var extraAreas:int;
+		
 		private var area_key_index:int = 0;
+		
 		private var map_areas:Vector.<ExploreMapArea>;
+		
 		private var x_chance:int = 35;
+		
 		private var y_chance:int = 25;
+		
 		private var fraction_cover:Number = 0.1;
 		
-		public function ExploreMap(g:Game, bodyAreas:Array, explored:Array, b:Body) {
+		public function ExploreMap(g:Game, bodyAreas:Array, explored:Array, b:Body)
+		{
 			super();
 			this.raw_areas = bodyAreas;
 			this.extraAreas = b.extraAreas;
 			this.explored = explored;
 			this.seed = b.seed;
 			this.g = g;
-			if(!b.generatedAreas || !b.generatedShells) {
+			if(!b.generatedAreas || !b.generatedShells)
+			{
 				generateMap();
 				b.generatedAreas = areas;
 				b.generatedShells = shell;
-			} else {
+			}
+			else
+			{
 				areas = b.generatedAreas;
 				shell = b.generatedShells;
 			}
 			drawMap();
 		}
 		
-		public function getMapArea(key:String) : ExploreMapArea {
-			if(map_areas != null) {
-				for each(var _local2:* in map_areas) {
-					if(_local2.key != null && _local2.key == key) {
-						return _local2;
+		public function getMapArea(key:String) : ExploreMapArea
+		{
+			if(map_areas != null)
+			{
+				for each(var _loc2_ in map_areas)
+				{
+					if(_loc2_.key != null && _loc2_.key == key)
+					{
+						return _loc2_;
 					}
 				}
 			}
 			return null;
 		}
 		
-		private function drawMap() : void {
-			var _local2:* = null;
-			var _local4:Number = 5.076923076923077;
-			var _local5:Number = 5.076923076923077;
-			var _local3:ITextureManager = TextureLocator.getService();
-			addChild(new Image(_local3.getTextureGUIByTextureName("grid.png")));
-			var _local10:int = 0;
+		private function drawMap() : void
+		{
+			var _loc8_:* = null;
+			var _loc9_:Number = 5.076923076923077;
+			var _loc10_:Number = 5.076923076923077;
+			var _loc7_:ITextureManager = TextureLocator.getService();
+			addChild(new Image(_loc7_.getTextureGUIByTextureName("grid.png")));
+			var _loc6_:int = 0;
 			map_areas = new Vector.<ExploreMapArea>();
-			for each(var _local1:* in shell) {
-				_local2 = null;
-				for each(var _local6:* in explored) {
-					if(_local6.area == areas[_local10].key) {
-						_local2 = _local6;
+			for each(var _loc5_ in shell)
+			{
+				_loc8_ = null;
+				for each(var _loc4_ in explored)
+				{
+					if(_loc4_.area == areas[_loc6_].key)
+					{
+						_loc8_ = _loc4_;
 					}
 				}
-				map_areas.push(new ExploreMapArea(g,this,areas[_local10],_local1,_local4,_local5,130));
-				_local10++;
+				map_areas.push(new ExploreMapArea(g,this,areas[_loc6_],_loc5_,_loc9_,_loc10_,130));
+				_loc6_++;
 			}
-			_local10 = 10;
-			while(_local10 > 0) {
-				for each(var _local8:* in map_areas) {
-					if(_local8.size == _local10) {
-						addChild(_local8);
+			_loc6_ = 10;
+			while(_loc6_ > 0)
+			{
+				for each(var _loc3_ in map_areas)
+				{
+					if(_loc3_.size == _loc6_)
+					{
+						addChild(_loc3_);
 					}
 				}
-				_local10--;
+				_loc6_--;
 			}
 			selectEasiest();
-			var _local9:Quad = new Quad(11 * 60,80,0);
-			_local9.y = 65;
-			var _local7:Quad = new Quad(11 * 60,80,0);
-			_local7.y = 490;
-			addChild(_local7);
+			var _loc1_:Quad = new Quad(11 * 60,80,0);
+			_loc1_.y = 65;
+			var _loc2_:Quad = new Quad(11 * 60,80,0);
+			_loc2_.y = 490;
+			addChild(_loc2_);
 		}
 		
-		private function generateGrid(nrX:int, nrY:int) : void {
-			var _local5:int = 0;
-			var _local3:* = undefined;
-			var _local4:int = 0;
+		private function generateGrid(nrX:int, nrY:int) : void
+		{
+			var _loc4_:int = 0;
+			var _loc3_:* = undefined;
+			var _loc5_:int = 0;
 			grid = new Vector.<Vector.<Point>>();
-			_local5 = 8;
-			while(_local5 < nrX - 6) {
-				_local3 = new Vector.<Point>();
-				_local4 = 1;
-				while(_local4 < nrY + 1) {
-					_local3.push(new Point(_local4 / nrX * 130,_local5 / nrY * 130));
-					_local4++;
+			_loc4_ = 8;
+			while(_loc4_ < nrX - 6)
+			{
+				_loc3_ = new Vector.<Point>();
+				_loc5_ = 1;
+				while(_loc5_ < nrY + 1)
+				{
+					_loc3_.push(new Point(_loc5_ / nrX * 130,_loc4_ / nrY * 130));
+					_loc5_++;
 				}
-				grid.push(_local3);
-				_local5++;
+				grid.push(_loc3_);
+				_loc4_++;
 			}
-			_local4 = 1;
-			while(_local4 < nrX + 1) {
-				_local3 = new Vector.<Point>();
-				_local5 = 8;
-				while(_local5 < nrY - 6) {
-					_local3.push(new Point(_local4 / nrX * 130,_local5 / nrY * 130));
-					_local5++;
+			_loc5_ = 1;
+			while(_loc5_ < nrX + 1)
+			{
+				_loc3_ = new Vector.<Point>();
+				_loc4_ = 8;
+				while(_loc4_ < nrY - 6)
+				{
+					_loc3_.push(new Point(_loc5_ / nrX * 130,_loc4_ / nrY * 130));
+					_loc4_++;
 				}
-				grid.push(_local3);
-				_local4++;
-			}
-		}
-		
-		private function drawGrid(kx:Number, ky:Number) : void {
-			var _local5:int = 0;
-			var _local4:flash.display.Sprite = new flash.display.Sprite();
-			_local4.graphics.lineStyle(2,0x22ff22,0.2);
-			for each(var _local3:* in grid) {
-				_local4.graphics.moveTo(_local3[0].x * kx,_local3[0].y * ky);
-				_local5 = 1;
-				while(_local5 < _local3.length) {
-					_local4.graphics.lineTo(_local3[_local5].x * kx,_local3[_local5].y * ky);
-					_local5++;
-				}
-			}
-			_local4.graphics.endFill();
-			addChild(TextureManager.imageFromSprite(_local4,"planetGrid"));
-		}
-		
-		private function transformMap() : void {
-			var _local5:Number = NaN;
-			var _local6:Number = NaN;
-			var _local7:Number = NaN;
-			var _local3:Number = 65;
-			var _local1:Number = 65;
-			for each(var _local2:* in grid) {
-				for each(var _local4:* in _local2) {
-					_local5 = _local4.x - _local3;
-					_local6 = _local4.y - _local1;
-					_local7 = Math.sin(0.5 * 3.141592653589793 * _local5 / _local3 + 0.5 * 3.141592653589793) * Math.sin(0.5 * 3.141592653589793 * _local6 / _local3 - 0.5 * 3.141592653589793) * _local3;
-					_local4.x = Math.cos(0.5 * 3.141592653589793 * _local5 / _local3 + 0.5 * 3.141592653589793) * Math.sin(0.5 * 3.141592653589793 * _local6 / _local3 - 0.5 * 3.141592653589793) * _local3 + _local3 + _local7 * 0.1;
-					_local4.y = Math.cos(0.5 * 3.141592653589793 * _local6 / _local3 - 0.5 * 3.141592653589793) * _local3 + _local3 + _local7 * 0.1;
-				}
-			}
-			for each(_local2 in shell) {
-				for each(_local4 in _local2) {
-					_local4.y += 42.5;
-					_local5 = _local4.x - _local3;
-					_local6 = _local4.y - _local1;
-					_local7 = Math.sin(0.5 * 3.141592653589793 * _local5 / _local3 + 0.5 * 3.141592653589793) * Math.sin(0.5 * 3.141592653589793 * _local6 / _local3 - 0.5 * 3.141592653589793) * _local3;
-					_local4.x = Math.cos(0.5 * 3.141592653589793 * _local5 / _local3 + 0.5 * 3.141592653589793) * Math.sin(0.5 * 3.141592653589793 * _local6 / _local3 - 0.5 * 3.141592653589793) * _local3 + _local3 + _local7 * 0.1;
-					_local4.y = Math.cos(0.5 * 3.141592653589793 * _local6 / _local3 - 0.5 * 3.141592653589793) * _local3 + _local3 + _local7 * 0.1;
-				}
+				grid.push(_loc3_);
+				_loc5_++;
 			}
 		}
 		
-		private function transformMap3() : void {
-			var _local7:Number = NaN;
-			var _local8:Number = NaN;
-			var _local6:Number = NaN;
-			var _local4:Number = NaN;
-			var _local3:Number = 65;
-			var _local1:Number = 65;
-			for each(var _local2:* in grid) {
-				for each(var _local5:* in _local2) {
-					_local7 = _local5.x - _local3;
-					_local8 = _local5.y - _local1;
-					_local4 = Math.sqrt(_local7 * _local7 + _local8 * _local8) / _local3;
-					_local6 = Math.atan2(_local8,_local7);
-					if(_local4 <= 1) {
-						_local4 = Math.sqrt(_local4);
+		private function drawGrid(kx:Number, ky:Number) : void
+		{
+			var _loc5_:int = 0;
+			var _loc3_:flash.display.Sprite = new flash.display.Sprite();
+			_loc3_.graphics.lineStyle(2,0x22ff22,0.2);
+			for each(var _loc4_ in grid)
+			{
+				_loc3_.graphics.moveTo(_loc4_[0].x * kx,_loc4_[0].y * ky);
+				_loc5_ = 1;
+				while(_loc5_ < _loc4_.length)
+				{
+					_loc3_.graphics.lineTo(_loc4_[_loc5_].x * kx,_loc4_[_loc5_].y * ky);
+					_loc5_++;
+				}
+			}
+			_loc3_.graphics.endFill();
+			addChild(TextureManager.imageFromSprite(_loc3_,"planetGrid"));
+		}
+		
+		private function transformMap() : void
+		{
+			var _loc5_:Number = NaN;
+			var _loc4_:Number = NaN;
+			var _loc7_:Number = NaN;
+			var _loc3_:Number = 65;
+			var _loc2_:Number = 65;
+			for each(var _loc6_ in grid)
+			{
+				for each(var _loc1_ in _loc6_)
+				{
+					_loc5_ = _loc1_.x - _loc3_;
+					_loc4_ = _loc1_.y - _loc2_;
+					_loc7_ = Math.sin(0.5 * 3.141592653589793 * _loc5_ / _loc3_ + 0.5 * 3.141592653589793) * Math.sin(0.5 * 3.141592653589793 * _loc4_ / _loc3_ - 0.5 * 3.141592653589793) * _loc3_;
+					_loc1_.x = Math.cos(0.5 * 3.141592653589793 * _loc5_ / _loc3_ + 0.5 * 3.141592653589793) * Math.sin(0.5 * 3.141592653589793 * _loc4_ / _loc3_ - 0.5 * 3.141592653589793) * _loc3_ + _loc3_ + _loc7_ * 0.1;
+					_loc1_.y = Math.cos(0.5 * 3.141592653589793 * _loc4_ / _loc3_ - 0.5 * 3.141592653589793) * _loc3_ + _loc3_ + _loc7_ * 0.1;
+				}
+			}
+			for each(_loc6_ in shell)
+			{
+				for each(_loc1_ in _loc6_)
+				{
+					_loc1_.y += 42.5;
+					_loc5_ = _loc1_.x - _loc3_;
+					_loc4_ = _loc1_.y - _loc2_;
+					_loc7_ = Math.sin(0.5 * 3.141592653589793 * _loc5_ / _loc3_ + 0.5 * 3.141592653589793) * Math.sin(0.5 * 3.141592653589793 * _loc4_ / _loc3_ - 0.5 * 3.141592653589793) * _loc3_;
+					_loc1_.x = Math.cos(0.5 * 3.141592653589793 * _loc5_ / _loc3_ + 0.5 * 3.141592653589793) * Math.sin(0.5 * 3.141592653589793 * _loc4_ / _loc3_ - 0.5 * 3.141592653589793) * _loc3_ + _loc3_ + _loc7_ * 0.1;
+					_loc1_.y = Math.cos(0.5 * 3.141592653589793 * _loc4_ / _loc3_ - 0.5 * 3.141592653589793) * _loc3_ + _loc3_ + _loc7_ * 0.1;
+				}
+			}
+		}
+		
+		private function transformMap3() : void
+		{
+			var _loc7_:Number = NaN;
+			var _loc5_:Number = NaN;
+			var _loc2_:Number = NaN;
+			var _loc6_:Number = NaN;
+			var _loc4_:Number = 65;
+			var _loc3_:Number = 65;
+			for each(var _loc8_ in grid)
+			{
+				for each(var _loc1_ in _loc8_)
+				{
+					_loc7_ = _loc1_.x - _loc4_;
+					_loc5_ = _loc1_.y - _loc3_;
+					_loc6_ = Math.sqrt(_loc7_ * _loc7_ + _loc5_ * _loc5_) / _loc4_;
+					_loc2_ = Math.atan2(_loc5_,_loc7_);
+					if(_loc6_ <= 1)
+					{
+						_loc6_ = Math.sqrt(_loc6_);
 					}
-					_local5.x = Math.cos(_local6) * _local4 * _local3 + _local3;
-					_local5.y = Math.sin(_local6) * _local4 * _local3 + _local1;
+					_loc1_.x = Math.cos(_loc2_) * _loc6_ * _loc4_ + _loc4_;
+					_loc1_.y = Math.sin(_loc2_) * _loc6_ * _loc4_ + _loc3_;
 				}
 			}
-			for each(_local2 in shell) {
-				for each(_local5 in _local2) {
-					_local5.y += 42.5;
-					_local7 = _local5.x - _local3;
-					_local8 = _local5.y - _local1;
-					_local4 = Math.sqrt(_local7 * _local7 + _local8 * _local8) / _local3;
-					_local6 = Math.atan2(_local8,_local7);
-					if(_local4 < 1) {
-						_local4 = Math.sqrt(_local4);
+			for each(_loc8_ in shell)
+			{
+				for each(_loc1_ in _loc8_)
+				{
+					_loc1_.y += 42.5;
+					_loc7_ = _loc1_.x - _loc4_;
+					_loc5_ = _loc1_.y - _loc3_;
+					_loc6_ = Math.sqrt(_loc7_ * _loc7_ + _loc5_ * _loc5_) / _loc4_;
+					_loc2_ = Math.atan2(_loc5_,_loc7_);
+					if(_loc6_ < 1)
+					{
+						_loc6_ = Math.sqrt(_loc6_);
 					}
-					_local5.x = Math.cos(_local6) * _local4 * _local3 + _local3;
-					_local5.y = Math.sin(_local6) * _local4 * _local3 + _local1;
+					_loc1_.x = Math.cos(_loc2_) * _loc6_ * _loc4_ + _loc4_;
+					_loc1_.y = Math.sin(_loc2_) * _loc6_ * _loc4_ + _loc3_;
 				}
 			}
 		}
 		
-		private function transformMap2() : void {
-			var _local2:Number = NaN;
-			var _local8:Number = NaN;
-			var _local3:Number = 130;
-			var _local6:Number = 65;
-			var _local5:Number = 130;
-			var _local4:Number = 65;
-			var _local9:Number = 0.5;
-			for each(var _local1:* in shell) {
-				for each(var _local7:* in _local1) {
-					_local7.y += 42.5;
-					_local2 = _local7.x;
-					_local8 = _local7.y;
-					_local7.x = (Math.sin(3.141592653589793 * (_local2 - _local6) / _local6) * _local6 + _local6) * (Math.sin(3.141592653589793 * _local8 / _local5) * _local9 + (1 - _local9)) + (1 - Math.sin(3.141592653589793 * _local8 / _local5)) * 0.5 * _local9 * _local3;
-					_local2 = _local7.x;
-					_local8 = _local7.y;
-					_local7.y = (Math.sin(3.141592653589793 * (_local8 - _local4) / _local4) * _local4 + _local4) * (Math.sin(3.141592653589793 * _local2 / _local3) * (1 - _local9) + _local9) + (1 - Math.sin(3.141592653589793 * _local2 / _local3)) * 0.5 * (1 - _local9) * _local5;
+		private function transformMap2() : void
+		{
+			var _loc6_:Number = NaN;
+			var _loc4_:Number = NaN;
+			var _loc8_:Number = 130;
+			var _loc3_:Number = 65;
+			var _loc5_:Number = 130;
+			var _loc2_:Number = 65;
+			var _loc9_:Number = 0.5;
+			for each(var _loc7_ in shell)
+			{
+				for each(var _loc1_ in _loc7_)
+				{
+					_loc1_.y += 42.5;
+					_loc6_ = _loc1_.x;
+					_loc4_ = _loc1_.y;
+					_loc1_.x = (Math.sin(3.141592653589793 * (_loc6_ - _loc3_) / _loc3_) * _loc3_ + _loc3_) * (Math.sin(3.141592653589793 * _loc4_ / _loc5_) * _loc9_ + (1 - _loc9_)) + (1 - Math.sin(3.141592653589793 * _loc4_ / _loc5_)) * 0.5 * _loc9_ * _loc8_;
+					_loc6_ = _loc1_.x;
+					_loc4_ = _loc1_.y;
+					_loc1_.y = (Math.sin(3.141592653589793 * (_loc4_ - _loc2_) / _loc2_) * _loc2_ + _loc2_) * (Math.sin(3.141592653589793 * _loc6_ / _loc8_) * (1 - _loc9_) + _loc9_) + (1 - Math.sin(3.141592653589793 * _loc6_ / _loc8_)) * 0.5 * (1 - _loc9_) * _loc5_;
 				}
 			}
-			for each(_local1 in grid) {
-				for each(_local7 in _local1) {
-					_local2 = Number(_local7.x);
-					_local8 = _local7.y;
-					_local7.x = (Math.sin(3.141592653589793 * (_local2 - _local6) / _local6) * _local6 + _local6) * (Math.sin(3.141592653589793 * _local8 / _local5) * _local9 + (1 - _local9)) + (1 - Math.sin(3.141592653589793 * _local8 / _local5)) * 0.5 * _local9 * _local3;
-					_local2 = _local7.x;
-					_local8 = _local7.y;
-					_local7.y = (Math.sin(3.141592653589793 * (_local8 - _local4) / _local4) * _local4 + _local4) * (Math.sin(3.141592653589793 * _local2 / _local3) * (1 - _local9) + _local9) + (1 - Math.sin(3.141592653589793 * _local2 / _local3)) * 0.5 * (1 - _local9) * _local5;
+			for each(_loc7_ in grid)
+			{
+				for each(_loc1_ in _loc7_)
+				{
+					_loc6_ = _loc1_.x;
+					_loc4_ = _loc1_.y;
+					_loc1_.x = (Math.sin(3.141592653589793 * (_loc6_ - _loc3_) / _loc3_) * _loc3_ + _loc3_) * (Math.sin(3.141592653589793 * _loc4_ / _loc5_) * _loc9_ + (1 - _loc9_)) + (1 - Math.sin(3.141592653589793 * _loc4_ / _loc5_)) * 0.5 * _loc9_ * _loc8_;
+					_loc6_ = _loc1_.x;
+					_loc4_ = _loc1_.y;
+					_loc1_.y = (Math.sin(3.141592653589793 * (_loc4_ - _loc2_) / _loc2_) * _loc2_ + _loc2_) * (Math.sin(3.141592653589793 * _loc6_ / _loc8_) * (1 - _loc9_) + _loc9_) + (1 - Math.sin(3.141592653589793 * _loc6_ / _loc8_)) * 0.5 * (1 - _loc9_) * _loc5_;
 				}
 			}
 		}
 		
-		private function selectEasiest() : void {
-			var _local4:int = 10000;
-			var _local2:* = null;
-			var _local3:* = null;
-			var _local5:* = null;
-			for each(var _local1:* in map_areas) {
-				_local1.clearSelect();
-				if(!(_local1.explore != null && _local1.explore.finished && _local1.explore.lootClaimed)) {
-					if(_local4 > _local1.area.skillLevel) {
-						if(ExploreMap.forceSelectAreaKey != null) {
-							if(ExploreMap.forceSelectAreaKey == _local1.key) {
-								_local5 = _local1;
+		private function selectEasiest() : void
+		{
+			var _loc4_:int = 10000;
+			var _loc5_:* = null;
+			var _loc2_:* = null;
+			var _loc3_:* = null;
+			for each(var _loc1_ in map_areas)
+			{
+				_loc1_.clearSelect();
+				if(!(_loc1_.explore != null && _loc1_.explore.finished && _loc1_.explore.lootClaimed))
+				{
+					if(_loc4_ > _loc1_.area.skillLevel)
+					{
+						if(ExploreMap.forceSelectAreaKey != null)
+						{
+							if(ExploreMap.forceSelectAreaKey == _loc1_.key)
+							{
+								_loc3_ = _loc1_;
 							}
-						} else if(_local1.shouldBlink()) {
-							_local5 = _local1;
-						} else if(_local1.fraction < 100) {
-							_local4 = int(_local1.area.skillLevel);
-							_local3 = _local1;
-						} else {
-							_local2 = _local1;
+						}
+						else if(_loc1_.shouldBlink())
+						{
+							_loc3_ = _loc1_;
+						}
+						else if(_loc1_.fraction < 100)
+						{
+							_loc4_ = int(_loc1_.area.skillLevel);
+							_loc2_ = _loc1_;
+						}
+						else
+						{
+							_loc5_ = _loc1_;
 						}
 					}
 				}
 			}
-			if(_local5 != null) {
-				_local5.select();
-				selectedArea = _local5.area;
-			} else if(_local3 != null && _local5 == null) {
-				_local3.select();
-				selectedArea = _local3.area;
-			} else if(_local2 != null && _local3 != null && _local5 != null) {
-				_local2.select();
-				selectedArea = _local2.area;
+			if(_loc3_ != null)
+			{
+				_loc3_.select();
+				selectedArea = _loc3_.area;
+			}
+			else if(_loc2_ != null && _loc3_ == null)
+			{
+				_loc2_.select();
+				selectedArea = _loc2_.area;
+			}
+			else if(_loc5_ != null && _loc2_ != null && _loc3_ != null)
+			{
+				_loc5_.select();
+				selectedArea = _loc5_.area;
 			}
 		}
 		
-		public function moveOnTop(area:ExploreMapArea) : void {
+		public function moveOnTop(area:ExploreMapArea) : void
+		{
 			addChild(area);
 		}
 		
-		public function clearSelected(area:ExploreMapArea) : void {
-			for each(var _local2:* in map_areas) {
-				if(_local2 != area) {
-					_local2.clearSelect();
+		public function clearSelected(area:ExploreMapArea) : void
+		{
+			for each(var _loc2_ in map_areas)
+			{
+				if(_loc2_ != area)
+				{
+					_loc2_.clearSelect();
 				}
 			}
 		}
 		
-		private function generateMap() : void {
+		private function generateMap() : void
+		{
 			done = false;
-			while(!done) {
+			while(!done)
+			{
 				r = new Random(seed);
 				done = tryGenerateMap();
-				if(!done) {
+				if(!done)
+				{
 					Console.write("Error: invalid seed!");
 					seed += 0.12341;
-					if(seed > 1) {
+					if(seed > 1)
+					{
 						seed /= 2;
 					}
 				}
 			}
 		}
 		
-		private function tryGenerateMap() : Boolean {
-			var _local7:int = 0;
-			var _local5:Object = null;
+		private function tryGenerateMap() : Boolean
+		{
+			var _loc5_:int = 0;
+			var _loc3_:Object = null;
 			areas = [];
-			_local7 = 0;
-			while(_local7 < raw_areas.length) {
-				areas.push(raw_areas[_local7]);
-				_local7++;
+			_loc5_ = 0;
+			while(_loc5_ < raw_areas.length)
+			{
+				areas.push(raw_areas[_loc5_]);
+				_loc5_++;
 			}
-			_local7 = 0;
-			while(_local7 < extraAreas) {
-				_local5 = {};
-				_local5.size = r.random(4) + 7;
-				_local5.majorType = -1;
-				_local5.key = area_key_index++;
-				areas.splice(r.random(areas.length),0,_local5);
-				_local7++;
+			_loc5_ = 0;
+			while(_loc5_ < extraAreas)
+			{
+				_loc3_ = {};
+				_loc3_.size = r.random(4) + 7;
+				_loc3_.majorType = -1;
+				_loc3_.key = area_key_index++;
+				areas.splice(r.random(areas.length),0,_loc3_);
+				_loc5_++;
 			}
-			var _local4:Number = 0;
-			var _local2:int = int(areas.length);
-			for each(var _local3:* in areas) {
-				if(_local3.size < 7) {
-					_local4 += 0.5 * _local3.size;
-				} else {
-					_local4 += _local3.size;
+			var _loc6_:Number = 0;
+			var _loc7_:int = int(areas.length);
+			for each(var _loc1_ in areas)
+			{
+				if(_loc1_.size < 7)
+				{
+					_loc6_ += 0.5 * _loc1_.size;
+				}
+				else
+				{
+					_loc6_ += _loc1_.size;
 				}
 			}
-			var _local6:int = r.random(_local2 - 1) + 1;
-			var _local1:int = 0;
+			var _loc2_:int = r.random(_loc7_ - 1) + 1;
+			var _loc4_:int = 0;
 			fraction_cover = 0.1;
-			fraction_cover += 0.01 * r.random(6) * _local2;
-			if(fraction_cover > 0.4) {
+			fraction_cover += 0.01 * r.random(6) * _loc7_;
+			if(fraction_cover > 0.4)
+			{
 				fraction_cover = 0.4;
 			}
 			fraction_cover += 0.005 * r.random(50);
 			m = createMatrix(130,45);
-			_local7 = 1;
-			while(_local7 <= _local6) {
+			_loc5_ = 1;
+			while(_loc5_ <= _loc2_)
+			{
 				x_chance = 10 + r.random(50);
 				y_chance = 10 + r.random(50);
-				if(_local3.size < 7) {
-					_local1 = Math.ceil(fraction_cover * (0.5 * areas[_local7 - 1].size) * 130 * 45 / _local4);
-				} else {
-					_local1 = Math.ceil(fraction_cover * areas[_local7 - 1].size * 130 * 45 / _local4);
+				if(_loc1_.size < 7)
+				{
+					_loc4_ = Math.ceil(fraction_cover * (0.5 * areas[_loc5_ - 1].size) * 130 * 45 / _loc6_);
 				}
-				if(!startNewGroup(_local7)) {
+				else
+				{
+					_loc4_ = Math.ceil(fraction_cover * areas[_loc5_ - 1].size * 130 * 45 / _loc6_);
+				}
+				if(!startNewGroup(_loc5_))
+				{
 					return false;
 				}
-				if(!addSquaresToGroup(_local7,_local1)) {
+				if(!addSquaresToGroup(_loc5_,_loc4_))
+				{
 					return false;
 				}
-				_local7++;
+				_loc5_++;
 			}
-			_local7 = _local6 + 1;
-			while(_local7 <= _local2) {
+			_loc5_ = _loc2_ + 1;
+			while(_loc5_ <= _loc7_)
+			{
 				x_chance = 10 + r.random(50);
 				y_chance = 10 + r.random(50);
-				if(_local3.size < 7) {
-					_local1 = Math.ceil(fraction_cover * (0.5 * areas[_local7 - 1].size) * 130 * 45 / _local4);
-				} else {
-					_local1 = Math.ceil(fraction_cover * areas[_local7 - 1].size * 130 * 45 / _local4);
+				if(_loc1_.size < 7)
+				{
+					_loc4_ = Math.ceil(fraction_cover * (0.5 * areas[_loc5_ - 1].size) * 130 * 45 / _loc6_);
 				}
-				if(!joinOldGroup(_local7)) {
+				else
+				{
+					_loc4_ = Math.ceil(fraction_cover * areas[_loc5_ - 1].size * 130 * 45 / _loc6_);
+				}
+				if(!joinOldGroup(_loc5_))
+				{
 					return false;
 				}
-				if(!addSquaresToGroup(_local7,_local1)) {
+				if(!addSquaresToGroup(_loc5_,_loc4_))
+				{
 					return false;
 				}
-				_local7++;
+				_loc5_++;
 			}
 			removeInterior();
-			shell = createShells(_local2);
-			if(shell == null) {
+			shell = createShells(_loc7_);
+			if(shell == null)
+			{
 				return false;
 			}
 			Console.write("explore area map done");
 			return true;
 		}
 		
-		private function startNewGroup(i:int) : Boolean {
-			var _local2:Vector.<int> = getRandomPosList();
-			for each(var _local3:* in _local2) {
-				if(canAddNew(_local3,i)) {
-					lastPos = _local3;
+		private function startNewGroup(i:int) : Boolean
+		{
+			var _loc3_:Vector.<int> = getRandomPosList();
+			for each(var _loc2_ in _loc3_)
+			{
+				if(canAddNew(_loc2_,i))
+				{
+					lastPos = _loc2_;
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		private function joinOldGroup(i:int) : Boolean {
-			var _local2:Vector.<int> = getRandomPosList();
-			for each(var _local3:* in _local2) {
-				if(canJoinOld(_local3,i)) {
-					lastPos = _local3;
+		private function joinOldGroup(i:int) : Boolean
+		{
+			var _loc3_:Vector.<int> = getRandomPosList();
+			for each(var _loc2_ in _loc3_)
+			{
+				if(canJoinOld(_loc2_,i))
+				{
+					lastPos = _loc2_;
 					return true;
 				}
 			}
 			return false;
 		}
 		
-		private function addSquaresToGroup(i:int, nrSquares:int) : Boolean {
-			var _local9:int = 0;
-			var _local8:int = 0;
-			var _local5:int = 0;
-			var _local4:* = 0;
-			var _local3:Boolean = false;
-			var _local6:int = 0;
-			var _local7:int = 0;
-			while(_local5 < nrSquares) {
-				_local3 = false;
-				_local9 = 0;
-				while(_local9 < 130) {
-					_local8 = 0;
-					while(_local8 < 45) {
-						_local4 = _local5;
-						_local5 += tryAddNeighbours(_local9,_local8,i,nrSquares - _local5,_local7);
-						if(_local5 != _local4) {
-							_local3 = true;
-							_local7 = 0;
+		private function addSquaresToGroup(i:int, nrSquares:int) : Boolean
+		{
+			var _loc7_:int = 0;
+			var _loc8_:int = 0;
+			var _loc4_:int = 0;
+			var _loc3_:* = 0;
+			var _loc6_:Boolean = false;
+			var _loc5_:int = 0;
+			var _loc9_:int = 0;
+			while(_loc4_ < nrSquares)
+			{
+				_loc6_ = false;
+				_loc7_ = 0;
+				while(_loc7_ < 130)
+				{
+					_loc8_ = 0;
+					while(_loc8_ < 45)
+					{
+						_loc3_ = _loc4_;
+						_loc4_ += tryAddNeighbours(_loc7_,_loc8_,i,nrSquares - _loc4_,_loc9_);
+						if(_loc4_ != _loc3_)
+						{
+							_loc6_ = true;
+							_loc9_ = 0;
 						}
-						_local8++;
+						_loc8_++;
 					}
-					_local9++;
+					_loc7_++;
 				}
-				if(_local3 == false) {
-					_local6++;
-					_local7 += 20;
+				if(_loc6_ == false)
+				{
+					_loc5_++;
+					_loc9_ += 20;
 				}
-				if(_local6 > 5) {
-					Console.write("error: no space left for area " + i + ", added " + _local5 + " of " + nrSquares);
+				if(_loc5_ > 5)
+				{
+					Console.write("error: no space left for area " + i + ", added " + _loc4_ + " of " + nrSquares);
 					return false;
 				}
 			}
 			return true;
 		}
 		
-		private function getRandomPosList() : Vector.<int> {
-			var _local2:int = 0;
-			var _local1:Vector.<int> = new Vector.<int>();
-			_local2 = 0;
-			while(_local2 < 130 * 45) {
-				_local1.splice(r.random(_local1.length),0,_local2);
-				_local2++;
+		private function getRandomPosList() : Vector.<int>
+		{
+			var _loc1_:int = 0;
+			var _loc2_:Vector.<int> = new Vector.<int>();
+			_loc1_ = 0;
+			while(_loc1_ < 130 * 45)
+			{
+				_loc2_.splice(r.random(_loc2_.length),0,_loc1_);
+				_loc1_++;
 			}
-			return _local1;
+			return _loc2_;
 		}
 		
-		private function enoughNrNeighbours(x:int, y:int, i:int) : Boolean {
-			var _local8:int = 0;
-			var _local4:int = 0;
-			var _local7:int = 0;
-			var _local9:int = lastPos % 130;
-			var _local6:int = (lastPos - _local9) / 130;
-			var _local5:int = 0;
-			if(x == _local9 && y == _local6) {
+		private function enoughNrNeighbours(x:int, y:int, i:int) : Boolean
+		{
+			var _loc8_:int = 0;
+			var _loc7_:int = 0;
+			var _loc9_:int = 0;
+			var _loc4_:int = lastPos % 130;
+			var _loc6_:int = (lastPos - _loc4_) / 130;
+			var _loc5_:int = 0;
+			if(x == _loc4_ && y == _loc6_)
+			{
 				return true;
 			}
-			_local7 = 0;
-			while(_local7 < 8) {
-				_local8 = x + directions[_local7][0];
-				_local4 = y + directions[_local7][1];
-				if(_local8 >= 0 && _local8 < 130 && m[_local8][_local4] == i) {
-					_local5++;
-				} else if(_local8 == -1 && m[130 - 1][_local4] == i) {
-					_local5++;
-				} else if(_local8 == 130 && m[0][_local4] == i) {
-					_local5++;
+			_loc9_ = 0;
+			while(_loc9_ < 8)
+			{
+				_loc8_ = x + directions[_loc9_][0];
+				_loc7_ = y + directions[_loc9_][1];
+				if(_loc8_ >= 0 && _loc8_ < 130 && m[_loc8_][_loc7_] == i)
+				{
+					_loc5_++;
 				}
-				_local7++;
+				else if(_loc8_ == -1 && m[130 - 1][_loc7_] == i)
+				{
+					_loc5_++;
+				}
+				else if(_loc8_ == 130 && m[0][_loc7_] == i)
+				{
+					_loc5_++;
+				}
+				_loc9_++;
 			}
-			if(_local5 >= 2) {
+			if(_loc5_ >= 2)
+			{
 				return true;
 			}
 			return false;
 		}
 		
-		private function tryAddNeighbours(x:int, y:int, i:int, nrLeft:int, psr:int) : int {
-			if(m[x][y] != i) {
+		private function tryAddNeighbours(x:int, y:int, i:int, nrLeft:int, psr:int) : int
+		{
+			if(m[x][y] != i)
+			{
 				return 0;
 			}
-			var _local6:int = 0;
-			if(y > 0 && y < 45 - 1 && enoughNrNeighbours(x,y,i)) {
-				if(nrLeft > 0 && x + 1 < 130 && m[x + 1][y] == 0 && r.random(100) < x_chance + psr) {
+			var _loc6_:int = 0;
+			if(y > 0 && y < 45 - 1 && enoughNrNeighbours(x,y,i))
+			{
+				if(nrLeft > 0 && x + 1 < 130 && m[x + 1][y] == 0 && r.random(100) < x_chance + psr)
+				{
 					m[x + 1][y] = i;
 					nrLeft--;
-					_local6++;
+					_loc6_++;
 				}
-				if(nrLeft > 0 && x - 1 >= 0 && m[x - 1][y] == 0 && r.random(100) < x_chance + psr) {
+				if(nrLeft > 0 && x - 1 >= 0 && m[x - 1][y] == 0 && r.random(100) < x_chance + psr)
+				{
 					m[x - 1][y] = i;
 					nrLeft--;
-					_local6++;
+					_loc6_++;
 				}
-				if(nrLeft > 0 && y + 1 < 45 && m[x][y + 1] == 0 && r.random(100) < y_chance + psr) {
+				if(nrLeft > 0 && y + 1 < 45 && m[x][y + 1] == 0 && r.random(100) < y_chance + psr)
+				{
 					m[x][y + 1] = i;
 					nrLeft--;
-					_local6++;
+					_loc6_++;
 				}
-				if(nrLeft > 0 && y - 1 >= 0 && m[x][y - 1] == 0 && r.random(100) < y_chance + psr) {
+				if(nrLeft > 0 && y - 1 >= 0 && m[x][y - 1] == 0 && r.random(100) < y_chance + psr)
+				{
 					m[x][y - 1] = i;
 					nrLeft--;
-					_local6++;
+					_loc6_++;
 				}
 			}
-			return _local6;
+			return _loc6_;
 		}
 		
-		private function canJoinOld(pos:int, i:int) : Boolean {
-			var _local4:int = 0;
-			var _local3:int = 0;
-			_local4 = pos % 130;
-			_local3 = (pos - _local4) / 130;
-			if(_local3 < 0.2 * 45 || _local3 > 0.8 * 45) {
+		private function canJoinOld(pos:int, i:int) : Boolean
+		{
+			var _loc3_:int = 0;
+			var _loc4_:int = 0;
+			_loc3_ = pos % 130;
+			_loc4_ = (pos - _loc3_) / 130;
+			if(_loc4_ < 0.2 * 45 || _loc4_ > 0.8 * 45)
+			{
 				return false;
 			}
-			if(_local4 < 0.2 * 130 || _local4 > 0.8 * 130) {
+			if(_loc3_ < 0.2 * 130 || _loc3_ > 0.8 * 130)
+			{
 				return false;
 			}
-			if(_local3 < 0.2 * 45 || _local3 > 0.8 * 45) {
+			if(_loc4_ < 0.2 * 45 || _loc4_ > 0.8 * 45)
+			{
 				return false;
 			}
-			if(m[_local4][_local3] == 0 && (_local4 - 1 >= 0 && m[_local4 - 1][_local3] != 0 || _local4 + 1 < 130 && m[_local4 + 1][_local3] != 0 || _local3 - 1 >= 0 && m[_local4][_local3 - 1] != 0 || _local3 + 1 < 45 && m[_local4][_local3 + 1] != 0)) {
-				m[_local4][_local3] = i;
+			if(m[_loc3_][_loc4_] == 0 && (_loc3_ - 1 >= 0 && m[_loc3_ - 1][_loc4_] != 0 || _loc3_ + 1 < 130 && m[_loc3_ + 1][_loc4_] != 0 || _loc4_ - 1 >= 0 && m[_loc3_][_loc4_ - 1] != 0 || _loc4_ + 1 < 45 && m[_loc3_][_loc4_ + 1] != 0))
+			{
+				m[_loc3_][_loc4_] = i;
 				return true;
 			}
 			return false;
 		}
 		
-		private function getMinDist(x:int, y:int) : int {
-			var _local6:int = 0;
-			var _local4:int = 0;
-			var _local5:* = 130;
-			var _local3:int = 0;
-			_local6 = 0;
-			while(_local6 < 130) {
-				_local4 = 0;
-				while(_local4 < 45) {
-					if(m[_local6][_local4] > 0) {
-						_local3 = dist2(x,y,_local6,_local4);
-						if(_local3 < _local5) {
-							_local5 = _local3;
+		private function getMinDist(x:int, y:int) : int
+		{
+			var _loc5_:int = 0;
+			var _loc4_:int = 0;
+			var _loc6_:* = 130;
+			var _loc3_:int = 0;
+			_loc5_ = 0;
+			while(_loc5_ < 130)
+			{
+				_loc4_ = 0;
+				while(_loc4_ < 45)
+				{
+					if(m[_loc5_][_loc4_] > 0)
+					{
+						_loc3_ = dist2(x,y,_loc5_,_loc4_);
+						if(_loc3_ < _loc6_)
+						{
+							_loc6_ = _loc3_;
 						}
 					}
-					_local4++;
+					_loc4_++;
 				}
-				_local6++;
+				_loc5_++;
 			}
-			return _local5;
+			return _loc6_;
 		}
 		
-		private function canAddNew(pos:int, i:int) : Boolean {
-			var _local4:int = 0;
-			var _local3:int = 0;
-			_local4 = pos % 130;
-			_local3 = (pos - _local4) / 130;
-			if(_local3 < 0.2 * 45 || _local3 > 0.8 * 45) {
+		private function canAddNew(pos:int, i:int) : Boolean
+		{
+			var _loc3_:int = 0;
+			var _loc4_:int = 0;
+			_loc3_ = pos % 130;
+			_loc4_ = (pos - _loc3_) / 130;
+			if(_loc4_ < 0.2 * 45 || _loc4_ > 0.8 * 45)
+			{
 				return false;
 			}
-			if(_local4 < 0.25 * 130 || _local4 > 0.75 * 130) {
+			if(_loc3_ < 0.25 * 130 || _loc3_ > 0.75 * 130)
+			{
 				return false;
 			}
-			if(m[_local4][_local3] == 0 && (_local4 - 1 >= 0 && m[_local4 - 1][_local3] == 0) && (_local4 + 1 < 130 && m[_local4 + 1][_local3] == 0) && (_local3 - 1 >= 0 && m[_local4][_local3 - 1] == 0) && (_local3 + 1 < 45 && m[_local4][_local3 + 1] == 0)) {
-				m[_local4][_local3] = i;
+			if(m[_loc3_][_loc4_] == 0 && (_loc3_ - 1 >= 0 && m[_loc3_ - 1][_loc4_] == 0) && (_loc3_ + 1 < 130 && m[_loc3_ + 1][_loc4_] == 0) && (_loc4_ - 1 >= 0 && m[_loc3_][_loc4_ - 1] == 0) && (_loc4_ + 1 < 45 && m[_loc3_][_loc4_ + 1] == 0))
+			{
+				m[_loc3_][_loc4_] = i;
 				return true;
 			}
 			return false;
 		}
 		
-		private function removeInterior() : void {
-			var _local3:int = 0;
-			var _local2:int = 0;
-			var _local1:int = 0;
-			_local2 = 0;
-			while(_local2 < 130) {
-				_local1 = 0;
-				while(_local1 < 45) {
-					if(_local1 + 1 < 45) {
-						_local3 = m[_local2][_local1 + 1];
-						if(m[_local2][_local1] == 0 && _local3 != 0 && (_local2 - 1 >= 0 && m[_local2 - 1][_local1] != 0 || _local2 - 1 == -1 && m[130 - 1][_local1] != 0) && (_local2 + 1 < 130 && m[_local2 + 1][_local1] != 0 || _local2 + 1 == 130 && m[0][_local1] != 0) && (_local1 - 1 >= 0 && m[_local2][_local1 - 1] != 0) && (_local1 + 1 < 45 && m[_local2][_local1 + 1] != 0)) {
-							m[_local2][_local1] = _local3;
+		private function removeInterior() : void
+		{
+			var _loc2_:int = 0;
+			var _loc1_:int = 0;
+			var _loc3_:int = 0;
+			_loc1_ = 0;
+			while(_loc1_ < 130)
+			{
+				_loc3_ = 0;
+				while(_loc3_ < 45)
+				{
+					if(_loc3_ + 1 < 45)
+					{
+						_loc2_ = m[_loc1_][_loc3_ + 1];
+						if(m[_loc1_][_loc3_] == 0 && _loc2_ != 0 && (_loc1_ - 1 >= 0 && m[_loc1_ - 1][_loc3_] != 0 || _loc1_ - 1 == -1 && m[130 - 1][_loc3_] != 0) && (_loc1_ + 1 < 130 && m[_loc1_ + 1][_loc3_] != 0 || _loc1_ + 1 == 130 && m[0][_loc3_] != 0) && (_loc3_ - 1 >= 0 && m[_loc1_][_loc3_ - 1] != 0) && (_loc3_ + 1 < 45 && m[_loc1_][_loc3_ + 1] != 0))
+						{
+							m[_loc1_][_loc3_] = _loc2_;
 						}
 					}
-					_local1++;
+					_loc3_++;
 				}
-				_local2++;
+				_loc1_++;
 			}
-			_local2 = 0;
-			while(_local2 < 130) {
-				if(_local2 + 1 < 130) {
-					_local3 = m[_local2 + 1][0];
-					if(m[_local2][0] == 0 && _local3 != 0 && (_local2 - 1 >= 0 && m[_local2 - 1][0] != 0 || _local2 - 1 == -1 && m[130 - 1][0] != 0) && (_local2 + 1 < 130 && m[_local2 + 1][0] != 0 || _local2 + 1 == 130 && m[0][0] != 0) && m[_local2][1] != 0) {
-						m[_local2][0] = _local3;
+			_loc1_ = 0;
+			while(_loc1_ < 130)
+			{
+				if(_loc1_ + 1 < 130)
+				{
+					_loc2_ = m[_loc1_ + 1][0];
+					if(m[_loc1_][0] == 0 && _loc2_ != 0 && (_loc1_ - 1 >= 0 && m[_loc1_ - 1][0] != 0 || _loc1_ - 1 == -1 && m[130 - 1][0] != 0) && (_loc1_ + 1 < 130 && m[_loc1_ + 1][0] != 0 || _loc1_ + 1 == 130 && m[0][0] != 0) && m[_loc1_][1] != 0)
+					{
+						m[_loc1_][0] = _loc2_;
 					}
-					_local3 = m[_local2 + 1][45 - 1];
-					if(m[_local2][45 - 1] == 0 && _local3 != 0 && (_local2 - 1 >= 0 && m[_local2 - 1][45 - 1] != 0 || _local2 - 1 == -1 && m[130 - 1][45 - 1] != 0) && (_local2 + 1 < 130 && m[_local2 + 1][45 - 1] != 0 || _local2 + 1 == 130 && m[0][45 - 1] != 0) && m[_local2][45 - 2] != 0) {
-						m[_local2][45 - 1] = _local3;
+					_loc2_ = m[_loc1_ + 1][45 - 1];
+					if(m[_loc1_][45 - 1] == 0 && _loc2_ != 0 && (_loc1_ - 1 >= 0 && m[_loc1_ - 1][45 - 1] != 0 || _loc1_ - 1 == -1 && m[130 - 1][45 - 1] != 0) && (_loc1_ + 1 < 130 && m[_loc1_ + 1][45 - 1] != 0 || _loc1_ + 1 == 130 && m[0][45 - 1] != 0) && m[_loc1_][45 - 2] != 0)
+					{
+						m[_loc1_][45 - 1] = _loc2_;
 					}
 				}
-				_local2++;
+				_loc1_++;
 			}
-			_local2 = 0;
-			while(_local2 < 130) {
-				_local1 = 0;
-				while(_local1 < 45) {
-					_local3 = m[_local2][_local1];
-					if(_local3 > 0 && (_local2 - 1 >= 0 && (m[_local2 - 1][_local1] == _local3 || m[_local2 - 1][_local1] == -_local3) || _local2 - 1 == -1 && (m[130 - 1][_local1] == _local3 || m[130 - 1][_local1] == -_local3)) && (_local2 + 1 < 130 && (m[_local2 + 1][_local1] == _local3 || m[_local2 + 1][_local1] == -_local3) || _local2 + 1 == 130 && (m[0][_local1] == _local3 || m[0][_local1] == -_local3)) && (_local1 - 1 >= 0 && (m[_local2][_local1 - 1] == _local3 || m[_local2][_local1 - 1] == -_local3)) && (_local1 + 1 < 45 && (m[_local2][_local1 + 1] == _local3 || m[_local2][_local1 + 1] == -_local3))) {
-						m[_local2][_local1] = -_local3;
+			_loc1_ = 0;
+			while(_loc1_ < 130)
+			{
+				_loc3_ = 0;
+				while(_loc3_ < 45)
+				{
+					_loc2_ = m[_loc1_][_loc3_];
+					if(_loc2_ > 0 && (_loc1_ - 1 >= 0 && (m[_loc1_ - 1][_loc3_] == _loc2_ || m[_loc1_ - 1][_loc3_] == -_loc2_) || _loc1_ - 1 == -1 && (m[130 - 1][_loc3_] == _loc2_ || m[130 - 1][_loc3_] == -_loc2_)) && (_loc1_ + 1 < 130 && (m[_loc1_ + 1][_loc3_] == _loc2_ || m[_loc1_ + 1][_loc3_] == -_loc2_) || _loc1_ + 1 == 130 && (m[0][_loc3_] == _loc2_ || m[0][_loc3_] == -_loc2_)) && (_loc3_ - 1 >= 0 && (m[_loc1_][_loc3_ - 1] == _loc2_ || m[_loc1_][_loc3_ - 1] == -_loc2_)) && (_loc3_ + 1 < 45 && (m[_loc1_][_loc3_ + 1] == _loc2_ || m[_loc1_][_loc3_ + 1] == -_loc2_)))
+					{
+						m[_loc1_][_loc3_] = -_loc2_;
 					}
-					_local1++;
+					_loc3_++;
 				}
-				_local2++;
+				_loc1_++;
 			}
 		}
 		
-		private function createShells(nrAreas:int) : Vector.<Vector.<Point>> {
-			var _local3:int = 0;
-			var _local2:Vector.<Vector.<Point>> = new Vector.<Vector.<Point>>();
-			_local3 = 1;
-			while(_local3 <= nrAreas) {
-				_local2.push(createShell(_local3));
-				if(_local2[_local2.length - 1] == null) {
+		private function createShells(nrAreas:int) : Vector.<Vector.<Point>>
+		{
+			var _loc3_:int = 0;
+			var _loc2_:Vector.<Vector.<Point>> = new Vector.<Vector.<Point>>();
+			_loc3_ = 1;
+			while(_loc3_ <= nrAreas)
+			{
+				_loc2_.push(createShell(_loc3_));
+				if(_loc2_[_loc2_.length - 1] == null)
+				{
 					return null;
 				}
-				_local3++;
+				_loc3_++;
 			}
-			return _local2;
+			return _loc2_;
 		}
 		
-		private function getStartPoint(v:Vector.<Point>, i:int, x:int = 0, y:int = 0) : void {
-			if(x != 0) {
+		private function getStartPoint(v:Vector.<Point>, i:int, x:int = 0, y:int = 0) : void
+		{
+			if(x != 0)
+			{
 				x += 1;
 			}
-			if(y != 0) {
+			if(y != 0)
+			{
 				y += 1;
 			}
 			x = 0;
-			while(x < 130) {
+			while(x < 130)
+			{
 				y = 0;
-				while(y < 45) {
-					if(m[x][y] == i) {
-						if(v == null) {
+				while(y < 45)
+				{
+					if(m[x][y] == i)
+					{
+						if(v == null)
+						{
 							return;
 						}
 						v.push(new Point(x,y));
@@ -658,256 +837,322 @@ package core.hud.components.explore {
 			}
 		}
 		
-		private function createShell(i:int, old_v:Vector.<Point> = null) : Vector.<Point> {
-			var _local5:Point = null;
-			var _local9:int = 0;
-			var _local8:int = 0;
-			var _local6:int = 0;
-			var _local7:int = 0;
-			var _local3:Vector.<Point> = new Vector.<Point>();
-			var _local4:int = 0;
-			if(old_v != null) {
-				_local9 = 0;
-				_local8 = 0;
-				for each(_local5 in old_v) {
-					if(_local5.x > _local9) {
-						_local9 = _local5.x;
+		private function createShell(i:int, old_v:Vector.<Point> = null) : Vector.<Point>
+		{
+			var _loc3_:Point = null;
+			var _loc6_:int = 0;
+			var _loc7_:int = 0;
+			var _loc5_:int = 0;
+			var _loc8_:int = 0;
+			var _loc4_:Vector.<Point> = new Vector.<Point>();
+			var _loc9_:int = 0;
+			if(old_v != null)
+			{
+				_loc6_ = 0;
+				_loc7_ = 0;
+				for each(_loc3_ in old_v)
+				{
+					if(_loc3_.x > _loc6_)
+					{
+						_loc6_ = _loc3_.x;
 					}
-					if(_local5.y > _local8) {
-						_local8 = _local5.y;
+					if(_loc3_.y > _loc7_)
+					{
+						_loc7_ = _loc3_.y;
 					}
 				}
-				getStartPoint(_local3,i,_local9,_local8);
-				if(_local3.length == 0) {
+				getStartPoint(_loc4_,i,_loc6_,_loc7_);
+				if(_loc4_.length == 0)
+				{
 					return null;
 				}
-			} else {
-				getStartPoint(_local3,i);
 			}
-			while(!isDone(_local3)) {
-				_local5 = _local3[_local3.length - 1];
-				_local4 = getDirection(_local3);
-				_local3.push(getNextPoint(_local5.x,_local5.y,i,_local4));
-				_local6 = m[_local5.x][_local5.y];
+			else
+			{
+				getStartPoint(_loc4_,i);
 			}
-			if(_local3.length < 10) {
+			while(!isDone(_loc4_))
+			{
+				_loc3_ = _loc4_[_loc4_.length - 1];
+				_loc9_ = getDirection(_loc4_);
+				_loc4_.push(getNextPoint(_loc3_.x,_loc3_.y,i,_loc9_));
+				_loc5_ = m[_loc3_.x][_loc3_.y];
+			}
+			if(_loc4_.length < 10)
+			{
 				return null;
 			}
-			_local7 = 0;
-			while(_local7 < 3) {
-				removeNarrows(_local3);
-				_local7++;
+			_loc8_ = 0;
+			while(_loc8_ < 3)
+			{
+				removeNarrows(_loc4_);
+				_loc8_++;
 			}
-			postProccessEdge(_local3);
-			return _local3;
+			postProccessEdge(_loc4_);
+			return _loc4_;
 		}
 		
-		private function getNextPoint(x:int, y:int, i:int, direction:int) : Point {
-			var _local8:int = 0;
-			var _local6:int = 0;
-			var _local7:int = 0;
-			var _local5:int = direction - 1;
-			_local7 = 0;
-			while(_local7 < 8) {
-				if(_local5 < 0) {
-					_local5 = 7;
+		private function getNextPoint(x:int, y:int, i:int, direction:int) : Point
+		{
+			var _loc7_:int = 0;
+			var _loc6_:int = 0;
+			var _loc8_:int = 0;
+			var _loc5_:int = direction - 1;
+			_loc8_ = 0;
+			while(_loc8_ < 8)
+			{
+				if(_loc5_ < 0)
+				{
+					_loc5_ = 7;
 				}
-				_local8 = x + directions[_local5][0];
-				_local6 = y + directions[_local5][1];
-				if(_local8 < 0) {
-					_local8 = 130 - 1;
+				_loc7_ = x + directions[_loc5_][0];
+				_loc6_ = y + directions[_loc5_][1];
+				if(_loc7_ < 0)
+				{
+					_loc7_ = 130 - 1;
 				}
-				if(_local8 >= 130) {
-					_local8 = 0;
+				if(_loc7_ >= 130)
+				{
+					_loc7_ = 0;
 				}
-				if(_local6 >= 0 && _local6 < 45 && m[_local8][_local6] == i) {
-					return new Point(_local8,_local6);
+				if(_loc6_ >= 0 && _loc6_ < 45 && m[_loc7_][_loc6_] == i)
+				{
+					return new Point(_loc7_,_loc6_);
 				}
-				_local5--;
-				_local7++;
+				_loc5_--;
+				_loc8_++;
 			}
 			return null;
 		}
 		
-		private function getDirection(v:Vector.<Point>) : int {
-			var _local4:int = 0;
-			var _local3:int = 0;
-			var _local6:int = 0;
-			var _local2:int = 0;
-			var _local5:int = 0;
-			if(v.length < 2) {
-				_local6 = v[v.length - 1].x;
-				_local2 = v[v.length - 1].y;
-				_local5 = 0;
-				while(_local5 < 8) {
-					if(_local6 + directions[_local5][0] >= 0 && _local6 + directions[_local5][0] < 130 && _local2 + directions[_local5][1] >= 0 && _local2 + directions[_local5][1] < 45 && m[_local6 + directions[_local5][0]][_local2 + directions[_local5][1]] < 0) {
-						return _local5;
+		private function getDirection(v:Vector.<Point>) : int
+		{
+			var _loc6_:int = 0;
+			var _loc3_:int = 0;
+			var _loc4_:int = 0;
+			var _loc2_:int = 0;
+			var _loc5_:int = 0;
+			if(v.length < 2)
+			{
+				_loc4_ = v[v.length - 1].x;
+				_loc2_ = v[v.length - 1].y;
+				_loc5_ = 0;
+				while(_loc5_ < 8)
+				{
+					if(_loc4_ + directions[_loc5_][0] >= 0 && _loc4_ + directions[_loc5_][0] < 130 && _loc2_ + directions[_loc5_][1] >= 0 && _loc2_ + directions[_loc5_][1] < 45 && m[_loc4_ + directions[_loc5_][0]][_loc2_ + directions[_loc5_][1]] < 0)
+					{
+						return _loc5_;
 					}
-					_local5++;
+					_loc5_++;
 				}
-				_local5 = 0;
-				while(_local5 < 8) {
-					if(_local6 + directions[_local5][0] >= 0 && _local6 + directions[_local5][0] < 130 && _local2 + directions[_local5][1] >= 0 && _local2 + directions[_local5][1] < 45 && m[_local6 + directions[_local5][0]][_local2 + directions[_local5][1]] == 0) {
-						_local5 -= 4;
-						if(_local5 < 0) {
-							_local5 = 8 + _local5;
+				_loc5_ = 0;
+				while(_loc5_ < 8)
+				{
+					if(_loc4_ + directions[_loc5_][0] >= 0 && _loc4_ + directions[_loc5_][0] < 130 && _loc2_ + directions[_loc5_][1] >= 0 && _loc2_ + directions[_loc5_][1] < 45 && m[_loc4_ + directions[_loc5_][0]][_loc2_ + directions[_loc5_][1]] == 0)
+					{
+						_loc5_ -= 4;
+						if(_loc5_ < 0)
+						{
+							_loc5_ = 8 + _loc5_;
 						}
-						return _local5;
+						return _loc5_;
 					}
-					_local5++;
+					_loc5_++;
 				}
-			} else {
-				_local4 = v[v.length - 1].x;
-				_local3 = v[v.length - 1].y;
-				_local6 = v[v.length - 2].x;
-				_local2 = v[v.length - 2].y;
-				if(_local4 == 0 && _local6 == 130 - 1) {
-					_local6 = -1;
+			}
+			else
+			{
+				_loc6_ = v[v.length - 1].x;
+				_loc3_ = v[v.length - 1].y;
+				_loc4_ = v[v.length - 2].x;
+				_loc2_ = v[v.length - 2].y;
+				if(_loc6_ == 0 && _loc4_ == 130 - 1)
+				{
+					_loc4_ = -1;
 				}
-				if(_local4 == 130 - 1 && _local6 == 0) {
-					_local6 = 130;
+				if(_loc6_ == 130 - 1 && _loc4_ == 0)
+				{
+					_loc4_ = 130;
 				}
-				if(_local6 == 0 && _local4 == 130 - 1) {
-					_local4 = -1;
+				if(_loc4_ == 0 && _loc6_ == 130 - 1)
+				{
+					_loc6_ = -1;
 				}
-				if(_local6 == 130 - 1 && _local4 == 0) {
-					_local4 = 130;
+				if(_loc4_ == 130 - 1 && _loc6_ == 0)
+				{
+					_loc6_ = 130;
 				}
-				_local5 = 0;
-				while(_local5 < 8) {
-					if(_local6 == _local4 + directions[_local5][0] && _local2 == _local3 + directions[_local5][1]) {
-						return _local5;
+				_loc5_ = 0;
+				while(_loc5_ < 8)
+				{
+					if(_loc4_ == _loc6_ + directions[_loc5_][0] && _loc2_ == _loc3_ + directions[_loc5_][1])
+					{
+						return _loc5_;
 					}
-					_local5++;
+					_loc5_++;
 				}
 			}
 			return 0;
 		}
 		
-		private function isDone(v:Vector.<Point>) : Boolean {
-			if(v.length <= 2) {
+		private function isDone(v:Vector.<Point>) : Boolean
+		{
+			if(v.length <= 2)
+			{
 				return false;
 			}
-			if(v[0].x == v[v.length - 1].x && v[0].y == v[v.length - 1].y) {
+			if(v[0].x == v[v.length - 1].x && v[0].y == v[v.length - 1].y)
+			{
 				return true;
 			}
 			return false;
 		}
 		
-		private function removeNarrows(v:Vector.<Point>) : void {
-			var _local3:int = 0;
-			var _local2:int = 0;
-			var _local4:int = 0;
-			_local4 = v.length - 1;
-			while(_local4 > -1) {
-				_local3 = _local4 - 1;
-				_local2 = _local4 + 1;
-				if(_local3 < 0) {
-					_local3 = v.length + _local3;
+		private function removeNarrows(v:Vector.<Point>) : void
+		{
+			var _loc2_:int = 0;
+			var _loc3_:int = 0;
+			var _loc4_:int = 0;
+			_loc4_ = v.length - 1;
+			while(_loc4_ > -1)
+			{
+				_loc2_ = _loc4_ - 1;
+				_loc3_ = _loc4_ + 1;
+				if(_loc2_ < 0)
+				{
+					_loc2_ = v.length + _loc2_;
 				}
-				if(_local2 >= v.length) {
-					_local2 -= v.length;
+				if(_loc3_ >= v.length)
+				{
+					_loc3_ -= v.length;
 				}
-				if(v[_local3].x == v[_local2].x && v[_local3].y == v[_local2].y) {
-					v.splice(_local4,1);
+				if(v[_loc2_].x == v[_loc3_].x && v[_loc2_].y == v[_loc3_].y)
+				{
+					v.splice(_loc4_,1);
 				}
-				_local4--;
+				_loc4_--;
 			}
 		}
 		
-		private function postProccessEdge(v:Vector.<Point>) : void {
-			var _local2:int = 0;
-			var _local4:Boolean = false;
-			var _local6:int = 0;
-			var _local3:Vector.<int> = Vector.<int>([1,3,5,7,0,2,4,6]);
-			_local6 = 1;
-			while(_local6 < v.length - 1) {
-				if(v[_local6].x != 0 && v[_local6].x != 130 - 1) {
-					_local4 = false;
-					for each(var _local5:* in _local3) {
-						if(v[_local6].y == 45 - 1 || v[_local6].y == 0) {
-							v[_local6].x += 0.01 * (-40 + r.random(80));
-							v[_local6].y += 0.01 * (-40 + r.random(80));
-							_local4 = true;
-						} else if(!_local4 && m[v[_local6].x + directions[_local5][0]][v[_local6].y + directions[_local5][1]] == 0) {
-							v[_local6].x += 0.01 * directions[_local5][0] * (10 + r.random(30)) + 0.01 * (-10 + r.random(20));
-							v[_local6].y += 0.01 * directions[_local5][1] * (10 + r.random(30)) + 0.01 * (-10 + r.random(20));
-							_local4 = true;
-						} else if(!_local4 && m[v[_local6].x + directions[_local5][0]][v[_local6].y + directions[_local5][1]] != m[v[_local6].x][v[_local6].y] && m[v[_local6].x + directions[_local5][0]][v[_local6].y + directions[_local5][1]] > 0) {
-							v[_local6].x += 0.01 * directions[_local5][0] * (30 + r.random(0));
-							v[_local6].y += 0.01 * directions[_local5][1] * (30 + r.random(0));
-							_local4 = true;
+		private function postProccessEdge(v:Vector.<Point>) : void
+		{
+			var _loc2_:int = 0;
+			var _loc5_:Boolean = false;
+			var _loc3_:int = 0;
+			var _loc6_:Vector.<int> = Vector.<int>([1,3,5,7,0,2,4,6]);
+			_loc3_ = 1;
+			while(_loc3_ < v.length - 1)
+			{
+				if(v[_loc3_].x != 0 && v[_loc3_].x != 130 - 1)
+				{
+					_loc5_ = false;
+					for each(var _loc4_ in _loc6_)
+					{
+						if(v[_loc3_].y == 45 - 1 || v[_loc3_].y == 0)
+						{
+							v[_loc3_].x += 0.01 * (-40 + r.random(80));
+							v[_loc3_].y += 0.01 * (-40 + r.random(80));
+							_loc5_ = true;
+						}
+						else if(!_loc5_ && m[v[_loc3_].x + directions[_loc4_][0]][v[_loc3_].y + directions[_loc4_][1]] == 0)
+						{
+							v[_loc3_].x += 0.01 * directions[_loc4_][0] * (10 + r.random(30)) + 0.01 * (-10 + r.random(20));
+							v[_loc3_].y += 0.01 * directions[_loc4_][1] * (10 + r.random(30)) + 0.01 * (-10 + r.random(20));
+							_loc5_ = true;
+						}
+						else if(!_loc5_ && m[v[_loc3_].x + directions[_loc4_][0]][v[_loc3_].y + directions[_loc4_][1]] != m[v[_loc3_].x][v[_loc3_].y] && m[v[_loc3_].x + directions[_loc4_][0]][v[_loc3_].y + directions[_loc4_][1]] > 0)
+						{
+							v[_loc3_].x += 0.01 * directions[_loc4_][0] * (30 + r.random(0));
+							v[_loc3_].y += 0.01 * directions[_loc4_][1] * (30 + r.random(0));
+							_loc5_ = true;
 						}
 					}
 				}
-				_local6++;
+				_loc3_++;
 			}
 		}
 		
-		private function dist2(x1:int, y1:int, x2:int, y2:int) : int {
+		private function dist2(x1:int, y1:int, x2:int, y2:int) : int
+		{
 			return Math.max(Math.abs(x1 - x2),Math.abs(y1 - y2));
 		}
 		
-		private function dist(p1:Point, p2:Point) : Number {
+		private function dist(p1:Point, p2:Point) : Number
+		{
 			return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
 		}
 		
-		private function findClosesPoint(p1:Point, v1:Vector.<Point>) : Point {
-			var _local3:Number = NaN;
-			var _local7:* = 16900;
-			var _local6:* = null;
-			for each(var _local5:* in shell) {
-				if(_local5 != v1) {
-					for each(var _local4:* in _local5) {
-						if(_local4.x != 0 && _local4.y != 0 && _local4.x != 130 - 1 && _local4.y != 45 - 1) {
-							_local3 = dist(p1,_local4);
-							if(_local3 < _local7) {
-								_local7 = _local3;
-								_local6 = _local4;
+		private function findClosesPoint(p1:Point, v1:Vector.<Point>) : Point
+		{
+			var _loc4_:Number = NaN;
+			var _loc7_:* = 16900;
+			var _loc5_:* = null;
+			for each(var _loc6_ in shell)
+			{
+				if(_loc6_ != v1)
+				{
+					for each(var _loc3_ in _loc6_)
+					{
+						if(_loc3_.x != 0 && _loc3_.y != 0 && _loc3_.x != 130 - 1 && _loc3_.y != 45 - 1)
+						{
+							_loc4_ = dist(p1,_loc3_);
+							if(_loc4_ < _loc7_)
+							{
+								_loc7_ = _loc4_;
+								_loc5_ = _loc3_;
 							}
 						}
 					}
 				}
 			}
-			return _local6;
+			return _loc5_;
 		}
 		
-		private function postProccessShells(treshhold:Number) : void {
-			var _local3:* = null;
-			for each(var _local2:* in shell) {
-				for each(var _local4:* in _local2) {
-					if(_local4.x != 0 && _local4.y != 0 && _local4.x != 130 - 1 && _local4.y != 45 - 1) {
-						_local3 = findClosesPoint(_local4,_local2);
-						if(dist(_local4,_local3) < treshhold) {
-							_local4.x = (_local4.x + _local3.x) / 2;
-							_local4.y = (_local4.y + _local3.y) / 2;
-							_local3 = _local4;
+		private function postProccessShells(treshhold:Number) : void
+		{
+			var _loc3_:* = null;
+			for each(var _loc4_ in shell)
+			{
+				for each(var _loc2_ in _loc4_)
+				{
+					if(_loc2_.x != 0 && _loc2_.y != 0 && _loc2_.x != 130 - 1 && _loc2_.y != 45 - 1)
+					{
+						_loc3_ = findClosesPoint(_loc2_,_loc4_);
+						if(dist(_loc2_,_loc3_) < treshhold)
+						{
+							_loc2_.x = (_loc2_.x + _loc3_.x) / 2;
+							_loc2_.y = (_loc2_.y + _loc3_.y) / 2;
+							_loc3_ = _loc2_;
 						}
 					}
 				}
 			}
-			for each(_local2 in shell) {
-				removeNarrows(_local2);
+			for each(_loc4_ in shell)
+			{
+				removeNarrows(_loc4_);
 			}
 		}
 		
-		private function createMatrix(n:int, m:int) : Vector.<Vector.<int>> {
-			var _local3:* = undefined;
-			var _local6:int = 0;
-			var _local5:int = 0;
-			var _local4:Vector.<Vector.<int>> = new Vector.<Vector.<int>>();
-			_local6 = 0;
-			while(_local6 < n) {
-				_local3 = new Vector.<int>();
-				_local5 = 0;
-				while(_local5 < m) {
-					_local3.push(0);
-					_local5++;
+		private function createMatrix(n:int, m:int) : Vector.<Vector.<int>>
+		{
+			var _loc6_:* = undefined;
+			var _loc3_:int = 0;
+			var _loc4_:int = 0;
+			var _loc5_:Vector.<Vector.<int>> = new Vector.<Vector.<int>>();
+			_loc3_ = 0;
+			while(_loc3_ < n)
+			{
+				_loc6_ = new Vector.<int>();
+				_loc4_ = 0;
+				while(_loc4_ < m)
+				{
+					_loc6_.push(0);
+					_loc4_++;
 				}
-				_local4.push(_local3);
-				_local6++;
+				_loc5_.push(_loc6_);
+				_loc3_++;
 			}
-			return _local4;
+			return _loc5_;
 		}
 	}
 }

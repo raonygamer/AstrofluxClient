@@ -1,7 +1,9 @@
-package sound {
+package sound
+{
 	import playerio.Client;
 	
-	public interface ISound {
+	public interface ISound
+	{
 		function load(items:Array) : void;
 		
 		function get percLoaded() : int;

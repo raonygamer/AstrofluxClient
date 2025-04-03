@@ -1,4 +1,5 @@
-package core.states.gameStates {
+package core.states.gameStates
+{
 	import core.hud.components.Button;
 	import core.hud.components.Text;
 	import core.scene.Game;
@@ -18,28 +19,48 @@ package core.states.gameStates {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class SettingsGeneral extends Sprite {
+	public class SettingsGeneral extends Sprite
+	{
 		private static const START_HEIGHT:int = 20;
+		
 		private static const START_WIDTH:int = 50;
+		
 		private var g:Game;
+		
 		private var currentHeight:Number = 20;
+		
 		private var currentWidth:Number = 50;
+		
 		private var settings:Settings;
+		
 		private var musicSlider:Slider;
+		
 		private var effectSlider:Slider;
+		
 		private var showHud:Check;
+		
 		private var showEffects:Check;
+		
 		private var showLatency:Check;
+		
 		private var showBackground:Check;
+		
 		private var mouseAim:Check;
+		
 		private var keyboardAim:Check;
+		
 		private var rotationSlider:Slider;
+		
 		private var rotationSpeedText:Text;
+		
 		private var iWantAllTimedMissions:Check;
+		
 		private var fireWithHotkeys:Check;
+		
 		private var scrollArea:ScrollContainer;
 		
-		public function SettingsGeneral(g:Game) {
+		public function SettingsGeneral(g:Game)
+		{
 			super();
 			this.g = g;
 			this.settings = SceneBase.settings;
@@ -52,63 +73,74 @@ package core.states.gameStates {
 			addChild(scrollArea);
 		}
 		
-		private function initComponents() : void {
+		private function initComponents() : void
+		{
 			var rotationValue:Number;
-			if(g.me.isTranslator || g.me.isDeveloper) {
+			if(g.me.isTranslator || g.me.isDeveloper)
+			{
 				addLanguage();
 			}
 			musicSlider = new Slider();
 			addSlider(musicSlider,settings.musicVolume,Localize.t("Music Volume"));
-			musicSlider.addEventListener("change",function(param1:Event):void {
+			musicSlider.addEventListener("change",function(param1:Event):void
+			{
 				settings.musicVolume = musicSlider.value;
 			});
 			effectSlider = new Slider();
 			addSlider(effectSlider,settings.effectVolume,Localize.t("Effect Volume"));
-			effectSlider.addEventListener("change",function(param1:Event):void {
+			effectSlider.addEventListener("change",function(param1:Event):void
+			{
 				settings.effectVolume = effectSlider.value;
 			});
 			showHud = new Check();
 			showHud.isSelected = settings.showHud;
-			showHud.addEventListener("change",function(param1:Event):void {
+			showHud.addEventListener("change",function(param1:Event):void
+			{
 				settings.showHud = showHud.isSelected;
 			});
 			addCheckbox(showHud,Localize.t("Show Hud"));
 			showLatency = new Check();
 			showLatency.isSelected = settings.showLatency;
-			showLatency.addEventListener("change",function(param1:Event):void {
+			showLatency.addEventListener("change",function(param1:Event):void
+			{
 				settings.showLatency = showLatency.isSelected;
 			});
 			addCheckbox(showLatency,Localize.t("Show Latency/fps"));
 			showEffects = new Check();
 			showEffects.isSelected = settings.showEffects;
-			showEffects.addEventListener("change",function(param1:Event):void {
+			showEffects.addEventListener("change",function(param1:Event):void
+			{
 				settings.showEffects = showEffects.isSelected;
 				g.toggleHighGraphics(settings.showEffects);
 			});
 			addCheckbox(showEffects,Localize.t("High graphic settings <font color=\'#a1a1a1\'>(uncheck for better performance)</font>"));
 			showBackground = new Check();
 			showBackground.isSelected = settings.showBackground;
-			showBackground.addEventListener("change",function(param1:Event):void {
+			showBackground.addEventListener("change",function(param1:Event):void
+			{
 				settings.showBackground = showBackground.isSelected;
 				g.parallaxManager.refresh();
 			});
 			addCheckbox(showBackground,Localize.t("Show Background <font color=\'#a1a1a1\'>(uncheck for better performance)</font>"));
 			mouseAim = new Check();
 			mouseAim.isSelected = !settings.mouseAim;
-			mouseAim.addEventListener("change",function(param1:Event):void {
+			mouseAim.addEventListener("change",function(param1:Event):void
+			{
 				settings.mouseAim = !mouseAim.isSelected;
 			});
 			addCheckbox(mouseAim,Localize.t("Disable Mouse Aim"));
 			fireWithHotkeys = new Check();
 			fireWithHotkeys.isSelected = settings.fireWithHotkeys;
-			fireWithHotkeys.addEventListener("change",function(param1:Event):void {
+			fireWithHotkeys.addEventListener("change",function(param1:Event):void
+			{
 				settings.fireWithHotkeys = fireWithHotkeys.isSelected;
 			});
 			addCheckbox(fireWithHotkeys,Localize.t("Fire with Weapon Hotkeys"));
 			rotationSlider = new Slider();
 			rotationValue = (settings.rotationSpeed - 0.75) * 2;
 			addSlider(rotationSlider,rotationValue,Localize.t("Player Rotation Speed"));
-			rotationSlider.addEventListener("change",function(param1:Event):void {
+			rotationSlider.addEventListener("change",function(param1:Event):void
+			{
 				settings.rotationSpeed = 0.75 + 0.5 * rotationSlider.value;
 				rotationSpeedText.text = settings.rotationSpeed.toFixed(2);
 			});
@@ -117,13 +149,15 @@ package core.states.gameStates {
 			scrollArea.addChild(rotationSpeedText);
 			iWantAllTimedMissions = new Check();
 			iWantAllTimedMissions.isSelected = settings.iWantAllTimedMissions;
-			iWantAllTimedMissions.addEventListener("change",function(param1:Event):void {
+			iWantAllTimedMissions.addEventListener("change",function(param1:Event):void
+			{
 				settings.iWantAllTimedMissions = iWantAllTimedMissions.isSelected;
 			});
 			addCheckbox(iWantAllTimedMissions,Localize.t("I want all timed missions."));
 		}
 		
-		private function addLanguage() : void {
+		private function addLanguage() : void
+		{
 			var selectedIndex:int;
 			var i:int;
 			var item:Object;
@@ -133,32 +167,37 @@ package core.states.gameStates {
 			list.dataProvider = new ListCollection([{"text":"en"},{"text":"de"},{"text":"fr"},{"text":"es"},{"text":"ru"},{"text":"uk"},{"text":"nl"},{"text":"sv"},{"text":"pe"}]);
 			selectedIndex = 0;
 			i = 0;
-			while(i < list.dataProvider.length) {
+			while(i < list.dataProvider.length)
+			{
 				item = list.dataProvider.getItemAt(i);
-				if(item.text == Localize.language) {
+				if(item.text == Localize.language)
+				{
 					selectedIndex = i;
 				}
 				i++;
 			}
 			list.selectedIndex = selectedIndex;
-			list.listProperties.itemRendererFactory = function():IListItemRenderer {
-				var _local1:DefaultListItemRenderer = new DefaultListItemRenderer();
-				_local1.labelField = "text";
-				_local1.height = 25;
-				return _local1;
+			list.listProperties.itemRendererFactory = function():IListItemRenderer
+			{
+				var _loc1_:DefaultListItemRenderer = new DefaultListItemRenderer();
+				_loc1_.labelField = "text";
+				_loc1_.height = 25;
+				return _loc1_;
 			};
 			list.prompt = "Select language";
 			list.typicalItem = {"text":"Select an Item"};
 			list.labelField = "text";
-			list.addEventListener("change",function(param1:Event):void {
-				var _local3:PickerList = PickerList(param1.currentTarget);
-				var _local2:Object = _local3.selectedItem;
-				Localize.language = _local2.text;
+			list.addEventListener("change",function(param1:Event):void
+			{
+				var _loc3_:PickerList = PickerList(param1.currentTarget);
+				var _loc2_:Object = _loc3_.selectedItem;
+				Localize.language = _loc2_.text;
 			});
 			list.x = currentWidth;
 			list.y = currentHeight;
 			scrollArea.addChild(list);
-			b = new Button(function(param1:TouchEvent):void {
+			b = new Button(function(param1:TouchEvent):void
+			{
 				Localize.activateLanguageSelection = true;
 				g.reloadTexts();
 			},"Reload texts");
@@ -168,7 +207,8 @@ package core.states.gameStates {
 			currentHeight += 60;
 		}
 		
-		private function addQualitySlider() : void {
+		private function addQualitySlider() : void
+		{
 			var labelText:Text;
 			var descText:Text;
 			var slider:Slider = new Slider();
@@ -185,7 +225,8 @@ package core.states.gameStates {
 			slider.x = labelText.x + labelText.width + 10;
 			slider.y = currentHeight;
 			descText = new Text();
-			switch(slider.value) {
+			switch(slider.value)
+			{
 				case 0:
 					RymdenRunt.s.nativeStage.quality = "low";
 					RymdenRunt.s.antiAliasing = 0;
@@ -218,16 +259,19 @@ package core.states.gameStates {
 			}
 			descText.y = currentHeight;
 			descText.x = slider.x + slider.width;
-			if(slider.x < 200) {
+			if(slider.x < 200)
+			{
 				slider.x = 200;
 			}
 			scrollArea.addChild(labelText);
 			scrollArea.addChild(slider);
 			scrollArea.addChild(descText);
 			currentHeight += 40;
-			slider.addEventListener("change",function(param1:Event):void {
+			slider.addEventListener("change",function(param1:Event):void
+			{
 				settings.quality = slider.value;
-				switch(slider.value) {
+				switch(slider.value)
+				{
 					case 0:
 						RymdenRunt.s.nativeStage.quality = "low";
 						RymdenRunt.s.antiAliasing = 0;
@@ -261,36 +305,39 @@ package core.states.gameStates {
 			});
 		}
 		
-		private function addCheckbox(check:Check, label:String) : void {
-			var _local3:Text = new Text();
-			_local3.htmlText = label;
-			_local3.y = currentHeight;
-			_local3.x = currentWidth + 30;
+		private function addCheckbox(check:Check, label:String) : void
+		{
+			var _loc3_:Text = new Text();
+			_loc3_.htmlText = label;
+			_loc3_.y = currentHeight;
+			_loc3_.x = currentWidth + 30;
 			check.x = currentWidth;
 			check.y = currentHeight - 4;
 			check.useHandCursor = true;
-			scrollArea.addChild(_local3);
+			scrollArea.addChild(_loc3_);
 			scrollArea.addChild(check);
 			currentHeight += 40;
 		}
 		
-		private function addSlider(slider:Slider, value:Number, label:String) : void {
+		private function addSlider(slider:Slider, value:Number, label:String) : void
+		{
 			slider.minimum = 0;
 			slider.maximum = 1;
 			slider.step = 0.1;
 			slider.value = value;
 			slider.direction = "horizontal";
 			slider.useHandCursor = true;
-			var _local4:Text = new Text();
-			_local4.htmlText = label;
-			_local4.y = currentHeight;
-			_local4.x = currentWidth;
-			slider.x = _local4.x + _local4.width + 10;
+			var _loc4_:Text = new Text();
+			_loc4_.htmlText = label;
+			_loc4_.y = currentHeight;
+			_loc4_.x = currentWidth;
+			slider.x = _loc4_.x + _loc4_.width + 10;
 			slider.y = currentHeight;
-			if(slider.x < 200) {
+			if(slider.x < 200)
+			{
 				slider.x = 200;
 			}
-			scrollArea.addChild(_local4);
+			scrollArea.addChild(_loc4_);
 			scrollArea.addChild(slider);
 			currentHeight += 40;
 		}

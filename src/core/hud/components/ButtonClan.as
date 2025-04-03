@@ -1,4 +1,5 @@
-package core.hud.components {
+package core.hud.components
+{
 	import core.clan.PlayerClanLogo;
 	import core.scene.Game;
 	import core.scene.SceneBase;
@@ -10,13 +11,18 @@ package core.hud.components {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class ButtonClan extends ButtonHud {
+	public class ButtonClan extends ButtonHud
+	{
 		private var g:Game;
+		
 		private var troonsPerMinute:TextField;
+		
 		private var clanLogo:Image;
+		
 		private var troonIcon:Image;
 		
-		public function ButtonClan(clickCallback:Function, g:Game) {
+		public function ButtonClan(clickCallback:Function, g:Game)
+		{
 			var textureManager:ITextureManager;
 			var playerClanLogo:PlayerClanLogo;
 			var keyBinds:KeyBinds;
@@ -29,11 +35,15 @@ package core.hud.components {
 			troonsPerMinute.batchable = true;
 			troonsPerMinute.y = 4;
 			addChild(troonsPerMinute);
-			playerClanLogo = new PlayerClanLogo(g,g.me,function(param1:Boolean = true):void {
-				if(param1) {
+			playerClanLogo = new PlayerClanLogo(g,g.me,function(param1:Boolean = true):void
+			{
+				if(param1)
+				{
 					clanLogo = new Image(g.me.clanLogo.texture);
 					clanLogo.color = g.me.clanLogoColor;
-				} else {
+				}
+				else
+				{
 					clanLogo = new Image(textureManager.getTextureGUIByTextureName("clan_logo1"));
 					clanLogo.color = 0x666666;
 				}
@@ -49,22 +59,27 @@ package core.hud.components {
 				updateTroons();
 			});
 			keyBinds = SceneBase.settings.keybinds;
-			if(g.me.clanId == "") {
+			if(g.me.clanId == "")
+			{
 				new ToolTip(g,this,Localize.t("Click here to join or create a clan."));
-			} else {
+			}
+			else
+			{
 				new ToolTip(g,this,Localize.t("Your clan: troons / minute from planet wars. <FONT COLOR=\'#44FF44\'>[key]</FONT>").replace("[key]",keyBinds.getKeyChar(0)));
 			}
 			addChild(playerClanLogo);
 		}
 		
-		public function updateTroons() : void {
-			var _local1:int = g.controlZoneManager.getTotalTroonsPerMinute(g.me.clanId);
-			if(clanLogo == null) {
+		public function updateTroons() : void
+		{
+			var _loc1_:int = g.controlZoneManager.getTotalTroonsPerMinute(g.me.clanId);
+			if(clanLogo == null)
+			{
 				return;
 			}
 			clanLogo.x = 4;
 			troonIcon.x = width - 4 - troonIcon.width;
-			troonsPerMinute.text = Util.formatAmount(_local1) + "/" + Localize.t("m");
+			troonsPerMinute.text = Util.formatAmount(_loc1_) + "/" + Localize.t("m");
 			troonsPerMinute.x = troonIcon.x - 2 - troonsPerMinute.width;
 		}
 	}

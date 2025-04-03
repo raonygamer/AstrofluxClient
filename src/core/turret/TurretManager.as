@@ -1,178 +1,224 @@
-package core.turret {
+package core.turret
+{
 	import core.scene.Game;
 	import debug.Console;
 	import playerio.Message;
 	
-	public class TurretManager {
+	public class TurretManager
+	{
 		public var turrets:Vector.<Turret>;
+		
 		private var g:Game;
 		
-		public function TurretManager(g:Game) {
+		public function TurretManager(g:Game)
+		{
 			super();
 			this.g = g;
 			turrets = new Vector.<Turret>();
 		}
 		
-		public function addMessageHandlers() : void {
+		public function addMessageHandlers() : void
+		{
 			g.addMessageHandler("turretChangedTarget",turretChangedTarget);
 			g.addMessageHandler("turretUpdate",onTurretUpdate);
 		}
 		
-		public function addEarlyMessageHandlers() : void {
+		public function addEarlyMessageHandlers() : void
+		{
 			g.addMessageHandler("turretKilled",killed);
 		}
 		
-		public function syncTurret(m:Message, index:int, stopIndex:int) : void {
-			var _local5:* = 0;
-			var _local4:Turret = null;
-			_local5 = index;
-			while(_local5 < stopIndex) {
-				_local4 = getTurretsByParentAndSyncId(m.getInt(_local5),m.getInt(_local5 + 1));
-				if(_local4 == null || _local4.isBossUnit) {
+		public function syncTurret(m:Message, index:int, stopIndex:int) : void
+		{
+			var _loc5_:* = 0;
+			var _loc4_:Turret = null;
+			_loc5_ = index;
+			while(_loc5_ < stopIndex)
+			{
+				_loc4_ = getTurretsByParentAndSyncId(m.getInt(_loc5_),m.getInt(_loc5_ + 1));
+				if(_loc4_ == null || _loc4_.isBossUnit)
+				{
 					Console.write("Turret is null, failed sync.");
-				} else {
-					_local4.id = m.getInt(_local5 + 2);
-					_local4.alive = m.getBoolean(_local5 + 3);
-					g.unitManager.add(_local4,g.canvasTurrets,false);
 				}
-				_local5 += 5;
+				else
+				{
+					_loc4_.id = m.getInt(_loc5_ + 2);
+					_loc4_.alive = m.getBoolean(_loc5_ + 3);
+					g.unitManager.add(_loc4_,g.canvasTurrets,false);
+				}
+				_loc5_ += 5;
 			}
 		}
 		
-		public function syncTurretTarget(m:Message, startIndex:int, endIndex:int) : void {
-			var _local5:* = 0;
-			var _local4:Turret = null;
-			_local5 = startIndex;
-			while(_local5 < endIndex - 3) {
-				_local4 = getTurretById(m.getInt(_local5));
-				if(_local4 != null) {
-					_local4.target = g.shipManager.getShipFromId(m.getInt(_local5 + 1));
-					_local4.rotation = m.getNumber(_local5 + 2);
-					if(_local4.weapon != null) {
-						_local4.weapon.fire = m.getBoolean(_local5 + 3);
+		public function syncTurretTarget(m:Message, startIndex:int, endIndex:int) : void
+		{
+			var _loc5_:* = 0;
+			var _loc4_:Turret = null;
+			_loc5_ = startIndex;
+			while(_loc5_ < endIndex - 3)
+			{
+				_loc4_ = getTurretById(m.getInt(_loc5_));
+				if(_loc4_ != null)
+				{
+					_loc4_.target = g.shipManager.getShipFromId(m.getInt(_loc5_ + 1));
+					_loc4_.rotation = m.getNumber(_loc5_ + 2);
+					if(_loc4_.weapon != null)
+					{
+						_loc4_.weapon.fire = m.getBoolean(_loc5_ + 3);
 					}
-				} else {
-					Console.write("ERROR: Missing turret with id: " + m.getInt(_local5));
 				}
-				_local5 += 4;
+				else
+				{
+					Console.write("ERROR: Missing turret with id: " + m.getInt(_loc5_));
+				}
+				_loc5_ += 4;
 			}
 		}
 		
-		public function turretChangedTarget(m:Message) : void {
-			var _local3:int = 0;
-			var _local2:Turret = null;
-			_local3 = 0;
-			while(_local3 < m.length) {
-				_local2 = getTurretById(m.getInt(_local3));
-				if(_local2 != null) {
-					_local2.target = g.shipManager.getShipFromId(m.getInt(_local3 + 1));
-				} else {
-					Console.write("Error bad turret id: " + m.getInt(_local3 + 1));
+		public function turretChangedTarget(m:Message) : void
+		{
+			var _loc3_:int = 0;
+			var _loc2_:Turret = null;
+			_loc3_ = 0;
+			while(_loc3_ < m.length)
+			{
+				_loc2_ = getTurretById(m.getInt(_loc3_));
+				if(_loc2_ != null)
+				{
+					_loc2_.target = g.shipManager.getShipFromId(m.getInt(_loc3_ + 1));
 				}
-				_local3 += 2;
+				else
+				{
+					Console.write("Error bad turret id: " + m.getInt(_loc3_ + 1));
+				}
+				_loc3_ += 2;
 			}
 		}
 		
-		private function onTurretUpdate(m:Message) : void {
-			var _local3:int = 0;
-			var _local2:Turret = getTurretById(m.getInt(_local3++));
-			if(_local2 == null) {
+		private function onTurretUpdate(m:Message) : void
+		{
+			var _loc3_:int = 0;
+			var _loc2_:Turret = getTurretById(m.getInt(_loc3_++));
+			if(_loc2_ == null)
+			{
 				return;
 			}
-			_local2.hp = m.getInt(_local3++);
-			_local2.shieldHp = m.getInt(_local3++);
-			if(_local2.hp < _local2.hpMax || _local2.shieldHp < _local2.shieldHpMax) {
-				_local2.isInjured = true;
+			_loc2_.hp = m.getInt(_loc3_++);
+			_loc2_.shieldHp = m.getInt(_loc3_++);
+			if(_loc2_.hp < _loc2_.hpMax || _loc2_.shieldHp < _loc2_.shieldHpMax)
+			{
+				_loc2_.isInjured = true;
 			}
-			_local2.target = g.shipManager.getShipFromId(m.getInt(_local3++));
-			_local2.rotation = m.getNumber(_local3++);
-			if(_local2.weapon != null) {
-				_local2.weapon.fire = m.getBoolean(_local3++);
+			_loc2_.target = g.shipManager.getShipFromId(m.getInt(_loc3_++));
+			_loc2_.rotation = m.getNumber(_loc3_++);
+			if(_loc2_.weapon != null)
+			{
+				_loc2_.weapon.fire = m.getBoolean(_loc3_++);
 			}
 		}
 		
-		public function update() : void {
+		public function update() : void
+		{
 		}
 		
-		public function turretFire(m:Message, i:int = 0) : void {
-			var _local4:int = 0;
-			var _local3:int = m.getInt(i);
-			var _local6:Boolean = m.getBoolean(i + 1);
-			var _local5:Turret = g.turretManager.getTurretById(_local3);
-			if(_local5 != null && _local5.weapon != null) {
-				_local5.weapon.fire = _local6;
-				if(m.length > 2) {
-					_local4 = m.getInt(i + 2);
-					_local5.weapon.target = g.shipManager.getShipFromId(_local4);
+		public function turretFire(m:Message, i:int = 0) : void
+		{
+			var _loc3_:int = 0;
+			var _loc6_:int = m.getInt(i);
+			var _loc5_:Boolean = m.getBoolean(i + 1);
+			var _loc4_:Turret = g.turretManager.getTurretById(_loc6_);
+			if(_loc4_ != null && _loc4_.weapon != null)
+			{
+				_loc4_.weapon.fire = _loc5_;
+				if(m.length > 2)
+				{
+					_loc3_ = m.getInt(i + 2);
+					_loc4_.weapon.target = g.shipManager.getShipFromId(_loc3_);
 				}
 				return;
 			}
 		}
 		
-		public function getTurret() : Turret {
-			var _local1:Turret = new Turret(g);
-			_local1.reset();
-			turrets.push(_local1);
-			return _local1;
+		public function getTurret() : Turret
+		{
+			var _loc1_:Turret = new Turret(g);
+			_loc1_.reset();
+			turrets.push(_loc1_);
+			return _loc1_;
 		}
 		
-		public function removeTurret(t:Turret) : void {
+		public function removeTurret(t:Turret) : void
+		{
 			turrets.splice(turrets.indexOf(t),1);
 		}
 		
-		public function getTurretById(id:int) : Turret {
-			for each(var _local2:* in turrets) {
-				if(_local2.id == id) {
-					return _local2;
+		public function getTurretById(id:int) : Turret
+		{
+			for each(var _loc2_ in turrets)
+			{
+				if(_loc2_.id == id)
+				{
+					return _loc2_;
 				}
 			}
 			Console.write("Error: missing turret");
 			return null;
 		}
 		
-		public function getTurretsByParentAndSyncId(id:int, syncId:int) : Turret {
-			for each(var _local3:* in turrets) {
-				if(_local3.parentObj != null && _local3.parentObj.id == id && _local3.syncId == syncId) {
-					return _local3;
+		public function getTurretsByParentAndSyncId(id:int, syncId:int) : Turret
+		{
+			for each(var _loc3_ in turrets)
+			{
+				if(_loc3_.parentObj != null && _loc3_.parentObj.id == id && _loc3_.syncId == syncId)
+				{
+					return _loc3_;
 				}
 			}
 			Console.write("Error: missing turret in sync");
 			return null;
 		}
 		
-		public function damaged(m:Message, i:int) : void {
-			var _local3:int = m.getInt(i + 1);
-			var _local6:Turret = getTurretById(_local3);
-			if(_local6 == null) {
-				Console.write("No turret to damage by id: " + _local3);
+		public function damaged(m:Message, i:int) : void
+		{
+			var _loc5_:int = m.getInt(i + 1);
+			var _loc3_:Turret = getTurretById(_loc5_);
+			if(_loc3_ == null)
+			{
+				Console.write("No turret to damage by id: " + _loc5_);
 				return;
 			}
-			var _local4:int = m.getInt(i + 2);
-			var _local7:int = m.getInt(i + 3);
-			if(_local6.shieldHp == 0) {
-				if(_local6.shieldRegenCounter > -1000) {
-					_local6.shieldRegenCounter = -1000;
+			var _loc7_:int = m.getInt(i + 2);
+			var _loc6_:int = m.getInt(i + 3);
+			if(_loc3_.shieldHp == 0)
+			{
+				if(_loc3_.shieldRegenCounter > -1000)
+				{
+					_loc3_.shieldRegenCounter = -1000;
 				}
 			}
-			var _local5:int = m.getInt(i + 4);
-			if(m.getBoolean(i + 5)) {
-				_local6.doDOTEffect(m.getInt(i + 6),m.getString(i + 7),m.getInt(i + 8));
+			var _loc4_:int = m.getInt(i + 4);
+			if(m.getBoolean(i + 5))
+			{
+				_loc3_.doDOTEffect(m.getInt(i + 6),m.getString(i + 7),m.getInt(i + 8));
 			}
-			if(_local6.isAddedToCanvas) {
-				_local6.takeDamage(_local4);
+			if(_loc3_.isAddedToCanvas)
+			{
+				_loc3_.takeDamage(_loc7_);
 			}
-			_local6.shieldHp = _local7;
-			_local6.hp = _local5;
+			_loc3_.shieldHp = _loc6_;
+			_loc3_.hp = _loc4_;
 		}
 		
-		public function killed(m:Message, i:int) : void {
-			var _local3:int = m.getInt(i);
-			var _local4:Turret = getTurretById(_local3);
-			if(_local4 == null) {
-				Console.write("No turret to kill by id: " + _local3);
+		public function killed(m:Message, i:int) : void
+		{
+			var _loc4_:int = m.getInt(i);
+			var _loc3_:Turret = getTurretById(_loc4_);
+			if(_loc3_ == null)
+			{
+				Console.write("No turret to kill by id: " + _loc4_);
 				return;
 			}
-			_local4.destroy();
+			_loc3_.destroy();
 		}
 	}
 }

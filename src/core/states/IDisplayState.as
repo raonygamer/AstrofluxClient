@@ -1,5 +1,7 @@
-package core.states {
-	public interface IDisplayState {
+package core.states
+{
+	public interface IDisplayState
+	{
 		function enter() : void;
 		
 		function execute() : void;

@@ -1,25 +1,38 @@
-package movement {
+package movement
+{
 	import flash.geom.Point;
 	import generics.Util;
 	import playerio.Message;
 	
-	public class Heading {
+	public class Heading
+	{
 		public static const NR_OF_VARS:int = 10;
+		
 		public var time:Number = 0;
+		
 		public var pos:Point = new Point();
+		
 		public var rotation:Number = 0;
+		
 		public var speed:Point = new Point();
+		
 		public var rotateLeft:Boolean = false;
+		
 		public var rotateRight:Boolean = false;
+		
 		public var accelerate:Boolean = false;
+		
 		public var deaccelerate:Boolean = false;
+		
 		public var roll:Boolean = false;
 		
-		public function Heading() {
+		public function Heading()
+		{
 			super();
 		}
 		
-		public function parseMessage(m:Message, i:int) : int {
+		public function parseMessage(m:Message, i:int) : int
+		{
 			this.time = m.getNumber(i);
 			this.pos.x = 0.01 * m.getInt(i + 1);
 			this.pos.y = 0.01 * m.getInt(i + 2);
@@ -33,7 +46,8 @@ package movement {
 			return i + 10;
 		}
 		
-		public function populateMessage(m:Message) : Message {
+		public function populateMessage(m:Message) : Message
+		{
 			m.add(time);
 			m.add(pos.x);
 			m.add(pos.y);
@@ -47,27 +61,34 @@ package movement {
 			return m;
 		}
 		
-		public function almostEqual(h2:Heading) : Boolean {
-			var _local2:Number = 0.01;
-			if(Math.abs(this.pos.x - h2.pos.x) > _local2) {
+		public function almostEqual(h2:Heading) : Boolean
+		{
+			var _loc2_:Number = 0.01;
+			if(Math.abs(this.pos.x - h2.pos.x) > _loc2_)
+			{
 				return false;
 			}
-			if(Math.abs(this.pos.y - h2.pos.y) > _local2) {
+			if(Math.abs(this.pos.y - h2.pos.y) > _loc2_)
+			{
 				return false;
 			}
-			if(Math.abs(this.rotation - h2.rotation) > _local2) {
+			if(Math.abs(this.rotation - h2.rotation) > _loc2_)
+			{
 				return false;
 			}
-			if(Math.abs(this.speed.x - h2.speed.x) > _local2) {
+			if(Math.abs(this.speed.x - h2.speed.x) > _loc2_)
+			{
 				return false;
 			}
-			if(Math.abs(this.speed.y - h2.speed.y) > _local2) {
+			if(Math.abs(this.speed.y - h2.speed.y) > _loc2_)
+			{
 				return false;
 			}
 			return true;
 		}
 		
-		public function copy(heading:Heading) : void {
+		public function copy(heading:Heading) : void
+		{
 			this.time = heading.time;
 			this.pos.x = heading.pos.x;
 			this.pos.y = heading.pos.y;
@@ -80,14 +101,17 @@ package movement {
 			this.rotateRight = heading.rotateRight;
 		}
 		
-		public function clone() : Heading {
-			var _local1:Heading = new Heading();
-			_local1.copy(this);
-			return _local1;
+		public function clone() : Heading
+		{
+			var _loc1_:Heading = new Heading();
+			_loc1_.copy(this);
+			return _loc1_;
 		}
 		
-		public function runCommand(cmd:Command) : void {
-			switch(cmd.type) {
+		public function runCommand(cmd:Command) : void
+		{
+			switch(cmd.type)
+			{
 				case 0:
 					this.accelerate = cmd.active;
 					break;
@@ -108,11 +132,13 @@ package movement {
 			}
 		}
 		
-		public function toString() : String {
+		public function toString() : String
+		{
 			return "x:" + Util.formatDecimal(pos.x,1) + ", y:" + Util.formatDecimal(pos.y,1) + ", angle:" + Util.formatDecimal(rotation,1) + ", speedX:" + Util.formatDecimal(speed.x,1) + ", speedY:" + Util.formatDecimal(speed.y,1) + ", time:" + time;
 		}
 		
-		public function reset() : void {
+		public function reset() : void
+		{
 			this.time = 0;
 			this.pos.x = 0;
 			this.pos.y = 0;

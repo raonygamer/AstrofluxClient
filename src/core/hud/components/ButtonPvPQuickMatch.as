@@ -1,19 +1,28 @@
-package core.hud.components {
+package core.hud.components
+{
 	import core.queue.QueueInfoHolder;
 	import core.scene.Game;
 	import starling.display.Sprite;
 	import starling.events.TouchEvent;
 	
-	public class ButtonPvPQuickMatch extends Sprite {
+	public class ButtonPvPQuickMatch extends Sprite
+	{
 		private var joinQueue:ButtonPvP;
+		
 		private var leaveQueue:ButtonPvP;
+		
 		private var acceptQueue:ButtonPvP;
+		
 		private var tmpButton:ButtonPvP;
+		
 		private var type:String;
+		
 		private var queueInfo:QueueInfoHolder;
+		
 		private var g:Game;
 		
-		public function ButtonPvPQuickMatch(g:Game, type:String, qi:QueueInfoHolder, avilable:Boolean = true) {
+		public function ButtonPvPQuickMatch(g:Game, type:String, qi:QueueInfoHolder, avilable:Boolean = true)
+		{
 			this.g = g;
 			this.type = type;
 			queueInfo = qi;
@@ -26,91 +35,125 @@ package core.hud.components {
 			updateStatus();
 		}
 		
-		public function update() : void {
+		public function update() : void
+		{
 			updateStatus();
 		}
 		
-		private function updateStatus() : void {
-			if(queueInfo == null) {
+		private function updateStatus() : void
+		{
+			if(queueInfo == null)
+			{
 				return;
 			}
-			if(queueInfo.isWaiting) {
+			if(queueInfo.isWaiting)
+			{
 				tmpButton.setText1("");
 				tmpButton.setText2("Waiting",14);
-				if(contains(joinQueue)) {
+				if(contains(joinQueue))
+				{
 					removeChild(joinQueue);
 				}
-				if(contains(leaveQueue)) {
+				if(contains(leaveQueue))
+				{
 					removeChild(leaveQueue);
 				}
-				if(contains(acceptQueue)) {
+				if(contains(acceptQueue))
+				{
 					removeChild(acceptQueue);
 				}
-				if(!contains(tmpButton)) {
+				if(!contains(tmpButton))
+				{
 					addChild(tmpButton);
 				}
-			} else if(!queueInfo.isInQueue && !queueInfo.isReady) {
-				if(!contains(joinQueue)) {
+			}
+			else if(!queueInfo.isInQueue && !queueInfo.isReady)
+			{
+				if(!contains(joinQueue))
+				{
 					addChild(joinQueue);
 				}
-				if(contains(leaveQueue)) {
+				if(contains(leaveQueue))
+				{
 					removeChild(leaveQueue);
 				}
-				if(contains(acceptQueue)) {
+				if(contains(acceptQueue))
+				{
 					removeChild(acceptQueue);
 				}
-				if(contains(tmpButton)) {
+				if(contains(tmpButton))
+				{
 					removeChild(tmpButton);
 				}
 				joinQueue.enabled = true;
-			} else if(queueInfo.isInQueue && !queueInfo.isReady) {
+			}
+			else if(queueInfo.isInQueue && !queueInfo.isReady)
+			{
 				leaveQueue.setText1(queueInfo.getTime(),18);
 				leaveQueue.setText2("In Queue",14);
-				if(contains(joinQueue)) {
+				if(contains(joinQueue))
+				{
 					removeChild(joinQueue);
 				}
-				if(!contains(leaveQueue)) {
+				if(!contains(leaveQueue))
+				{
 					addChild(leaveQueue);
 				}
-				if(contains(acceptQueue)) {
+				if(contains(acceptQueue))
+				{
 					removeChild(acceptQueue);
 				}
-				if(contains(tmpButton)) {
+				if(contains(tmpButton))
+				{
 					removeChild(tmpButton);
 				}
 				leaveQueue.enabled = true;
-			} else {
+			}
+			else
+			{
 				acceptQueue.setText1(queueInfo.getTimeout(),18);
 				acceptQueue.setText2("Match Ready",10);
-				if(contains(joinQueue)) {
+				if(contains(joinQueue))
+				{
 					removeChild(joinQueue);
 				}
-				if(contains(leaveQueue)) {
+				if(contains(leaveQueue))
+				{
 					removeChild(leaveQueue);
 				}
-				if(!contains(acceptQueue)) {
+				if(!contains(acceptQueue))
+				{
 					addChild(acceptQueue);
 				}
-				if(contains(tmpButton)) {
+				if(contains(tmpButton))
+				{
 					removeChild(tmpButton);
 				}
 				acceptQueue.enabled = true;
 			}
 		}
 		
-		public function onPress() : void {
-			if(!queueInfo.isWaiting) {
-				if(!queueInfo.isInQueue && !queueInfo.isReady) {
+		public function onPress() : void
+		{
+			if(!queueInfo.isWaiting)
+			{
+				if(!queueInfo.isInQueue && !queueInfo.isReady)
+				{
 					join();
-				} else if(queueInfo.isInQueue && !queueInfo.isReady) {
+				}
+				else if(queueInfo.isInQueue && !queueInfo.isReady)
+				{
 					leave();
-				} else {
+				}
+				else
+				{
 					accept();
 				}
 			}
 		}
 		
-		private function join(e:TouchEvent = null) : void {
+		private function join(e:TouchEvent = null) : void
+		{
 			g.queueManager.removedFromAllQueues();
 			queueInfo.isWaiting = true;
 			updateStatus();
@@ -118,20 +161,23 @@ package core.hud.components {
 			Game.trackEvent("pvp","queue","joined",g.me.level);
 		}
 		
-		private function leave(e:TouchEvent = null) : void {
+		private function leave(e:TouchEvent = null) : void
+		{
 			queueInfo.isWaiting = true;
 			updateStatus();
 			g.sendToServiceRoom("tryLeaveQueue",type);
 		}
 		
-		private function accept(e:TouchEvent = null) : void {
+		private function accept(e:TouchEvent = null) : void
+		{
 			queueInfo.isWaiting = true;
 			queueInfo.accepted = true;
 			updateStatus();
 			g.sendToServiceRoom("acceptMatch",type);
 		}
 		
-		private function wait(e:TouchEvent) : void {
+		private function wait(e:TouchEvent) : void
+		{
 		}
 	}
 }

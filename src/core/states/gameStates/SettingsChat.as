@@ -1,4 +1,5 @@
-package core.states.gameStates {
+package core.states.gameStates
+{
 	import core.hud.components.Text;
 	import core.scene.Game;
 	import feathers.controls.Check;
@@ -9,14 +10,20 @@ package core.states.gameStates {
 	import starling.text.TextField;
 	import starling.text.TextFormat;
 	
-	public class SettingsChat extends Sprite {
+	public class SettingsChat extends Sprite
+	{
 		private static var labelFormat:TextFormat = new TextFormat("DAIDRR",13,0xffffff,"left");
+		
 		private var g:Game;
+		
 		private var xpos:int = 50;
+		
 		private var ypos:int = 0;
+		
 		private var scrollArea:ScrollContainer;
 		
-		public function SettingsChat(g:Game) {
+		public function SettingsChat(g:Game)
+		{
 			super();
 			this.g = g;
 			scrollArea = new ScrollContainer();
@@ -25,12 +32,12 @@ package core.states.gameStates {
 			scrollArea.width = 700;
 			scrollArea.height = 500;
 			addChild(scrollArea);
-			var _local2:Text = new Text();
-			_local2.htmlText = Localize.t("Active chat channels:");
-			_local2.size = 16;
-			_local2.y = ypos;
-			_local2.x = xpos;
-			scrollArea.addChild(_local2);
+			var _loc2_:Text = new Text();
+			_loc2_.htmlText = Localize.t("Active chat channels:");
+			_loc2_.size = 16;
+			_loc2_.y = ypos;
+			_loc2_.x = xpos;
+			scrollArea.addChild(_loc2_);
 			ypos += 40;
 			addChannel("system","System");
 			addChannel("local","Local");
@@ -44,13 +51,15 @@ package core.states.gameStates {
 			addChannel("loot","Loot found");
 		}
 		
-		private function addChannel(msgType:String, text:String) : void {
+		private function addChannel(msgType:String, text:String) : void
+		{
 			var label:TextField;
 			var check:Check = new Check();
 			check.x = xpos;
 			check.y = ypos;
 			check.isSelected = !g.messageLog.isMuted(msgType);
-			check.addEventListener("change",function(param1:Event):void {
+			check.addEventListener("change",function(param1:Event):void
+			{
 				g.messageLog.toggleMuted(msgType,!check.isSelected);
 			});
 			scrollArea.addChild(check);

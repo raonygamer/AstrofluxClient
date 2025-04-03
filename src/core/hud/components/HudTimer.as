@@ -1,17 +1,25 @@
-package core.hud.components {
+package core.hud.components
+{
 	import core.scene.Game;
 	import generics.Util;
 	import starling.display.Sprite;
 	
-	public class HudTimer extends Sprite {
+	public class HudTimer extends Sprite
+	{
 		private var time:Text;
+		
 		private var startTime:Number;
+		
 		private var finishTime:Number;
+		
 		private var g:Game;
+		
 		private var complete:Boolean;
+		
 		private var running:Boolean = false;
 		
-		public function HudTimer(g:Game, textSize:int = 11) {
+		public function HudTimer(g:Game, textSize:int = 11)
+		{
 			super();
 			this.g = g;
 			complete = false;
@@ -23,7 +31,8 @@ package core.hud.components {
 			time.height = 20;
 		}
 		
-		public function start(start:Number, finish:Number) : void {
+		public function start(start:Number, finish:Number) : void
+		{
 			startTime = start;
 			finishTime = finish;
 			addChild(time);
@@ -31,27 +40,32 @@ package core.hud.components {
 			running = true;
 		}
 		
-		public function stop() : void {
+		public function stop() : void
+		{
 			running = false;
 		}
 		
-		public function isComplete() : Boolean {
+		public function isComplete() : Boolean
+		{
 			return complete;
 		}
 		
-		public function update() : void {
-			if(!running) {
+		public function update() : void
+		{
+			if(!running)
+			{
 				return;
 			}
-			var _local2:Number = g.time - startTime;
-			var _local3:Number = finishTime - startTime;
-			var _local1:Number = _local3 - _local2;
-			if(_local1 <= 0) {
-				_local1 = 0;
+			var _loc2_:Number = g.time - startTime;
+			var _loc1_:Number = finishTime - startTime;
+			var _loc3_:Number = _loc1_ - _loc2_;
+			if(_loc3_ <= 0)
+			{
+				_loc3_ = 0;
 				running = false;
 				complete = true;
 			}
-			time.text = Util.getFormattedTime(_local1);
+			time.text = Util.getFormattedTime(_loc3_);
 		}
 	}
 }

@@ -1,4 +1,5 @@
-package core.hud.components.starMap {
+package core.hud.components.starMap
+{
 	import core.hud.components.Style;
 	import core.hud.components.TextBitmap;
 	import core.scene.Game;
@@ -15,46 +16,78 @@ package core.hud.components.starMap {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class SolarSystem extends Sprite {
+	public class SolarSystem extends Sprite
+	{
 		public static const EDITOR_TYPE_REGULAR:String = "regular";
+		
 		public static const EDITOR_TYPE_DEBUG:String = "debug";
+		
 		public static const EDITOR_TYPE_PVP:String = "pvp";
+		
 		public static const EDITOR_TYPE_PVP_DOMINATION:String = "pvp dom";
+		
 		public static const EDITOR_TYPE_PVP_DM:String = "pvp dm";
+		
 		public static const EDITOR_TYPE_PVP_ARENA:String = "pvp arena";
+		
 		public static const EDITOR_TYPE_INSTANCE:String = "instance";
+		
 		public static const START_SYSTEM:String = "HrAjOBivt0SHPYtxKyiB_Q";
+		
 		public var pvpLvlCap:int;
+		
 		public var pvpAboveCap:Boolean;
+		
 		private var _discovered:Boolean;
+		
 		private var _hovered:Boolean;
+		
 		private var _selected:Boolean;
+		
 		private var _currentSolarSystemKey:String;
+		
 		private var obj:Object;
+		
 		public var key:String;
+		
 		public var textureManager:ITextureManager;
+		
 		private var fractionText:TextBitmap;
+		
 		public var nameText:TextBitmap;
+		
 		private var _hasFriends:Boolean = false;
+		
 		private var _hasCrew:Boolean = false;
+		
 		private var destroyed:TextBitmap;
+		
 		private var iconCurrent:Image;
+		
 		private var iconSelected:Image;
+		
 		private var iconHover:Image;
+		
 		private var iconNormal:Image;
+		
 		private var friendBullet:Image;
+		
 		private var crewBullet:Image;
+		
 		public var isPvpSystemInEditor:Boolean;
+		
 		public var type:String;
+		
 		private var g:Game;
 		
-		public function SolarSystem(g:Game, obj:Object, key:String, discovered:Boolean = true, currentSolarSystemKey:String = "") {
-			var _local13:Number = NaN;
-			var _local12:Number = NaN;
-			var _local15:IDataManager = null;
-			var _local14:Object = null;
-			var _local6:Object = null;
-			var _local11:TextBitmap = null;
+		public function SolarSystem(g:Game, obj:Object, key:String, discovered:Boolean = true, currentSolarSystemKey:String = "")
+		{
+			var _loc9_:Number = NaN;
+			var _loc12_:Number = NaN;
+			var _loc15_:IDataManager = null;
+			var _loc7_:Object = null;
+			var _loc10_:Object = null;
+			var _loc8_:TextBitmap = null;
 			fractionText = new TextBitmap();
 			nameText = new TextBitmap();
 			destroyed = new TextBitmap();
@@ -69,7 +102,8 @@ package core.hud.components.starMap {
 			g.hud.uberStats.uberMaxLevel = obj.uberMaxLevel;
 			g.hud.uberStats.uberMinLevel = obj.uberMinLevel;
 			_currentSolarSystemKey = currentSolarSystemKey;
-			if(obj.hasOwnProperty("pvpLvlCap")) {
+			if(obj.hasOwnProperty("pvpLvlCap"))
+			{
 				pvpLvlCap = obj.pvpLvlCap;
 			}
 			crewBullet = new Image(textureManager.getTextureGUIByTextureName("bullet_crew"));
@@ -97,52 +131,62 @@ package core.hud.components.starMap {
 			x = obj.x;
 			y = obj.y;
 			this._discovered = discovered;
-			var _local7:Number = 0;
-			if(g != null && g.me != null) {
-				_local13 = 0;
-				_local12 = 0;
-				_local15 = DataLocator.getService();
-				_local14 = _local15.loadRange("Bodies","solarSystem",key);
-				for(var _local9:* in _local14) {
-					_local6 = _local14[_local9];
-					if(_local6.hasOwnProperty("exploreAreas")) {
-						for each(var _local10:* in _local6.exploreAreas) {
-							if(g.me.hasExploredArea(_local10)) {
-								_local13++;
+			var _loc11_:Number = 0;
+			if(g != null && g.me != null)
+			{
+				_loc9_ = 0;
+				_loc12_ = 0;
+				_loc15_ = DataLocator.getService();
+				_loc7_ = _loc15_.loadRange("Bodies","solarSystem",key);
+				for(var _loc13_ in _loc7_)
+				{
+					_loc10_ = _loc7_[_loc13_];
+					if(_loc10_.hasOwnProperty("exploreAreas"))
+					{
+						for each(var _loc6_ in _loc10_.exploreAreas)
+						{
+							if(g.me.hasExploredArea(_loc6_))
+							{
+								_loc9_++;
 							}
-							_local12++;
+							_loc12_++;
 						}
 					}
 				}
-				if(_local12 > 0) {
-					_local7 = _local13 / _local12 * 100;
+				if(_loc12_ > 0)
+				{
+					_loc11_ = _loc9_ / _loc12_ * 100;
 				}
 			}
-			var _local8:int = size >= 12 ? 12 : size;
+			var _loc14_:int = size >= 12 ? 12 : size;
 			nameText.text = obj.name;
 			nameText.size = 20;
-			nameText.scaleX = nameText.scaleY = 1 * (_local8 / 16);
+			nameText.scaleX = nameText.scaleY = 1 * (_loc14_ / 16);
 			nameText.x = size + 12;
 			nameText.y = -2;
 			nameText.center();
 			nameText.alignLeft();
-			if(obj.key == "ic3w-BxdMU6qWhX9t3_EaA") {
-				_local11 = new TextBitmap(nameText.x - 2,10,Localize.t("PvE battle area"),11);
-				_local11.format.color = Style.COLOR_H2;
-				addChild(_local11);
+			if(obj.key == "ic3w-BxdMU6qWhX9t3_EaA")
+			{
+				_loc8_ = new TextBitmap(nameText.x - 2,10,Localize.t("PvE battle area"),11);
+				_loc8_.format.color = Style.COLOR_H2;
+				addChild(_loc8_);
 			}
 			nameText.useHandCursor = false;
 			addChild(nameText);
-			if(type == "pvp" || obj.key == "ic3w-BxdMU6qWhX9t3_EaA") {
+			if(type == "pvp" || obj.key == "ic3w-BxdMU6qWhX9t3_EaA")
+			{
 				iconCurrent.color = Style.COLOR_HOSTILE;
 				iconSelected.color = Style.COLOR_HOSTILE;
 				iconHover.color = Style.COLOR_HOSTILE;
 				iconNormal.color = Style.COLOR_HOSTILE;
 				nameText.format.color = Style.COLOR_HOSTILE;
-			} else if(type == "regular") {
+			}
+			else if(type == "regular")
+			{
 				fractionText.size = 20;
-				fractionText.text = Util.formatDecimal(_local7).toString() + "%";
-				fractionText.scaleX = fractionText.scaleY = 1 * (_local8 / 16);
+				fractionText.text = Util.formatDecimal(_loc11_).toString() + "%";
+				fractionText.scaleX = fractionText.scaleY = 1 * (_loc14_ / 16);
 				fractionText.format.color = 0x787878;
 				fractionText.x = nameText.x + 2 + nameText.width;
 				fractionText.y = -2;
@@ -162,7 +206,8 @@ package core.hud.components.starMap {
 			draw();
 			addChild(destroyed);
 			blendMode = "add";
-			if(isDestroyed) {
+			if(isDestroyed)
+			{
 				return;
 			}
 			this.useHandCursor = true;
@@ -170,56 +215,69 @@ package core.hud.components.starMap {
 			addEventListener("removedFromStage",clean);
 		}
 		
-		public function set discovered(value:Boolean) : void {
+		public function set discovered(value:Boolean) : void
+		{
 			_discovered = value;
 			draw();
 		}
 		
-		public function get discovered() : Boolean {
+		public function get discovered() : Boolean
+		{
 			return _discovered;
 		}
 		
-		public function get destinations() : Array {
+		public function get destinations() : Array
+		{
 			return obj.destinations;
 		}
 		
-		public function set selected(value:Boolean) : void {
+		public function set selected(value:Boolean) : void
+		{
 			_selected = value;
 			draw();
 		}
 		
-		public function get size() : Number {
+		public function get size() : Number
+		{
 			return obj.size;
 		}
 		
-		public function get color() : uint {
+		public function get color() : uint
+		{
 			return obj.color;
 		}
 		
-		public function set hasFriends(v:Boolean) : void {
+		public function set hasFriends(v:Boolean) : void
+		{
 			_hasFriends = v;
 			draw();
 		}
 		
-		public function get hasFriends() : Boolean {
+		public function get hasFriends() : Boolean
+		{
 			return _hasFriends;
 		}
 		
-		public function set hasCrew(v:Boolean) : void {
+		public function set hasCrew(v:Boolean) : void
+		{
 			_hasCrew = v;
 			draw();
 		}
 		
-		public function get hasCrew() : Boolean {
+		public function get hasCrew() : Boolean
+		{
 			return _hasCrew;
 		}
 		
-		public function get galaxy() : String {
+		public function get galaxy() : String
+		{
 			return obj.galaxy;
 		}
 		
-		private function draw() : void {
-			if(obj.size == null || obj.color == null) {
+		private function draw() : void
+		{
+			if(obj.size == null || obj.color == null)
+			{
 				return;
 			}
 			iconCurrent.visible = false;
@@ -228,95 +286,125 @@ package core.hud.components.starMap {
 			iconSelected.visible = false;
 			friendBullet.visible = false;
 			crewBullet.visible = false;
-			if(isCurrentSolarSystem) {
+			if(isCurrentSolarSystem)
+			{
 				iconCurrent.visible = true;
-			} else if(_selected) {
+			}
+			else if(_selected)
+			{
 				iconSelected.visible = true;
-			} else if(_hovered) {
+			}
+			else if(_hovered)
+			{
 				iconHover.visible = true;
-			} else if(!_discovered) {
+			}
+			else if(!_discovered)
+			{
 				iconNormal.visible = true;
 				iconNormal.alpha = 0.2;
-			} else if(_discovered) {
+			}
+			else if(_discovered)
+			{
 				iconNormal.visible = true;
 				iconNormal.alpha = 1;
 			}
-			var _local2:Number = size + 14;
-			var _local1:Number = size + 10;
-			if(_hasFriends) {
+			var _loc1_:Number = size + 14;
+			var _loc2_:Number = size + 10;
+			if(_hasFriends)
+			{
 				friendBullet.visible = true;
-				friendBullet.x = _local2;
-				friendBullet.y = _local1;
-				_local2 += 14;
+				friendBullet.x = _loc1_;
+				friendBullet.y = _loc2_;
+				_loc1_ += 14;
 			}
-			if(_hasCrew) {
+			if(_hasCrew)
+			{
 				crewBullet.visible = true;
-				crewBullet.x = _local2;
-				crewBullet.y = _local1;
+				crewBullet.x = _loc1_;
+				crewBullet.y = _loc2_;
 			}
-			if(isDestroyed) {
+			if(isDestroyed)
+			{
 				destroyed.visible = true;
 			}
 		}
 		
-		public function get isDestroyed() : Boolean {
-			if(key == "DrMy6JjyO0OI0ui7c80bNw" && !isCurrentSolarSystem) {
+		public function get isDestroyed() : Boolean
+		{
+			if(key == "DrMy6JjyO0OI0ui7c80bNw" && !isCurrentSolarSystem)
+			{
 				return true;
 			}
 			return false;
 		}
 		
-		private function mClick(e:TouchEvent) : void {
-			if(isDestroyed) {
+		private function mClick(e:TouchEvent) : void
+		{
+			if(isDestroyed)
+			{
 				e.stopPropagation();
 				return;
 			}
 			_selected = true;
-			var _local2:ISound = SoundLocator.getService();
-			_local2.play("3hVYqbNNSUWoDGk_pK1BdQ");
+			var _loc2_:ISound = SoundLocator.getService();
+			_loc2_.play("3hVYqbNNSUWoDGk_pK1BdQ");
 			draw();
 		}
 		
-		private function mOver(e:TouchEvent) : void {
-			if(isDestroyed) {
+		private function mOver(e:TouchEvent) : void
+		{
+			if(isDestroyed)
+			{
 				return;
 			}
 			_hovered = true;
 			draw();
 		}
 		
-		private function mOut(e:TouchEvent) : void {
-			if(isDestroyed) {
+		private function mOut(e:TouchEvent) : void
+		{
+			if(isDestroyed)
+			{
 				return;
 			}
 			_hovered = false;
 			draw();
 		}
 		
-		public function get dev() : Boolean {
+		public function get dev() : Boolean
+		{
 			return obj.dev;
 		}
 		
-		public function get isCurrentSolarSystem() : Boolean {
+		public function get isCurrentSolarSystem() : Boolean
+		{
 			return key == _currentSolarSystemKey;
 		}
 		
-		private function onTouch(e:TouchEvent) : void {
-			if(e.getTouch(this,"ended")) {
+		private function onTouch(e:TouchEvent) : void
+		{
+			if(e.getTouch(this,"ended"))
+			{
 				mClick(e);
-			} else if(e.interactsWith(this)) {
+			}
+			else if(e.interactsWith(this))
+			{
 				mOver(e);
-			} else if(!e.interactsWith(this)) {
+			}
+			else if(!e.interactsWith(this))
+			{
 				mOut(e);
 			}
 		}
 		
-		public function clean(e:Event = null) : void {
+		public function clean(e:Event = null) : void
+		{
 			this.removeEventListeners();
 			dispose();
 		}
 		
-		public function getInvasionText() : String {
+		public function getInvasionText() : String
+		{
 			return obj.invasionText;
 		}
 	}

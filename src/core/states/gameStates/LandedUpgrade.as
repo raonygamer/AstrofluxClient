@@ -1,23 +1,30 @@
-package core.states.gameStates {
+package core.states.gameStates
+{
 	import core.hud.components.Text;
 	import core.hud.components.cargo.Cargo;
 	import core.hud.components.techTree.TechTree;
 	import core.scene.Game;
 	import core.solarSystem.Body;
 	
-	public class LandedUpgrade extends LandedState {
+	public class LandedUpgrade extends LandedState
+	{
 		private var myCargo:Cargo;
+		
 		private var stopMusic:Boolean = true;
+		
 		private var techTree:TechTree;
+		
 		private var shownOffer:Boolean = false;
 		
-		public function LandedUpgrade(g:Game, body:Body) {
+		public function LandedUpgrade(g:Game, body:Body)
+		{
 			super(g,body,body.name);
 			me = g.me;
 			myCargo = g.myCargo;
 		}
 		
-		override public function enter() : void {
+		override public function enter() : void
+		{
 			var name:Text;
 			var description:Text;
 			super.enter();
@@ -39,18 +46,21 @@ package core.states.gameStates {
 			techTree.x = 30;
 			techTree.y = 2 * 60;
 			addChild(techTree);
-			g.myCargo.reloadCargoFromServer(function():void {
+			g.myCargo.reloadCargoFromServer(function():void
+			{
 				techTree.load();
 				loadCompleted();
 			});
 			g.tutorial.showUpgradeAdvice();
 		}
 		
-		override public function execute() : void {
+		override public function execute() : void
+		{
 			super.execute();
 		}
 		
-		override public function exit(callback:Function) : void {
+		override public function exit(callback:Function) : void
+		{
 			techTree.exit();
 			super.exit(callback);
 		}

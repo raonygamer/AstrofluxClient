@@ -1,4 +1,5 @@
-package core.states.gameStates {
+package core.states.gameStates
+{
 	import core.hud.components.CrewDetails;
 	import core.hud.components.CrewDisplayBoxNew;
 	import core.player.CrewMember;
@@ -8,117 +9,136 @@ package core.states.gameStates {
 	import playerio.Message;
 	import starling.events.Event;
 	
-	public class LandedCantina extends LandedState {
+	public class LandedCantina extends LandedState
+	{
 		public static var WIDTH:Number = 698;
+		
 		private var mainBody:ScrollContainer;
+		
 		private var selectedCrewMember:CrewDetails;
+		
 		private var crewMembers:Vector.<CrewMember>;
+		
 		private var crew:Vector.<CrewDisplayBoxNew> = new Vector.<CrewDisplayBoxNew>();
 		
-		public function LandedCantina(g:Game, body:Body) {
+		public function LandedCantina(g:Game, body:Body)
+		{
 			super(g,body,body.name);
 		}
 		
-		override public function enter() : void {
+		override public function enter() : void
+		{
 			super.enter();
 			g.rpc("getCantinaCrew",onGetCantinaCrew);
 		}
 		
-		private function onReloadDetails() : void {
+		private function onReloadDetails() : void
+		{
 			reloadDetails();
 		}
 		
-		public function reloadDetails(forceRefresh:Boolean = false) : void {
-			if(!selectedCrewMember) {
+		public function reloadDetails(forceRefresh:Boolean = false) : void
+		{
+			if(!selectedCrewMember)
+			{
 				return;
 			}
-			var _local2:CrewDetails = new CrewDetails(g,selectedCrewMember.crewMember,reloadDetails,false,1);
-			_local2.requestRemovalCallback = removeActiveCrewMember;
-			_local2.x = selectedCrewMember.x;
-			_local2.y = selectedCrewMember.y;
+			var _loc2_:CrewDetails = new CrewDetails(g,selectedCrewMember.crewMember,reloadDetails,false,1);
+			_loc2_.requestRemovalCallback = removeActiveCrewMember;
+			_loc2_.x = selectedCrewMember.x;
+			_loc2_.y = selectedCrewMember.y;
 			removeChild(selectedCrewMember);
-			selectedCrewMember = _local2;
+			selectedCrewMember = _loc2_;
 			addChild(selectedCrewMember);
 		}
 		
-		private function removeActiveCrewMember(cd:CrewDetails) : void {
-			var _local3:int = 0;
-			var _local2:CrewDisplayBoxNew = null;
+		private function removeActiveCrewMember(cd:CrewDetails) : void
+		{
+			var _loc3_:int = 0;
+			var _loc2_:CrewDisplayBoxNew = null;
 			removeChild(cd);
-			_local3 = 0;
-			while(_local3 < mainBody.numChildren) {
-				if(mainBody.getChildAt(_local3) is CrewDisplayBoxNew) {
-					_local2 = mainBody.getChildAt(_local3) as CrewDisplayBoxNew;
-					if(_local2.crewMember.seed == cd.crewMember.seed) {
-						mainBody.removeChild(_local2);
+			_loc3_ = 0;
+			while(_loc3_ < mainBody.numChildren)
+			{
+				if(mainBody.getChildAt(_loc3_) is CrewDisplayBoxNew)
+				{
+					_loc2_ = mainBody.getChildAt(_loc3_) as CrewDisplayBoxNew;
+					if(_loc2_.crewMember.seed == cd.crewMember.seed)
+					{
+						mainBody.removeChild(_loc2_);
 					}
 				}
-				_local3++;
+				_loc3_++;
 			}
 		}
 		
-		public function setActive(e:Event) : void {
-			var _local2:CrewDisplayBoxNew = e.target as CrewDisplayBoxNew;
-			if(selectedCrewMember != null) {
+		public function setActive(e:Event) : void
+		{
+			var _loc2_:CrewDisplayBoxNew = e.target as CrewDisplayBoxNew;
+			if(selectedCrewMember != null)
+			{
 				removeChild(selectedCrewMember);
 			}
-			selectedCrewMember = new CrewDetails(g,_local2.crewMember,reloadDetails,false,1);
+			selectedCrewMember = new CrewDetails(g,_loc2_.crewMember,reloadDetails,false,1);
 			selectedCrewMember.requestRemovalCallback = removeActiveCrewMember;
 			addChild(selectedCrewMember);
 			selectedCrewMember.x = 350;
 			selectedCrewMember.y = 53;
 		}
 		
-		private function onGetCantinaCrew(m:Message) : void {
-			var _local4:CrewMember = null;
-			var _local2:Array = null;
-			var _local5:Array = null;
+		private function onGetCantinaCrew(m:Message) : void
+		{
+			var _loc4_:CrewMember = null;
+			var _loc2_:Array = null;
+			var _loc3_:Array = null;
 			crewMembers = new Vector.<CrewMember>();
-			var _local6:int = 0;
-			var _local3:int = m.getInt(_local6++);
-			while(_local6 < m.length) {
-				_local4 = new CrewMember(g);
-				_local4.seed = m.getInt(_local6++);
-				_local4.key = m.getString(_local6++);
-				_local4.name = m.getString(_local6++);
-				_local4.solarSystem = m.getString(_local6++);
-				_local4.area = m.getString(_local6++);
-				_local4.body = m.getString(_local6++);
-				_local4.imageKey = m.getString(_local6++);
-				_local4.injuryEnd = m.getNumber(_local6++);
-				_local4.injuryStart = m.getNumber(_local6++);
-				_local4.trainingEnd = m.getNumber(_local6++);
-				_local4.trainingType = m.getInt(_local6++);
-				_local4.artifactEnd = m.getNumber(_local6++);
-				_local4.artifact = m.getString(_local6++);
-				_local4.missions = m.getInt(_local6++);
-				_local4.successMissions = m.getInt(_local6++);
-				_local4.rank = m.getInt(_local6++);
-				_local4.fullLocation = m.getString(_local6++);
-				_local4.skillPoints = m.getInt(_local6++);
-				_local2 = [];
-				_local2.push(m.getNumber(_local6++));
-				_local2.push(m.getNumber(_local6++));
-				_local2.push(m.getNumber(_local6++));
-				_local4.skills = _local2;
-				_local5 = [];
-				_local5.push(m.getNumber(_local6++));
-				_local5.push(m.getNumber(_local6++));
-				_local5.push(m.getNumber(_local6++));
-				_local5.push(m.getNumber(_local6++));
-				_local5.push(m.getNumber(_local6++));
-				_local5.push(m.getNumber(_local6++));
-				_local5.push(m.getNumber(_local6++));
-				_local5.push(m.getNumber(_local6++));
-				_local5.push(m.getNumber(_local6++));
-				_local4.specials = _local5;
-				crewMembers.push(_local4);
+			var _loc5_:int = 0;
+			var _loc6_:int = m.getInt(_loc5_++);
+			while(_loc5_ < m.length)
+			{
+				_loc4_ = new CrewMember(g);
+				_loc4_.seed = m.getInt(_loc5_++);
+				_loc4_.key = m.getString(_loc5_++);
+				_loc4_.name = m.getString(_loc5_++);
+				_loc4_.solarSystem = m.getString(_loc5_++);
+				_loc4_.area = m.getString(_loc5_++);
+				_loc4_.body = m.getString(_loc5_++);
+				_loc4_.imageKey = m.getString(_loc5_++);
+				_loc4_.injuryEnd = m.getNumber(_loc5_++);
+				_loc4_.injuryStart = m.getNumber(_loc5_++);
+				_loc4_.trainingEnd = m.getNumber(_loc5_++);
+				_loc4_.trainingType = m.getInt(_loc5_++);
+				_loc4_.artifactEnd = m.getNumber(_loc5_++);
+				_loc4_.artifact = m.getString(_loc5_++);
+				_loc4_.missions = m.getInt(_loc5_++);
+				_loc4_.successMissions = m.getInt(_loc5_++);
+				_loc4_.rank = m.getInt(_loc5_++);
+				_loc4_.fullLocation = m.getString(_loc5_++);
+				_loc4_.skillPoints = m.getInt(_loc5_++);
+				_loc2_ = [];
+				_loc2_.push(m.getNumber(_loc5_++));
+				_loc2_.push(m.getNumber(_loc5_++));
+				_loc2_.push(m.getNumber(_loc5_++));
+				_loc4_.skills = _loc2_;
+				_loc3_ = [];
+				_loc3_.push(m.getNumber(_loc5_++));
+				_loc3_.push(m.getNumber(_loc5_++));
+				_loc3_.push(m.getNumber(_loc5_++));
+				_loc3_.push(m.getNumber(_loc5_++));
+				_loc3_.push(m.getNumber(_loc5_++));
+				_loc3_.push(m.getNumber(_loc5_++));
+				_loc3_.push(m.getNumber(_loc5_++));
+				_loc3_.push(m.getNumber(_loc5_++));
+				_loc3_.push(m.getNumber(_loc5_++));
+				_loc4_.specials = _loc3_;
+				crewMembers.push(_loc4_);
 			}
 			load();
 		}
 		
-		private function load() : void {
-			var _local2:CrewDisplayBoxNew = null;
+		private function load() : void
+		{
+			var _loc1_:CrewDisplayBoxNew = null;
 			mainBody = new ScrollContainer();
 			mainBody.width = WIDTH;
 			mainBody.height = 450;
@@ -126,28 +146,31 @@ package core.states.gameStates {
 			mainBody.y = 35;
 			mainBody.addEventListener("reloadDetails",onReloadDetails);
 			mainBody.addEventListener("crewSelected",setActive);
-			var _local6:int = 0;
-			var _local5:int = 60;
-			var _local1:int = 330;
-			var _local4:int = 25;
-			for each(var _local3:* in crewMembers) {
-				_local2 = new CrewDisplayBoxNew(g,_local3,1);
-				_local2.x = _local5;
-				_local2.y = _local4;
-				_local4 += _local2.height + 10;
-				_local6++;
-				mainBody.addChild(_local2);
-				crew.push(_local2);
+			var _loc5_:int = 0;
+			var _loc3_:int = 60;
+			var _loc2_:int = 330;
+			var _loc6_:int = 25;
+			for each(var _loc4_ in crewMembers)
+			{
+				_loc1_ = new CrewDisplayBoxNew(g,_loc4_,1);
+				_loc1_.x = _loc3_;
+				_loc1_.y = _loc6_;
+				_loc6_ += _loc1_.height + 10;
+				_loc5_++;
+				mainBody.addChild(_loc1_);
+				crew.push(_loc1_);
 			}
 			addChild(mainBody);
 			loadCompleted();
 		}
 		
-		override public function execute() : void {
+		override public function execute() : void
+		{
 			super.execute();
 		}
 		
-		override public function exit(callback:Function) : void {
+		override public function exit(callback:Function) : void
+		{
 			mainBody.removeEventListener("reloadDetails",onReloadDetails);
 			mainBody.removeEventListener("crewSelected",setActive);
 			super.exit(callback);

@@ -1,4 +1,5 @@
-package core.hud.components {
+package core.hud.components
+{
 	import core.scene.Game;
 	import debug.Console;
 	import flash.display.Sprite;
@@ -6,10 +7,12 @@ package core.hud.components {
 	import flash.system.Capabilities;
 	import starling.core.Starling;
 	
-	public class FullScreenButton extends Sprite {
+	public class FullScreenButton extends Sprite
+	{
 		private var hoverImage:Sprite = new Sprite();
 		
-		public function FullScreenButton() {
+		public function FullScreenButton()
+		{
 			super();
 			tabChildren = false;
 			tabEnabled = false;
@@ -35,30 +38,38 @@ package core.hud.components {
 			hoverImage.visible = false;
 			addChild(hoverImage);
 			addEventListener("click",onFullscreen);
-			addEventListener("mouseOver",function(param1:MouseEvent):void {
+			addEventListener("mouseOver",function(param1:MouseEvent):void
+			{
 				hoverImage.visible = true;
 			});
-			addEventListener("mouseOut",function(param1:MouseEvent):void {
+			addEventListener("mouseOut",function(param1:MouseEvent):void
+			{
 				hoverImage.visible = false;
 			});
 			this.buttonMode = true;
 			this.useHandCursor = true;
 		}
 		
-		public function onFullscreen(e:MouseEvent) : void {
-			var _local4:* = Starling.current.nativeStage.displayState == "fullScreenInteractive";
-			_local4 = !_local4;
-			var _local3:String = Capabilities.version;
-			var _local7:Array = _local3.split(" ");
-			var _local2:Array = _local7[1].split(",");
-			var _local6:String = _local7[0];
-			var _local5:Number = Number(_local2[0]);
-			_local5 = _local5 + _local2[1] / 10;
-			if(_local4 && _local5 >= 1.3) {
+		public function onFullscreen(e:MouseEvent) : void
+		{
+			var _loc6_:* = Starling.current.nativeStage.displayState == "fullScreenInteractive";
+			_loc6_ = !_loc6_;
+			var _loc4_:String = Capabilities.version;
+			var _loc3_:Array = _loc4_.split(" ");
+			var _loc5_:Array = _loc3_[1].split(",");
+			var _loc2_:String = _loc3_[0];
+			var _loc7_:Number = Number(_loc5_[0]);
+			_loc7_ = _loc7_ + _loc5_[1] / 10;
+			if(_loc6_ && _loc7_ >= 1.3)
+			{
 				Starling.current.nativeStage.displayState = "fullScreenInteractive";
-			} else if(_local4) {
+			}
+			else if(_loc6_)
+			{
 				Console.write("You need flash version 11.3");
-			} else {
+			}
+			else
+			{
 				Starling.current.nativeStage.displayState = "normal";
 			}
 			Game.instance.hud.resize();

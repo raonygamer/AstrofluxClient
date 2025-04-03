@@ -1,4 +1,5 @@
-package core.hud.components {
+package core.hud.components
+{
 	import data.DataLocator;
 	import data.IDataManager;
 	import playerio.DatabaseObject;
@@ -8,49 +9,60 @@ package core.hud.components {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class LootItem extends Sprite {
+	public class LootItem extends Sprite
+	{
 		private var dataManager:IDataManager;
+		
 		private var textureManager:ITextureManager;
+		
 		private var obj:DatabaseObject;
+		
 		private var image:Image;
+		
 		private var bgr:Quad;
 		
-		public function LootItem(table:String, item:String, amount:int, size:int = 12) {
-			var _local6:TextBitmap = null;
+		public function LootItem(table:String, item:String, amount:int, size:int = 12)
+		{
+			var _loc6_:TextBitmap = null;
 			bgr = new Quad(230,32,1450513);
 			super();
 			dataManager = DataLocator.getService();
 			textureManager = TextureLocator.getService();
-			var _local7:Object = dataManager.loadKey(table,item);
-			var _local5:String = "";
-			if(table == "Weapons") {
-				_local5 = _local7.techIcon;
-			} else {
-				_local5 = _local7.bitmap;
+			var _loc7_:Object = dataManager.loadKey(table,item);
+			var _loc8_:String = "";
+			if(table == "Weapons")
+			{
+				_loc8_ = _loc7_.techIcon;
+			}
+			else
+			{
+				_loc8_ = _loc7_.bitmap;
 			}
 			addChild(bgr);
-			image = new Image(textureManager.getTextureGUIByKey(_local5));
+			image = new Image(textureManager.getTextureGUIByKey(_loc8_));
 			image.x = 16;
 			image.y = 16;
 			image.pivotX = Math.round(image.width / 2);
 			image.pivotY = Math.round(image.height / 2);
 			addChild(image);
-			var _local8:TextBitmap = new TextBitmap(35,8);
-			_local8.text = _local7.name;
-			_local8.format.color = 0x666666;
-			_local8.size = 12;
-			addChild(_local8);
-			if(table == "Weapons") {
-				_local8.size = size + 4;
+			var _loc5_:TextBitmap = new TextBitmap(35,8);
+			_loc5_.text = _loc7_.name;
+			_loc5_.format.color = 0x666666;
+			_loc5_.size = 12;
+			addChild(_loc5_);
+			if(table == "Weapons")
+			{
+				_loc5_.size = size + 4;
 			}
-			if(table != "Weapons") {
-				_local6 = new TextBitmap(0,5);
-				_local6.text = amount.toString();
-				_local6.format.color = 0xffffff;
-				_local6.size = 16;
-				_local6.alignRight();
-				_local6.x = 220;
-				addChild(_local6);
+			if(table != "Weapons")
+			{
+				_loc6_ = new TextBitmap(0,5);
+				_loc6_.text = amount.toString();
+				_loc6_.format.color = 0xffffff;
+				_loc6_.size = 16;
+				_loc6_.alignRight();
+				_loc6_.x = 220;
+				addChild(_loc6_);
 			}
 		}
 	}

@@ -1,5 +1,7 @@
-package core.states {
-	public interface ISceneState {
+package core.states
+{
+	public interface ISceneState
+	{
 		function enter() : void;
 		
 		function execute() : void;

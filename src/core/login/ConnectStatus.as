@@ -1,14 +1,19 @@
-package core.login {
+package core.login
+{
 	import com.greensock.TweenMax;
 	import core.hud.components.Text;
 	import starling.display.Sprite;
 	
-	public class ConnectStatus extends Sprite {
+	public class ConnectStatus extends Sprite
+	{
 		private var connectTween:TweenMax;
+		
 		private var connectText:Text = new Text();
+		
 		private var connectSubText:Text = new Text();
 		
-		public function ConnectStatus() {
+		public function ConnectStatus()
+		{
 			super();
 			this.visible = false;
 			connectText.text = "Connecting...";
@@ -32,22 +37,28 @@ package core.login {
 			});
 		}
 		
-		public function clean() : void {
+		public function clean() : void
+		{
 			connectTween.kill();
 		}
 		
-		public function set text(value:String) : void {
+		public function set text(value:String) : void
+		{
 			connectText.text = value;
 		}
 		
-		public function set subText(value:String) : void {
-			if(value != "") {
+		public function set subText(value:String) : void
+		{
+			if(value != "")
+			{
 				connectSubText.text = value;
 			}
 		}
 		
-		public function update(e:ConnectEvent) : void {
-			if(e.message == "") {
+		public function update(e:ConnectEvent) : void
+		{
+			if(e.message == "")
+			{
 				this.visible = false;
 				return;
 			}

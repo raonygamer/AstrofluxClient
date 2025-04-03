@@ -1,4 +1,5 @@
-package core.hud.components.radar {
+package core.hud.components.radar
+{
 	import com.greensock.TweenMax;
 	import core.GameObject;
 	import core.scene.Game;
@@ -9,26 +10,31 @@ package core.hud.components.radar {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class TargetArrow extends Sprite {
+	public class TargetArrow extends Sprite
+	{
 		public var target:GameObject;
+		
 		private var g:Game;
+		
 		private var tween:TweenMax;
 		
-		public function TargetArrow(g:Game, target:GameObject, color:uint) {
+		public function TargetArrow(g:Game, target:GameObject, color:uint)
+		{
 			super();
 			this.g = g;
 			this.target = target;
-			var _local4:ITextureManager = TextureLocator.getService();
-			var _local6:Texture = _local4.getTextureGUIByTextureName("map_arrow");
-			var _local5:Image = new Image(_local6);
-			_local5.color = color;
-			addChild(_local5);
-			_local5.blendMode = "add";
+			var _loc6_:ITextureManager = TextureLocator.getService();
+			var _loc5_:Texture = _loc6_.getTextureGUIByTextureName("map_arrow");
+			var _loc4_:Image = new Image(_loc5_);
+			_loc4_.color = color;
+			addChild(_loc4_);
+			_loc4_.blendMode = "add";
 			pivotX = width / 2;
 			pivotY = height / 2;
 		}
 		
-		public function activate() : void {
+		public function activate() : void
+		{
 			this.scaleX = 1;
 			this.scaleY = 1;
 			tween = TweenMax.to(this,0.5,{
@@ -39,25 +45,31 @@ package core.hud.components.radar {
 			});
 		}
 		
-		public function deactivate() : void {
-			if(tween != null) {
+		public function deactivate() : void
+		{
+			if(tween != null)
+			{
 				tween.kill();
 			}
 		}
 		
-		public function update() : void {
-			var _local3:Point = g.camera.getCameraCenter();
-			var _local2:Point = target.pos;
-			if(g.camera.isOnScreen(target.pos.x,target.pos.y)) {
+		public function update() : void
+		{
+			var _loc1_:Point = g.camera.getCameraCenter();
+			var _loc2_:Point = target.pos;
+			if(g.camera.isOnScreen(target.pos.x,target.pos.y))
+			{
 				visible = false;
-			} else {
+			}
+			else
+			{
 				visible = true;
 			}
-			var _local1:Point = _local2.subtract(_local3);
-			_local1.normalize(1);
-			rotation = Math.atan2(_local1.y,_local1.x);
-			x = _local3.x + _local1.x * g.stage.stageWidth / 3;
-			y = _local3.y + _local1.y * g.stage.stageHeight / 3;
+			var _loc3_:Point = _loc2_.subtract(_loc1_);
+			_loc3_.normalize(1);
+			rotation = Math.atan2(_loc3_.y,_loc3_.x);
+			x = _loc1_.x + _loc3_.x * g.stage.stageWidth / 3;
+			y = _loc1_.y + _loc3_.y * g.stage.stageHeight / 3;
 		}
 	}
 }

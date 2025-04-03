@@ -1,4 +1,5 @@
-package core.states.gameStates {
+package core.states.gameStates
+{
 	import core.hud.components.SettingsKeybind;
 	import core.hud.components.Text;
 	import core.scene.Game;
@@ -9,15 +10,22 @@ package core.states.gameStates {
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class SettingsBindings extends Sprite {
+	public class SettingsBindings extends Sprite
+	{
 		private var g:Game;
+		
 		private var keybinds:KeyBinds;
+		
 		private var currentHeight:Number = 0;
+		
 		private var currentWidth:Number = 50;
+		
 		private var scrollArea:ScrollContainer;
+		
 		private var keybindList:Vector.<SettingsKeybind> = new Vector.<SettingsKeybind>();
 		
-		public function SettingsBindings(g:Game) {
+		public function SettingsBindings(g:Game)
+		{
 			super();
 			this.g = g;
 			this.keybinds = SceneBase.settings.keybinds;
@@ -31,36 +39,37 @@ package core.states.gameStates {
 			g.stage.addEventListener("updateButtons",updateButtons);
 		}
 		
-		private function initComponents() : void {
-			var _local1:Text = new Text();
-			_local1.htmlText = Localize.t("Movements:");
-			_local1.size = 16;
-			_local1.y = currentHeight;
-			_local1.x = currentWidth;
-			scrollArea.addChild(_local1);
+		private function initComponents() : void
+		{
+			var _loc1_:Text = new Text();
+			_loc1_.htmlText = Localize.t("Movements:");
+			_loc1_.size = 16;
+			_loc1_.y = currentHeight;
+			_loc1_.x = currentWidth;
+			scrollArea.addChild(_loc1_);
 			currentHeight += 40;
 			addKeybind(11);
 			addKeybind(26);
 			addKeybind(12);
 			addKeybind(13);
 			addKeybind(14);
-			_local1 = new Text();
-			_local1.htmlText = Localize.t("Abilities:");
-			_local1.size = 16;
-			_local1.y = currentHeight;
-			_local1.x = currentWidth;
-			scrollArea.addChild(_local1);
+			_loc1_ = new Text();
+			_loc1_.htmlText = Localize.t("Abilities:");
+			_loc1_.size = 16;
+			_loc1_.y = currentHeight;
+			_loc1_.x = currentWidth;
+			scrollArea.addChild(_loc1_);
 			currentHeight += 40;
 			addKeybind(16);
 			addKeybind(15);
 			addKeybind(18);
 			addKeybind(17);
-			_local1 = new Text();
-			_local1.htmlText = Localize.t("Weapons");
-			_local1.size = 16;
-			_local1.y = currentHeight;
-			_local1.x = currentWidth;
-			scrollArea.addChild(_local1);
+			_loc1_ = new Text();
+			_loc1_.htmlText = Localize.t("Weapons");
+			_loc1_.size = 16;
+			_loc1_.y = currentHeight;
+			_loc1_.x = currentWidth;
+			scrollArea.addChild(_loc1_);
 			currentHeight += 40;
 			addKeybind(19);
 			addKeybind(20);
@@ -68,12 +77,12 @@ package core.states.gameStates {
 			addKeybind(22);
 			addKeybind(23);
 			addKeybind(24);
-			_local1 = new Text();
-			_local1.htmlText = Localize.t("Misc:");
-			_local1.size = 16;
-			_local1.y = currentHeight;
-			_local1.x = currentWidth;
-			scrollArea.addChild(_local1);
+			_loc1_ = new Text();
+			_loc1_.htmlText = Localize.t("Misc:");
+			_loc1_.size = 16;
+			_loc1_.y = currentHeight;
+			_loc1_.x = currentWidth;
+			scrollArea.addChild(_loc1_);
 			currentHeight += 40;
 			addKeybind(10);
 			addKeybind(9);
@@ -89,16 +98,19 @@ package core.states.gameStates {
 			addKeybind(0);
 		}
 		
-		private function addKeybind(type:int) : void {
-			var _local2:SettingsKeybind = new SettingsKeybind(keybinds,type,currentWidth,currentHeight);
-			keybindList.push(_local2);
-			scrollArea.addChild(_local2);
+		private function addKeybind(type:int) : void
+		{
+			var _loc2_:SettingsKeybind = new SettingsKeybind(keybinds,type,currentWidth,currentHeight);
+			keybindList.push(_loc2_);
+			scrollArea.addChild(_loc2_);
 			currentHeight += 62;
 		}
 		
-		public function updateButtons(e:Event) : void {
-			for each(var _local2:* in keybindList) {
-				_local2.update();
+		public function updateButtons(e:Event) : void
+		{
+			for each(var _loc2_ in keybindList)
+			{
+				_loc2_.update();
 			}
 		}
 	}

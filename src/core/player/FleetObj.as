@@ -1,50 +1,70 @@
-package core.player {
+package core.player
+{
 	import data.DataLocator;
 	import data.IDataManager;
 	import playerio.Message;
 	
-	public class FleetObj {
+	public class FleetObj
+	{
 		public var skin:String = "";
+		
 		public var shipHue:Number = 0;
+		
 		public var shipBrightness:Number = 0;
+		
 		public var shipSaturation:Number = 0;
+		
 		public var shipContrast:Number = 0;
+		
 		public var engineHue:Number = 0;
+		
 		public var activeWeapon:String = "";
+		
 		public var activeArtifactSetup:int;
+		
 		public var lastUsed:Number = 0;
+		
 		public var weapons:Array = [];
+		
 		public var weaponsState:Array = [];
+		
 		public var weaponsHotkeys:Array = [];
+		
 		public var techSkills:Vector.<TechSkill> = new Vector.<TechSkill>();
+		
 		public var nrOfUpgrades:Vector.<int> = Vector.<int>([0,0,0,0,0,0,0]);
 		
-		public function FleetObj() {
+		public function FleetObj()
+		{
 			super();
 		}
 		
-		public function initFromSkin(skinKey:String) : void {
-			var _local4:TechSkill = null;
-			var _local6:IDataManager = DataLocator.getService();
-			var _local2:Object = _local6.loadKey("Skins",skinKey);
+		public function initFromSkin(skinKey:String) : void
+		{
+			var _loc2_:TechSkill = null;
+			var _loc6_:IDataManager = DataLocator.getService();
+			var _loc3_:Object = _loc6_.loadKey("Skins",skinKey);
 			skin = skinKey;
-			var _local3:Array = _local2.upgrades;
-			for each(var _local5:* in _local3) {
-				_local4 = new TechSkill();
-				_local4.table = _local5.table;
-				_local4.tech = _local5.tech;
-				_local4.name = _local5.name;
-				_local4.level = _local5.level;
-				techSkills.push(_local4);
-				if(_local5.table == "Weapons") {
-					weapons.push({"weapon":_local5.tech});
+			var _loc4_:Array = _loc3_.upgrades;
+			for each(var _loc5_ in _loc4_)
+			{
+				_loc2_ = new TechSkill();
+				_loc2_.table = _loc5_.table;
+				_loc2_.tech = _loc5_.tech;
+				_loc2_.name = _loc5_.name;
+				_loc2_.level = _loc5_.level;
+				techSkills.push(_loc2_);
+				if(_loc5_.table == "Weapons")
+				{
+					weapons.push({"weapon":_loc5_.tech});
 					weaponsState.push(false);
 					weaponsHotkeys.push(0);
 				}
 			}
 		}
 		
-		public function initFromMessage(m:Message, startIndex:int) : int {
+		public function initFromMessage(m:Message, startIndex:int) : int
+		{
 			skin = m.getString(startIndex++);
 			activeArtifactSetup = m.getInt(startIndex++);
 			activeWeapon = m.getString(startIndex++);
@@ -58,67 +78,76 @@ package core.player {
 			return initTechSkillsFromMessage(m,startIndex,skin);
 		}
 		
-		private function initWeaponsFromMessage(m:Message, startIndex:int) : int {
-			var _local4:int = 0;
+		private function initWeaponsFromMessage(m:Message, startIndex:int) : int
+		{
+			var _loc3_:int = 0;
 			weapons = [];
 			weaponsState = [];
 			weaponsHotkeys = [];
-			var _local3:int = m.getInt(startIndex);
-			_local4 = startIndex + 1;
-			while(_local4 < startIndex + _local3 * 3 + 1) {
-				weapons.push({"weapon":m.getString(_local4)});
-				weaponsState.push(m.getBoolean(_local4 + 1));
-				weaponsHotkeys.push(m.getInt(_local4 + 2));
-				_local4 += 3;
+			var _loc4_:int = m.getInt(startIndex);
+			_loc3_ = startIndex + 1;
+			while(_loc3_ < startIndex + _loc4_ * 3 + 1)
+			{
+				weapons.push({"weapon":m.getString(_loc3_)});
+				weaponsState.push(m.getBoolean(_loc3_ + 1));
+				weaponsHotkeys.push(m.getInt(_loc3_ + 2));
+				_loc3_ += 3;
 			}
-			return _local4;
+			return _loc3_;
 		}
 		
-		private function initTechSkillsFromMessage(m:Message, startIndex:int, skinKey:String) : int {
-			var _local9:int = 0;
-			var _local5:int = 0;
-			var _local8:TechSkill = null;
-			var _local6:int = 0;
-			var _local10:int = 0;
-			var _local4:int = 0;
-			var _local7:int = 0;
+		private function initTechSkillsFromMessage(m:Message, startIndex:int, skinKey:String) : int
+		{
+			var _loc9_:int = 0;
+			var _loc5_:int = 0;
+			var _loc6_:TechSkill = null;
+			var _loc8_:int = 0;
+			var _loc11_:int = 0;
+			var _loc10_:int = 0;
+			var _loc12_:int = 0;
 			techSkills = new Vector.<TechSkill>();
-			var _local11:int = m.getInt(startIndex);
+			var _loc4_:int = m.getInt(startIndex);
 			nrOfUpgrades = Vector.<int>([0,0,0,0,0,0,0]);
-			var _local12:int = startIndex + 1;
-			_local9 = 0;
-			while(_local9 < _local11) {
-				_local5 = m.getInt(_local12 + 3);
-				_local8 = new TechSkill(m.getString(_local12),m.getString(_local12 + 1),m.getString(_local12 + 2),_local5,m.getString(_local12 + 4),m.getInt(_local12 + 5));
-				_local6 = m.getInt(_local12 + 6);
-				_local12 += 7;
-				_local10 = 0;
-				while(_local10 < _local6) {
-					if(m.getString(_local12) != "") {
-						_local8.addEliteTechData(m.getString(_local12),m.getInt(_local12 + 1));
+			var _loc7_:int = startIndex + 1;
+			_loc9_ = 0;
+			while(_loc9_ < _loc4_)
+			{
+				_loc5_ = m.getInt(_loc7_ + 3);
+				_loc6_ = new TechSkill(m.getString(_loc7_),m.getString(_loc7_ + 1),m.getString(_loc7_ + 2),_loc5_,m.getString(_loc7_ + 4),m.getInt(_loc7_ + 5));
+				_loc8_ = m.getInt(_loc7_ + 6);
+				_loc7_ += 7;
+				_loc11_ = 0;
+				while(_loc11_ < _loc8_)
+				{
+					if(m.getString(_loc7_) != "")
+					{
+						_loc6_.addEliteTechData(m.getString(_loc7_),m.getInt(_loc7_ + 1));
 					}
-					_local12 += 2;
-					_local10++;
+					_loc7_ += 2;
+					_loc11_++;
 				}
-				techSkills.push(_local8);
-				_local4 = Player.getSkinTechLevel(_local8.tech,skinKey);
-				if(_local5 > _local4) {
-					var _local13:* = 0;
-					var _local14:* = nrOfUpgrades[_local13] + _local5;
-					nrOfUpgrades[_local13] = _local14;
-					if(_local5 > 0) {
-						_local7 = 1;
-						while(_local7 <= _local5) {
-							_local14 = _local7;
-							_local13 = nrOfUpgrades[_local14] + 1;
-							nrOfUpgrades[_local14] = _local13;
-							_local7++;
+				techSkills.push(_loc6_);
+				_loc10_ = Player.getSkinTechLevel(_loc6_.tech,skinKey);
+				if(_loc5_ > _loc10_)
+				{
+					var _loc13_:* = 0;
+					var _loc14_:* = nrOfUpgrades[_loc13_] + _loc5_;
+					nrOfUpgrades[_loc13_] = _loc14_;
+					if(_loc5_ > 0)
+					{
+						_loc12_ = 1;
+						while(_loc12_ <= _loc5_)
+						{
+							_loc14_ = _loc12_;
+							_loc13_ = nrOfUpgrades[_loc14_] + 1;
+							nrOfUpgrades[_loc14_] = _loc13_;
+							_loc12_++;
 						}
 					}
 				}
-				_local9++;
+				_loc9_++;
 			}
-			return _local12;
+			return _loc7_;
 		}
 	}
 }

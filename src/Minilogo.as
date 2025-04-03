@@ -1,4 +1,5 @@
-package {
+package
+{
 	import fl.transitions.Tween;
 	import fl.transitions.TweenEvent;
 	import fl.transitions.easing.Strong;
@@ -12,14 +13,19 @@ package {
 	import flash.utils.setTimeout;
 	import playerio.utils.SWFReader;
 	
-	public class Minilogo extends MovieClip {
+	public class Minilogo extends MovieClip
+	{
 		public static var showLogo:Boolean = true;
+		
 		private var align:String;
+		
 		private var t:Tween;
+		
 		private var rect:Rectangle;
 		
-		public function Minilogo(align:String = "BC") {
-			var _local2:* = null;
+		public function Minilogo(align:String = "BC")
+		{
+			var _loc2_:* = null;
 			super();
 			this.align = align;
 			this.alpha = 0;
@@ -29,83 +35,97 @@ package {
 			Minilogo.showLogo = false;
 		}
 		
-		private function handleClick(e:MouseEvent) : void {
+		private function handleClick(e:MouseEvent) : void
+		{
 			e.preventDefault();
 			e.stopImmediatePropagation();
-			try {
+			try
+			{
 				navigateToURL(new URLRequest("http://playerio.com/?ref=gamelogo"),"_new");
 			}
-			catch(e:Error) {
+			catch(e:Error)
+			{
 				trace("Error occurred!");
 			}
 		}
 		
-		private function handleResize(e:Event = null) : void {
-			var _local2:Number = NaN;
-			var _local3:Number = NaN;
-			if(this.parent) {
-				_local2 = 0;
-				_local3 = 0;
-				if(stage.scaleMode == "noScale") {
-					switch(stage.align) {
+		private function handleResize(e:Event = null) : void
+		{
+			var _loc2_:Number = NaN;
+			var _loc3_:Number = NaN;
+			if(this.parent)
+			{
+				_loc2_ = 0;
+				_loc3_ = 0;
+				if(stage.scaleMode == "noScale")
+				{
+					switch(stage.align)
+					{
 						case "":
-							_local2 = -(stage.stageWidth - rect.width) / 2;
-							_local3 = -(stage.stageHeight - rect.height) / 2;
+							_loc2_ = -(stage.stageWidth - rect.width) / 2;
+							_loc3_ = -(stage.stageHeight - rect.height) / 2;
 							break;
 						case "T":
-							_local2 = -(stage.stageWidth - rect.width) / 2;
+							_loc2_ = -(stage.stageWidth - rect.width) / 2;
 					}
 				}
-				switch(align) {
+				switch(align)
+				{
 					case "TL":
-						this.x = _local2 + 140;
-						this.y = _local3 + 45;
+						this.x = _loc2_ + 140;
+						this.y = _loc3_ + 45;
 						break;
 					case "CL":
-						this.x = _local2 + 140;
-						this.y = _local3 + stage.stageHeight / 2;
+						this.x = _loc2_ + 140;
+						this.y = _loc3_ + stage.stageHeight / 2;
 						break;
 					case "BL":
-						this.x = _local2 + 140;
-						this.y = _local3 + stage.stageHeight - 45;
+						this.x = _loc2_ + 140;
+						this.y = _loc3_ + stage.stageHeight - 45;
 						break;
 					case "TC":
-						this.x = _local2 + stage.stageWidth / 2;
-						this.y = _local3 + 45;
+						this.x = _loc2_ + stage.stageWidth / 2;
+						this.y = _loc3_ + 45;
 						break;
 					case "CC":
-						this.x = _local2 + stage.stageWidth / 2;
-						this.y = _local3 + stage.stageHeight / 2;
+						this.x = _loc2_ + stage.stageWidth / 2;
+						this.y = _loc3_ + stage.stageHeight / 2;
 						break;
 					case "TR":
-						this.x = _local2 + stage.stageWidth - 140;
-						this.y = _local3 + 45;
+						this.x = _loc2_ + stage.stageWidth - 140;
+						this.y = _loc3_ + 45;
 						break;
 					case "CR":
-						this.x = _local2 + stage.stageWidth - 140;
-						this.y = _local3 + stage.stageHeight / 2;
+						this.x = _loc2_ + stage.stageWidth - 140;
+						this.y = _loc3_ + stage.stageHeight / 2;
 						break;
 					case "BR":
-						this.x = _local2 + stage.stageWidth - 140;
-						this.y = _local3 + stage.stageHeight - 45;
+						this.x = _loc2_ + stage.stageWidth - 140;
+						this.y = _loc3_ + stage.stageHeight - 45;
 						break;
 					default:
-						this.x = _local2 + stage.stageWidth / 2;
-						this.y = _local3 + stage.stageHeight - 45;
+						this.x = _loc2_ + stage.stageWidth / 2;
+						this.y = _loc3_ + stage.stageHeight - 45;
 				}
 			}
 		}
 		
-		private function handleEnterFrame(e:Event) : void {
-			if(stage.getChildAt(stage.numChildren - 1) != this) {
+		private function handleEnterFrame(e:Event) : void
+		{
+			if(stage.getChildAt(stage.numChildren - 1) != this)
+			{
 				stage.addChild(this);
 			}
 		}
 		
-		private function handleAttach(e:Event) : void {
-			if((stage.loaderInfo as Object).hasOwnProperty("bytes")) {
+		private function handleAttach(e:Event) : void
+		{
+			if((stage.loaderInfo as Object).hasOwnProperty("bytes"))
+			{
 				rect = new SWFReader((stage.loaderInfo as Object).bytes).dimensions;
-			} else {
+			}
+			else
+			{
 				rect = new Rectangle(0,0,stage.stageWidth,stage.stageHeight);
 			}
 			stage.addEventListener("resize",handleResize);
@@ -116,15 +136,18 @@ package {
 			addEventListener("enterFrame",handleEnterFrame);
 		}
 		
-		private function handleCreated(e:TweenEvent) : void {
+		private function handleCreated(e:TweenEvent) : void
+		{
 			setTimeout(doRemove,50 * 60);
 		}
 		
-		private function handleTick(e:Event) : void {
+		private function handleTick(e:Event) : void
+		{
 			this.filters = [new BlurFilter((1 - this.alpha) * 100,(1 - this.alpha) * 10)];
 		}
 		
-		private function doRemove() : void {
+		private function doRemove() : void
+		{
 			t = new Tween(this,"alpha",Strong.easeIn,1,0,0.5,true);
 			t.addEventListener("motionChange",handleTick);
 			t.addEventListener("motionFinish",kill);
@@ -132,8 +155,10 @@ package {
 			stage.removeEventListener("resize",handleResize);
 		}
 		
-		private function kill(e:Event) : void {
-			if(this.parent) {
+		private function kill(e:Event) : void
+		{
+			if(this.parent)
+			{
 				this.parent.removeChild(this);
 			}
 		}

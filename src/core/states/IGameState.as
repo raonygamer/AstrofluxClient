@@ -1,5 +1,7 @@
-package core.states {
-	public interface IGameState {
+package core.states
+{
+	public interface IGameState
+	{
 		function enter() : void;
 		
 		function execute() : void;

@@ -1,4 +1,5 @@
-package core.hud.components.chat {
+package core.hud.components.chat
+{
 	import com.adobe.utils.StringUtil;
 	import core.hud.components.ImageButton;
 	import core.player.Player;
@@ -10,10 +11,14 @@ package core.hud.components.chat {
 	import textures.ITextureManager;
 	import textures.TextureLocator;
 	
-	public class MessageLog extends DisplayObjectContainer {
+	public class MessageLog extends DisplayObjectContainer
+	{
 		private static var g:Game;
+		
 		public static var extendedMaxLines:int = 60;
+		
 		public static var textQueue:Vector.<Object> = new Vector.<Object>();
+		
 		private static var profanities:Object = {
 			"4r5e":1,
 			"5h1t":1,
@@ -436,13 +441,19 @@ package core.hud.components.chat {
 			"xrated":1,
 			"xxx":1
 		};
+		
 		public var nextTimeout:Number = 0;
+		
 		private var textureManager:ITextureManager;
+		
 		private var activeView:String;
+		
 		private var simple:ChatSimple;
+		
 		private var advanced:ChatAdvanced;
 		
-		public function MessageLog(g:Game) {
+		public function MessageLog(g:Game)
+		{
 			var txt:Texture;
 			var txt2:Texture;
 			var toggleAdvanced:ImageButton;
@@ -457,92 +468,110 @@ package core.hud.components.chat {
 			addEventListener("enterFrame",update);
 			txt = textureManager.getTextureGUIByTextureName("button_chat_down");
 			txt2 = textureManager.getTextureGUIByTextureName("button_chat_up");
-			toggleAdvanced = new ImageButton(function():void {
+			toggleAdvanced = new ImageButton(function():void
+			{
 				toggleView("advanced");
 			},txt,null,null,txt2);
 			addChild(toggleAdvanced);
 		}
 		
-		public static function writeSysInfo(t:String) : void {
+		public static function writeSysInfo(t:String) : void
+		{
 			write(t);
 		}
 		
-		public static function writeChatMsg(msgType:String, msg:String, playerKey:String = null, playerName:String = null, rights:String = "", supporter:Boolean = false) : void {
-			var _local9:Object = null;
-			var _local13:Player = null;
-			var _local7:String = null;
-			var _local12:int = 0;
-			var _local11:RegExp = null;
-			if(g == null) {
+		public static function writeChatMsg(msgType:String, msg:String, playerKey:String = null, playerName:String = null, rights:String = "", supporter:Boolean = false) : void
+		{
+			var _loc7_:Object = null;
+			var _loc10_:Player = null;
+			var _loc15_:String = null;
+			var _loc9_:int = 0;
+			var _loc8_:RegExp = null;
+			if(g == null)
+			{
 				return;
 			}
-			if(msg.length > 250) {
-				_local9 = {};
-				_local9.length = msg.length;
-				_local9.msg = msg;
-				g.client.errorLog.writeError("Very long chat message, over 1000 chars: ","","",_local9);
+			if(msg.length > 250)
+			{
+				_loc7_ = {};
+				_loc7_.length = msg.length;
+				_loc7_.msg = msg;
+				g.client.errorLog.writeError("Very long chat message, over 1000 chars: ","","",_loc7_);
 				return;
 			}
-			if(g.solarSystem.type == "pvp dom" && msgType == "local") {
-				_local13 = g.playerManager.playersById[playerKey];
-				if(g.me != null && _local13 != null && _local13.team != -1 && g.me.team != -1) {
-					if(_local13.team != g.me.team) {
+			if(g.solarSystem.type == "pvp dom" && msgType == "local")
+			{
+				_loc10_ = g.playerManager.playersById[playerKey];
+				if(g.me != null && _loc10_ != null && _loc10_.team != -1 && g.me.team != -1)
+				{
+					if(_loc10_.team != g.me.team)
+					{
 						return;
 					}
 					msgType = "team";
 				}
 			}
-			for(var _local10:* in profanities) {
-				_local7 = "";
-				_local12 = 0;
-				while(_local12 < _local10.length) {
-					_local7 += "*";
-					_local12++;
+			for(var _loc12_ in profanities)
+			{
+				_loc15_ = "";
+				_loc9_ = 0;
+				while(_loc9_ < _loc12_.length)
+				{
+					_loc15_ += "*";
+					_loc9_++;
 				}
-				_local11 = new RegExp(_local10,"gi");
-				msg = msg.replace(_local11,_local7);
+				_loc8_ = new RegExp(_loc12_,"gi");
+				msg = msg.replace(_loc8_,_loc15_);
 			}
-			var _local14:String = colorCoding("[" + msgType + "]");
-			var _local8:* = msg;
-			if(playerName) {
-				_local8 = playerName + ": " + _local8;
+			var _loc13_:String = colorCoding("[" + msgType + "]");
+			var _loc14_:* = msg;
+			if(playerName)
+			{
+				_loc14_ = playerName + ": " + _loc14_;
 			}
-			if(supporter) {
-				_local8 = "<font color=\'#ffff66\'>&#9733;</font>" + _local8;
+			if(supporter)
+			{
+				_loc14_ = "<font color=\'#ffff66\'>&#9733;</font>" + _loc14_;
 			}
-			_local8 = colorRights(rights,_local8);
-			var _local15:Object = {};
-			_local15.type = msgType;
-			_local15.text = StringUtil.trim(_local14 + " " + _local8);
-			_local15.timeout = g.time + 60 * 1000;
-			_local15.playerKey = playerKey;
-			_local15.playerName = playerName;
-			_local15.supporter = supporter;
-			textQueue.push(_local15);
-			if(textQueue.length > extendedMaxLines) {
+			_loc14_ = colorRights(rights,_loc14_);
+			var _loc11_:Object = {};
+			_loc11_.type = msgType;
+			_loc11_.text = StringUtil.trim(_loc13_ + " " + _loc14_);
+			_loc11_.timeout = g.time + 60 * 1000;
+			_loc11_.playerKey = playerKey;
+			_loc11_.playerName = playerName;
+			_loc11_.supporter = supporter;
+			textQueue.push(_loc11_);
+			if(textQueue.length > extendedMaxLines)
+			{
 				textQueue.splice(0,1);
 			}
-			g.messageLog.updateTexts(_local15);
+			g.messageLog.updateTexts(_loc11_);
 		}
 		
-		public static function write(t:String, msgType:String = "system") : void {
-			var _local3:Object = null;
+		public static function write(t:String, msgType:String = "system") : void
+		{
+			var _loc3_:Object = null;
 			t = colorCoding(t);
-			if(g != null) {
-				_local3 = {};
-				_local3.text = t;
-				_local3.type = msgType;
-				_local3.timeout = g.time + 60 * 1000;
-				textQueue.push(_local3);
-				if(textQueue.length > extendedMaxLines) {
+			if(g != null)
+			{
+				_loc3_ = {};
+				_loc3_.text = t;
+				_loc3_.type = msgType;
+				_loc3_.timeout = g.time + 60 * 1000;
+				textQueue.push(_loc3_);
+				if(textQueue.length > extendedMaxLines)
+				{
 					textQueue.splice(0,1);
 				}
-				g.messageLog.updateTexts(_local3);
+				g.messageLog.updateTexts(_loc3_);
 			}
 		}
 		
-		public static function colorCoding(t:String) : String {
+		public static function colorCoding(t:String) : String
+		{
 			t = t.replace("[private]","<FONT COLOR=\'#9a9a9a\'>[private]</FONT>");
+			t = t.replace("[debug]","<FONT COLOR=\'#9a9a9a\'>[debug]</FONT>");
 			t = t.replace("[global]","<FONT COLOR=\'#cccc44\'>[global]</FONT>");
 			t = t.replace("[local]","<FONT COLOR=\'#8888cc\'>[local]</FONT>");
 			t = t.replace("[team]","<FONT COLOR=\'#6666ff\'>[team]</FONT>");
@@ -557,377 +586,406 @@ package core.hud.components.chat {
 			return t.replace("[join_leave]","");
 		}
 		
-		public static function colorRights(rights:String, t:String) : String {
-			if(rights == "mod") {
+		public static function colorRights(rights:String, t:String) : String
+		{
+			if(rights == "mod")
+			{
 				return "<FONT COLOR=\'#ffaa44\'>[mod]</FONT> " + t;
 			}
-			if(rights == "dev") {
+			if(rights == "dev")
+			{
 				return "<FONT COLOR=\'#ff86fb\'>[dev]</FONT> " + t;
 			}
 			return t;
 		}
 		
-		public static function writeDeathNote(player:Player, killerName:String, mod:String) : void {
-			var _local4:String = "<FONT COLOR=\'#ff4444\'>";
-			if(killerName != "") {
-				switch(mod) {
+		public static function writeDeathNote(player:Player, killerName:String, mod:String) : void
+		{
+			var _loc5_:String = "<FONT COLOR=\'#ff4444\'>";
+			if(killerName != "")
+			{
+				switch(mod)
+				{
 					case "sun":
-						_local4 += player.name + " flew into the sun.";
+						_loc5_ += player.name + " flew into the sun.";
 						break;
 					case "comet":
-						_local4 += player.name + " was crushed by a comet.";
+						_loc5_ += player.name + " was crushed by a comet.";
 						break;
 					case "suicide":
-						_local4 += player.name + " commited suicide.";
+						_loc5_ += player.name + " commited suicide.";
 						break;
 					case "Kamikaze":
-						_local4 += killerName + " took " + player.name + " down with it.";
+						_loc5_ += killerName + " took " + player.name + " down with it.";
 						break;
 					case "Missile Launcher":
-						_local4 += player.name + " was hunted down by " + killerName + "s missiles.";
+						_loc5_ += player.name + " was hunted down by " + killerName + "s missiles.";
 						break;
 					case "Mine Launcher":
-						_local4 += player.name + " didn\'t see " + killerName + "s mines.";
+						_loc5_ += player.name + " didn\'t see " + killerName + "s mines.";
 						break;
 					case "Plasma Gun":
-						_local4 += player.name + " was melted by " + killerName + "s plasma.";
+						_loc5_ += player.name + " was melted by " + killerName + "s plasma.";
 						break;
 					case "Lightning Gun":
-						_local4 += player.name + " was electrocuted by " + killerName + "s lightning.";
+						_loc5_ += player.name + " was electrocuted by " + killerName + "s lightning.";
 						break;
 					case "Blaster":
-						_local4 += player.name + " was blasted by " + killerName + ".";
+						_loc5_ += player.name + " was blasted by " + killerName + ".";
 						break;
 					case "Piercing Gun":
-						_local4 += player.name + " was perforated by " + killerName + ".";
+						_loc5_ += player.name + " was perforated by " + killerName + ".";
 						break;
 					case "Gatling Gun":
-						_local4 += player.name + " was perforated by " + killerName + "\'s gatling gun.";
+						_loc5_ += player.name + " was perforated by " + killerName + "\'s gatling gun.";
 						break;
 					case "Acid Spray":
-						_local4 += player.name + " was liquefied by " + killerName + "s acid.";
+						_loc5_ += player.name + " was liquefied by " + killerName + "s acid.";
 						break;
 					case "Acid Blaster":
-						_local4 += player.name + " was melted by " + killerName + "s acid.";
+						_loc5_ += player.name + " was melted by " + killerName + "s acid.";
 						break;
 					case "Energy Nova":
-						_local4 += player.name + " was shocked by " + killerName + ".";
+						_loc5_ += player.name + " was shocked by " + killerName + ".";
 						break;
 					case "Nuke Launcher":
-						_local4 += player.name + " was annihilated by " + killerName + "s nuke.";
+						_loc5_ += player.name + " was annihilated by " + killerName + "s nuke.";
 						break;
 					case "Heavy Cannon":
-						_local4 += player.name + " was crushed by " + killerName + "s slugs.";
+						_loc5_ += player.name + " was crushed by " + killerName + "s slugs.";
 						break;
 					case "Flamethrower":
-						_local4 += player.name + " was burned alive by " + killerName + "s fire.";
+						_loc5_ += player.name + " was burned alive by " + killerName + "s fire.";
 						break;
 					case "Broadside":
-						_local4 += player.name + " received a broadside from " + killerName + ".";
+						_loc5_ += player.name + " received a broadside from " + killerName + ".";
 						break;
 					case "Moth Queen Spit Gland":
-						_local4 += player.name + " was liquefied by " + killerName + "s acid.";
+						_loc5_ += player.name + " was liquefied by " + killerName + "s acid.";
 						break;
 					case "Plankton Siphon Gland":
-						_local4 += player.name + " was drained dry by " + killerName + ".";
+						_loc5_ += player.name + " was drained dry by " + killerName + ".";
 						break;
 					case "Cluster Missiles":
-						_local4 += player.name + " was blown up by " + killerName + "s missiles.";
+						_loc5_ += player.name + " was blown up by " + killerName + "s missiles.";
 						break;
 					case "Chrono Beam":
-						_local4 += player.name + " was annihilated by " + killerName + "s Chrono Beam.";
+						_loc5_ += player.name + " was annihilated by " + killerName + "s Chrono Beam.";
 						break;
 					case "Moth Zero Gland":
-						_local4 += player.name + " was disintegrated by " + killerName + "s Zero.";
+						_loc5_ += player.name + " was disintegrated by " + killerName + "s Zero.";
 						break;
 					case "Particle Gun":
-						_local4 += player.name + " was vaporized by " + killerName + "s neutron stream.";
+						_loc5_ += player.name + " was vaporized by " + killerName + "s neutron stream.";
 						break;
 					case "Piraya":
-						_local4 += player.name + " was eaten alive by " + killerName + "s space fishes.";
+						_loc5_ += player.name + " was eaten alive by " + killerName + "s space fishes.";
 						break;
 					case "Prismatic Crystal":
-						_local4 += player.name + " was disintegrated by " + killerName + "s prismatic crystals.";
+						_loc5_ += player.name + " was disintegrated by " + killerName + "s prismatic crystals.";
 						break;
 					case "Razor":
-						_local4 += player.name + " was sliced up by " + killerName + "s razors.";
+						_loc5_ += player.name + " was sliced up by " + killerName + "s razors.";
 						break;
 					case "X27-S Smart Gun":
-						_local4 += player.name + " couldn\'t dodge " + killerName + "s smart gun.";
+						_loc5_ += player.name + " couldn\'t dodge " + killerName + "s smart gun.";
 						break;
 					case "Blood-Claw S28 Smart Gun":
-						_local4 += player.name + " couldn\'t dodge " + killerName + "s smart gun.";
+						_loc5_ += player.name + " couldn\'t dodge " + killerName + "s smart gun.";
 						break;
 					case "C-4":
-						_local4 += player.name + " was blown up by " + killerName + "s C-4.";
+						_loc5_ += player.name + " was blown up by " + killerName + "s C-4.";
 						break;
 					case "Concussion Sphere":
-						_local4 += player.name + " was shocked to death by " + killerName + "s spheres.";
+						_loc5_ += player.name + " was shocked to death by " + killerName + "s spheres.";
 						break;
 					case "Acid Spore":
-						_local4 += player.name + " was infected by " + killerName + "s acid spores.";
+						_loc5_ += player.name + " was infected by " + killerName + "s acid spores.";
 						break;
 					case "Eagle Needle":
-						_local4 += player.name + " was perforated by " + killerName + "s needles.";
+						_loc5_ += player.name + " was perforated by " + killerName + "s needles.";
 						break;
 					case "Flame Trail":
-						_local4 += player.name + " didn\'t see " + killerName + "s fiery trail.";
+						_loc5_ += player.name + " didn\'t see " + killerName + "s fiery trail.";
 						break;
 					case "Gatling Laser":
-						_local4 += player.name + " was perforated by " + killerName + "s Gatling Laser.";
+						_loc5_ += player.name + " was perforated by " + killerName + "s Gatling Laser.";
 						break;
 					case "Golden Gun":
-						_local4 += player.name + " was shot by " + killerName + "s golden bullet.";
+						_loc5_ += player.name + " was shot by " + killerName + "s golden bullet.";
 						break;
 					case "Hell Fire":
-						_local4 += player.name + " was burned to a crisp by " + killerName + "s Hellfire.";
+						_loc5_ += player.name + " was burned to a crisp by " + killerName + "s Hellfire.";
 						break;
 					case "Infested Missiles":
-						_local4 += player.name + " was liquified by " + killerName + "s infested missiles.";
+						_loc5_ += player.name + " was liquified by " + killerName + "s infested missiles.";
 						break;
 					case "M2 Launcher":
-						_local4 += player.name + " was hunted down by " + killerName + "s missiles.";
+						_loc5_ += player.name + " was hunted down by " + killerName + "s missiles.";
 						break;
 					case "Skeletor Lightning":
-						_local4 += player.name + " was liquified by " + killerName + "s corrosive lightning.";
+						_loc5_ += player.name + " was liquified by " + killerName + "s corrosive lightning.";
 						break;
 					case "Sticky Bombs":
-						_local4 += player.name + " was blown up by " + killerName + "s bombs.";
+						_loc5_ += player.name + " was blown up by " + killerName + "s bombs.";
 						break;
 					case "Astro Lance":
-						_local4 += player.name + " was bludgeoned by " + killerName + "s lance.";
+						_loc5_ += player.name + " was bludgeoned by " + killerName + "s lance.";
 						break;
 					case "Railgun":
-						_local4 += player.name + " was eradicated by " + killerName + "s railgun";
+						_loc5_ += player.name + " was eradicated by " + killerName + "s railgun";
 						break;
 					case "Nexar Projector":
-						_local4 += player.name + " was scoped by " + killerName + "s projection";
+						_loc5_ += player.name + " was scoped by " + killerName + "s projection";
 						break;
 					case "Vindicator Projector":
-						_local4 += player.name + " was scoped by " + killerName + "s projection";
+						_loc5_ += player.name + " was scoped by " + killerName + "s projection";
 						break;
 					case "Shadow Projector":
-						_local4 += player.name + " was scoped by " + killerName + "s projection";
+						_loc5_ += player.name + " was scoped by " + killerName + "s projection";
 						break;
 					case "Cruise Missiles VX-23":
-						_local4 += player.name + " couldn’t escape  " + killerName + "s cruise missiles";
+						_loc5_ += player.name + " couldn’t escape  " + killerName + "s cruise missiles";
 						break;
 					case "Plasma Flares HG-168":
-						_local4 += player.name + " was disintegrated by " + killerName + "s flares";
+						_loc5_ += player.name + " was disintegrated by " + killerName + "s flares";
 						break;
 					case "Gatling Cannon GAU-186":
-						_local4 += player.name + " was shattered by " + killerName + "s gatling cannon";
+						_loc5_ += player.name + " was shattered by " + killerName + "s gatling cannon";
 						break;
 					case "Golden Gun :Scatter Shell":
-						_local4 += player.name + " was pulverised by " + killerName + "s scattergun";
+						_loc5_ += player.name + " was pulverised by " + killerName + "s scattergun";
 						break;
 					case "Golden Gun :Flak Shell":
-						_local4 += player.name + " was discombobulated by " + killerName + "s golden fireworks";
+						_loc5_ += player.name + " was discombobulated by " + killerName + "s golden fireworks";
 						break;
 					case "Shadowflames":
-						_local4 += player.name + " was scorched by " + killerName + "s flames";
+						_loc5_ += player.name + " was scorched by " + killerName + "s flames";
 						break;
 					case "Death Cloud":
-						_local4 += player.name + " was asphyxiated by " + killerName + "s cloud of death";
+						_loc5_ += player.name + " was asphyxiated by " + killerName + "s cloud of death";
 						break;
 					case "Nexar Blaster":
-						_local4 += killerName + " put an end to " + player.name;
+						_loc5_ += killerName + " put an end to " + player.name;
 						break;
 					case "Corrosive Teeth":
-						_local4 += player.name + " was torn apart by " + killerName + "s corrosive teeth";
+						_loc5_ += player.name + " was torn apart by " + killerName + "s corrosive teeth";
 						break;
 					case "Viper Fangs":
-						_local4 += player.name + " was torn apart by " + killerName + "s viperfangs";
+						_loc5_ += player.name + " was torn apart by " + killerName + "s viperfangs";
 						break;
 					case "Poison Arrow":
-						_local4 += player.name + " was shot down by " + killerName + "s poisoned arrow";
+						_loc5_ += player.name + " was shot down by " + killerName + "s poisoned arrow";
 						break;
 					case "Target Painter":
-						_local4 += player.name + " was somehow killed by " + killerName + "s painter";
+						_loc5_ += player.name + " was somehow killed by " + killerName + "s painter";
 						break;
 					case "Snow cannon":
-						_local4 += player.name + " was frozen to death by " + killerName + "s snowball";
+						_loc5_ += player.name + " was frozen to death by " + killerName + "s snowball";
 						break;
 					case "Spore 83-X Smart Gun":
-						_local4 += player.name + " couldn\'t dodge " + killerName + "s smart gun";
+						_loc5_ += player.name + " couldn\'t dodge " + killerName + "s smart gun";
 						break;
 					case "Beamer":
-						_local4 += player.name + " was fried by " + killerName + "s beamer";
+						_loc5_ += player.name + " was fried by " + killerName + "s beamer";
 						break;
 					case "Larva lightning":
-						_local4 += player.name + " was frazzled by " + killerName + "s larva";
+						_loc5_ += player.name + " was frazzled by " + killerName + "s larva";
 						break;
 					case "Boomerang":
-						_local4 += player.name + " made mincemeat out of " + killerName + "s ship";
+						_loc5_ += player.name + " made mincemeat out of " + killerName + "s ship";
 						break;
 					case "Locust Hatchery":
-						_local4 += player.name + " was tickled to death by " + killerName + "s locust swarm";
+						_loc5_ += player.name + " was tickled to death by " + killerName + "s locust swarm";
 						break;
 					case "Jaws":
-						_local4 += player.name + " was eaten alive by " + killerName;
+						_loc5_ += player.name + " was eaten alive by " + killerName;
 						break;
 					case "Noxium Spray":
-						_local4 += player.name + " was liquefied by " + killerName + "s noxium spray";
+						_loc5_ += player.name + " was liquefied by " + killerName + "s noxium spray";
 						break;
 					case "Noxium BFG":
-						_local4 += player.name + " was whomped by " + killerName + "s BFG";
+						_loc5_ += player.name + " was whomped by " + killerName + "s BFG";
 						break;
 					case "Aureus beam":
-						_local4 += player.name + " was sentenced to death by " + killerName + "s Judibeam";
+						_loc5_ += player.name + " was sentenced to death by " + killerName + "s Judibeam";
 						break;
 					case "Prismatic Easter Egg":
-						_local4 += player.name + " received a colourful surprise from " + killerName + "s prismatic eggs";
+						_loc5_ += player.name + " received a colourful surprise from " + killerName + "s prismatic eggs";
 						break;
 					case "Algae Nova Gland":
-						_local4 += player.name + " was crystallised by " + killerName + "s algae nova";
+						_loc5_ += player.name + " was crystallised by " + killerName + "s algae nova";
 						break;
 					case "Aureus lightning":
-						_local4 += player.name + " was mercilessly executed by " + killerName + "s Aureus lightning";
+						_loc5_ += player.name + " was mercilessly executed by " + killerName + "s Aureus lightning";
 						break;
 					case "Fireworks":
-						_local4 += killerName + " celebrated the death of " + player.name;
+						_loc5_ += killerName + " celebrated the death of " + player.name;
 						break;
 					case "Nexar Bomb":
-						_local4 += player.name + " was wiped out by " + killerName + "s nexar bomb";
+						_loc5_ += player.name + " was wiped out by " + killerName + "s nexar bomb";
 						break;
 					case "Shadow Bomb":
-						_local4 += player.name + " was wiped out by " + killerName + "s shadowbombs";
+						_loc5_ += player.name + " was wiped out by " + killerName + "s shadowbombs";
 						break;
 					case "Pixi Launcher":
-						_local4 += player.name + " was pixelated by + killerName";
+						_loc5_ += player.name + " was pixelated by " + killerName;
 						break;
 					case "Photonic Blaster":
-						_local4 += player.name + " was illuminated to death by " + killerName + "s photon stream";
+						_loc5_ += player.name + " was illuminated to death by " + killerName + "s photon stream";
 						break;
 					case "Sonic Missiles":
-						_local4 += player.name + " couldn’t survive the shockwave from " + killerName + "s sonic missiles";
+						_loc5_ += player.name + " couldn’t survive the shockwave from " + killerName + "s sonic missiles";
 						break;
 					case "Shadow Blaster":
-						_local4 += player.name + " was assassinated from the shadows by " + killerName;
+						_loc5_ += player.name + " was assassinated from the shadows by " + killerName;
 						break;
 					case "Plasma Blaster":
-						_local4 += player.name + " was melted by the blue fireballs of " + killerName;
+						_loc5_ += player.name + " was melted by the blue fireballs of " + killerName;
 						break;
 					case "Plasma Torpedoes":
-						_local4 += player.name + " was eviscerated by " + killerName + "s torpedoes";
+						_loc5_ += player.name + " was eviscerated by " + killerName + "s torpedoes";
 						break;
 					case "Kinetic Phase Cutter":
-						_local4 += player.name + " was phased out of existence by " + killerName;
+						_loc5_ += player.name + " was phased out of existence by " + killerName;
 						break;
 					case "Ram Missiles":
-						_local4 += player.name + " was battered by " + killerName + "s ram missiles";
+						_loc5_ += player.name + " was battered by " + killerName + "s ram missiles";
 						break;
 					case "Flak Cannon":
-						_local4 += player.name + " was decimated by " + killerName + "s big metal scrap launcher";
+						_loc5_ += player.name + " was decimated by " + killerName + "s big metal scrap launcher";
 						break;
 					case "Golden Flak Cannon":
-						_local4 += killerName + " unleashed a horde of shuriken upon " + player.name;
+						_loc5_ += killerName + " unleashed a horde of shuriken upon " + player.name;
 						break;
 					case "Golden Ram Missiles":
-						_local4 += player.name + " was shredded by " + killerName + "s golden ram";
+						_loc5_ += player.name + " was shredded by " + killerName + "s golden ram";
 						break;
 					case "Vindicator Advanced Blaster":
-						_local4 += player.name + " was demolished by " + killerName + "s advanced blaster";
+						_loc5_ += player.name + " was demolished by " + killerName + "s advanced blaster";
 						break;
 					case "Vindicator Cluster Missiles":
-						_local4 += player.name + " was ruptured by " + killerName + "s advanced blaster";
+						_loc5_ += player.name + " was ruptured by " + killerName + "s advanced blaster";
 						break;
 					case "X-73 Constructur":
-						_local4 += killerName + "s guardian defended against " + player.name + "s ambush";
+						_loc5_ += killerName + "s guardian defended against " + player.name + "s ambush";
 						break;
 					case "Wasp Bait":
-						_local4 += player.name + " was bitten by " + killerName + "s wasp";
+						_loc5_ += player.name + " was bitten by " + killerName + "s wasp";
 						break;
 					case "X-32 Constructor":
-						_local4 += player.name + " was peppered by " + killerName + "s zlattes";
+						_loc5_ += player.name + " was peppered by " + killerName + "s zlattes";
 						break;
 					case "Monachus":
-						_local4 += player.name + " was annoyed to death by " + killerName + "s monachus";
+						_loc5_ += player.name + " was annoyed to death by " + killerName + "s monachus";
 						break;
 					case "Aureus Energy Manipulator":
-						_local4 += player.name + " couldn’t evade " + killerName + "s sentry energy orb";
+						_loc5_ += player.name + " couldn’t evade " + killerName + "s sentry energy orb";
 						break;
 					case "Aureus Kinetic Manipulator":
-						_local4 += player.name + " couldn’t evade " + killerName + "s sentry kinetic orb";
+						_loc5_ += player.name + " couldn’t evade " + killerName + "s sentry kinetic orb";
 						break;
 					case "Aureus Corrosive Manipulator":
-						_local4 += player.name + " couldn’t evade " + killerName + "s sentry corrosive orb";
+						_loc5_ += player.name + " couldn’t evade " + killerName + "s sentry corrosive orb";
 						break;
 					case "X-42 Constructor":
-						_local4 += player.name + " was eliminated by " + killerName + "s army of triads";
+						_loc5_ += player.name + " was eliminated by " + killerName + "s army of triads";
 						break;
 					default:
-						_local4 += player.name + " was killed by " + killerName;
+						_loc5_ += player.name + " was killed by " + killerName;
 				}
-			} else {
-				_local4 += player.name + " has died.";
 			}
-			var _local5:Object = {};
-			_local5.type = "death";
-			_local4 += "</FONT>";
-			MessageLog.writeChatMsg("death",_local4);
+			else
+			{
+				_loc5_ += player.name + " has died.";
+			}
+			var _loc4_:Object = {};
+			_loc4_.type = "death";
+			_loc5_ += "</FONT>";
+			MessageLog.writeChatMsg("death",_loc5_);
 		}
 		
-		private function get muted() : Array {
+		private function get muted() : Array
+		{
 			return SceneBase.settings.chatMuted;
 		}
 		
-		private function toggleView(view:String) : void {
+		private function toggleView(view:String) : void
+		{
 			removeChild(simple);
 			removeChild(advanced);
 			activeView = activeView == view ? "" : view;
-			if(activeView == "advanced") {
+			if(activeView == "advanced")
+			{
 				addChild(advanced);
-			} else {
+			}
+			else
+			{
 				addChild(simple);
 			}
 		}
 		
-		public function toggleMuted(msgType:String, mute:Boolean) : void {
-			var _local3:Array = muted;
-			var _local4:int = int(_local3.indexOf(msgType));
-			if(mute && _local4 == -1) {
-				_local3.push(msgType);
-			} else if(_local4 != -1) {
-				_local3.splice(_local4,1);
+		public function toggleMuted(msgType:String, mute:Boolean) : void
+		{
+			var _loc4_:Array = muted;
+			var _loc3_:int = int(_loc4_.indexOf(msgType));
+			if(mute && _loc3_ == -1)
+			{
+				_loc4_.push(msgType);
 			}
-			SceneBase.settings.chatMuted = _local3;
+			else if(_loc3_ != -1)
+			{
+				_loc4_.splice(_loc3_,1);
+			}
+			SceneBase.settings.chatMuted = _loc4_;
 			SceneBase.settings.save();
 		}
 		
-		public function isMuted(msgType:String) : Boolean {
+		public function isMuted(msgType:String) : Boolean
+		{
 			return muted.indexOf(msgType) != -1;
 		}
 		
-		public function removePlayerMessages(key:String) : void {
-			textQueue = textQueue.filter(function(param1:Object, param2:int, param3:Vector.<Object>):Boolean {
+		public function removePlayerMessages(key:String) : void
+		{
+			textQueue = textQueue.filter(function(param1:Object, param2:int, param3:Vector.<Object>):Boolean
+			{
 				return (param1.playerKey || "") != key;
 			});
 		}
 		
-		public function getQueue() : Vector.<Object> {
-			var queue:Vector.<Object> = textQueue.filter(function(param1:Object, param2:int, param3:Vector.<Object>):Boolean {
-				var _local4:String = param1.type || "system";
-				return muted.indexOf(_local4) == -1;
+		public function getQueue() : Vector.<Object>
+		{
+			var queue:Vector.<Object> = textQueue.filter(function(param1:Object, param2:int, param3:Vector.<Object>):Boolean
+			{
+				var _loc4_:String = param1.type || "system";
+				return muted.indexOf(_loc4_) == -1;
 			});
 			return queue;
 		}
 		
-		private function update(e:Event = null) : void {
-			if(contains(simple)) {
+		private function update(e:Event = null) : void
+		{
+			if(contains(simple))
+			{
 				simple.update();
 			}
 		}
 		
-		public function updateTexts(obj:Object) : void {
-			if(contains(advanced)) {
+		public function updateTexts(obj:Object) : void
+		{
+			if(contains(advanced))
+			{
 				advanced.updateText(obj);
-			} else if(contains(simple)) {
+			}
+			else if(contains(simple))
+			{
 				simple.updateTexts();
 			}
 		}
 		
-		override public function dispose() : void {
+		override public function dispose() : void
+		{
 			removeEventListeners();
 			g = null;
 			super.dispose();

@@ -1,18 +1,25 @@
-package core.hud.components {
+package core.hud.components
+{
 	import com.greensock.TweenMax;
 	import core.scene.Game;
 	import generics.Localize;
 	import starling.display.Image;
 	import starling.filters.GlowFilter;
 	
-	public class ButtonCargo extends ButtonHud {
+	public class ButtonCargo extends ButtonHud
+	{
 		public static var serverSaysCargoIsFull:Boolean = false;
+		
 		private var capacityBar:Image;
+		
 		private var g:Game;
+		
 		private var fadeTween:TweenMax;
+		
 		private var text:TextBitmap;
 		
-		public function ButtonCargo(g:Game, clickCallback:Function) {
+		public function ButtonCargo(g:Game, clickCallback:Function)
+		{
 			super(clickCallback,"button_cargo.png",null);
 			this.g = g;
 			capacityBar = new Image(g.textureManager.getTextureGUIByTextureName("capacity_bar"));
@@ -28,21 +35,29 @@ package core.hud.components {
 			update();
 		}
 		
-		public function update() : void {
+		public function update() : void
+		{
 			var perc:Number = g.myCargo.spaceJunkCount / g.myCargo.compressorCapacities[g.me.compressorLevel];
 			perc = perc > 1 ? 1 : perc;
-			if(perc < 0.5) {
+			if(perc < 0.5)
+			{
 				capacityBar.color = 0x44ff44;
-			} else if(perc < 0.75) {
+			}
+			else if(perc < 0.75)
+			{
 				capacityBar.color = 0xffff44;
-			} else {
+			}
+			else
+			{
 				capacityBar.color = 0xff4444;
 			}
 			capacityBar.height = perc * 15;
-			if(g.myCargo.isFull || serverSaysCargoIsFull) {
+			if(g.myCargo.isFull || serverSaysCargoIsFull)
+			{
 				g.tutorial.showCargoAdvice();
 				capacityBar.blendMode = "add";
-				if(!capacityBar.filter) {
+				if(!capacityBar.filter)
+				{
 					capacityBar.filter = new GlowFilter(0xff4444,1,7);
 					capacityBar.filter.cache();
 				}
@@ -50,23 +65,30 @@ package core.hud.components {
 					"alpha":0.5,
 					"repeat":-1,
 					"yoyo":true,
-					"onUpdate":function():void {
+					"onUpdate":function():void
+					{
 						text.alpha = capacityBar.alpha;
 					}
 				});
-				if(!contains(text)) {
+				if(!contains(text))
+				{
 					addChild(text);
 				}
-			} else {
-				if(contains(text)) {
+			}
+			else
+			{
+				if(contains(text))
+				{
 					removeChild(text);
 				}
-				if(fadeTween) {
+				if(fadeTween)
+				{
 					fadeTween.kill();
 					fadeTween = null;
 				}
 				capacityBar.alpha = 1;
-				if(capacityBar.filter) {
+				if(capacityBar.filter)
+				{
 					capacityBar.filter.dispose();
 					capacityBar.filter = null;
 				}
