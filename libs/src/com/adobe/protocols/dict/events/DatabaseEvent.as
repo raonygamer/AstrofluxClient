@@ -30,37 +30,32 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.protocols.dict.events
-{
-	import flash.events.Event;
+package com.adobe.protocols.dict.events {
+import flash.events.Event;
 
-	public class DatabaseEvent extends Event
-	{
-		private var _databases:Array;
-		public static const DATABASES:String = "databases";
+public class DatabaseEvent extends Event {
+    public static const DATABASES:String = "databases";
 
-		public function DatabaseEvent(type:String, bubbles:Boolean = false,
-				cancelable:Boolean = false)
-		{
-			super(type, bubbles, cancelable);
-		}
+    public function DatabaseEvent(type:String, bubbles:Boolean = false,
+                                  cancelable:Boolean = false) {
+        super(type, bubbles, cancelable);
+    }
 
-		public function set databases(databases:Array):void
-		{
-			this._databases = databases;
-		}
+    private var _databases:Array;
 
-		public function get databases():Array
-		{
-			return this._databases;
-		}
+    public function get databases():Array {
+        return this._databases;
+    }
 
-		public override function clone():Event
-		{
-			var out:DatabaseEvent = new DatabaseEvent(type, bubbles, cancelable);
-			out.databases = _databases;
+    public function set databases(databases:Array):void {
+        this._databases = databases;
+    }
 
-			return out;
-		}
-	}
+    public override function clone():Event {
+        var out:DatabaseEvent = new DatabaseEvent(type, bubbles, cancelable);
+        out.databases = _databases;
+
+        return out;
+    }
+}
 }

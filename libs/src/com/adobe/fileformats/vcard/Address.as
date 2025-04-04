@@ -29,19 +29,16 @@
   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package com.adobe.fileformats.vcard
-{
-  public class Address
-  {
+package com.adobe.fileformats.vcard {
+public class Address {
     public var type:String;
     public var street:String;
     public var city:String;
     public var state:String;
     public var postalCode:String;
 
-    public function toString():String
-    {
-      return (street + " " + city + ", " + state + " " + postalCode);
+    public function toString():String {
+        return (street + " " + city + ", " + state + " " + postalCode);
     }
-  }
+}
 }

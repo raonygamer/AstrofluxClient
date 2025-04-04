@@ -30,31 +30,26 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.protocols.dict
-{
-  public class DictionaryServer
-  {
+package com.adobe.protocols.dict {
+public class DictionaryServer {
     private var _server:String;
+
+    public function get server():String {
+        return this._server;
+    }
+
+    public function set server(server:String):void {
+        this._server = server;
+    }
+
     private var _description:String;
 
-    public function set server(server:String):void
-    {
-      this._server = server;
+    public function get description():String {
+        return this._description;
     }
 
-    public function get server():String
-    {
-      return this._server;
+    public function set description(description:String):void {
+        this._description = description;
     }
-
-    public function set description(description:String):void
-    {
-      this._description = description;
-    }
-
-    public function get description():String
-    {
-      return this._description;
-    }
-  }
+}
 }

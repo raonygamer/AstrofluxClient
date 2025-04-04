@@ -30,38 +30,33 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.protocols.dict.util
-{
-	import flash.events.Event;
+package com.adobe.protocols.dict.util {
+import flash.events.Event;
 
-	public class CompleteResponseEvent extends Event
-	{
-		private var _response:String;
-		public static const COMPLETE_RESPONSE:String = "completeResponse";
+public class CompleteResponseEvent extends Event {
+    public static const COMPLETE_RESPONSE:String = "completeResponse";
 
-		public function CompleteResponseEvent(type:String, bubbles:Boolean = false,
-				cancelable:Boolean = false)
-		{
-			super(type, bubbles, cancelable);
-		}
+    public function CompleteResponseEvent(type:String, bubbles:Boolean = false,
+                                          cancelable:Boolean = false) {
+        super(type, bubbles, cancelable);
+    }
 
-		public function set response(response:String):void
-		{
-			this._response = response;
-		}
+    private var _response:String;
 
-		public function get response():String
-		{
-			return this._response;
-		}
+    public function get response():String {
+        return this._response;
+    }
 
-		public override function clone():Event
-		{
-			var out:CompleteResponseEvent = new CompleteResponseEvent(type,
-					bubbles, cancelable);
-			out.response = _response;
+    public function set response(response:String):void {
+        this._response = response;
+    }
 
-			return out;
-		}
-	}
+    public override function clone():Event {
+        var out:CompleteResponseEvent = new CompleteResponseEvent(type,
+                bubbles, cancelable);
+        out.response = _response;
+
+        return out;
+    }
+}
 }

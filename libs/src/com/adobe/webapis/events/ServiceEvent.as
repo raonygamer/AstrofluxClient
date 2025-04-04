@@ -30,53 +30,47 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.webapis.events
-{
+package com.adobe.webapis.events {
 
-	import flash.events.Event;
+import flash.events.Event;
 
-	/**
-	 * Event class that contains data loaded from remote services.
-	 *
-	 * @author Mike Chambers
-	 */
-	public class ServiceEvent extends Event
-	{
-		private var _data:Object = new Object();
-		;
+/**
+ * Event class that contains data loaded from remote services.
+ *
+ * @author Mike Chambers
+ */
+public class ServiceEvent extends Event {
+    /**
+     * Constructor for ServiceEvent class.
+     *
+     * @param type The type of event that the instance represents.
+     */
+    public function ServiceEvent(type:String, bubbles:Boolean = false,
+                                 cancelable:Boolean = false) {
+        super(type, bubbles, cancelable);
+    }
+    ;
 
-		/**
-		 * Constructor for ServiceEvent class.
-		 *
-		 * @param type The type of event that the instance represents.
-		 */
-		public function ServiceEvent(type:String, bubbles:Boolean = false,
-				cancelable:Boolean = false)
-		{
-			super(type, bubbles, cancelable);
-		}
+    private var _data:Object = new Object();
 
-		/**
-		 * 	This object contains data loaded in response
-		 * 	to remote service calls, and properties associated with that call.
-		 */
-		public function get data():Object
-		{
-			return _data;
-		}
+    /**
+     *    This object contains data loaded in response
+     *    to remote service calls, and properties associated with that call.
+     */
+    public function get data():Object {
+        return _data;
+    }
 
-		public function set data(d:Object):void
-		{
-			_data = d;
-		}
+    public function set data(d:Object):void {
+        _data = d;
+    }
 
-		public override function clone():Event
-		{
-			var out:ServiceEvent = new ServiceEvent(type, bubbles, cancelable);
-			out.data = data;
+    public override function clone():Event {
+        var out:ServiceEvent = new ServiceEvent(type, bubbles, cancelable);
+        out.data = data;
 
-			return out;
-		}
+        return out;
+    }
 
-	}
+}
 }

@@ -30,42 +30,36 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.protocols.dict
-{
-	public class Definition
-	{
-		private var _definition:String;
-		private var _database:String;
-		private var _term:String;
+package com.adobe.protocols.dict {
+public class Definition {
+    private var _definition:String;
 
-		public function set definition(definition:String):void
-		{
-			this._definition = definition;
-		}
+    public function get definition():String {
+        return this._definition;
+    }
 
-		public function get definition():String
-		{
-			return this._definition;
-		}
+    public function set definition(definition:String):void {
+        this._definition = definition;
+    }
 
-		public function set database(database:String):void
-		{
-			this._database = database;
-		}
+    private var _database:String;
 
-		public function get database():String
-		{
-			return this._database;
-		}
+    public function get database():String {
+        return this._database;
+    }
 
-		public function set term(term:String):void
-		{
-			this._term = term;
-		}
+    public function set database(database:String):void {
+        this._database = database;
+    }
 
-		public function get term():String
-		{
-			return this._term;
-		}
-	}
+    private var _term:String;
+
+    public function get term():String {
+        return this._term;
+    }
+
+    public function set term(term:String):void {
+        this._term = term;
+    }
+}
 }

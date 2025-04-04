@@ -30,38 +30,34 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.air.net.events
-{
-	import flash.events.Event;
-	import flash.filesystem.File;
+package com.adobe.air.net.events {
+import flash.events.Event;
+import flash.filesystem.File;
 
-	public class ResourceCacheEvent extends Event
-	{
+public class ResourceCacheEvent extends Event {
 
-		public static const ITEM_READY:String = "onPathReady";
-		public static const ITEM_CACHED:String = "onItemCached";
-		[Bindable]
-		public var key:String;
-		[Bindable]
-		public var file:File;
+    public static const ITEM_READY:String = "onPathReady";
+    public static const ITEM_CACHED:String = "onItemCached";
 
-		public function ResourceCacheEvent(type:String,
-				bubbles:Boolean = false,
-				cancelable:Boolean = false)
-		{
-			super(type, bubbles, cancelable);
-		}
+    public function ResourceCacheEvent(type:String,
+                                       bubbles:Boolean = false,
+                                       cancelable:Boolean = false) {
+        super(type, bubbles, cancelable);
+    }
+    [Bindable]
+    public var key:String;
+    [Bindable]
+    public var file:File;
 
-		public override function clone():Event
-		{
-			var out:ResourceCacheEvent = new ResourceCacheEvent(type,
-					bubbles,
-					cancelable);
-			out.key = key;
-			out.file = file;
+    public override function clone():Event {
+        var out:ResourceCacheEvent = new ResourceCacheEvent(type,
+                bubbles,
+                cancelable);
+        out.key = key;
+        out.file = file;
 
-			return out;
-		}
+        return out;
+    }
 
-	}
+}
 }

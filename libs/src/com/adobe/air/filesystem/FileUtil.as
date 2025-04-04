@@ -30,32 +30,26 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.air.filesystem
-{
-  import flash.system.Capabilities;
-  import flash.filesystem.File;
+package com.adobe.air.filesystem {
+import flash.system.Capabilities;
+import flash.filesystem.File;
 
-  public class FileUtil
-  {
+public class FileUtil {
     /**
-     *	@return An Array of Files representing the root directories of the
-     * 			operating system.
+     *    @return An Array of Files representing the root directories of the
+     *            operating system.
      */
-    public static function getRootDirectories():Array
-    {
-      var v:Array = File.getRootDirectories();
-      var os:String = Capabilities.os;
-      if (os.indexOf("Mac") > -1)
-      {
-        v = File(v[0]).resolvePath("Volumes").getDirectoryListing();
-      }
-      else if (os.indexOf("Linux") > -1)
-      {
-        // todo: need to impliment Linux
-      }
+    public static function getRootDirectories():Array {
+        var v:Array = File.getRootDirectories();
+        var os:String = Capabilities.os;
+        if (os.indexOf("Mac") > -1) {
+            v = File(v[0]).resolvePath("Volumes").getDirectoryListing();
+        } else if (os.indexOf("Linux") > -1) {
+            // todo: need to impliment Linux
+        }
 
-      return v;
+        return v;
     }
 
-  }
+}
 }

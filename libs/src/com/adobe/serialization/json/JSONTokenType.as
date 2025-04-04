@@ -30,15 +30,13 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.serialization.json
-{
+package com.adobe.serialization.json {
 
-  /**
-   * Class containing constant values for the different types
-   * of tokens in a JSON encoded string.
-   */
-  public final class JSONTokenType
-  {
+/**
+ * Class containing constant values for the different types
+ * of tokens in a JSON encoded string.
+ */
+public final class JSONTokenType {
     public static const UNKNOWN:int = -1;
     public static const COMMA:int = 0;
     public static const LEFT_BRACE:int = 1;
@@ -52,5 +50,5 @@ package com.adobe.serialization.json
     public static const STRING:int = 10;
     public static const NUMBER:int = 11;
     public static const NAN:int = 12;
-  }
+}
 }

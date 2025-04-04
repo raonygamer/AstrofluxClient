@@ -29,11 +29,9 @@
   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package com.adobe.fileformats.vcard
-{
-  public class Phone
-  {
+package com.adobe.fileformats.vcard {
+public class Phone {
     public var type:String;
     public var number:String;
-  }
+}
 }

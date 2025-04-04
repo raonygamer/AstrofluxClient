@@ -30,18 +30,15 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.webapis
-{
-  import flash.events.EventDispatcher;
+package com.adobe.webapis {
+import flash.events.EventDispatcher;
 
-  /**
-   * Base class for remote service classes.
-   */
-  public class ServiceBase extends EventDispatcher
-  {
-    public function ServiceBase()
-    {
+/**
+ * Base class for remote service classes.
+ */
+public class ServiceBase extends EventDispatcher {
+    public function ServiceBase() {
     }
 
-  }
+}
 }

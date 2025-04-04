@@ -30,24 +30,20 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.protocols.dict.events
-{
-  import flash.events.Event;
+package com.adobe.protocols.dict.events {
+import flash.events.Event;
 
-  public class NoMatchEvent extends Event
-  {
+public class NoMatchEvent extends Event {
     public static const NO_MATCH:String = "noMatch";
 
     public function NoMatchEvent(type:String, bubbles:Boolean = false,
-        cancelable:Boolean = false)
-    {
-      super(type, bubbles, cancelable);
+                                 cancelable:Boolean = false) {
+        super(type, bubbles, cancelable);
     }
 
-    public override function clone():Event
-    {
-      var out:NoMatchEvent = new NoMatchEvent(type, bubbles, cancelable);
-      return out;
+    public override function clone():Event {
+        var out:NoMatchEvent = new NoMatchEvent(type, bubbles, cancelable);
+        return out;
     }
-  }
+}
 }

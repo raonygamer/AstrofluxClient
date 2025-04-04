@@ -30,25 +30,21 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.protocols.dict.events
-{
-  import flash.events.Event;
+package com.adobe.protocols.dict.events {
+import flash.events.Event;
 
-  public class DisconnectedEvent extends Event
-  {
+public class DisconnectedEvent extends Event {
     public static const DISCONNECTED:String = "disconnected";
 
     public function DisconnectedEvent(type:String, bubbles:Boolean = false,
-        cancelable:Boolean = false)
-    {
-      super(type, bubbles, cancelable);
+                                      cancelable:Boolean = false) {
+        super(type, bubbles, cancelable);
     }
 
-    public override function clone():Event
-    {
-      var out:DisconnectedEvent = new DisconnectedEvent(type, bubbles, cancelable);
-      return out;
+    public override function clone():Event {
+        var out:DisconnectedEvent = new DisconnectedEvent(type, bubbles, cancelable);
+        return out;
     }
 
-  }
+}
 }

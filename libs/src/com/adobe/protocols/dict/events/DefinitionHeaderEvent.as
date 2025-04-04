@@ -30,38 +30,33 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.protocols.dict.events
-{
-	import flash.events.Event;
+package com.adobe.protocols.dict.events {
+import flash.events.Event;
 
-	public class DefinitionHeaderEvent extends Event
-	{
-		public static const DEFINITION_HEADER:String = "definitionHeader";
-		private var _definitionCount:uint;
+public class DefinitionHeaderEvent extends Event {
+    public static const DEFINITION_HEADER:String = "definitionHeader";
 
-		public function DefinitionHeaderEvent(type:String, bubbles:Boolean = false,
-				cancelable:Boolean = false)
-		{
-			super(type, bubbles, cancelable);
-		}
+    public function DefinitionHeaderEvent(type:String, bubbles:Boolean = false,
+                                          cancelable:Boolean = false) {
+        super(type, bubbles, cancelable);
+    }
 
-		public function set definitionCount(definitionCount:uint):void
-		{
-			this._definitionCount = definitionCount;
-		}
+    private var _definitionCount:uint;
 
-		public function get definitionCount():uint
-		{
-			return this._definitionCount;
-		}
+    public function get definitionCount():uint {
+        return this._definitionCount;
+    }
 
-		public override function clone():Event
-		{
-			var out:DefinitionHeaderEvent = new DefinitionHeaderEvent(type,
-					bubbles, cancelable);
-			out.definitionCount = _definitionCount;
+    public function set definitionCount(definitionCount:uint):void {
+        this._definitionCount = definitionCount;
+    }
 
-			return out;
-		}
-	}
+    public override function clone():Event {
+        var out:DefinitionHeaderEvent = new DefinitionHeaderEvent(type,
+                bubbles, cancelable);
+        out.definitionCount = _definitionCount;
+
+        return out;
+    }
+}
 }

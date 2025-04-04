@@ -29,12 +29,16 @@
   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package com.adobe.fileformats.vcard
-{
-  import flash.utils.ByteArray;
+package com.adobe.fileformats.vcard {
+import flash.utils.ByteArray;
 
-  public class VCard
-  {
+public class VCard {
+    public function VCard() {
+        orgs = new Array();
+        phones = new Array();
+        emails = new Array();
+        addresses = new Array();
+    }
     public var fullName:String;
     public var orgs:Array;
     public var title:String;
@@ -42,13 +46,5 @@ package com.adobe.fileformats.vcard
     public var phones:Array;
     public var emails:Array;
     public var addresses:Array;
-
-    public function VCard()
-    {
-      orgs = new Array();
-      phones = new Array();
-      emails = new Array();
-      addresses = new Array();
-    }
-  }
+}
 }

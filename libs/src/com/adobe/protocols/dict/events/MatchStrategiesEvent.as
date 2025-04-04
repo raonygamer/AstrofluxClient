@@ -30,39 +30,34 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.protocols.dict.events
-{
-	import flash.events.Event;
+package com.adobe.protocols.dict.events {
+import flash.events.Event;
 
-	public class MatchStrategiesEvent
-		extends Event
-	{
-		private var _strategies:Array;
-		public static const MATCH_STRATEGIES:String = "matchStrategies";
+public class MatchStrategiesEvent
+        extends Event {
+    public static const MATCH_STRATEGIES:String = "matchStrategies";
 
-		public function MatchStrategiesEvent(type:String, bubbles:Boolean = false,
-				cancelable:Boolean = false)
-		{
-			super(type, bubbles, cancelable);
-		}
+    public function MatchStrategiesEvent(type:String, bubbles:Boolean = false,
+                                         cancelable:Boolean = false) {
+        super(type, bubbles, cancelable);
+    }
 
-		public function set strategies(strategies:Array):void
-		{
-			this._strategies = strategies;
-		}
+    private var _strategies:Array;
 
-		public function get strategies():Array
-		{
-			return this._strategies;
-		}
+    public function get strategies():Array {
+        return this._strategies;
+    }
 
-		public override function clone():Event
-		{
-			var out:MatchStrategiesEvent = new MatchStrategiesEvent(type,
-					bubbles, cancelable);
-			out.strategies = _strategies;
+    public function set strategies(strategies:Array):void {
+        this._strategies = strategies;
+    }
 
-			return out;
-		}
-	}
+    public override function clone():Event {
+        var out:MatchStrategiesEvent = new MatchStrategiesEvent(type,
+                bubbles, cancelable);
+        out.strategies = _strategies;
+
+        return out;
+    }
+}
 }

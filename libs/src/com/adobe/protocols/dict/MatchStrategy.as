@@ -30,37 +30,31 @@
   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package com.adobe.protocols.dict
-{
-	public class MatchStrategy
-	{
-		private var _name:String;
-		private var _description:String;
+package com.adobe.protocols.dict {
+public class MatchStrategy {
+    public function MatchStrategy(name:String, description:String) {
+        this._name = name;
+        this._description = description;
+    }
 
-		public function MatchStrategy(name:String, description:String)
-		{
-			this._name = name;
-			this._description = description;
-		}
+    private var _name:String;
 
-		public function set name(name:String):void
-		{
-			this._name = name;
-		}
+    public function get name():String {
+        return this._name;
+    }
 
-		public function get name():String
-		{
-			return this._name;
-		}
+    public function set name(name:String):void {
+        this._name = name;
+    }
 
-		public function set description(description:String):void
-		{
-			this._description = description;
-		}
+    private var _description:String;
 
-		public function get description():String
-		{
-			return this._description;
-		}
-	}
+    public function get description():String {
+        return this._description;
+    }
+
+    public function set description(description:String):void {
+        this._description = description;
+    }
+}
 }
