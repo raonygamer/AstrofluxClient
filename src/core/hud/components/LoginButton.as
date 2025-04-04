@@ -11,7 +11,6 @@ package core.hud.components
 		private var displayText:TextField;
 		
 		private var callback:Function;
-		
 		private var _enabled:Boolean = true;
 		
 		public function LoginButton(text:String, callback:Function, textColor:uint = 16777215, bgColor:int = 0)

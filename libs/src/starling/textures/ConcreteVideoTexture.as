@@ -25,7 +25,6 @@ package starling.textures
     internal class ConcreteVideoTexture extends ConcreteTexture
     {
         private var _textureReadyCallback:Function;
-
         /** Creates a new instance with the given parameters.
          *  <code>base</code> must be of type <code>flash.display3D.textures.VideoTexture</code>.
          */

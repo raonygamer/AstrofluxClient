@@ -8,9 +8,7 @@ package core.hud.components.map
 	public class MapDeathLine
 	{
 		private var line:Line;
-		
 		private var scale:Number = 0.4;
-		
 		private var g:Game;
 		
 		public function MapDeathLine(g:Game, container:Sprite, deathLine:DeathLine, color:uint)

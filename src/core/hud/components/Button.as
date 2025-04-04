@@ -17,41 +17,23 @@ package core.hud.components
 	public class Button extends Sprite
 	{
 		public static const STYLE_POSITIVE:String = "positive";
-		
 		public static const STYLE_NEGATIVE:String = "negative";
-		
 		public static const STYLE_HIGHLIGHT:String = "highlight";
-		
 		public static const STYLE_BUY:String = "buy";
-		
 		public static const STYLE_NORMAL:String = "normal";
-		
 		public static const STYLE_REWARD:String = "reward";
-		
 		protected static var normalTexture:Texture;
-		
 		protected static var highlightTexture:Texture;
-		
 		protected static var positiveTexture:Texture;
-		
 		protected static var warningTexture:Texture;
-		
 		protected static var themeLoaded:Boolean;
-		
 		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(25,11,8,4);
-		
 		protected var styleImage:Image;
-		
 		protected var hoverImage:Image;
-		
 		protected var style:String;
-		
 		protected var tf:TextField;
-		
 		protected var autoscale:Boolean = true;
-		
 		protected var padding:int = 16;
-		
 		public var autoEnableAfterClick:Boolean = false;
 		
 		public var callback:Function;

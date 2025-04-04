@@ -12,13 +12,9 @@ package core.hud.components.dialogs
 	public class TOSPopup extends PopupMessage
 	{
 		public var confirmButton:Button;
-		
 		public var g:Game;
-		
 		public var textField2:Text;
-		
 		public var textField3:Text;
-		
 		public var textField4:Text;
 		
 		public function TOSPopup(g:Game)

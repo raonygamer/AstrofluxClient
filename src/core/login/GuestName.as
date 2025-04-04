@@ -13,11 +13,8 @@ package core.login
 	public class GuestName extends Sprite
 	{
 		public var nameInput:InputText;
-		
 		private var errorText:Text;
-		
 		private var text:Text;
-		
 		private var button:Button;
 		
 		public function GuestName(startName:String = "Guest-")

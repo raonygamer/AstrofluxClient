@@ -9,17 +9,11 @@ package core.player
 	public class Invite extends Sprite
 	{
 		public var id:String;
-		
 		public var invited:Player;
-		
 		public var inviter:Player;
-		
 		private var acceptInviteButton:Button;
-		
 		private var cancelInviteButton:Button;
-		
 		private var inviteText:Text = new Text();
-		
 		private var bgrQuad:Quad = new Quad(100,100,2852126720);
 		
 		public function Invite(g:Game, id:String, invited:Player, inviter:Player)

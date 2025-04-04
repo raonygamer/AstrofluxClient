@@ -20,7 +20,6 @@ package starling.filters
     {
         private var _blurFilter:BlurFilter;
         private var _compositeFilter:CompositeFilter;
-
         /** Initializes a new GlowFilter instance with the specified parameters.
          *
          * @param color      the color of the glow

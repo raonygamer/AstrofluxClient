@@ -7,23 +7,14 @@ package movement
 	public class Heading
 	{
 		public static const NR_OF_VARS:int = 10;
-		
 		public var time:Number = 0;
-		
 		public var pos:Point = new Point();
-		
 		public var rotation:Number = 0;
-		
 		public var speed:Point = new Point();
-		
 		public var rotateLeft:Boolean = false;
-		
 		public var rotateRight:Boolean = false;
-		
 		public var accelerate:Boolean = false;
-		
 		public var deaccelerate:Boolean = false;
-		
 		public var roll:Boolean = false;
 		
 		public function Heading()

@@ -47,21 +47,17 @@ package starling.display
     {
         /** The maximum number of vertices that fit into one MeshBatch. */
         public static const MAX_NUM_VERTICES:int = 65535;
-
         private var _effect:MeshEffect;
         private var _batchable:Boolean;
         private var _vertexSyncRequired:Boolean;
         private var _indexSyncRequired:Boolean;
-
         // helper object
         private static var sFullMeshSubset:MeshSubset = new MeshSubset();
-
         /** Creates a new, empty MeshBatch instance. */
         public function MeshBatch()
         {
             var vertexData:VertexData = new VertexData();
             var indexData:IndexData = new IndexData();
-
             super(vertexData, indexData);
         }
 
@@ -144,7 +140,6 @@ package starling.display
             var targetVertexID:int = _vertexData.numVertices;
             var targetIndexID:int = _indexData.numIndices;
             var meshStyle:MeshStyle = mesh._style;
-
             if (targetVertexID == 0)
                 setupFor(mesh);
 
@@ -175,7 +170,6 @@ package starling.display
             var numVertices:int = mesh.numVertices;
             var matrix:Matrix = mesh.transformationMatrix;
             var meshStyle:MeshStyle = mesh._style;
-
             if (_vertexData.numVertices == 0)
                 setupFor(mesh);
 
@@ -194,7 +188,6 @@ package starling.display
         {
             var meshStyle:MeshStyle = mesh._style;
             var meshStyleType:Class = meshStyle.type;
-
             if (_style.type != meshStyleType)
                 setStyle(new meshStyleType() as MeshStyle, false);
 
@@ -212,7 +205,6 @@ package starling.display
         public function canAddMesh(mesh:Mesh, numVertices:int = -1):Boolean
         {
             var currentNumVertices:int = _vertexData.numVertices;
-
             if (currentNumVertices == 0)
                 return true;
             if (numVertices < 0)

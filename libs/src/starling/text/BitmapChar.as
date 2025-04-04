@@ -27,7 +27,6 @@ package starling.text
         private var _yOffset:Number;
         private var _xAdvance:Number;
         private var _kernings:Dictionary;
-
         /** Creates a char with a texture and its properties. */
         public function BitmapChar(id:int, texture:Texture,
                 xOffset:Number, yOffset:Number, xAdvance:Number)

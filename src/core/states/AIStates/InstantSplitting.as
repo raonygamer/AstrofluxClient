@@ -9,27 +9,16 @@ package core.states.AIStates
 	public class InstantSplitting implements IState
 	{
 		protected var g:Game;
-		
 		protected var p:Projectile;
-		
 		private var sm:StateMachine;
-		
 		private var isEnemy:Boolean;
-		
 		private var color:uint;
-		
 		private var thickness:Number;
-		
 		private var alpha:Number;
-		
 		private var maxNrOfLines:int;
-		
 		private var glowColor:uint;
-		
 		private var branchingFactor:int;
-		
 		private var splitChance:Number;
-		
 		private var lines:Vector.<BeamLine> = new Vector.<BeamLine>();
 		
 		public function InstantSplitting(g:Game, p:Projectile, color:uint, glowColor:uint, thickness:Number, alpha:Number, aiMaxNrOfLines:int, aiBranchingFactor:int, aiSplitChance:Number)

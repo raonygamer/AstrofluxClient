@@ -41,16 +41,12 @@ package com.adobe.serialization.json
 		 * of the JSON string it is attempting to decode.
 		 */
 		private var strict:Boolean;
-
 		/** The value that will get parsed from the JSON string */
 		private var value:*;
-
 		/** The tokenizer designated to read the JSON string */
 		private var tokenizer:JSONTokenizer;
-
 		/** The current token from the tokenizer */
 		private var token:JSONToken;
-
 		/**
 		 * Constructs a new JSONDecoder to parse a JSON string
 		 * into a native object.
@@ -134,7 +130,6 @@ package com.adobe.serialization.json
 			// create an array internally that we're going to attempt
 			// to parse from the tokenizer
 			var a:Array = new Array();
-
 			// grab the next token from the tokenizer to move
 			// past the opening [
 			nextValidToken();
@@ -213,11 +208,9 @@ package com.adobe.serialization.json
 			// create the object internally that we're going to
 			// attempt to parse from the tokenizer
 			var o:Object = new Object();
-
 			// store the string part of an object member so
 			// that we can assign it a value in the object
 			var key:String;
-
 			// grab the next token from the tokenizer
 			nextValidToken();
 

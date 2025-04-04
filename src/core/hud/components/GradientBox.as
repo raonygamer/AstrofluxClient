@@ -12,31 +12,18 @@ package core.hud.components
 	public class GradientBox extends starling.display.Sprite
 	{
 		protected var radius:Number;
-		
 		protected var _color:uint;
-		
 		protected var colorAlpha:Number;
-		
 		public var padding:Number;
-		
 		protected var w:Number;
-		
 		protected var h:Number;
-		
 		private var background:Image;
-		
 		private var backgroundTexture:Texture;
-		
 		protected var borderWidth:Number = 0;
-		
 		protected var borderColor:uint = 0;
-		
 		protected var borderAlpha:Number = 0;
-		
 		private var headerBmp:Image;
-		
 		private var headerTint:uint;
-		
 		private var headerBitmapData:Texture;
 		
 		public function GradientBox(width:Number, height:Number, color:uint = 0, alpha:Number = 1, padding:Number = 15, headerTint:uint = 16777215)

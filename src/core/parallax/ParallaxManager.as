@@ -20,61 +20,33 @@ package core.parallax
 	public class ParallaxManager
 	{
 		private static const SIZE:Number = 1.8;
-		
 		private static const MINI_STARS:int = 70;
-		
 		private static const STARS:int = 40;
-		
 		private static const MINI_DUSTS:int = 25;
-		
 		private var NEBULAS:int = 8;
-		
 		private var g:SceneBase;
-		
 		public var stars:Vector.<Quad> = new Vector.<Quad>();
-		
 		public var miniStars:Vector.<Quad> = new Vector.<Quad>();
-		
 		public var miniDusts:Vector.<Quad> = new Vector.<Quad>();
-		
 		public var nebulas:Vector.<Quad> = new Vector.<Quad>();
-		
 		private var nebulaType:String = "";
-		
 		private var width:Number;
-		
 		private var height:Number;
-		
 		private var halfWidth:Number;
-		
 		private var halfHeight:Number;
-		
 		private var isIntro:Boolean;
-		
 		private var random:Random;
-		
 		private var target:DisplayObjectContainer;
-		
 		private var starBatch:MeshBatch = new MeshBatch();
-		
 		private var nebulaContainer:Sprite = new Sprite();
-		
 		private var starTxt:Texture;
-		
 		private var nebulaTxt:Texture;
-		
 		private var initialized:Boolean = false;
-		
 		public var cx:Number = -3;
-		
 		public var cy:Number = -2;
-		
 		private var nebulaUpdateCount:int;
-		
 		private var NEBULA_UPDATE_INTERVAL:int = 200;
-		
 		public var visible:Boolean = true;
-		
 		private var lastAdjustment:Number = 0;
 		
 		public function ParallaxManager(g:SceneBase, target:DisplayObjectContainer, isIntro:Boolean = false)

@@ -8,9 +8,7 @@ package core.states.player
 	public class Roaming implements IState
 	{
 		private var player:Player;
-		
 		private var sm:StateMachine;
-		
 		private var g:Game;
 		
 		public function Roaming(player:Player, g:Game)

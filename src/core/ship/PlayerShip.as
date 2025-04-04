@@ -25,121 +25,63 @@ package core.ship
 	public class PlayerShip extends Ship
 	{
 		public var player:Player;
-		
 		public var weaponIsChanging:Boolean = false;
-		
 		public var weaponHeat:Heat;
-		
 		public var hasBoost:Boolean;
-		
 		public var boostCD:int;
-		
 		public var boostDuration:int;
-		
 		public var boostNextRdy:Number;
-		
 		public var ticksOfBoost:int;
-		
 		public var totalTicksOfBoost:int;
-		
 		public var boostEndedLastTick:Boolean;
-		
 		private var _landed:Boolean;
-		
 		public var maxPower:Number;
-		
 		public var powerRegBonus:Number;
-		
 		private var boostEndTime:Number;
-		
 		private var regenerateNextTime:Number;
-		
 		public var channelingEnd:Number;
-		
 		public var hasArmorConverter:Boolean;
-		
 		public var convCost:int;
-		
 		public var convGain:int;
-		
 		public var convCD:int;
-		
 		public var convNextRdy:Number;
-		
 		public var hasHardenedShield:Boolean;
-		
 		public var hardenMaxDmg:int;
-		
 		public var hardenCD:int;
-		
 		public var hardenDuration:int;
-		
 		public var hardenNextRdy:Number;
-		
 		public var hardenEndTimer:Number;
-		
 		public var usingHardenedShield:Boolean;
-		
 		public var hpBase:int;
-		
 		public var shieldHpBase:int;
-		
 		public var activeWeapons:int;
-		
 		public var unlockedWeaponSlots:int;
-		
 		private var quadEndTime:Number;
-		
 		private var quadEffect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var speedBoostEffect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var dmgBoostEffect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var hardenedShieldEffect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var killingSpreeEffect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var chargeUpEffect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var pvpPositionText:TextBitmap;
-		
 		private var nameText:TextBitmap;
-		
 		private var levelText:TextBitmap;
-		
 		private var supporterIcon:Image;
-		
 		private var artifact_hp_base:int;
-		
 		private var artifact_shield_base:int;
-		
 		private var artifact_regen_base:int;
-		
 		public var artifact_convAmount:Number;
-		
 		public var artifact_cooldownReduction:Number;
-		
 		public var artifact_speed:Number;
-		
 		public var artifact_powerRegen:Number;
-		
 		public var artifact_powerMax:Number;
-		
 		public var artifact_refire:Number;
-		
 		private var shadowImage:Image;
-		
 		public var hideShadow:Boolean = false;
-		
 		private var lastSafeY:Number = 0;
-		
 		private var lastSafeX:Number = 0;
-		
 		private var isInMelee:Boolean = false;
-		
 		private var tryMelee:Boolean = false;
-		
 		private var meleeDuration:Number = 0;
 		
 		public function PlayerShip(g:Game)

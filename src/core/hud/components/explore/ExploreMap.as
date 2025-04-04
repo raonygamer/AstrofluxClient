@@ -17,53 +17,29 @@ package core.hud.components.explore
 	public class ExploreMap extends starling.display.Sprite
 	{
 		public static var selectedArea:Object = null;
-		
 		public static var forceSelectAreaKey:String = null;
-		
 		private static const X_SIZE:int = 130;
-		
 		private static const Y_SIZE:int = 45;
-		
 		private static const FINAL_X_SIZE:int = 660;
-		
 		private static const FINAL_Y_SIZE:int = 660;
-		
 		private static const STEPS_OF_POSTPROCCESSING:int = 0;
-		
 		private static const directions:Vector.<Vector.<int>> = Vector.<Vector.<int>>([Vector.<int>([0,1]),Vector.<int>([1,1]),Vector.<int>([1,0]),Vector.<int>([1,-1]),Vector.<int>([0,-1]),Vector.<int>([-1,-1]),Vector.<int>([-1,0]),Vector.<int>([-1,1])]);
-		
 		public var areas:Array;
-		
 		private var explored:Array;
-		
 		private var done:Boolean;
-		
 		private var seed:Number;
-		
 		private var g:Game;
-		
 		private var r:Random;
-		
 		private var m:Vector.<Vector.<int>>;
-		
 		public var shell:Vector.<Vector.<Point>>;
-		
 		private var grid:Vector.<Vector.<Point>>;
-		
 		private var lastPos:int;
-		
 		private var raw_areas:Array;
-		
 		private var extraAreas:int;
-		
 		private var area_key_index:int = 0;
-		
 		private var map_areas:Vector.<ExploreMapArea>;
-		
 		private var x_chance:int = 35;
-		
 		private var y_chance:int = 25;
-		
 		private var fraction_cover:Number = 0.1;
 		
 		public function ExploreMap(g:Game, bodyAreas:Array, explored:Array, b:Body)

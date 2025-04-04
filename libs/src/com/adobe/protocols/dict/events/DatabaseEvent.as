@@ -37,7 +37,6 @@ package com.adobe.protocols.dict.events
 	public class DatabaseEvent extends Event
 	{
 		private var _databases:Array;
-
 		public static const DATABASES:String = "databases";
 
 		public function DatabaseEvent(type:String, bubbles:Boolean = false,

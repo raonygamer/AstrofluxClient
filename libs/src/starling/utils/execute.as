@@ -18,7 +18,6 @@ package starling.utils
         {
             var i:int;
             var maxNumArgs:int = func.length;
-
             for (i = args.length; i < maxNumArgs; ++i)
                 args[i] = null;
 

@@ -11,25 +11,15 @@ package core.states.AIStates
 	public class AIOrbit implements IState
 	{
 		private static const HALF_PI:Number = 1.5707963267948966;
-		
 		private static const TICK_LENGTH_MS:Number = 0.033;
-		
 		private static const TICK_LENGTH_W:Number = 30.303030303030305;
-		
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var lastCourse:Heading;
-		
 		private var error:Point;
-		
 		private var errorAngle:Number;
-		
 		private var convergeTime:Number = 1000;
-		
 		private var convergeStartTime:Number;
 		
 		public function AIOrbit(g:Game, s:EnemyShip, useConverger:Boolean = false)

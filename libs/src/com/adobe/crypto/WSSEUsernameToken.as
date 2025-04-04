@@ -66,11 +66,9 @@ package com.adobe.crypto
 			nonce = base64Encode(nonce);
 
 			var created:String = generateTimestamp(timestamp);
-
 			var password64:String = getBase64Digest(nonce,
 					created,
 					password);
-
 			var token:String = new String("UsernameToken Username=\"");
 			token += username + "\", " +
 				"PasswordDigest=\"" + password64 + "\", " +

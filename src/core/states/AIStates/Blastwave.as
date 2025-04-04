@@ -9,15 +9,10 @@ package core.states.AIStates
 	public class Blastwave implements IState
 	{
 		private var m:Game;
-		
 		private var p:Projectile;
-		
 		private var sm:StateMachine;
-		
 		private var delay:int;
-		
 		private var follow:Boolean;
-		
 		private var blastStartTime:Number = 0;
 		
 		public function Blastwave(m:Game, p:Projectile, delay:int, follow:Boolean)

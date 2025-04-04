@@ -17,25 +17,15 @@ package core.states.AIStates
 	public class AIMelee implements IState
 	{
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var targetAngleDiff:Number;
-		
 		private var targetStartAngle:Number;
-		
 		private var error:Point;
-		
 		private var errorAngle:Number;
-		
 		private var convergeTime:Number = 400;
-		
 		private var convergeStartTime:Number;
-		
 		private var speedRotFactor:Number;
-		
 		private var closeRangeSQ:Number;
 		
 		public function AIMelee(g:Game, s:EnemyShip, t:Unit, targetPosition:Heading, nextTurnDirection:int)

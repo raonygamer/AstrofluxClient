@@ -8,27 +8,16 @@ package core.queue
 	public class QueueInfoHolder
 	{
 		private static var TIMELIMIT:int = 20;
-		
 		private var g:Game;
-		
 		public var type:String;
-		
 		public var startTime:Number;
-		
 		public var avgTime:Number;
-		
 		public var isWaiting:Boolean;
-		
 		public var isInQueue:Boolean;
-		
 		public var isReady:Boolean;
-		
 		public var accepted:Boolean;
-		
 		public var roomId:String;
-		
 		public var solarSystem:String;
-		
 		private var acceptPopup:QueuePopupMessage;
 		
 		public function QueueInfoHolder(g:Game, type:String)

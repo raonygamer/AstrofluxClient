@@ -26,45 +26,25 @@ package core.hud.components.dialogs
 	public class CrewJoinOffer extends Sprite
 	{
 		private static const HEIGHT:int = 128;
-		
 		private static const WIDTH:int = 112;
-		
 		private var overlay:Sprite;
-		
 		private var bgr:Quad;
-		
 		private var infoBox:Box;
-		
 		private var infoText:Text;
-		
 		private var declineButton:Button;
-		
 		private var acceptButton:Button;
-		
 		private var laterButton:Button;
-		
 		private var body:Body;
-		
 		private var img:Image;
-		
 		private var g:Game;
-		
 		private var p:Player;
-		
 		private var level:int;
-		
 		private var crewMember:CrewMember;
-		
 		private var femaleNames:Array;
-		
 		private var femaleImages:Array;
-		
 		private var maleNames:Array;
-		
 		private var maleImages:Array;
-		
 		private var priceSkill:int;
-		
 		private var confirmBuyWithFlux:CreditBuyBox;
 		
 		public function CrewJoinOffer(g:Game, crewMember:CrewMember, body:Body = null, text:String = "")

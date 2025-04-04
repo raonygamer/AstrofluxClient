@@ -6,7 +6,6 @@ package core.hud.components
 	public class SaleTimer extends Sprite
 	{
 		private var hudTimer:HudTimer;
-		
 		private var text:Text;
 		
 		private var callback:Function = null;

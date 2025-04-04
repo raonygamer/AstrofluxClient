@@ -24,7 +24,6 @@ package starling.display
         private var _polygons:Vector.<Polygon>;
         private var _fillColor:uint;
         private var _fillAlpha:Number;
-
         /** Creates a new (empty) Canvas. Call one or more of the 'draw' methods to add content. */
         public function Canvas()
         {
@@ -68,7 +67,6 @@ package starling.display
         {
             var radiusX:Number = width / 2.0;
             var radiusY:Number = height / 2.0;
-
             appendPolygon(Polygon.createEllipse(x + radiusX, y + radiusY, radiusX, radiusY));
         }
 
@@ -110,7 +108,6 @@ package starling.display
         {
             var vertexData:VertexData = new VertexData();
             var indexData:IndexData = new IndexData(polygon.numTriangles * 3);
-
             polygon.triangulate(indexData);
             polygon.copyToVertexData(vertexData);
 

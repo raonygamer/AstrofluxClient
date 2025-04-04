@@ -8,7 +8,6 @@ package core.hud.components.hangar
 	public class SkinItemBaseStats extends Sprite
 	{
 		private var skinObj:Object;
-		
 		private var tweenDelay:Number = 0;
 		
 		public function SkinItemBaseStats(skinObj:Object)

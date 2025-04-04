@@ -28,31 +28,18 @@ package core.hud.components.credits
 	public class CreditSupporterItem extends CreditBaseItem
 	{
 		public var button:NativeImageButton;
-		
 		private var price:Text;
-		
 		public var buyContainer:starling.display.Sprite = new starling.display.Sprite();
-		
 		protected var descriptionContainer:starling.display.Sprite = new starling.display.Sprite();
-		
 		protected var aquiredContainer:starling.display.Sprite = new starling.display.Sprite();
-		
 		protected var waitingContainer:starling.display.Sprite = new starling.display.Sprite();
-		
 		protected var description:String;
-		
 		protected var checkoutDescriptionShort:String;
-		
 		private var nativeLayer:flash.display.Sprite = new flash.display.Sprite();
-		
 		protected var preview:String = "supporter_preview.png";
-		
 		protected var aquiredText:Text = new Text();
-		
 		protected var expiryTime:Number;
-		
 		protected var aquired:Boolean = false;
-		
 		protected var itemKey:String = "supporter";
 		
 		public function CreditSupporterItem(g:Game, parent:starling.display.Sprite, spinner:Boolean = false)

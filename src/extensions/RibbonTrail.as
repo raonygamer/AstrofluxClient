@@ -12,33 +12,19 @@ package extensions
 	public class RibbonTrail extends Mesh implements IAnimatable
 	{
 		private static var sRenderAlpha:Vector.<Number> = new <Number>[1,1,1,1];
-		
 		private static var sMapTexCoords:Vector.<Number> = new <Number>[0,0,0,0];
-		
 		protected var mVertexData:VertexData = new VertexData();
-		
 		protected var mIndexData:IndexData = new IndexData();
-		
 		protected var mTexture:Texture;
-		
 		protected var mRibbonSegments:Vector.<RibbonSegment> = new Vector.<RibbonSegment>(0);
-		
 		protected var mNumRibbonSegments:int;
-		
 		protected var mFollowingEnable:Boolean = true;
-		
 		protected var mMovingRatio:Number = 0.5;
-		
 		protected var mAlphaRatio:Number = 0.95;
-		
 		protected var mRepeat:Boolean = false;
-		
 		protected var mIsPlaying:Boolean = false;
-		
 		protected var mFollowingRibbonSegmentLine:Vector.<RibbonSegment>;
-		
 		protected var g:Game;
-		
 		protected var alphaArray:Array = [];
 		
 		public function RibbonTrail(g:Game, trailSegments:int = 8)

@@ -9,7 +9,6 @@ package core.states.menuStates
 	public class CargoState extends DisplayState
 	{
 		private var cargo:Cargo;
-		
 		private var p:Player;
 		
 		public function CargoState(g:Game, p:Player, isRoot:Boolean = false)

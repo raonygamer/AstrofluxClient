@@ -9,17 +9,11 @@ package core.hud.components
 	public class InteractiveImage extends DisplayObjectContainer
 	{
 		protected var layer:Image;
-		
 		protected var source:Texture;
-		
 		protected var sourceHover:Texture;
-		
 		protected var captionText:Text = new Text();
-		
 		private var _captionPos:String = Position.CENTER;
-		
 		protected var _enabled:Boolean = true;
-		
 		private var alwaysShowCaption:Boolean = false;
 		
 		public function InteractiveImage(txt:Texture = null, hoverBd:Texture = null, caption:String = null, alwaysShowCaption:Boolean = false)

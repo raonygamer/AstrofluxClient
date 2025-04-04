@@ -15,19 +15,12 @@ package core.hud.components.hotkeys
 	public class AbilityHotkey extends ImageButton
 	{
 		private var _cooldownTime:int = 1000;
-		
 		protected var cooldownEndTime:Number = 0;
-		
 		private var cooldownOverlay:Sprite;
-		
 		public var obj:Object;
-		
 		private var hotkeySymbol:Image;
-		
 		public var g:Game;
-		
 		private const MIN_COOLDOWN:int = 200;
-		
 		private var quad:Quad = new Quad(10,10);
 		
 		public function AbilityHotkey(callback:Function, tex:Texture, inactiveTex:Texture, cooldownTex:Texture = null, caption:String = null)

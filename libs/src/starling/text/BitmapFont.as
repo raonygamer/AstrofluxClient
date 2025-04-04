@@ -56,15 +56,12 @@ package starling.text
         /** Use this constant for the <code>fontSize</code> property of the TextField class to
          *  render the bitmap font in exactly the size it was created. */
         public static const NATIVE_SIZE:int = -1;
-
         /** The font name of the embedded minimal bitmap font. Use this e.g. for debug output. */
         public static const MINI:String = "mini";
-
         private static const CHAR_SPACE:int = 32;
         private static const CHAR_TAB:int = 9;
         private static const CHAR_NEWLINE:int = 10;
         private static const CHAR_CARRIAGE_RETURN:int = 13;
-
         private var _texture:Texture;
         private var _chars:Dictionary;
         private var _name:String;
@@ -75,11 +72,9 @@ package starling.text
         private var _offsetY:Number;
         private var _padding:Number;
         private var _helperImage:Image;
-
         // helper objects
         private static var sLines:Array = [];
         private static var sDefaultOptions:TextOptions = new TextOptions();
-
         /** Creates a bitmap font by parsing an XML file and uses the specified texture.
          *  If you don't pass any data, the "mini" font will be created. */
         public function BitmapFont(texture:Texture = null, fontXml:XML = null)
@@ -118,7 +113,6 @@ package starling.text
             var frame:Rectangle = _texture.frame;
             var frameX:Number = frame ? frame.x : 0;
             var frameY:Number = frame ? frame.y : 0;
-
             _name = StringUtil.clean(fontXml.info.@face);
             _size = parseFloat(fontXml.info.@size) / scale;
             _lineHeight = parseFloat(fontXml.common.@lineHeight) / scale;
@@ -139,7 +133,6 @@ package starling.text
                 var xOffset:Number = parseFloat(charElement.@xoffset) / scale;
                 var yOffset:Number = parseFloat(charElement.@yoffset) / scale;
                 var xAdvance:Number = parseFloat(charElement.@xadvance) / scale;
-
                 var region:Rectangle = new Rectangle();
                 region.x = parseFloat(charElement.@x) / scale + frameX;
                 region.y = parseFloat(charElement.@y) / scale + frameY;
@@ -181,7 +174,6 @@ package starling.text
 
             for (var key:* in _chars)
                 out[out.length] = int(key);
-
             return out;
         }
 
@@ -193,7 +185,6 @@ package starling.text
 
             var charID:int;
             var numChars:int = text.length;
-
             for (var i:int = 0; i < numChars; ++i)
             {
                 charID = text.charCodeAt(i);
@@ -216,7 +207,6 @@ package starling.text
             var numChars:int = charLocations.length;
             var smoothing:String = this.smoothing;
             var sprite:Sprite = new Sprite();
-
             for (var i:int = 0; i < numChars; ++i)
             {
                 var charLocation:CharLocation = charLocations[i];
@@ -279,7 +269,6 @@ package starling.text
             var fontSize:Number = format.size;
             var autoScale:Boolean = options.autoScale;
             var wordWrap:Boolean = options.wordWrap;
-
             var finished:Boolean = false;
             var charLocation:CharLocation;
             var numChars:int;
@@ -287,7 +276,6 @@ package starling.text
             var containerHeight:Number;
             var scale:Number;
             var i:int, j:int;
-
             if (fontSize < 0)
                 fontSize *= -_size;
 
@@ -305,14 +293,12 @@ package starling.text
                     var currentX:Number = 0;
                     var currentY:Number = 0;
                     var currentLine:Vector.<CharLocation> = CharLocation.vectorFromPool();
-
                     numChars = text.length;
                     for (i = 0; i < numChars; ++i)
                     {
                         var lineFull:Boolean = false;
                         var charID:int = text.charCodeAt(i);
                         var char:BitmapChar = getChar(charID);
-
                         if (charID == CHAR_NEWLINE || charID == CHAR_CARRIAGE_RETURN)
                         {
                             lineFull = true;
@@ -347,7 +333,6 @@ package starling.text
 
                                     // remove characters and add them again to next line
                                     var numCharsToRemove:int = lastWhiteSpace == -1 ? 1 : i - lastWhiteSpace;
-
                                     for (j = 0; j < numCharsToRemove; ++j) // faster than 'splice'
                                     currentLine.pop();
 
@@ -409,7 +394,6 @@ package starling.text
         var numLines:int = sLines.length;
         var bottom:Number = currentY + _lineHeight;
         var yOffset:int = 0;
-
         if (vAlign == Align.BOTTOM)
             yOffset = containerHeight - bottom;
         else if (vAlign == Align.CENTER)
@@ -427,7 +411,6 @@ package starling.text
             var lastLocation:CharLocation = line[line.length - 1];
             var right:Number = lastLocation.x - lastLocation.char.xOffset
                 + lastLocation.char.xAdvance;
-
             if (hAlign == Align.RIGHT)
                 xOffset = containerWidth - right;
             else if (hAlign == Align.CENTER)
@@ -557,7 +540,6 @@ class CharLocation
 
     private static var sInstancePool:Vector.<CharLocation> = new <CharLocation>[];
     private static var sVectorPool:Array = [];
-
     private static var sInstanceLoan:Vector.<CharLocation> = new <CharLocation>[];
     private static var sVectorLoan:Array = [];
 
@@ -565,7 +547,6 @@ class CharLocation
     {
         var instance:CharLocation = sInstancePool.length > 0 ?
             sInstancePool.pop() : new CharLocation(char);
-
         instance.reset(char);
         sInstanceLoan[sInstanceLoan.length] = instance;
 
@@ -576,7 +557,6 @@ class CharLocation
     {
         var vector:Vector.<CharLocation> = sVectorPool.length > 0 ?
             sVectorPool.pop() : new <CharLocation>[];
-
         vector.length = 0;
         sVectorLoan[sVectorLoan.length] = vector;
 
@@ -587,7 +567,6 @@ class CharLocation
     {
         var instance:CharLocation;
         var vector:Vector.<CharLocation>;
-
         while (sInstanceLoan.length > 0)
         {
             instance = sInstanceLoan.pop();

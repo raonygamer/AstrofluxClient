@@ -20,43 +20,24 @@ package core.states.gameStates
 	public class LeaderBoardState2 extends PlayState
 	{
 		private static const START_HEIGHT:int = 20;
-		
 		private static const START_WIDTH:int = 50;
-		
 		private static var topRankList:Array;
-		
 		private static var topSurvivorList:Array;
-		
 		private static var topPvpPlayersList:Array;
-		
 		private static var topPlayersList:Array;
-		
 		private static var topPlayerClans:Array;
-		
 		private static var topRankContainer:Sprite = new Sprite();
-		
 		private static var topSurvivorContainer:Sprite = new Sprite();
-		
 		private static var topPvpPlayersContainer:Sprite = new Sprite();
-		
 		private static var topPlayersContainer:Sprite = new Sprite();
-		
 		private var goTo:String;
-		
 		private var currentHeight:Number = 20;
-		
 		private var currentWidth:Number = 50;
-		
 		private var bgr:Image;
-		
 		private var closeButton:ButtonExpandableHud;
-		
 		private var scrollArea:ScrollContainer;
-		
 		private var topTroonsPerMinuteList:Vector.<Object>;
-		
 		private var topTroonsPerMinuteContainer:Sprite = new Sprite();
-		
 		private var dataManager:IDataManager;
 		
 		public function LeaderBoardState2(g:Game)

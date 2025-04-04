@@ -7,9 +7,7 @@ package core.spawner
 	public class SpawnManager
 	{
 		public var spawners:Vector.<Spawner>;
-		
 		private var g:Game;
-		
 		private var id:int = 0;
 		
 		public function SpawnManager(g:Game)

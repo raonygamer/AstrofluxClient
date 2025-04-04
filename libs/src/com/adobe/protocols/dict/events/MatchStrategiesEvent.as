@@ -38,7 +38,6 @@ package com.adobe.protocols.dict.events
 		extends Event
 	{
 		private var _strategies:Array;
-
 		public static const MATCH_STRATEGIES:String = "matchStrategies";
 
 		public function MatchStrategiesEvent(type:String, bubbles:Boolean = false,
@@ -61,7 +60,6 @@ package com.adobe.protocols.dict.events
 		{
 			var out:MatchStrategiesEvent = new MatchStrategiesEvent(type,
 					bubbles, cancelable);
-
 			out.strategies = _strategies;
 
 			return out;

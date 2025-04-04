@@ -9,31 +9,18 @@ package core.states.AIStates
 	public class Instant implements IState
 	{
 		protected var g:Game;
-		
 		protected var p:Projectile;
-		
 		private var sm:StateMachine;
-		
 		private var isEnemy:Boolean;
-		
 		private var color:uint;
-		
 		private var thickness:Number;
-		
 		private var alpha:Number;
-		
 		private var amplitude:Number;
-		
 		private var frequency:Number;
-		
 		private var glowColor:uint;
-		
 		private var lineInner:BeamLine;
-		
 		private var lineOuter:BeamLine;
-		
 		private var texture:String;
-		
 		private var tick:int = 0;
 		
 		public function Instant(g:Game, p:Projectile, color:uint, glowColor:uint, thickness:Number, alpha:Number, amplitude:Number, frequency:Number, texture:String = null)

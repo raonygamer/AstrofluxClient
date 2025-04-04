@@ -8,13 +8,9 @@ package core.spawner
 	public class OrganicSpawner extends Spawner
 	{
 		private static const NR_OF_INACTIVE_FRAMES:int = 7;
-		
 		private var dmgTile:int = -1;
-		
 		private var dmgTileDuration:int = 1000;
-		
 		private var dmgTileNextReduction:Number = 0;
-		
 		private var inactiveTexturesArray:Vector.<Vector.<Texture>>;
 		
 		public function OrganicSpawner(g:Game)

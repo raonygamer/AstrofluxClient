@@ -6,9 +6,7 @@ package core.pools
 	public class BeamLinePool
 	{
 		private var inactiveLines:Vector.<BeamLine>;
-		
 		private var activeLines:Vector.<BeamLine>;
-		
 		private var g:Game;
 		
 		public function BeamLinePool(g:Game)

@@ -17,15 +17,10 @@ package core.hud.components.credits
 	public class Redeem extends Sprite
 	{
 		private var g:Game;
-		
 		private var input:InputText;
-		
 		private var box:Box = new Box(220,80,"highlight",1,15);
-		
 		private var redeemButton:Button;
-		
 		private var cancelButton:Button;
-		
 		private var label:TextField;
 		
 		public function Redeem(g:Game)

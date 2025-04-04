@@ -54,7 +54,6 @@ package starling.utils
             // TODO this method can probably be removed
 
             var options:Array = ["2d", repeat ? "repeat" : "clamp"];
-
             if (format == Context3DTextureFormat.COMPRESSED)
                 options.push("dxt1");
             else if (format == "compressedAlpha")
@@ -84,7 +83,6 @@ package starling.utils
 
             var bitField:uint = 0;
             var formatBits:uint = 0;
-
             switch (texture.format)
             {
                 case Context3DTextureFormat.COMPRESSED_ALPHA:
@@ -114,7 +112,6 @@ package starling.utils
             var wrap:String = repeat ? Context3DWrapMode.REPEAT : Context3DWrapMode.CLAMP;
             var filter:String;
             var mipFilter:String;
-
             if (smoothing == TextureSmoothing.NONE)
             {
                 filter = Context3DTextureFilter.NEAREST;
@@ -162,7 +159,6 @@ package starling.utils
         {
             var format:String = texture.format;
             var formatFlag:String;
-
             switch (format)
             {
                 case Context3DTextureFormat.COMPRESSED:
@@ -179,7 +175,6 @@ package starling.utils
             var texReg:String = needsConversion && resultReg == "oc" ? tempReg : resultReg;
             var operation:String = "tex " + texReg + ", " + uvReg + ", fs" + sampler +
                 " <2d, " + formatFlag + ">\n";
-
             if (needsConversion)
             {
                 if (resultReg == "oc") // the output color register cannot use a write mask ...
@@ -217,7 +212,6 @@ package starling.utils
         {
             var profiles:Array;
             var currentProfile:String;
-
             if (profile == "auto")
                 profiles = ["standardExtended", "standard", "standardConstrained",
                         "baselineExtended", "baseline", "baselineConstrained"];
@@ -253,7 +247,6 @@ package starling.utils
             function onCreated(event:Event):void
             {
                 var context:Context3D = stage3D.context3D;
-
                 if (renderMode == Context3DRenderMode.AUTO && profiles.length != 0 &&
                         context.driverInfo.indexOf("Software") != -1)
                 {

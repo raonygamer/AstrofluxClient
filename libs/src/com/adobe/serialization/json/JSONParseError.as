@@ -42,10 +42,8 @@ package com.adobe.serialization.json
 
 		/** The location in the string where the error occurred */
 		private var _location:int;
-
 		/** The string in which the parse error occurred */
 		private var _text:String;
-
 		/**
 		 * Constructs a new JSONParseError.
 		 *

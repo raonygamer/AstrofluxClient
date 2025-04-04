@@ -19,65 +19,35 @@ package core.hud.components.starMap
 	public class SolarSystem extends Sprite
 	{
 		public static const EDITOR_TYPE_REGULAR:String = "regular";
-		
 		public static const EDITOR_TYPE_DEBUG:String = "debug";
-		
 		public static const EDITOR_TYPE_PVP:String = "pvp";
-		
 		public static const EDITOR_TYPE_PVP_DOMINATION:String = "pvp dom";
-		
 		public static const EDITOR_TYPE_PVP_DM:String = "pvp dm";
-		
 		public static const EDITOR_TYPE_PVP_ARENA:String = "pvp arena";
-		
 		public static const EDITOR_TYPE_INSTANCE:String = "instance";
-		
 		public static const START_SYSTEM:String = "HrAjOBivt0SHPYtxKyiB_Q";
-		
 		public var pvpLvlCap:int;
-		
 		public var pvpAboveCap:Boolean;
-		
 		private var _discovered:Boolean;
-		
 		private var _hovered:Boolean;
-		
 		private var _selected:Boolean;
-		
 		private var _currentSolarSystemKey:String;
-		
 		private var obj:Object;
-		
 		public var key:String;
-		
 		public var textureManager:ITextureManager;
-		
 		private var fractionText:TextBitmap;
-		
 		public var nameText:TextBitmap;
-		
 		private var _hasFriends:Boolean = false;
-		
 		private var _hasCrew:Boolean = false;
-		
 		private var destroyed:TextBitmap;
-		
 		private var iconCurrent:Image;
-		
 		private var iconSelected:Image;
-		
 		private var iconHover:Image;
-		
 		private var iconNormal:Image;
-		
 		private var friendBullet:Image;
-		
 		private var crewBullet:Image;
-		
 		public var isPvpSystemInEditor:Boolean;
-		
 		public var type:String;
-		
 		private var g:Game;
 		
 		public function SolarSystem(g:Game, obj:Object, key:String, discovered:Boolean = true, currentSolarSystemKey:String = "")

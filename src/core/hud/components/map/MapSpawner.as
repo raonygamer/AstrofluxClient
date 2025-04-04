@@ -10,9 +10,7 @@ package core.hud.components.map
 	public class MapSpawner
 	{
 		private var spawner:Spawner;
-		
 		private var scale:Number = 0.4;
-		
 		private var layer:Image;
 		
 		public function MapSpawner(container:Sprite, spawner:Spawner)

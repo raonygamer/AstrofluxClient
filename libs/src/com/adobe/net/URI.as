@@ -82,31 +82,24 @@ package com.adobe.net
 		// space and % must be escaped in all cases.  '%' is the delimiter
 		// for escaped characters.
 		public static const URImustEscape:String = " %";
-
 		// Baseline of what characters must be escaped
 		public static const URIbaselineEscape:String = URImustEscape + ":?#/@";
-
 		// Characters that must be escaped in the part part.
 		public static const URIpathEscape:String = URImustEscape + "?#";
-
 		// Characters that must be escaped in the query part, if setting
 		// the query as a whole string.  If the query is set by
 		// name/value, URIqueryPartEscape is used instead.
 		public static const URIqueryEscape:String = URImustEscape + "#";
-
 		// This is what each name/value pair must escape "&=" as well
 		// so they don't conflict with the "param=value&param2=value2"
 		// syntax.
 		public static const URIqueryPartEscape:String = URImustEscape + "#&=";
-
 		// Non-hierarchical URI's can have query and fragment parts, but
 		// we also want to prevent '/' otherwise it might end up looking
 		// like a hierarchical URI to the parser.
 		public static const URInonHierEscape:String = URImustEscape + "?#/";
-
 		// Baseline uninitialized setting for the URI scheme.
 		public static const UNKNOWN_SCHEME:String = "unknown";
-
 		// The following bitmaps are used for performance enhanced
 		// character escaping.
 
@@ -114,51 +107,40 @@ package com.adobe.net
 		// this.
 		protected static const URIbaselineExcludedBitmap:URIEncodingBitmap =
 			new URIEncodingBitmap(URIbaselineEscape);
-
 		// Scheme escaping bitmap
 		protected static const URIschemeExcludedBitmap:URIEncodingBitmap =
 			URIbaselineExcludedBitmap;
-
 		// User/pass escaping bitmap
 		protected static const URIuserpassExcludedBitmap:URIEncodingBitmap =
 			URIbaselineExcludedBitmap;
-
 		// Authority escaping bitmap
 		protected static const URIauthorityExcludedBitmap:URIEncodingBitmap =
 			URIbaselineExcludedBitmap;
-
 		// Port escaping bitmap
 		protected static const URIportExludedBitmap:URIEncodingBitmap =
 			URIbaselineExcludedBitmap;
-
 		// Path escaping bitmap
 		protected static const URIpathExcludedBitmap:URIEncodingBitmap =
 			new URIEncodingBitmap(URIpathEscape);
-
 		// Query (whole) escaping bitmap
 		protected static const URIqueryExcludedBitmap:URIEncodingBitmap =
 			new URIEncodingBitmap(URIqueryEscape);
-
 		// Query (individual parts) escaping bitmap
 		protected static const URIqueryPartExcludedBitmap:URIEncodingBitmap =
 			new URIEncodingBitmap(URIqueryPartEscape);
-
 		// Fragments are the last part in the URI.  They only need to
 		// escape space, '#', and '%'.  Turns out that is what query
 		// uses too.
 		protected static const URIfragmentExcludedBitmap:URIEncodingBitmap =
 			URIqueryExcludedBitmap;
-
 		// Characters that need to be escaped in the non-hierarchical part
 		protected static const URInonHierexcludedBitmap:URIEncodingBitmap =
 			new URIEncodingBitmap(URInonHierEscape);
-
 		// Values used by getRelation()
 		public static const NOT_RELATED:int = 0;
 		public static const CHILD:int = 1;
 		public static const EQUAL:int = 2;
 		public static const PARENT:int = 3;
-
 		// -------------------------------------------------------------------
 		// protected class members
 		// -------------------------------------------------------------------
@@ -174,7 +156,6 @@ package com.adobe.net
 		protected var _fragment:String = "";
 		protected var _nonHierarchical:String = "";
 		protected static var _resolver:IURIResolver = null;
-
 		/**
 		 *  URI Constructor.  If no string is given, this will initialize
 		 *  this URI object to a blank URI.
@@ -362,7 +343,6 @@ package com.adobe.net
 		{
 			var baseURI:String = uri;
 			var index:int, index2:int;
-
 			// Make sure this object is clean before we start.  If it was used
 			// before and we are now parsing a new URI, we don't want any stale
 			// info lying around.
@@ -397,12 +377,10 @@ package com.adobe.net
 
 		var containsColon:Boolean = (index != -1);
 		var containsSlash:Boolean = (index2 != -1);
-
 		// This value is indeterminate if "containsColon" is false.
 		// (if there is no colon, does the slash come before or
 		// after said non-existing colon?)
 		var colonBeforeSlash:Boolean = (!containsSlash || index < index2);
-
 		// If it has a colon and it's before the first slash, we will treat
 		// it as a scheme.  If a slash is before a colon, there must be a
 		// stray colon in a path or something.  In which case, the colon is
@@ -566,7 +544,6 @@ package com.adobe.net
 	{
 		var pattern:RegExp = /[^a-z]/;
 		var index:int;
-
 		str = str.toLowerCase();
 		index = str.search(pattern);
 
@@ -982,7 +959,6 @@ package com.adobe.net
 		var escaped:String = "";
 		var c:String;
 		var x:int, i:int;
-
 		for (i = 0; i < unescaped.length; i++)
 		{
 			c = unescaped.charAt(i);
@@ -1037,7 +1013,6 @@ package com.adobe.net
 		var map:Object;
 		var item:String;
 		var value:String;
-
 		map = getQueryByMap();
 
 		for (item in map)
@@ -1070,7 +1045,6 @@ package com.adobe.net
 	public function setQueryValue(name:String, value:String):void
 	{
 		var map:Object;
-
 		map = getQueryByMap();
 
 		// If the key doesn't exist yet, this will create a new pair in
@@ -1106,7 +1080,6 @@ package com.adobe.net
 		var name:String, value:String;
 		var index:int;
 		var map:Object = new Object();
-
 		// We need the raw query string, no unescaping.
 		queryStr = this._query;
 
@@ -1156,7 +1129,6 @@ package com.adobe.net
 		var queryStr:String = "";
 		var tmpPair:String;
 		var foo:String;
-
 		for (item in map)
 		{
 			name = item;
@@ -1270,7 +1242,6 @@ package com.adobe.net
 	{
 		var uri:String = "";
 		var part:String = "";
-
 		if (isHierarchical() == false)
 		{
 			// non-hierarchical URI
@@ -1404,7 +1375,6 @@ package com.adobe.net
 	{
 		var thisExtension:String;
 		var index:int;
-
 		index = extension.lastIndexOf(".");
 		if (index != -1)
 		{
@@ -1448,7 +1418,6 @@ package com.adobe.net
 		var filename:String = getFilename();
 		var extension:String;
 		var index:int;
-
 		if (filename == "")
 			return String("");
 
@@ -1489,7 +1458,6 @@ package com.adobe.net
 		var pathStr:String = this.path;
 		var filename:String;
 		var index:int;
-
 		// Find the last path separator.
 		index = pathStr.lastIndexOf("/");
 
@@ -1606,7 +1574,6 @@ package com.adobe.net
 		// Give the app a chance to resolve these URI's before we compare them.
 		var thisURI:URI = URI.resolve(this);
 		var thatURI:URI = URI.resolve(uri);
-
 		if (thisURI.isRelative() || thatURI.isRelative())
 		{
 			// You cannot compare relative URI's due to their lack of context.
@@ -1653,7 +1620,6 @@ package com.adobe.net
 
 		var thisPort:String = thisURI.port;
 		var thatPort:String = thatURI.port;
-
 		// Different ports are considered completely different servers.
 		if (thisPort == "")
 			thisPort = thisURI.getDefaultPort();
@@ -1676,7 +1642,6 @@ package com.adobe.net
 		// Technically, these are equal.  So lets, check for this case.
 		var thisPath:String = thisURI.path;
 		var thatPath:String = thatURI.path;
-
 		if ((thisPath == "/" || thatPath == "/") &&
 				(thisPath == "" || thatPath == ""))
 		{
@@ -1696,7 +1661,6 @@ package com.adobe.net
 		var thisParts:Array, thatParts:Array;
 		var thisPart:String, thatPart:String;
 		var i:int;
-
 		thisParts = thisPath.split("/");
 		thatParts = thatPath.split("/");
 
@@ -1784,7 +1748,6 @@ package com.adobe.net
 	{
 		var thisURI:URI = URI.resolve(this);
 		var thatURI:URI = URI.resolve(uri);
-
 		if (!thisURI.isAbsolute() || !thatURI.isAbsolute() ||
 				thisURI.isHierarchical() == false ||
 				thatURI.isHierarchical() == false)
@@ -1852,7 +1815,6 @@ package com.adobe.net
 	{
 		var uriReference:URI;
 		var ref:String = reference;
-
 		if (escape)
 			ref = URI.escapeChars(reference);
 
@@ -1868,7 +1830,6 @@ package com.adobe.net
 			// intended to make working with chdir() a little more
 			// tolerant.
 			var f:String = this.scheme + ":" + ref;
-
 			return constructURI(f);
 		}
 		else if (ref.charAt(0) == "?")
@@ -1898,7 +1859,6 @@ package com.adobe.net
 		var lastIsDotOperation:Boolean = false;
 		var curDir:String;
 		var i:int;
-
 		thisPath = this.path;
 		thatPath = uriReference.path;
 
@@ -2033,7 +1993,6 @@ package com.adobe.net
 		}
 
 		var finalPath:String = "";
-
 		// If the last thing in the path was a "." or "..", then this thing is a
 		// directory.  If the last thing isn't a dot-op, then we don't want to
 		// blow away any information about the directory (hence the "|=" binary
@@ -2068,7 +2027,6 @@ package com.adobe.net
 	{
 		var pathStr:String = "";
 		var i:int;
-
 		for (i = 0; i < parts.length; i++)
 		{
 			if (pathStr.length > 0)
@@ -2164,7 +2122,6 @@ package com.adobe.net
 		var i:int;
 		var diff:Boolean = false;
 		var isDir:Boolean = false;
-
 		if (isRelative())
 		{
 			// We're already relative.
@@ -2326,7 +2283,6 @@ package com.adobe.net
 	public function unknownToURI(unknown:String, defaultScheme:String = "http"):Boolean
 	{
 		var temp:String;
-
 		if (unknown.length == 0)
 		{
 			this.initialize();
@@ -2353,7 +2309,6 @@ package com.adobe.net
 
 		// Try parsing it as a normal URI
 		var uri:URI = new URI(unknown);
-
 		if (uri.isHierarchical() == false)
 		{
 			if (uri.scheme == UNKNOWN_SCHEME)
@@ -2392,7 +2347,6 @@ package com.adobe.net
 			// that start with "." or "..".  If it starts with something
 			// else, the parsing is ambiguous.
 			var path:String = uri.path;
-
 			if (path == ".." || path == "." ||
 					(path.length >= 3 && path.substr(0, 3) == "../") ||
 					(path.length >= 2 && path.substr(0, 2) == "./"))

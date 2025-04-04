@@ -12,21 +12,13 @@ package core.states.AIStates
 	public class AIResurect implements IState
 	{
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var target:Unit;
-		
 		private var targetX:Number;
-		
 		private var targetY:Number;
-		
 		private var duration:Number;
-		
 		private var emitters1:Vector.<Emitter>;
-		
 		private var emitters2:Vector.<Emitter>;
 		
 		public function AIResurect(g:Game, s:EnemyShip)

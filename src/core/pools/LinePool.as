@@ -6,9 +6,7 @@ package core.pools
 	public class LinePool
 	{
 		private var inactiveLines:Vector.<Line>;
-		
 		private var activeLines:Vector.<Line>;
-		
 		private var g:Game;
 		
 		public function LinePool(g:Game)

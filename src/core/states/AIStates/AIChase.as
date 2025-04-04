@@ -16,17 +16,11 @@ package core.states.AIStates
 	public class AIChase implements IState
 	{
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var closeRangeSQ:Number;
-		
 		private var speedRotFactor:Number;
-		
 		private var rollPeriod:Number;
-		
 		private var rollPeriodFactor:Number;
 		
 		public function AIChase(g:Game, s:EnemyShip, t:Unit, targetPosition:Heading, nextTurnDirection:int)

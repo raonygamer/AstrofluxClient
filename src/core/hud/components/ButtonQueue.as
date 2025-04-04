@@ -9,17 +9,11 @@ package core.hud.components
 	public class ButtonQueue extends Sprite
 	{
 		private var joinQueue:Button;
-		
 		private var leaveQueue:Button;
-		
 		private var acceptQueue:Button;
-		
 		private var tmpButton:Button;
-		
 		private var type:String;
-		
 		private var queueInfo:QueueInfoHolder;
-		
 		private var g:Game;
 		
 		public function ButtonQueue(g:Game, type:String, qi:QueueInfoHolder, avilable:Boolean = true)

@@ -8,21 +8,13 @@ package core.queue
 	public class QueueManager
 	{
 		public static const TYPE_PVP:String = "pvp";
-		
 		public static const TYPE_PVP_DM:String = "pvp dm";
-		
 		public static const TYPE_PVP_DOMINATION:String = "pvp dom";
-		
 		public static const TYPE_PVP_ARENA:String = "pvp arena";
-		
 		public static const TYPE_PVP_ARENA_RANKED:String = "pvp arena ranked";
-		
 		public static const TYPE_PVP_RANDOM:String = "pvp random";
-		
 		public static const TYPE_INSTANCE:String = "instance";
-		
 		public var g:Game;
-		
 		public var queues:Vector.<QueueInfoHolder>;
 		
 		public function QueueManager(g:Game)

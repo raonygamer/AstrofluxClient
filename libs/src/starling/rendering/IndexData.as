@@ -62,20 +62,16 @@ package starling.rendering
     {
         /** The number of bytes per index element. */
         private static const INDEX_SIZE:int = 2;
-
         private var _rawData:ByteArray;
         private var _numIndices:int;
         private var _initialCapacity:int;
         private var _useQuadLayout:Boolean;
-
         // basic quad layout
         private static var sQuadData:ByteArray = new ByteArray();
         private static var sQuadDataNumIndices:uint = 0;
-
         // helper objects
         private static var sVector:Vector.<uint> = new <uint>[];
         private static var sTrimData:ByteArray = new ByteArray();
-
         /** Creates an empty IndexData instance with the given capacity (in indices).
          *
          *  @param initialCapacity
@@ -116,7 +112,6 @@ package starling.rendering
         public function clone():IndexData
         {
             var clone:IndexData = new IndexData(_numIndices);
-
             if (!_useQuadLayout)
             {
                 clone.switchToGenericData();
@@ -142,7 +137,6 @@ package starling.rendering
 
             var sourceData:ByteArray, targetData:ByteArray;
             var newNumIndices:int = targetIndexID + numIndices;
-
             if (target._numIndices < newNumIndices)
             {
                 target._numIndices = newNumIndices;
@@ -159,7 +153,6 @@ package starling.rendering
                     var distance:int = targetIndexID - indexID;
                     var distanceInQuads:int = distance / 6;
                     var offsetInQuads:int = offset / 4;
-
                     // This code is executed very often. If it turns out that both IndexData
                     // instances use a quad layout, we don't need to do anything here.
                     // 
@@ -275,7 +268,6 @@ package starling.rendering
                 numIndices = _numIndices - indexID;
 
             var endIndex:int = indexID + numIndices;
-
             for (var i:int = indexID; i < endIndex; ++i)
                 setIndex(i, getIndex(i) + offset);
         }
@@ -290,7 +282,6 @@ package starling.rendering
                 {
                     var oddTriangleID:Boolean = (_numIndices & 1) != 0;
                     var evenTriangleID:Boolean = !oddTriangleID;
-
                     if ((evenTriangleID && b == a + 1 && c == b + 1) ||
                             (oddTriangleID && c == a + 1 && b == c + 1))
                     {
@@ -371,7 +362,6 @@ package starling.rendering
         {
             var string:String = StringUtil.format("[IndexData numIndices={0} indices=\"{1}\"]",
                     _numIndices, toVector(sVector).join());
-
             sVector.length = 0;
             return string;
         }
@@ -408,7 +398,6 @@ package starling.rendering
             var i:int;
             var oldNumQuads:int = sQuadDataNumIndices / 6;
             var newNumQuads:int = Math.ceil(numIndices / 6);
-
             sQuadData.endian = Endian.LITTLE_ENDIAN;
             sQuadData.position = sQuadData.length;
             sQuadDataNumIndices = newNumQuads * 6;
@@ -430,7 +419,6 @@ package starling.rendering
             var quadID:int = indexID / 6;
             var posInQuad:int = indexID - quadID * 6; // => indexID % 6
             var offset:int;
-
             if (posInQuad == 0)
                 offset = 0;
             else if (posInQuad == 1 || posInQuad == 3)
@@ -457,7 +445,6 @@ package starling.rendering
                 return null;
 
             var buffer:IndexBuffer3D = context.createIndexBuffer(_numIndices, bufferUsage);
-
             if (upload)
                 uploadToIndexBuffer(buffer);
             return buffer;

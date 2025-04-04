@@ -13,19 +13,12 @@ package core.hud.components
 	public class CrewBuySlot extends Sprite
 	{
 		private static const HEIGHT:int = 58;
-		
 		private static const WIDTH:int = 52;
-		
 		private var box:Quad;
-		
 		private var img:Image;
-		
 		private var g:Game;
-		
 		private var bgColor:uint = 1717572;
-		
 		private var isSelected:Boolean = false;
-		
 		private var hovering:Boolean = false;
 		
 		public function CrewBuySlot(g:Game)

@@ -26,7 +26,6 @@ package starling.utils
         private static const sPoint3D:Vector3D = new Vector3D();
         private static const sPositions:Vector.<Point> =
             new <Point>[new Point(), new Point(), new Point(), new Point()];
-
         /** @private */
         public function RectangleUtil()
         {
@@ -45,7 +44,6 @@ package starling.utils
             var right:Number = rect1.right < rect2.right ? rect1.right : rect2.right;
             var top:Number = rect1.y > rect2.y ? rect1.y : rect2.y;
             var bottom:Number = rect1.bottom < rect2.bottom ? rect1.bottom : rect2.bottom;
-
             if (left > right || top > bottom)
                 out.setEmpty();
             else
@@ -78,7 +76,6 @@ package starling.utils
             var factorX:Number = into.width / width;
             var factorY:Number = into.height / height;
             var factor:Number = 1.0;
-
             if (scaleMode == ScaleMode.SHOW_ALL)
             {
                 factor = factorX < factorY ? factorX : factorY;
@@ -107,7 +104,6 @@ package starling.utils
         private static function nextSuitableScaleFactor(factor:Number, up:Boolean):Number
         {
             var divisor:Number = 1.0;
-
             if (up)
             {
                 if (factor >= 0.5)
@@ -171,7 +167,6 @@ package starling.utils
             var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
             var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
             var positions:Vector.<Point> = getPositions(rectangle, sPositions);
-
             for (var i:int = 0; i < 4; ++i)
             {
                 MatrixUtil.transformCoords(matrix, positions[i].x, positions[i].y, sPoint);
@@ -207,11 +202,9 @@ package starling.utils
             var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
             var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
             var positions:Vector.<Point> = getPositions(rectangle, sPositions);
-
             for (var i:int = 0; i < 4; ++i)
             {
                 var position:Point = positions[i];
-
                 if (matrix)
                     MatrixUtil.transformCoords3D(matrix, position.x, position.y, 0, sPoint3D);
                 else

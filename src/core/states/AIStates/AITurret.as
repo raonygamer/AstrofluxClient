@@ -14,11 +14,8 @@ package core.states.AIStates
 	public class AITurret implements IState
 	{
 		private var g:Game;
-		
 		private var t:Turret;
-		
 		private var sm:StateMachine;
-		
 		private var me:Player;
 		
 		public function AITurret(g:Game, t:Turret)

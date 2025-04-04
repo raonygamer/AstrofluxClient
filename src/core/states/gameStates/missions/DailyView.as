@@ -22,21 +22,13 @@ package core.states.gameStates.missions
 	public class DailyView extends Sprite
 	{
 		private var g:Game;
-		
 		private var box:GradientBox = new GradientBox(290,90,0,1,15,0x88ff88);
-		
 		private var daily:Daily;
-		
 		private var description:TextField;
-		
 		private var parentContainer:ScrollContainer;
-		
 		private var header:TextField;
-		
 		private var reward:DailyReward;
-		
 		private var statusBar:Statusbar;
-		
 		private var wikiButton:ImageButton;
 		
 		public function DailyView(g:Game, daily:Daily, parentContainer:ScrollContainer)

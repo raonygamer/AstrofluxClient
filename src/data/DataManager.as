@@ -10,9 +10,7 @@ package data
 	public class DataManager extends Sprite implements IDataManager
 	{
 		private var _client:Client;
-		
 		private var json:Object;
-		
 		public var _artifacts:Vector.<Artifact> = new Vector.<Artifact>();
 		
 		public function DataManager(client:Client)

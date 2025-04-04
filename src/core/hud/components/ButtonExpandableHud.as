@@ -15,25 +15,16 @@ package core.hud.components
 	public class ButtonExpandableHud extends DisplayObjectContainer
 	{
 		private static var bgrLeftTexture:Texture;
-		
 		private static var bgrMidTexture:Texture;
-		
 		private static var bgrRightTexture:Texture;
-		
 		private static var hoverLeftTexture:Texture;
-		
 		private static var hoverMidTexture:Texture;
-		
 		private static var hoverRightTexture:Texture;
-		
 		private var captionText:TextBitmap;
-		
 		private var padding:Number = 8;
-		
 		private var hoverContainer:Sprite = new Sprite();
 		
 		private var callback:Function;
-		
 		private var _enabled:Boolean = true;
 		
 		public function ButtonExpandableHud(clickCallback:Function, caption:String)

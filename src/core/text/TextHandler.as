@@ -6,9 +6,7 @@ package core.text
 	public class TextHandler
 	{
 		public var texts:Vector.<TextParticle>;
-		
 		private var inactiveTexts:Vector.<TextParticle>;
-		
 		private var g:Game;
 		
 		public function TextHandler(g:Game)

@@ -26,19 +26,12 @@ package core.ship
 	public class ShipManager
 	{
 		private var g:Game;
-		
 		public var shipSync:ShipSync;
-		
 		public var ships:Vector.<Ship>;
-		
 		public var players:Vector.<PlayerShip>;
-		
 		private var inactivePlayers:Vector.<PlayerShip>;
-		
 		public var enemies:Vector.<EnemyShip>;
-		
 		private var inactiveEnemies:Vector.<EnemyShip>;
-		
 		public var enemiesById:Dictionary;
 		
 		public function ShipManager(g:Game)

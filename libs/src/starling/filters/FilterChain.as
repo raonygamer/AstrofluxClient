@@ -22,10 +22,8 @@ package starling.filters
     public class FilterChain extends FragmentFilter
     {
         private var _filters:Vector.<FragmentFilter>;
-
         // helpers
         private static var sPadding:Padding = new Padding();
-
         /** Creates a new chain with the given filters. */
         public function FilterChain(...args)
         {
@@ -49,7 +47,6 @@ package starling.filters
         {
             for each (var filter:FragmentFilter in _filters)
                 filter.dispose();
-
             _filters.length = 0;
 
             super.dispose();
@@ -70,7 +67,6 @@ package starling.filters
             var numFilters:int = _filters.length;
             var outTexture:Texture = input0;
             var inTexture:Texture;
-
             for (var i:int = 0; i < numFilters; ++i)
             {
                 inTexture = outTexture;
@@ -88,7 +84,6 @@ package starling.filters
         {
             var numPasses:int = 0;
             var numFilters:int = _filters.length;
-
             for (var i:int = 0; i < numFilters; ++i)
                 numPasses += _filters[i].numPasses;
 

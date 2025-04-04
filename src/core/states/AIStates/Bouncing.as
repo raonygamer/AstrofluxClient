@@ -11,23 +11,14 @@ package core.states.AIStates
 	public class Bouncing implements IState
 	{
 		protected var m:Game;
-		
 		protected var p:Projectile;
-		
 		private var sm:StateMachine;
-		
 		private var isEnemy:Boolean;
-		
 		private var globalInterval:Number = 1000;
-		
 		private var localTargetList:Vector.<Unit>;
-		
 		private var nextGlobalUpdate:Number;
-		
 		private var nextLocalUpdate:Number;
-		
 		private var localRangeSQ:Number;
-		
 		private var firstUpdate:Boolean;
 		
 		public function Bouncing(m:Game, p:Projectile)

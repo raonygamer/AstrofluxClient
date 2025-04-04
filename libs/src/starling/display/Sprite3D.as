@@ -65,23 +65,19 @@ package starling.display
     public class Sprite3D extends DisplayObjectContainer
     {
         private static const E:Number = 0.00001;
-
         private var _rotationX:Number;
         private var _rotationY:Number;
         private var _scaleZ:Number;
         private var _pivotZ:Number;
         private var _z:Number;
-
         private var _transformationMatrix:Matrix;
         private var _transformationMatrix3D:Matrix3D;
         private var _transformationChanged:Boolean;
         private var _is2D:Boolean;
-
         /** Helper objects. */
         private static var sHelperPoint:Vector3D = new Vector3D();
         private static var sHelperPointAlt:Vector3D = new Vector3D();
         private static var sHelperMatrix:Matrix3D = new Matrix3D();
-
         /** Creates an empty Sprite3D. */
         public function Sprite3D()
         {
@@ -171,7 +167,6 @@ package starling.display
             {
                 var container:DisplayObjectContainer = object as DisplayObjectContainer;
                 var numChildren:int = container.numChildren;
-
                 for (var i:int = 0; i < numChildren; ++i)
                     recursivelySetIs3D(container.getChildAt(i), value);
             }
@@ -188,7 +183,6 @@ package starling.display
             var pivotX:Number = this.pivotX;
             var pivotY:Number = this.pivotY;
             var rotationZ:Number = this.rotation;
-
             _transformationMatrix3D.identity();
 
             if (scaleX != 1.0 || scaleY != 1.0 || _scaleZ != 1.0)

@@ -8,19 +8,12 @@ package core.solarSystem
 	public class BodyManager
 	{
 		private static const MAX_ORBIT_DIFF:Number = 10;
-		
 		public var bodiesById:Dictionary;
-		
 		public var bodies:Vector.<Body>;
-		
 		public var roots:Vector.<Body>;
-		
 		public var visibleBodies:Vector.<Body>;
-		
 		private var startTime:Number;
-		
 		private var bodyId:int = 0;
-		
 		private var g:Game;
 		
 		public function BodyManager(m:Game)

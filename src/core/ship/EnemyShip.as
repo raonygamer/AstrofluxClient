@@ -16,143 +16,74 @@ package core.ship
 	public class EnemyShip extends Ship
 	{
 		public static const RARE_TYPE_NORMAL:int = 0;
-		
 		public static const RARE_TYPE_DEFENDER:int = 1;
-		
 		public static const RARE_TYPE_ATTACKER:int = 2;
-		
 		public static const RARE_TYPE_SPEEDER:int = 3;
-		
 		public static const RARE_TYPE_LEGENDARY:int = 4;
-		
 		public static const RARE_TYPE_UNIQUE:int = 5;
-		
 		public static const RARE_TYPE_PET:int = 6;
-		
 		public static const RIGHT:int = 1;
-		
 		public static const LEFT:int = -1;
-		
 		public var aggroRange:int;
-		
 		public var chaseRange:int;
-		
 		public var aimSkill:Number;
-		
 		public var stopWhenClose:Boolean;
-		
 		public var observer:Boolean;
-		
 		public var visionRange:int;
-		
 		public var nextTurnDir:int;
-		
 		public var flee:Boolean;
-		
 		public var fleeLifeTreshhold:int;
-		
 		public var fleeDuration:int;
-		
 		public var fleeClose:int;
-		
 		public var sniper:Boolean;
-		
 		public var sniperMinRange:Number;
-		
 		public var teleport:Boolean;
-		
 		private var kamikazeFilter:ColorMatrixFilter;
-		
 		private var kamikazeStarted:Boolean;
-		
 		public var kamikaze:Boolean;
-		
 		public var kamikazeLifeTreshhold:int;
-		
 		public var kamikazeDmg:int;
-		
 		public var kamikazeRadius:int;
-		
 		public var kamikazeTtl:int;
-		
 		public var kamikazeHoming:Boolean;
-		
 		public var kamikazeEffect:String = "-Gx9QanEEUKc1ADl5B6nxg";
-		
 		public var kamikazeWhenClose:Boolean;
-		
 		public var melee:Boolean;
-		
 		public var meleeCharge:Boolean;
-		
 		public var meleeChargeSpeedBonus:Number;
-		
 		public var meleeChargeDuration:int;
-		
 		public var meleeChargeCoolDown:int;
-		
 		public var meleeCanGrab:Boolean;
-		
 		public var meleeStuck:Boolean;
-		
 		public var meleeOffset:Point;
-		
 		public var meleeTargetStartAngle:Number;
-		
 		public var meleeTargetAngleDiff:Number;
-		
 		public var meleeChargeEndTime:Number;
-		
 		public var oldSpeed:Number;
-		
 		public var oldTurningSpeed:Number;
-		
 		public var alwaysFire:Boolean;
-		
 		public var orbitSpawner:Boolean;
-		
 		public var hasOrbitData:Boolean = false;
-		
 		public var spawner:Spawner;
-		
 		public var angleVelocity:Number;
-		
 		public var orbitAngle:Number;
-		
 		public var orbitRadius:Number;
-		
 		public var ellipseFactor:Number;
-		
 		public var ellipseAlpha:Number;
-		
 		public var orbitStartTime:Number;
-		
 		public var aiCloak:Boolean;
-		
 		public var aiHardenShield:Boolean;
-		
 		public var aiHardenShieldDuration:Number;
-		
 		public var aiHardenShieldEndtime:Number;
-		
 		private var aiHardenedShieldEffect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		public var rareType:int = 0;
-		
 		public var target:Unit;
-		
 		public var weaponRanges:Vector.<WeaponRange> = new Vector.<WeaponRange>();
-		
 		public var escapeWeapon:Weapon;
-		
 		public var antiProjectileWeapon:Weapon;
-		
 		public var chargeEffect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var AFName:TextBitmap;
-		
 		private var rareEmitters:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var sign:int = 1;
 		
 		public function EnemyShip(g:Game)

@@ -15,57 +15,32 @@ package core.hud.components.explore
 	public class ExploreProgressBar extends Sprite
 	{
 		public static var COLOR:uint = 3225899;
-		
 		private var min:Number = 0;
-		
 		private var max:Number = 1;
-		
 		private var value:Number = 0;
-		
 		private var _exploring:Boolean = false;
-		
 		private var exploreEffect:Vector.<Emitter>;
-		
 		private var effectForeground:Quad;
-		
 		private var effectBackground:Quad;
-		
 		private var effectContainer:Quad;
-		
 		private var effectTarget:GameObject;
-		
 		private var effectCanvas:Sprite;
-		
 		private var finished:Boolean = false;
-		
 		private var exploreText:Text;
-		
 		private var body:Body;
-		
 		private var g:Game;
 		
 		private var finishedCallback:Function;
-		
 		private var setValueOnFinishedLoad:Boolean = false;
-		
 		private var onFinishedLoadValue:Number;
-		
 		private var onFinishedLoadFailed:Boolean;
-		
 		private var startOnFinish:Boolean = false;
-		
 		private var timer:Timer = new Timer(1000,1);
-		
 		private var startTime:Number = 0;
-		
 		private var finishTime:Number = 0;
-		
 		private var failTime:Number = 0;
-		
 		private var barWidth:Number = 452;
-		
 		private var type:int;
-		
 		private var loadFinished:Boolean = false;
 		
 		public function ExploreProgressBar(g:Game, body:Body, finishedCallback:Function, type:int)

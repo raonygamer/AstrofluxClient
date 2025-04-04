@@ -5,19 +5,12 @@ package core.solarSystem
 	public class BodyHeading
 	{
 		public var time:Number = 0;
-		
 		public var pos:Point = new Point();
-		
 		public var angle:Number = 0;
-		
 		public var orbitAngle:Number = 0;
-		
 		public var orbitRadius:Number = 0;
-		
 		public var orbitSpeed:Number = 0;
-		
 		public var rotationSpeed:Number = 0;
-		
 		private var body:Body;
 		
 		public function BodyHeading(body:Body)

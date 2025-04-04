@@ -22,7 +22,6 @@ package starling.rendering
                 "float3": 12,
                 "float4": 16
             };
-
         public var name:String;
         public var format:String;
         public var isColor:Boolean;

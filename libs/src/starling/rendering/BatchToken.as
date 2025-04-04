@@ -26,13 +26,10 @@ package starling.rendering
     {
         /** The ID of the current MeshBatch. */
         public var batchID:int;
-
         /** The ID of the next vertex within the current MeshBatch. */
         public var vertexID:int;
-
         /** The ID of the next index within the current MeshBatch. */
         public var indexID:int;
-
         /** Creates a new BatchToken. */
         public function BatchToken(batchID:int = 0, vertexID:int = 0, indexID:int = 0)
         {

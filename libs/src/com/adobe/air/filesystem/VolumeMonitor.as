@@ -63,9 +63,7 @@ package com.adobe.air.filesystem
 		private var timer:Timer;
 		private var _interval:Number;
 		private static const DEFAULT_MONITOR_INTERVAL:Number = 2000;
-
 		private var volumes:Dictionary;
-
 		/**
 		 * 	Constructor.
 		 *
@@ -138,7 +136,6 @@ package com.adobe.air.filesystem
 		private function onTimerEvent(e:TimerEvent):void
 		{
 			var v:Array = FileUtil.getRootDirectories();
-
 			var outEvent:FileMonitorEvent;
 			var found:Boolean = false;
 			for (var key:String in volumes)

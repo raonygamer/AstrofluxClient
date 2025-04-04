@@ -15,23 +15,14 @@ package core.hud.components.techTree
 	public class EliteTechBar extends Sprite
 	{
 		private var g:Game;
-		
 		private var icon:Image;
-
 		private var _name:Text;
-		
 		private var desc:Text;
-		
 		private var level:Text;
-		
 		private var box:Box = new Box(7 * 60,2 * 60,"light",1,2);
-		
 		private var techSkill:TechSkill;
-		
 		private var eliteTech:String;
-		
 		public var etpm:EliteTechPopupMenu = null;
-		
 		private var textureManager:ITextureManager;
 		
 		public function EliteTechBar(g:Game, nameText:String, descText:String, iconName:String, lvl:int, eliteTech:String, techSkill:TechSkill)

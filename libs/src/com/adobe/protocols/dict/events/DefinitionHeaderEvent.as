@@ -37,7 +37,6 @@ package com.adobe.protocols.dict.events
 	public class DefinitionHeaderEvent extends Event
 	{
 		public static const DEFINITION_HEADER:String = "definitionHeader";
-
 		private var _definitionCount:uint;
 
 		public function DefinitionHeaderEvent(type:String, bubbles:Boolean = false,
@@ -60,7 +59,6 @@ package com.adobe.protocols.dict.events
 		{
 			var out:DefinitionHeaderEvent = new DefinitionHeaderEvent(type,
 					bubbles, cancelable);
-
 			out.definitionCount = _definitionCount;
 
 			return out;

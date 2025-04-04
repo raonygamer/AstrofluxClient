@@ -8,9 +8,7 @@ package core.hud.components
 	public class NativeImageButton extends Sprite
 	{
 		private var callback:Function;
-		
 		private var image:Sprite = new Sprite();
-		
 		private var hoverImage:Sprite = new Sprite();
 		
 		public function NativeImageButton(callback:Function, bd:BitmapData)

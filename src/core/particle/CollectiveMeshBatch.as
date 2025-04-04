@@ -5,11 +5,8 @@ package core.particle
 	public class CollectiveMeshBatch extends MeshBatch
 	{
 		private static var effectsBatch:CollectiveMeshBatch;
-		
 		private static var meshBatches:Vector.<CollectiveMeshBatch> = new Vector.<CollectiveMeshBatch>();
-		
 		private var hasBeenUpdated:Boolean = false;
-		
 		private var emitters:Vector.<Emitter> = new Vector.<Emitter>();
 		
 		public function CollectiveMeshBatch()

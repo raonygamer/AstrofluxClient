@@ -108,10 +108,8 @@ package starling.filters
         private var _alwaysDrawToBackBuffer:Boolean;
         private var _cacheRequested:Boolean;
         private var _cached:Boolean;
-
         // helpers
         private static var sMatrix3D:Matrix3D;
-
         /** Creates a new instance. The base class' implementation just draws the unmodified
          *  input texture. */
         public function FragmentFilter()
@@ -187,7 +185,6 @@ package starling.filters
             var isOnStage:Boolean = renderSpace is Stage;
             var stage:Stage = Starling.current.stage;
             var stageBounds:Rectangle;
-
             if (!forCache && (_alwaysDrawToBackBuffer || _target.requiresRedraw))
             {
                 // If 'requiresRedraw' is true, the object is non-static, and we guess that this
@@ -252,7 +249,6 @@ package starling.filters
             var wasCacheEnabled:Boolean = painter.cacheEnabled;
             var input:Texture = _helper.getTexture();
             var output:Texture;
-
             painter.cacheEnabled = false; // -> what follows should not be cached
             painter.pushState();
             painter.state.alpha = 1.0;
@@ -320,7 +316,6 @@ package starling.filters
             var projectionMatrix:Matrix3D;
             var bounds:Rectangle = null;
             var renderTarget:Texture;
-
             if (output) // render to texture
             {
                 renderTarget = output;
@@ -662,7 +657,6 @@ class FilterQuad extends Mesh
     {
         var vertexData:VertexData = this.vertexData;
         var attrName:String = "position";
-
         vertexData.setPoint(0, attrName, bounds.x, bounds.y);
         vertexData.setPoint(1, attrName, bounds.right, bounds.y);
         vertexData.setPoint(2, attrName, bounds.x, bounds.bottom);

@@ -17,25 +17,15 @@ package core.hud.components.credits
 	public class CreditBaseItem extends Sprite implements ICreditItem
 	{
 		protected var g:Game;
-		
 		protected var dataManager:IDataManager;
-		
 		protected var textureManager:ITextureManager;
-		
 		protected var selected:Boolean = false;
-		
 		protected var hover:Boolean = false;
-		
 		private var bgr:Quad = new Quad(260,50,0);
-		
 		protected var selectContainer:Sprite = new Sprite();
-		
 		protected var infoContainer:Sprite = new Sprite();
-		
 		protected var itemLabel:String;
-		
 		protected var bitmap:String;
-		
 		protected var spinner:Boolean;
 		
 		public function CreditBaseItem(g:Game, parent:Sprite, spinner:Boolean = false)

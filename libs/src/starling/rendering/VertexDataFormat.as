@@ -46,10 +46,8 @@ package starling.rendering
         private var _format:String;
         private var _vertexSize:int;
         private var _attributes:Vector.<VertexDataAttribute>;
-
         // format cache
         private static var sFormats:Dictionary = new Dictionary();
-
         /** Don't use the constructor, but call <code>VertexDataFormat.fromString</code> instead.
          *  This allows for efficient format caching. */
         public function VertexDataFormat()
@@ -94,7 +92,6 @@ package starling.rendering
                 instance.parseFormat(format);
 
                 var normalizedFormat:String = instance._format;
-
                 if (normalizedFormat in sFormats)
                     instance = sFormats[normalizedFormat];
 
@@ -155,7 +152,6 @@ package starling.rendering
         public function hasAttribute(attrName:String):Boolean
         {
             var numAttributes:int = _attributes.length;
-
             for (var i:int = 0; i < numAttributes; ++i)
                 if (_attributes[i].name == attrName)
                     return true;
@@ -187,24 +183,20 @@ package starling.rendering
                 var parts:Array = format.split(",");
                 var numParts:int = parts.length;
                 var offset:int = 0;
-
                 for (var i:int = 0; i < numParts; ++i)
                 {
                     var attrDesc:String = parts[i];
                     var attrParts:Array = attrDesc.split(":");
-
                     if (attrParts.length != 2)
                         throw new ArgumentError("Missing colon: " + attrDesc);
 
                     var attrName:String = StringUtil.trim(attrParts[0]);
                     var attrFormat:String = StringUtil.trim(attrParts[1]);
-
                     if (attrName.length == 0 || attrFormat.length == 0)
                         throw new ArgumentError(("Invalid format string: " + attrDesc));
 
                     var attribute:VertexDataAttribute =
                         new VertexDataAttribute(attrName, attrFormat, offset);
-
                     offset += attribute.size;
 
                     _format += (i == 0 ? "" : ", ") + attribute.name + ":" + attribute.format;
@@ -232,7 +224,6 @@ package starling.rendering
         {
             var i:int, attribute:VertexDataAttribute;
             var numAttributes:int = _attributes.length;
-
             for (i = 0; i < numAttributes; ++i)
             {
                 attribute = _attributes[i];

@@ -12,23 +12,14 @@ package core.states.AIStates
 	public class Boomerang extends ProjectileBullet implements IState
 	{
 		private var g:Game;
-
 		private var globalInterval:Number = 1000;
-		
 		private var localTargetList:Vector.<Unit>;
-		
 		private var nextGlobalUpdate:Number;
-		
 		private var nextLocalUpdate:Number;
-		
 		private var localRangeSQ:Number;
-		
 		private var firstUpdate:Boolean;
-		
 		private var engine:GameObject = new GameObject();
-		
 		private var elapsedTime:Number = 0;
-		
 		private var startTime:Number = 0;
 		
 		public function Boomerang(g:Game, p:Projectile)

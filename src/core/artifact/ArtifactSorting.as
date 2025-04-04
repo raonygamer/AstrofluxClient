@@ -16,21 +16,14 @@ package core.artifact
 	public class ArtifactSorting extends Sprite
 	{
 		private var nextX:int = 20;
-		
 		private var nextY:int = 0;
-		
 		private var padding:int = 10;
-		
 		private var g:Game;
-		
 		private var types:Vector.<Object>;
 		
 		private var callback:Function;
-		
 		private var drawCount:int = 0;
-		
 		private var scrollArea:ScrollContainer;
-		
 		private var mainBody:Sprite;
 		
 		public function ArtifactSorting(g:Game, callback:Function)

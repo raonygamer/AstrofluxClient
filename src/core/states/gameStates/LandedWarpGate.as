@@ -18,15 +18,10 @@ package core.states.gameStates
 	public class LandedWarpGate extends LandedState
 	{
 		private var starMap:StarMap;
-		
 		private var warpJumpButton:Button;
-		
 		private var uberJumpButton:Button;
-		
 		private var pressedWarpJump:Boolean = false;
-		
 		private var uberInfo:TextField = new TextField(4 * 60,10,"");
-		
 		private var friendLocationSelector:WarpGateFriendLocationSelector;
 		
 		public function LandedWarpGate(g:Game, body:Body)

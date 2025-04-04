@@ -10,13 +10,9 @@ package core.states.AIStates
 	public class AITeleportExit implements IState
 	{
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var endTime:Number;
-		
 		private var emitters1:Vector.<Emitter>;
 		
 		public function AITeleportExit(g:Game, s:EnemyShip)

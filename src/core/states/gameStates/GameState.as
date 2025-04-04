@@ -13,23 +13,14 @@ package core.states.gameStates
 	public class GameState implements IGameState
 	{
 		protected var sm:GameStateMachine;
-		
 		protected var g:Game;
-		
 		protected var me:Player;
-		
 		protected var input:IInput;
-		
 		protected var soundManager:ISound;
-		
 		protected var textureManager:ITextureManager;
-		
 		protected var _loaded:Boolean = false;
-		
 		protected var _unloaded:Boolean = false;
-		
 		protected var keybinds:KeyBinds;
-		
 		protected var _hasExit:Boolean = false;
 		
 		public function GameState(g:Game)

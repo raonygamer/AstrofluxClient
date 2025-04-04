@@ -29,7 +29,6 @@ package starling.utils
         private static var sPoint3D:Vector3D = new Vector3D();
         private static var sMatrix:Matrix = new Matrix();
         private static var sMatrix3D:Matrix3D = new Matrix3D();
-
         /** @private */
         public function MeshUtil()
         {
@@ -47,7 +46,6 @@ package starling.utils
             var p0:Point = Pool.getPoint();
             var p1:Point = Pool.getPoint();
             var p2:Point = Pool.getPoint();
-
             for (i = 0; i < numIndices; i += 3)
             {
                 vertexData.getPoint(indexData.getIndex(i), "position", p0);
@@ -78,7 +76,6 @@ package starling.utils
                 out = new Rectangle();
 
             var stage:Stage = sourceSpace.stage;
-
             if (sourceSpace.is3D && stage)
             {
                 stage.getCameraPosition(targetSpace, sPoint3D);

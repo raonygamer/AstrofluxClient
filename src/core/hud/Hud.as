@@ -63,93 +63,49 @@ package core.hud
 	public class Hud
 	{
 		private var g:Game;
-		
 		private var container:Sprite = new Sprite();
-		
 		private var shipButton:ButtonHud;
-		
 		private var mapButton:ButtonHud;
-		
 		public var cargoButton:ButtonCargo;
-		
 		public var resourceBox:ResourceBox;
-		
 		private var podButton:PodButton;
-		
 		private var settingsButton:ButtonHud;
-		
 		private var shopButton:Button;
-		
 		public var buyFluxButton:BuyFluxButton;
-		
 		public var clanButton:ButtonClan;
-		
 		private var newMissionsButton:ButtonNewMission;
-		
 		public var missionsButton:ButtonMissions;
-		
 		public var artifactsButton:ButtonHud;
-		
 		public var leaderboardButton:ButtonHud;
-		
 		public var encountersButton:ButtonHud;
-		
 		public var salesButton:Button;
-		
 		public var pvpMenuButton:ButtonPvPMenu;
-		
 		public var pvpQuickMatchButton:ButtonPvPQuickMatch;
-		
 		public var healthAndShield:HealthAndShield;
-		
 		public var powerBar:PowerBar;
-		
 		public var bossHealth:BossHealth;
-		
 		public var weaponHotkeys:WeaponHotkeys;
-		
 		public var radar:Radar;
-		
 		private var shopIcons:ShopIcons;
-		
 		private var pvpIcon:PvPIcon;
-		
 		private var textureManager:ITextureManager;
-		
 		public var abilities:Abilities;
-		
 		public var compas:Compas;
-		
 		public var playerListButton:ButtonPlayers;
-		
 		private var bgr:MeshBatch = new MeshBatch();
-		
 		private var experience:Experience;
-		
 		private var landText:TextBitmap = new TextBitmap();
-		
 		private var safeZoneText:TextBitmap = new TextBitmap();
-		
 		private var repairText:TextBitmap = new TextBitmap();
-		
 		private var hintMapText:TextBitmap;
-		
 		public var uberStats:UberStats;
-		
 		private var artifactLimitText:TextBitmap = new TextBitmap();
-		
 		private var loadComplete:Boolean = false;
-		
 		private var fullScreenButton:FullScreenButton = new FullScreenButton();
-		
 		private var isShowingNewMissionsButton:Boolean = false;
-		
 		private var hintMapFlashCounter:int = 0;
-		
 		private var fullScreenHintImage:Image;
-		
 		private var artifactTween:TweenMax;
-		
 		private var showUtilityTexts:Boolean = true;
 		
 		public function Hud(g:Game)

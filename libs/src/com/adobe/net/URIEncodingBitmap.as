@@ -57,7 +57,6 @@ package com.adobe.net
 		{
 			var i:int;
 			var data:ByteArray = new ByteArray();
-
 			// Initialize our 128 bits (16 bytes) to zero
 			for (i = 0; i < 16; i++)
 				this.writeByte(0);
@@ -68,7 +67,6 @@ package com.adobe.net
 			while (data.bytesAvailable)
 			{
 				var c:int = data.readByte();
-
 				if (c > 0x7f)
 					continue; // only escape low bytes
 
@@ -101,7 +99,6 @@ package com.adobe.net
 		{
 			var data:ByteArray = new ByteArray();
 			var c:int, mask:int;
-
 			// write the character into a ByteArray so
 			// we can pull it out as a raw byte value.
 			data.writeUTFBytes(char);

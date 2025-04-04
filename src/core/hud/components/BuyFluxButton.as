@@ -15,9 +15,7 @@ package core.hud.components
 	public class BuyFluxButton extends ButtonHud
 	{
 		private var g:Game;
-		
 		private var creditText:TextField;
-		
 		private var fluxIcon:Image;
 		
 		public function BuyFluxButton(g:Game)

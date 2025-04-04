@@ -7,11 +7,8 @@ package core.hud.components
 	public class Line extends Image
 	{
 		private var overlap:Boolean;
-		
 		public var toX:Number;
-		
 		public var toY:Number;
-		
 		private var oldTextureName:String;
 		
 		public function Line(textureName:String = "line1")

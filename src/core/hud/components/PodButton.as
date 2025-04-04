@@ -16,29 +16,17 @@ package core.hud.components
 	public class PodButton extends Sprite
 	{
 		protected static var normalTexture:Texture;
-		
 		protected static var highlightTexture:Texture;
-		
 		protected static var positiveTexture:Texture;
-		
 		protected static var warningTexture:Texture;
-		
 		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(25,11,8,4);
-		
 		protected var image:Image;
-		
 		protected var styleImage:Image;
-		
 		protected var hoverImage:Image;
-		
 		protected var style:String;
-		
 		protected var tf:TextField;
-		
 		protected var autoscale:Boolean = true;
-		
 		protected var padding:int = 10;
-		
 		public var autoEnableAfterClick:Boolean = false;
 		
 		public var callback:Function;

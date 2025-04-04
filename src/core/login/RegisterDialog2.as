@@ -13,21 +13,13 @@ package core.login
 	public class RegisterDialog2 extends Sprite
 	{
 		private var registerBox:Sprite;
-		
 		private var mySharedObject:SharedObject;
-		
 		private var username:String;
-		
 		private var client:Client;
-		
 		private var registerButton:LoginButton;
-		
 		private var emailInput:LoginInput;
-		
 		private var nameInput:LoginInput;
-		
 		private var passwordInput:LoginInput;
-		
 		private var passwordConfirmInput:LoginInput;
 		
 		public function RegisterDialog2(login:Login)

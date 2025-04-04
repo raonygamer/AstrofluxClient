@@ -7,7 +7,6 @@ package core.turret
 	public class TurretManager
 	{
 		public var turrets:Vector.<Turret>;
-		
 		private var g:Game;
 		
 		public function TurretManager(g:Game)

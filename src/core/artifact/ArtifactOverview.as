@@ -40,75 +40,40 @@ package core.artifact
 	public class ArtifactOverview extends Sprite
 	{
 		private static var artifactsLoaded:Boolean;
-		
 		private static var textureManager:ITextureManager;
-		
 		private static const MAX_RECYCLE:int = 40;
-		
 		private var g:Game;
-		
 		private var p:Player;
-		
 		private var activeSlots:Vector.<ArtifactBox> = new Vector.<ArtifactBox>();
-		
 		private var cargoBoxes:Vector.<ArtifactCargoBox> = new Vector.<ArtifactCargoBox>();
-		
 		private var statisticSummary:TextField;
-		
 		private var recycleMode:Boolean;
-		
 		private var upgradeMode:Boolean;
-		
 		private var statsContainer:ScrollContainer;
-		
 		private var toggleRecycleButton:Button;
-		
 		private var toggleUpgradeButton:Button;
-		
 		private var upgradeButton:Button;
-		
 		private var cancelUpgradeButton:Button;
-		
 		private var chooseSortingButton:Button;
-		
 		private var selectAllRecycleButton:Button;
-		
 		private var recycleButton:Button;
-		
 		private var cancelRecycleButton:Button;
-		
 		private var recycleText:TextField;
-		
 		private var recycleTextInfo:TextField;
-		
 		private var autoRecycleButton:Button;
-		
 		private var buySupporter:Button;
-		
 		private var autoRecycleInput:InputText;
-		
 		private var autoRecycleText:TextField;
-		
 		private var autoRecycleTextInfo:TextField;
-		
 		private var markedForRecycle:Vector.<Artifact> = new Vector.<Artifact>();
-		
 		private var setups:Array = [];
-		
 		private var cargoContainer:ScrollContainer;
-		
 		private const artifactSetupButtonHeight:int = 24;
-		
 		private const artifactSetupY:int = 70;
-		
 		private var crewContainer:Sprite;
-		
 		private var labelSelectCrew:TextBitmap;
-		
 		private var loadingText:TextField;
-		
 		private var selectedUpgradeBox:ArtifactCargoBox;
-		
 		private var selectedCrewMember:CrewDisplayBoxNew;
 		
 		public function ArtifactOverview(g:Game)

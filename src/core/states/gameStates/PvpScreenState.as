@@ -9,7 +9,6 @@ package core.states.gameStates
 	public class PvpScreenState extends PlayState
 	{
 		private var obj:PvpScreen;
-		
 		private var nextUpdate:Number;
 		
 		public function PvpScreenState(g:Game)

@@ -62,36 +62,27 @@ package starling.styles
         public static const VERTEX_FORMAT:VertexDataFormat =
             MeshStyle.VERTEX_FORMAT.extend(
                 "basic:bytes4, extended:bytes4, outerColor:bytes4");
-
         /** Basic distance field rendering, without additional effects. */
         public static const MODE_BASIC:String = "basic";
-
         /** Adds an outline around the edge of the shape. */
         public static const MODE_OUTLINE:String = "outline";
-
         /** Adds a smooth glow effect around the shape. */
         public static const MODE_GLOW:String = "glow";
-
         /** Adds a drop shadow behind the shape. */
         public static const MODE_SHADOW:String = "shadow";
-
         private var _mode:String;
-
         // basic
         private var _threshold:Number;
         private var _alpha:Number;
         private var _softness:Number;
-
         // extended
         private var _outerThreshold:Number;
         private var _outerAlphaEnd:Number;
         private var _shadowOffsetX:Number;
         private var _shadowOffsetY:Number;
-
         // outerColor
         private var _outerColor:uint;
         private var _outerAlphaStart:Number;
-
         /** Creates a new distance field style.
          *
          *  @param softness   adds a soft transition between the inside and the outside.
@@ -171,7 +162,6 @@ package starling.styles
             var maxOuterOffset:int = DistanceFieldEffect.MAX_OUTER_OFFSET;
             var encodedOuterOffsetX:Number = (_shadowOffsetX + maxOuterOffset) / (2 * maxOuterOffset);
             var encodedOuterOffsetY:Number = (_shadowOffsetY + maxOuterOffset) / (2 * maxOuterOffset);
-
             var basic:uint = (uint(_threshold * 255)) |
                 (uint(_alpha * 255) << 8) |
                 (uint(_softness / 2.0 * 255) << 16) |
@@ -184,7 +174,6 @@ package starling.styles
                 (Color.getGreen(_outerColor) << 8) |
                 (Color.getBlue(_outerColor) << 16) |
                 (uint(_outerAlphaStart * 255) << 24);
-
             for (var i:int = 0; i < numVertices; ++i)
             {
                 vertexData.setUnsignedInt(i, "basic", basic);
@@ -205,13 +194,11 @@ package starling.styles
             if (matrix)
             {
                 var scale:Number = Math.sqrt(matrix.a * matrix.a + matrix.c * matrix.c);
-
                 if (!MathUtil.isEquivalent(scale, 1.0, 0.01))
                 {
                     var targetVertexData:VertexData = (targetStyle as DistanceFieldStyle).vertexData;
                     var maxScale:Number = DistanceFieldEffect.MAX_SCALE;
                     var minScale:Number = maxScale / 255;
-
                     for (var i:int = 0; i < numVertices; ++i)
                     {
                         var srcAttr:uint = vertexData.getUnsignedInt(vertexID + i, "basic");
@@ -219,7 +206,6 @@ package starling.styles
                         var tgtScale:Number = MathUtil.clamp(srcScale * scale, minScale, maxScale);
                         var tgtAttr:uint =
                             (srcAttr & 0x00ffffff) | (uint(tgtScale / maxScale * 255) << 24);
-
                         targetVertexData.setUnsignedInt(targetVertexID + i, "basic", tgtAttr);
                     }
                 }
@@ -308,7 +294,6 @@ package starling.styles
                 color:uint = 0x0, alpha:Number = 0.5):void
         {
             const maxOffset:Number = DistanceFieldEffect.MAX_OUTER_OFFSET;
-
             _mode = MODE_SHADOW;
             _outerThreshold = MathUtil.clamp(_threshold - blur, 0, _threshold);
             _outerColor = color;
@@ -508,10 +493,8 @@ class DistanceFieldEffect extends MeshEffect
     public static const VERTEX_FORMAT:VertexDataFormat = DistanceFieldStyle.VERTEX_FORMAT;
     public static const MAX_OUTER_OFFSET:int = 8;
     public static const MAX_SCALE:int = 8;
-
     private var _mode:String;
     private var _scale:Number;
-
     private static const sVector:Vector.<Number> = new Vector.<Number>(4, true);
 
     public function DistanceFieldEffect()
@@ -534,7 +517,6 @@ class DistanceFieldEffect extends MeshEffect
 
             var isBasicMode:Boolean = _mode == DistanceFieldStyle.MODE_BASIC;
             var isShadowMode:Boolean = _mode == DistanceFieldStyle.MODE_SHADOW;
-
             // / *** VERTEX SHADER ***
 
             var vertexShader:Vector.<String> = new <String>[
@@ -555,7 +537,6 @@ class DistanceFieldEffect extends MeshEffect
                     "sub vt1.x, va3.x, vt0.x", // vt1.x = thresholdMin
                     "add vt1.y, va3.x, vt0.x" // vt1.y = thresholdMax
                 ];
-
             if (!isBasicMode)
             {
                 vertexShader.push(
@@ -592,7 +573,6 @@ class DistanceFieldEffect extends MeshEffect
                     "mov ft3, ft1", // store copy of inner mask in ft3 (for outline)
                     "mul ft1, v1, ft1.wwww" // multiply with color
                 ];
-
             if (isShadowMode)
             {
                 fragmentShader.push(
@@ -650,7 +630,6 @@ class DistanceFieldEffect extends MeshEffect
                 StringUtil.format("mul {0}, {0}, {1}", inOutReg, tmpReg), // inOut *= scale
                 StringUtil.format("sat {0}, {0}", inOutReg) // clamp to 0-1
             ];
-
         return ops.join("\n");
     }
 
@@ -666,7 +645,6 @@ class DistanceFieldEffect extends MeshEffect
 
             var pixelWidth:Number = 1.0 / (texture.root.nativeWidth / texture.scale);
             var pixelHeight:Number = 1.0 / (texture.root.nativeHeight / texture.scale);
-
             sVector[0] = MAX_OUTER_OFFSET * pixelWidth;
             sVector[1] = MAX_OUTER_OFFSET * pixelHeight;
             sVector[2] = MAX_SCALE;
@@ -701,7 +679,6 @@ class DistanceFieldEffect extends MeshEffect
     override protected function get programVariantName():uint
     {
         var modeBits:uint;
-
         switch (_mode)
         {
             case DistanceFieldStyle.MODE_SHADOW:

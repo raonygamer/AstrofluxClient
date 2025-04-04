@@ -16,29 +16,17 @@ package core.hud.components
 	public class PowerBar extends DisplayObjectContainer
 	{
 		private static const HEAT_WIDTH:Number = 120;
-		
 		private static const SMOOTHER_STEPS:int = 5;
-		
 		private var heatNumber:TextField;
-		
 		private var g:Game;
-		
 		private var smoother:Vector.<Number> = new Vector.<Number>();
-		
 		private var soundManager:ISound;
-		
 		private const colorRed:uint = 16724770;
-		
 		private const colorBlue:uint = 4474111;
-		
 		private var heatBar:Image;
-		
 		private var loadBar:Image;
-		
 		private var heatBarBgr:Image;
-		
 		private var turnedLow:Boolean = false;
-		
 		private var turnedOut:Boolean = false;
 		
 		public function PowerBar(g:Game)

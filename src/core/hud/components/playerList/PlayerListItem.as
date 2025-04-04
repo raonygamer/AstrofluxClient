@@ -28,27 +28,16 @@ package core.hud.components.playerList
 	public class PlayerListItem extends Sprite
 	{
 		public var player:Player;
-		
 		private var inviteButton:Button;
-		
 		private var leaveButton:Button;
-		
 		private var joinButton:Button;
-		
 		private var declineButton:Button;
-		
 		private var addFriendButton:Button;
-		
 		private var acceptFriendButton:Button;
-		
 		private var teleportToFriendButton:Button;
-		
 		private var _width:Number = 0;
-		
 		private var _height:Number = 0;
-		
 		private var clanLogo:Image;
-		
 		private var g:Game;
 		
 		public function PlayerListItem(g:Game, player:Player, width:Number, height:Number)

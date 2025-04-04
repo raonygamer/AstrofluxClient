@@ -11,19 +11,12 @@ package core.drops
 	public class DropManager
 	{
 		public static const PICKUPINTERVAL:Number = 250;
-		
 		public static const ATTEMPTS_TO_TIMEOUT:int = 80;
-		
 		public var dropsById:Dictionary;
-		
 		public var drops:Vector.<Drop>;
-		
 		private var createdDropIds:Dictionary;
-		
 		private var pickupQueue:Vector.<PickUpMsg>;
-		
 		private var nextPickUpTime:Number;
-		
 		private var g:Game;
 		
 		public function DropManager(g:Game)
@@ -401,9 +394,7 @@ import playerio.Message;
 class PickUpMsg
 {
 	public var msg:Message;
-	
 	public var timeout:int;
-	
 	public var i:int;
 	
 	public function PickUpMsg(m:Message, timeout:int, i:int = 0)

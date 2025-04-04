@@ -52,12 +52,10 @@ package starling.display
     public class Quad extends Mesh
     {
         private var _bounds:Rectangle;
-
         // helper objects
         private static var sPoint3D:Vector3D = new Vector3D();
         private static var sMatrix:Matrix = new Matrix();
         private static var sMatrix3D:Matrix3D = new Matrix3D();
-
         /** Creates a quad with a certain size and color. */
         public function Quad(width:Number, height:Number, color:uint = 0xffffff)
         {
@@ -65,7 +63,6 @@ package starling.display
 
             var vertexData:VertexData = new VertexData(MeshStyle.VERTEX_FORMAT, 4);
             var indexData:IndexData = new IndexData(6);
-
             super(vertexData, indexData);
 
             if (width == 0.0 || height == 0.0)
@@ -83,7 +80,6 @@ package starling.display
             var texture:Texture = style.texture;
             var vertexData:VertexData = this.vertexData;
             var indexData:IndexData = this.indexData;
-
             indexData.numIndices = 0;
             indexData.addQuad(0, 1, 2, 3);
 
@@ -128,7 +124,6 @@ package starling.display
             {
                 var scaleX:Number = this.scaleX;
                 var scaleY:Number = this.scaleY;
-
                 out.setTo(x - pivotX * scaleX, y - pivotY * scaleY,
                         _bounds.width * scaleX, _bounds.height * scaleY);
 

@@ -23,39 +23,22 @@ package core.hud.components.map
 	public class Map extends Sprite
 	{
 		public static var SCALE:Number = 0.1;
-		
 		public static var WIDTH:Number = 698;
-		
 		public static var HEIGHT:Number = 538;
-		
 		public static var CORNER:Number = 10;
-		
 		public static var PADDING:Number = 31;
-		
 		public var clearedFraction:Number = 0;
-		
 		private var mapBgr:Image;
-		
 		private var mapContainer:Sprite = new Sprite();
-		
 		private var coords:TextBitmap = new TextBitmap();
-		
 		private var mapPlayers:Vector.<MapPlayer> = new Vector.<MapPlayer>();
-		
 		private var mapBodies:Vector.<MapBodyBase> = new Vector.<MapBodyBase>();
-		
 		private var mapSpawners:Vector.<MapSpawner> = new Vector.<MapSpawner>();
-		
 		private var mapBosses:Vector.<MapBoss> = new Vector.<MapBoss>();
-		
 		private var mapDeathLines:Vector.<MapDeathLine> = new Vector.<MapDeathLine>();
-		
 		private var mapLastKilled:MapKilled;
-		
 		private var pvpZones:Vector.<MapPvpZone> = new Vector.<MapPvpZone>();
-		
 		private var closeButton:ButtonExpandableHud;
-		
 		private var g:Game;
 		
 		public function Map(g:Game)

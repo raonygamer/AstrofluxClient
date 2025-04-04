@@ -23,33 +23,19 @@ package core.states.player
 	public class Killed implements IState
 	{
 		public static var killedTime:Number;
-		
 		public static var killedPosition:Point = new Point(0,0);
-		
 		private var player:Player;
-		
 		private var g:Game;
-		
 		private var m:Message;
-		
 		private var sm:StateMachine;
-		
 		private var q:Quad;
-		
 		private var box:Box;
-		
 		private var deathInfo:TextField;
-		
 		private var dropInfo:TextField;
-		
 		private var respawnText:TextField;
-		
 		private var uberText:TextField;
-		
 		private var upperScaleLimit:Number = 1.1;
-		
 		private var lowerScaleLimit:Number = 0.9;
-		
 		private var limitIterator:Number = 0.02;
 		
 		public function Killed(player:Player, g:Game, m:Message)

@@ -58,7 +58,6 @@ package com.adobe.crypto
 		{
 			var text:ByteArray = new ByteArray();
 			var k_secret:ByteArray = new ByteArray();
-
 			text.writeUTFBytes(message);
 			k_secret.writeUTFBytes(secret);
 
@@ -81,7 +80,6 @@ package com.adobe.crypto
 			var ipad:ByteArray = new ByteArray();
 			var opad:ByteArray = new ByteArray();
 			var endian:String = Endian.BIG_ENDIAN;
-
 			if (algorithm == null)
 			{
 				algorithm = MD5;

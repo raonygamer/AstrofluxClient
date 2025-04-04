@@ -20,7 +20,6 @@ package starling.text
         private var _isHtmlText:Boolean;
         private var _textureScale:Number;
         private var _textureFormat:String;
-
         /** Creates a new TextOptions instance with the given properties. */
         public function TextOptions(wordWrap:Boolean = true, autoScale:Boolean = false)
         {

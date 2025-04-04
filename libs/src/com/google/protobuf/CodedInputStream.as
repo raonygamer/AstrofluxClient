@@ -410,7 +410,6 @@ package com.google.protobuf
             }
 
             var bytes:ByteArray = new ByteArray();
-
             if (length != 0)
             {
                 _bytesAvailable -= length;
@@ -499,7 +498,6 @@ package com.google.protobuf
         {
             var low:int = readRawLittleEndian32();
             var high:int = readRawLittleEndian32();
-
             return new Int64(high, low);
         }
 

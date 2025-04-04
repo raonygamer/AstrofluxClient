@@ -13,11 +13,8 @@ package core.hud.components.chat
 	public class ChatAdvanced extends Sprite
 	{
 		private var g:Game;
-		
 		private var scrollView:Sprite;
-		
 		private var scroll:ScrollContainer;
-		
 		private var playerChatOptions:PlayerChatOptions;
 		
 		public function ChatAdvanced(g:Game)

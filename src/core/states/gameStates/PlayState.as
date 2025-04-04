@@ -19,21 +19,13 @@ package core.states.gameStates
 	public class PlayState extends GameState
 	{
 		private static var autoCruise:Boolean = false;
-		
 		private static var mouseBlocked:Boolean = false;
-		
 		private static var mouseIntegrator:int = 0;
-		
 		private static var oldMouseX:int = 0;
-		
 		private static var oldMouseY:int = 0;
-		
 		protected var container:Sprite = new Sprite();
-		
 		private var isInHostileZone:Boolean = false;
-		
 		private var blackBackground:Quad = new Quad(10,10,0);
-		
 		private var fireWithHotkeys:Boolean = false;
 		
 		public function PlayState(g:Game)

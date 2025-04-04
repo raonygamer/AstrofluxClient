@@ -9,7 +9,6 @@ package core.states.AIStates
 	public class Cluster extends ProjectileBullet implements IState
 	{
 		protected var newProjectile:Projectile;
-		
 		private var clusterAngle:Number;
 		
 		public function Cluster(g:Game, p:Projectile)

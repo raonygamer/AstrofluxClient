@@ -13,37 +13,21 @@ package core.sync
 	public class Converger
 	{
 		public static const PI_DIVIDED_BY_8:Number = 0.39269908169872414;
-		
 		private const BLIP_OFFSET:Number = 30;
-		
 		public var course:Heading = new Heading();
-		
 		private var target:Heading;
-		
 		private var error:Point = new Point();
-		
 		private var errorAngle:Number;
-		
 		private var convergeTime:Number = 1000;
-		
 		private var convergeStartTime:Number;
-		
 		private var errorOldTime:Number;
-		
 		private var ship:Ship;
-		
 		private var g:Game;
-		
 		private var angleTargetPos:Point;
-		
 		private var isFacingTarget:Boolean;
-		
 		private var nextTurnDirection:int;
-		
 		private const RIGHT:int = 1;
-		
 		private const LEFT:int = -1;
-		
 		private const NONE:int = 0;
 		
 		public function Converger(ship:Ship, g:Game)

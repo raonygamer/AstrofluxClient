@@ -8,9 +8,7 @@ package core.states.gameStates.missions
 	public class DailyList extends Sprite
 	{
 		private var g:Game;
-		
 		private var views:Array;
-		
 		private var container:ScrollContainer;
 		
 		public function DailyList(g:Game)

@@ -7,7 +7,6 @@ package debug
 	public class Console extends Sprite
 	{
 		private static var text:String = "";
-		
 		public static var tf:TextField;
 		
 		public function Console()
@@ -24,6 +23,7 @@ package debug
 		
 		public static function write(... rest) : void
 		{
+			trace(rest);
 		}
 		
 		public function show() : void

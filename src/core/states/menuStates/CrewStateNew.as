@@ -13,13 +13,9 @@ package core.states.menuStates
 	public class CrewStateNew extends DisplayState
 	{
 		public static var WIDTH:Number = 698;
-		
 		private var p:Player;
-		
 		private var mainBody:ScrollContainer;
-		
 		private var selectedCrewMember:CrewDetails;
-		
 		private var crew:Vector.<CrewDisplayBoxNew> = new Vector.<CrewDisplayBoxNew>();
 		
 		public function CrewStateNew(g:Game)

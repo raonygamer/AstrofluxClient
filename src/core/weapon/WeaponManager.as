@@ -5,7 +5,6 @@ package core.weapon
 	public class WeaponManager
 	{
 		public var weapons:Vector.<Weapon> = new Vector.<Weapon>();
-		
 		private var g:Game;
 		
 		public function WeaponManager(g:Game)

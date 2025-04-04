@@ -47,7 +47,6 @@ package com.adobe.protocols.dict.events
     public override function clone():Event
     {
       var out:NoMatchEvent = new NoMatchEvent(type, bubbles, cancelable);
-
       return out;
     }
   }

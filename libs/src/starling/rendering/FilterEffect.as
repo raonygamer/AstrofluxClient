@@ -33,7 +33,6 @@ package starling.rendering
          *  <code>"position:float2, texCoords:float2"</code> */
         public static const VERTEX_FORMAT:VertexDataFormat =
             Effect.VERTEX_FORMAT.extend("texCoords:float2");
-
         /** The AGAL code for the standard vertex shader that most filters will use.
          *  It simply transforms the vertex coordinates to clip-space and passes the texture
          *  coordinates to the fragment program (as 'v0'). */
@@ -44,7 +43,6 @@ package starling.rendering
         private var _texture:Texture;
         private var _textureSmoothing:String;
         private var _textureRepeat:Boolean;
-
         /** Creates a new FilterEffect instance. */
         public function FilterEffect()
         {

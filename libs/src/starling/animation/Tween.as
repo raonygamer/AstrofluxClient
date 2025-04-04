@@ -43,11 +43,9 @@ package starling.animation
     public class Tween extends EventDispatcher implements IAnimatable
     {
         private static const HINT_MARKER:String = '#';
-
         private var _target:Object;
         private var _transitionFunc:Function;
         private var _transitionName:String;
-
         private var _properties:Vector.<String>;
         private var _startValues:Vector.<Number>;
         private var _endValues:Vector.<Number>;
@@ -57,12 +55,10 @@ package starling.animation
         private var _onUpdate:Function;
         private var _onRepeat:Function;
         private var _onComplete:Function;
-
         private var _onStartArgs:Array;
         private var _onUpdateArgs:Array;
         private var _onRepeatArgs:Array;
         private var _onCompleteArgs:Array;
-
         private var _totalTime:Number;
         private var _currentTime:Number;
         private var _progress:Number;
@@ -149,7 +145,6 @@ package starling.animation
 
             var pos:int = _properties.length;
             var updateFunc:Function = getUpdateFuncFromProperty(property);
-
             _properties[pos] = getPropertyName(property);
             _startValues[pos] = Number.NaN;
             _endValues[pos] = endValue;
@@ -194,7 +189,6 @@ package starling.animation
             var previousTime:Number = _currentTime;
             var restTime:Number = _totalTime - _currentTime;
             var carryOverTime:Number = time > restTime ? time - restTime : 0.0;
-
             _currentTime += time;
 
             if (_currentTime <= 0)
@@ -242,7 +236,6 @@ package starling.animation
                 // save callback & args: they might be changed through an event listener
                 var onComplete:Function = _onComplete;
                 var onCompleteArgs:Array = _onCompleteArgs;
-
                 // in the 'onComplete' callback, people might want to call "tween.reset" and
                 // add it to another juggler; so this event has to be dispatched *before*
                 // executing 'onComplete'.
@@ -264,7 +257,6 @@ package starling.animation
     {
         var updateFunc:Function;
         var hint:String = getPropertyHint(property);
-
         switch (hint)
         {
             case null:
@@ -561,7 +553,6 @@ package starling.animation
     // tween pooling
 
     private static var sTweenPool:Vector.<Tween> = new <Tween>[];
-
     /** @private */
     starling_internal static function fromPool(target:Object, time:Number,
             transition:Object = "linear"):Tween

@@ -14,11 +14,8 @@ package core.hud.components.chat
 	public class MessageLog extends DisplayObjectContainer
 	{
 		private static var g:Game;
-		
 		public static var extendedMaxLines:int = 60;
-		
 		public static var textQueue:Vector.<Object> = new Vector.<Object>();
-		
 		private static var profanities:Object = {
 			"4r5e":1,
 			"5h1t":1,
@@ -441,15 +438,10 @@ package core.hud.components.chat
 			"xrated":1,
 			"xxx":1
 		};
-		
 		public var nextTimeout:Number = 0;
-		
 		private var textureManager:ITextureManager;
-		
 		private var activeView:String;
-		
 		private var simple:ChatSimple;
-		
 		private var advanced:ChatAdvanced;
 		
 		public function MessageLog(g:Game)

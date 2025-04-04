@@ -89,7 +89,6 @@ package starling.text
     {
         // the name of the "sharedData" container with the registered compositors
         private static const COMPOSITOR_DATA_NAME:String = "starling.display.TextField.compositors";
-
         private var _text:String;
         private var _options:TextOptions;
         private var _format:TextFormat;
@@ -100,13 +99,11 @@ package starling.text
         private var _border:DisplayObjectContainer;
         private var _meshBatch:MeshBatch;
         private var _style:MeshStyle;
-
         // helper objects
         private static var sMatrix:Matrix = new Matrix();
         private static var sDefaultCompositor:ITextCompositor = new TrueTypeCompositor();
         private static var sDefaultTextureFormat:String = Context3DTextureFormat.BGRA_PACKED;
         private var _helperFormat:TextFormat = new TextFormat();
-
         /** Create a new text field with the given properties. */
         public function TextField(width:int, height:int, text:String = "", format:TextFormat = null)
         {
@@ -152,7 +149,6 @@ package starling.text
 
                 var fontName:String = _format.font;
                 var compositor:ITextCompositor = getCompositor(fontName);
-
                 if (compositor == null && fontName == BitmapFont.MINI)
                 {
                     compositor = new BitmapFont();
@@ -175,7 +171,6 @@ package starling.text
             var width:Number = _hitArea.width;
             var height:Number = _hitArea.height;
             var format:TextFormat = _helperFormat;
-
             // By working on a copy of the TextFormat, we make sure that modifications done
             // within the 'fillMeshBatch' method do not cause any side effects.
             // 
@@ -231,12 +226,10 @@ package starling.text
 
             var width:Number = _hitArea.width;
             var height:Number = _hitArea.height;
-
             var topLine:Quad = _border.getChildAt(0) as Quad;
             var rightLine:Quad = _border.getChildAt(1) as Quad;
             var bottomLine:Quad = _border.getChildAt(2) as Quad;
             var leftLine:Quad = _border.getChildAt(3) as Quad;
-
             topLine.width = width;
             topLine.height = 1;
             bottomLine.width = width;
@@ -585,7 +578,6 @@ package starling.text
         private static function get compositors():Dictionary
         {
             var compositors:Dictionary = Starling.painter.sharedData[COMPOSITOR_DATA_NAME] as Dictionary;
-
             if (compositors == null)
             {
                 compositors = new Dictionary();

@@ -11,21 +11,13 @@ package core.hud.components.starMap
 	public class WarpPath extends Sprite
 	{
 		private var obj:Object;
-		
 		private var _icon1:SolarSystem;
-		
 		private var _icon2:SolarSystem;
-		
 		private var _bought:Boolean;
-		
 		private var _selected:Boolean;
-		
 		private var sb:SceneBase;
-		
 		private var line:Line = new Line();
-		
 		private var forwardArrow:TransitButton;
-		
 		private var backArrow:TransitButton;
 		
 		public function WarpPath(sb:SceneBase, obj:Object, icon1:SolarSystem, icon2:SolarSystem, bought:Boolean = false)

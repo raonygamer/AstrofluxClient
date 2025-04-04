@@ -96,153 +96,79 @@ package core.scene
 	public class Game extends SceneBase
 	{
 		public static const TICK_LENGTH:int = 33;
-		
 		public static const SOUND_DISTANCE:int = 250000;
-		
 		public static const FRICTION:Number = 0.009;
-		
 		public static const MAX_LEVEL:Number = 150;
-		
 		public static const SAFEZONEFULLREGENTIME:int = 10;
-		
 		public static const DEFENSEBONUS:int = 8;
-		
 		public static const DMGBONUS:int = 8;
-		
 		public static const REGENBONUS:int = 1;
-		
 		public static const SYNC_FREQUENCY:Number = 50000;
-		
 		public static var instance:Game;
-		
 		private static var tracker:AnalyticsTracker;
-		
 		public static var highSettings:Boolean = true;
-		
 		public static var lastActive:int;
-		
 		public static var assets:AssetManager = new AssetManager();
-		
 		public var solarSystem:SolarSystem;
-		
 		public var parallaxManager:ParallaxManager;
-		
 		public var playerManager:PlayerManager;
-		
 		public var unitManager:UnitManager;
-		
 		public var shipManager:ShipManager;
-		
 		public var ribbonTrailPool:RibbonTrailPool;
-		
 		public var linePool:LinePool;
-		
 		public var beamLinePool:BeamLinePool;
-		
 		public var bossManager:BossManager;
-		
 		public var emitterManager:EmitterManager;
-		
 		public var weaponManager:WeaponManager;
-		
 		public var projectileManager:ProjectileManager;
-		
 		public var bodyManager:BodyManager;
-		
 		public var spawnManager:SpawnManager;
-		
 		public var dailyManager:DailyManager;
-		
 		public var turretManager:TurretManager;
-		
 		public var messagePackHandler:MessagePackHandler;
-		
 		public var deathLineManager:DeathLineManager;
-		
 		public var gameStateMachine:GameStateMachine;
-		
 		public var hud:Hud;
-		
 		public var textManager:TextManager;
-		
 		public var dropManager:DropManager;
-		
 		public var commandManager:CommandManager;
-		
 		public var groupManager:GroupManager;
-		
 		public var friendManager:FriendManager;
-		
 		public var tutorial:Tutorial;
-		
 		public var creditManager:CreditManager;
-		
 		public var messageLog:MessageLog;
-		
 		public var chatInput:ChatInputText;
-		
 		public var dataManager:IDataManager;
-		
 		public var textureManager:ITextureManager;
-		
 		public var queueManager:QueueManager;
-		
 		public var pvpManager:PvpManager;
-		
 		public var controlZoneManager:ControlZoneManager;
-		
 		public var salesManager:SalesManager;
-		
 		public var quality:int = 10;
-		
 		private var initSolarSystemComplete:Boolean = false;
-		
 		private var initPlayerComplete:Boolean = false;
-		
 		private var initEnemyPlayersComplete:Boolean = false;
-		
 		private var initEnemiesComplete:Boolean = false;
-		
 		private var initDropsComplete:Boolean = false;
-		
 		private var initServerComplete:Boolean = false;
-		
 		private var isTOSPopup:Boolean = false;
-		
 		private var isSaleSpinner:Boolean = false;
-		
 		private var nextSync:Number;
-		
 		private var welcomeText:ScreenTextField = new ScreenTextField(450,100);
-		
 		private var solarSystemData:Text = new Text();
-		
 		private var requestID:String = "";
-		
 		public var gameStartedTime:Number = 0;
-		
 		private var enableTrackFPS:Boolean = false;
-		
 		private var runningFPS:int = -1;
-		
 		private var frameCount:int = 0;
-		
 		private var totalTime:Number = 0;
-		
 		private var elapsedTime:Number = 0;
-		
 		private var qualityText:Text;
-		
 		private var synchedEnemies:Boolean = false;
-		
 		private var tweenCount:int = 0;
-		
 		private var rot:Number = 0;
-		
 		private var disconnectPopup:PopupMessage;
-		
 		private var loadingSprite:Sprite = new Sprite();
-		
 		private var loadingFadeTween:TweenMax;
 		
 		public function Game(client:Client, serviceConnection:Connection, connection:Connection, room:Room)

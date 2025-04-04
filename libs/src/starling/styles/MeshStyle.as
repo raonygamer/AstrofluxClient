@@ -94,7 +94,6 @@ package starling.styles
     {
         /** The vertex format expected by this style (the same as found in the MeshEffect-class). */
         public static const VERTEX_FORMAT:VertexDataFormat = MeshEffect.VERTEX_FORMAT;
-
         private var _type:Class;
         private var _target:Mesh;
         private var _texture:Texture;
@@ -106,7 +105,6 @@ package starling.styles
 
         // helper objects
         private static var sPoint:Point = new Point();
-
         /** Creates a new MeshStyle instance.
          *  Subclasses must provide a constructor that can be called without any arguments. */
         public function MeshStyle()
@@ -169,7 +167,6 @@ package starling.styles
             if (_type == meshStyle._type)
             {
                 var newTexture:Texture = meshStyle._texture;
-
                 if (_texture == null && newTexture == null)
                     return true;
                 else if (_texture && newTexture)
@@ -396,7 +393,6 @@ package starling.styles
         {
             var i:int;
             var numVertices:int = _vertexData.numVertices;
-
             for (i = 0; i < numVertices; ++i)
                 _vertexData.setColor(i, "color", value);
 
@@ -425,7 +421,6 @@ package starling.styles
                 {
                     var i:int;
                     var numVertices:int = _vertexData ? _vertexData.numVertices : 0;
-
                     for (i = 0; i < numVertices; ++i)
                     {
                         getTexCoords(i, sPoint);

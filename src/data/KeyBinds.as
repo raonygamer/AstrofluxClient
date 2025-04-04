@@ -10,71 +10,38 @@ package data
 	public class KeyBinds
 	{
 		public static const CLAN:int = 0;
-		
 		public static const SHOP:int = 1;
-		
 		public static const SHIP:int = 2;
-		
 		public static const ARTIFACTS:int = 3;
-		
 		public static const ENCOUNTERS:int = 4;
-		
 		public static const MISSIONS:int = 5;
-		
 		public static const PVP:int = 6;
-		
 		public static const CARGO:int = 7;
-		
 		public static const SETTINGS:int = 8;
-		
 		public static const MAP:int = 9;
-		
 		public static const LAND:int = 10;
-		
 		public static const FORWARD:int = 11;
-		
 		public static const STOP:int = 12;
-		
 		public static const LEFT:int = 13;
-		
 		public static const RIGHT:int = 14;
-		
 		public static const BOOST:int = 15;
-		
 		public static const SHIELD:int = 16;
-		
 		public static const CONVERT:int = 17;
-		
 		public static const POWER:int = 18;
-		
 		public static const FIRE:int = 19;
-		
 		public static const WEAPON_ONE:int = 20;
-		
 		public static const WEAPON_TWO:int = 21;
-		
 		public static const WEAPON_THREE:int = 22;
-		
 		public static const WEAPON_FOUR:int = 23;
-		
 		public static const WEAPON_FIVE:int = 24;
-		
 		public static const PLAYERS:int = 25;
-		
 		public static const AUTO_FORWARD:int = 26;
-		
 		public static const NUMBEROFBINDS:int = 27;
-		
 		public var dirty:Boolean;
-		
 		private var keyOne:Vector.<int>;
-		
 		private var keyTwo:Vector.<int>;
-		
 		private var names:Vector.<String>;
-		
 		private var input:IInput;
-		
 		private var keyDictionary:Dictionary;
 		
 		public function KeyBinds()

@@ -19,21 +19,13 @@ package core.hud.components.techTree
 	public class EliteTechPopupMenu extends Sprite
 	{
 		private var container:ScrollContainer = new ScrollContainer();
-		
 		private var box:Box = new Box(460,430,"highlight",1,15);
-		
 		private var closeButton:Button;
-		
 		private var g:Game;
-		
 		private var eti:EliteTechIcon;
-		
 		private var textureManager:ITextureManager;
-		
 		private var dataManager:IDataManager;
-		
 		private var eliteTechs:Vector.<EliteTechBar> = new Vector.<EliteTechBar>();
-		
 		protected var bgr:Quad = new Quad(100,100,0x22000000);
 		
 		public function EliteTechPopupMenu(g:Game, eti:EliteTechIcon)

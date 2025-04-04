@@ -12,13 +12,9 @@ package core.hud.components
 	public class LootItem extends Sprite
 	{
 		private var dataManager:IDataManager;
-		
 		private var textureManager:ITextureManager;
-		
 		private var obj:DatabaseObject;
-		
 		private var image:Image;
-		
 		private var bgr:Quad;
 		
 		public function LootItem(table:String, item:String, amount:int, size:int = 12)

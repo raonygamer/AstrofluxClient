@@ -75,7 +75,6 @@ package starling.text
                 1586420003, 1174008423, 4062987589, 1162167621, 1162167621, 1162167621, 1162167621,
                 1174119799, 787274608
             ];
-
         private static const XML_DATA:XML = <font>
           <info face="mini" size="8" bold="0" italic="0" smooth="0"/>
           <common lineHeight="8" base="7" scaleW="128" scaleH="64" pages="1" packed="0"/>
@@ -298,7 +297,6 @@ package starling.text
             var bmpData:BitmapData = new BitmapData(BITMAP_WIDTH, BITMAP_HEIGHT);
             var bmpBytes:ByteArray = new ByteArray();
             var numBytes:int = BITMAP_DATA.length;
-
             for (var i:int = 0; i < numBytes; ++i)
                 bmpBytes.writeUnsignedInt(BITMAP_DATA[i]);
 

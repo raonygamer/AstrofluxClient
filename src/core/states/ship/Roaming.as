@@ -7,7 +7,6 @@ package core.states.ship
 	public class Roaming implements IState
 	{
 		private var ship:PlayerShip;
-		
 		private var sm:StateMachine;
 		
 		public function Roaming(ship:PlayerShip)

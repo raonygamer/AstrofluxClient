@@ -8,17 +8,11 @@ package core.text
 	public class TextParticle extends TextField
 	{
 		public var id:int;
-		
 		public var alive:Boolean;
-		
 		public var ttl:int;
-		
 		public var maxTtl:int;
-		
 		public var speed:Point;
-		
 		public var fixed:Boolean;
-		
 		private var g:Game;
 		
 		public function TextParticle(id:int, g:Game)

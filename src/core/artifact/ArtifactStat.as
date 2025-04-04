@@ -5,7 +5,6 @@ package core.artifact
 	public class ArtifactStat
 	{
 		public var type:String;
-		
 		public var value:Number;
 		
 		public function ArtifactStat(type:String, value:Number)

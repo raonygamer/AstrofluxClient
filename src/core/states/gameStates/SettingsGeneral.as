@@ -22,41 +22,23 @@ package core.states.gameStates
 	public class SettingsGeneral extends Sprite
 	{
 		private static const START_HEIGHT:int = 20;
-		
 		private static const START_WIDTH:int = 50;
-		
 		private var g:Game;
-		
 		private var currentHeight:Number = 20;
-		
 		private var currentWidth:Number = 50;
-		
 		private var settings:Settings;
-		
 		private var musicSlider:Slider;
-		
 		private var effectSlider:Slider;
-		
 		private var showHud:Check;
-		
 		private var showEffects:Check;
-		
 		private var showLatency:Check;
-		
 		private var showBackground:Check;
-		
 		private var mouseAim:Check;
-		
 		private var keyboardAim:Check;
-		
 		private var rotationSlider:Slider;
-		
 		private var rotationSpeedText:Text;
-		
 		private var iWantAllTimedMissions:Check;
-		
 		private var fireWithHotkeys:Check;
-		
 		private var scrollArea:ScrollContainer;
 		
 		public function SettingsGeneral(g:Game)

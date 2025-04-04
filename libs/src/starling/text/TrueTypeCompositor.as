@@ -33,7 +33,6 @@ package starling.text
         private static var sHelperQuad:Quad = new Quad(100, 100);
         private static var sNativeTextField:flash.text.TextField = new flash.text.TextField();
         private static var sNativeFormat:flash.text.TextFormat = new flash.text.TextFormat();
-
         /** Creates a new TrueTypeCompositor instance. */
         public function TrueTypeCompositor()
         {
@@ -54,7 +53,6 @@ package starling.text
             var texture:Texture;
             var textureFormat:String = options.textureFormat;
             var bitmapData:BitmapDataEx = renderText(width, height, text, format, options);
-
             texture = Texture.fromBitmapData(bitmapData, false, false, bitmapData.scale, textureFormat);
             texture.root.onRestore = function():void
             {
@@ -103,7 +101,6 @@ package starling.text
             var scaledWidth:Number = width * options.textureScale;
             var scaledHeight:Number = height * options.textureScale;
             var hAlign:String = format.horizontalAlign;
-
             format.toNativeFormat(sNativeFormat);
 
             sNativeFormat.size = Number(sNativeFormat.size) * options.textureScale;
@@ -131,7 +128,6 @@ package starling.text
             var maxTextureSize:int = Texture.maxSize;
             var minTextureSize:int = 1;
             var offsetX:Number = 0.0;
-
             // HTML text may have its own alignment -> use the complete width
             if (options.isHtmlText)
                 textWidth = bitmapWidth = scaledWidth;
@@ -173,7 +169,6 @@ package starling.text
             var maxTextWidth:int = textField.width - 4;
             var maxTextHeight:int = textField.height - 4;
             var size:Number = Number(textFormat.size);
-
             while (textField.textWidth > maxTextWidth || textField.textHeight > maxTextHeight)
             {
                 if (size <= 4)

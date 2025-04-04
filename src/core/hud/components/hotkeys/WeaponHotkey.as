@@ -5,11 +5,8 @@ package core.hud.components.hotkeys
 	public class WeaponHotkey extends AbilityHotkey
 	{
 		public var key:int;
-		
 		private var tex:Texture;
-		
 		private var inactiveTex:Texture;
-		
 		private var _active:Boolean;
 		
 		public function WeaponHotkey(callback:Function, tex:Texture, it:Texture, hotkey:int = 0)

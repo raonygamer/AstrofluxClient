@@ -41,10 +41,8 @@ package starling.filters
         private static const LUMA_R:Number = 0.299;
         private static const LUMA_G:Number = 0.587;
         private static const LUMA_B:Number = 0.114;
-
         // helpers
         private static var sMatrix:Vector.<Number> = new <Number>[];
-
         /** Creates a new ColorMatrixFilter instance with the specified matrix.
          *  @param matrix a vector of 20 items arranged as a 4x5 matrix.
          */
@@ -82,7 +80,6 @@ package starling.filters
             var invLumR:Number = invSat * LUMA_R;
             var invLumG:Number = invSat * LUMA_G;
             var invLumB:Number = invSat * LUMA_B;
-
             concatValues((invLumR + sat), invLumG, invLumB, 0, 0,
                     invLumR, (invLumG + sat), invLumB, 0, 0,
                     invLumR, invLumG, (invLumB + sat), 0, 0,
@@ -95,7 +92,6 @@ package starling.filters
         {
             var s:Number = value + 1;
             var o:Number = 128 * (1 - s);
-
             concatValues(s, 0, 0, 0, o,
                     0, s, 0, 0, o,
                     0, 0, s, 0, o,
@@ -121,7 +117,6 @@ package starling.filters
 
             var cos:Number = Math.cos(value);
             var sin:Number = Math.sin(value);
-
             concatValues(
                     ((LUMA_R + (cos * (1 - LUMA_R))) + (sin * -(LUMA_R))), ((LUMA_G + (cos * -(LUMA_G))) + (sin * -(LUMA_G))), ((LUMA_B + (cos * -(LUMA_B))) + (sin * (1 - LUMA_B))), 0, 0,
                     ((LUMA_R + (cos * -(LUMA_R))) + (sin * 0.143)), ((LUMA_G + (cos * (1 - LUMA_G))) + (sin * 0.14)), ((LUMA_B + (cos * -(LUMA_B))) + (sin * -0.283)), 0, 0,
@@ -140,11 +135,9 @@ package starling.filters
             var g:Number = Color.getGreen(color) / 255.0;
             var b:Number = Color.getBlue(color) / 255.0;
             var q:Number = 1 - amount;
-
             var rA:Number = amount * r;
             var gA:Number = amount * g;
             var bA:Number = amount * b;
-
             concatValues(
                     q + rA * LUMA_R, rA * LUMA_G, rA * LUMA_B, 0, 0,
                     gA * LUMA_R, q + gA * LUMA_G, gA * LUMA_B, 0, 0,
@@ -211,7 +204,6 @@ class ColorMatrixEffect extends FilterEffect
 
     private static const MIN_COLOR:Vector.<Number> = new <Number>[0, 0, 0, 0.0001];
     private static const IDENTITY:Array = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0];
-
     // helpers
     private static var sMatrix:Vector.<Number> = new Vector.<Number>(20, true);
 
@@ -235,7 +227,6 @@ class ColorMatrixEffect extends FilterEffect
                 "mul ft0.xyz, ft0.xyz, ft0.www  ", // multiply with alpha again (PMA)
                 "mov oc, ft0                    " // copy to output
             ].join("\n");
-
         return Program.fromSource(vertexShader, fragmentShader);
     }
 
@@ -258,7 +249,6 @@ class ColorMatrixEffect extends FilterEffect
     public function concat(matrix:Vector.<Number>):void
     {
         var i:int = 0;
-
         for (var y:int = 0; y < 4; ++y)
         {
             for (var x:int = 0; x < 5; ++x)

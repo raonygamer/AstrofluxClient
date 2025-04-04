@@ -5,19 +5,12 @@ package fl.transitions
    public class TweenEvent extends Event
    {
       public static const MOTION_START:String = "motionStart";
-
       public static const MOTION_STOP:String = "motionStop";
-
       public static const MOTION_FINISH:String = "motionFinish";
-
       public static const MOTION_CHANGE:String = "motionChange";
-
       public static const MOTION_RESUME:String = "motionResume";
-
       public static const MOTION_LOOP:String = "motionLoop";
-
       public var time:Number = NaN;
-
       public var position:Number = NaN;
 
       public function TweenEvent(param1:String, param2:Number, param3:Number, param4:Boolean = false, param5:Boolean = false)

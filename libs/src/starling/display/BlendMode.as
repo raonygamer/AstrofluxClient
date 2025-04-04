@@ -37,9 +37,7 @@ package starling.display
         private var _name:String;
         private var _sourceFactor:String;
         private var _destinationFactor:String;
-
         private static var sBlendModes:Object;
-
         /** Creates a new BlendMode instance. Don't call this method directly; instead,
          *  register a new blend mode using <code>BlendMode.register</code>. */
         public function BlendMode(name:String, sourceFactor:String, destinationFactor:String)
@@ -51,33 +49,24 @@ package starling.display
 
         /** Inherits the blend mode from this display object's parent. */
         public static const AUTO:String = "auto";
-
         /** Deactivates blending, i.e. disabling any transparency. */
         public static const NONE:String = "none";
-
         /** The display object appears in front of the background. */
         public static const NORMAL:String = "normal";
-
         /** Adds the values of the colors of the display object to the colors of its background. */
         public static const ADD:String = "add";
-
         /** Multiplies the values of the display object colors with the the background color. */
         public static const MULTIPLY:String = "multiply";
-
         /** Multiplies the complement (inverse) of the display object color with the complement of
          * the background color, resulting in a bleaching effect. */
         public static const SCREEN:String = "screen";
-
         /** Erases the background when drawn on a RenderTexture. */
         public static const ERASE:String = "erase";
-
         /** When used on a RenderTexture, the drawn object will act as a mask for the current
          *  content, i.e. the source alpha overwrites the destination alpha. */
         public static const MASK:String = "mask";
-
         /** Draws under/below existing objects; useful especially on RenderTextures. */
         public static const BELOW:String = "below";
-
         // static access methods
 
         /** Returns the blend mode with the given name.

@@ -9,19 +9,12 @@ package core.states.gameStates
 	public class WarpJumpState extends PlayState
 	{
 		private var destination:String;
-		
 		private var roomId:String;
-		
 		private var systemType:String;
-		
 		private var ship:PlayerShip;
-		
 		private var hyperDriveEngaged:Boolean = false;
-		
 		private var flashOverlay:Quad = new Quad(100,100,0xffffff);
-		
 		private var darkOverlay:Quad = new Quad(100,100,0);
-		
 		private var timeout:Number;
 		
 		public function WarpJumpState(g:Game, destination:String, roomId:String = "", systemType:String = "")

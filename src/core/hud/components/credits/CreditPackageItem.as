@@ -27,33 +27,19 @@ package core.hud.components.credits
 	public class CreditPackageItem extends CreditBaseItem
 	{
 		public var button:NativeImageButton;
-		
 		public var buyContainer:starling.display.Sprite = new starling.display.Sprite();
-		
 		private var price:Text;
-		
 		protected var descriptionContainer:starling.display.Sprite = new starling.display.Sprite();
-		
 		protected var waitingContainer:starling.display.Sprite = new starling.display.Sprite();
-		
 		protected var aquiredContainer:starling.display.Sprite = new starling.display.Sprite();
-		
 		protected var aquiredText:Text = new Text();
-		
 		protected var aquired:Boolean = false;
-		
 		private var nativeLayer:flash.display.Sprite = new flash.display.Sprite();
-		
 		protected var description:String = "";
-		
 		protected var checkoutDescription:String = "";
-		
 		protected var checkoutDescriptionShort:String = "";
-		
 		protected var preview:String = "";
-		
 		protected var buyButtonText:String = "";
-		
 		protected var itemKey:String = "";
 		
 		protected var rpcFunction:String = "";

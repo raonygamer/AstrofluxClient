@@ -16,35 +16,20 @@ package core.drops
 	public class Drop extends GameObject
 	{
 		public var key:String;
-		
 		public var collisionRadius:Number;
-		
 		public var speed:Point = new Point();
-		
 		public var size:int;
-		
 		public var quantity:int;
-		
 		public var containsUniqueArtifact:Boolean;
-		
 		public var expireTime:Number;
-		
 		public var tractorBeamPlayer:Player;
-		
 		public var effect:Vector.<Emitter>;
-		
 		public var expired:Boolean;
-		
 		protected var _picked:Boolean;
-		
 		protected var g:Game;
-		
 		private var fadeTween:TweenMax = null;
-		
 		private var randAngleSpeed:Number;
-		
 		private var beamLine:BeamLine;
-		
 		public var obj:Object;
 		
 		public function Drop(g:Game)

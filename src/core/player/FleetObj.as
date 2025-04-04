@@ -7,31 +7,18 @@ package core.player
 	public class FleetObj
 	{
 		public var skin:String = "";
-		
 		public var shipHue:Number = 0;
-		
 		public var shipBrightness:Number = 0;
-		
 		public var shipSaturation:Number = 0;
-		
 		public var shipContrast:Number = 0;
-		
 		public var engineHue:Number = 0;
-		
 		public var activeWeapon:String = "";
-		
 		public var activeArtifactSetup:int;
-		
 		public var lastUsed:Number = 0;
-		
 		public var weapons:Array = [];
-		
 		public var weaponsState:Array = [];
-		
 		public var weaponsHotkeys:Array = [];
-		
 		public var techSkills:Vector.<TechSkill> = new Vector.<TechSkill>();
-		
 		public var nrOfUpgrades:Vector.<int> = Vector.<int>([0,0,0,0,0,0,0]);
 		
 		public function FleetObj()

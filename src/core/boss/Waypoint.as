@@ -7,9 +7,7 @@ package core.boss
 	public class Waypoint
 	{
 		private var _pos:Point;
-		
 		private var target:Body;
-		
 		public var id:int;
 		
 		public function Waypoint(g:Game, key:String, x:Number, y:Number, id:int)

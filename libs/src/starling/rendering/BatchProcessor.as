@@ -27,10 +27,8 @@ package starling.rendering
         private var _currentStyleType:Class;
         private var _onBatchComplete:Function;
         private var _cacheToken:BatchToken;
-
         // helper objects
         private static var sMeshSubset:MeshSubset = new MeshSubset();
-
         /** Creates a new batch processor. */
         public function BatchProcessor()
         {
@@ -44,7 +42,6 @@ package starling.rendering
         {
             for each (var batch:MeshBatch in _batches)
                 batch.dispose();
-
             _batches.length = 0;
             _batchPool.purge();
             _currentBatch = null;
@@ -97,7 +94,6 @@ package starling.rendering
 
                 var matrix:Matrix = state ? state._modelviewMatrix : null;
                 var alpha:Number = state ? state._alpha : 1.0;
-
                 _currentBatch.addMesh(mesh, matrix, alpha, subset, ignoreTransformations);
                 _cacheToken.vertexID += subset.numVertices;
                 _cacheToken.indexID += subset.numIndices;
@@ -109,7 +105,6 @@ package starling.rendering
         public function finishBatch():void
         {
             var meshBatch:MeshBatch = _currentBatch;
-
             if (meshBatch)
             {
                 _currentBatch = null;
@@ -124,7 +119,6 @@ package starling.rendering
         public function clear():void
         {
             var numBatches:int = _batches.length;
-
             for (var i:int = 0; i < numBatches; ++i)
                 _batchPool.put(_batches[i]);
 

@@ -128,7 +128,6 @@ package starling.textures
         private static var sRectangle:Rectangle = new Rectangle();
         private static var sMatrix:Matrix = new Matrix();
         private static var sPoint:Point = new Point();
-
         /** @private */
         public function Texture()
         {
@@ -242,7 +241,6 @@ package starling.textures
         {
             var texture:Texture;
             var asset:Object = new assetClass();
-
             if (asset is Bitmap)
             {
                 texture = Texture.fromBitmap(asset as Bitmap, mipMapping,
@@ -320,7 +318,6 @@ package starling.textures
             var texture:Texture = Texture.empty(data.width / scale, data.height / scale, true,
                     generateMipMaps, optimizeForRenderToTexture, scale,
                     format, forcePotTexture);
-
             texture.root.uploadBitmapData(data);
             texture.root.onRestore = function():void
             {
@@ -361,7 +358,6 @@ package starling.textures
             var concreteTexture:ConcreteTexture = new ConcretePotTexture(nativeTexture,
                     atfData.format, atfData.width, atfData.height, useMipMaps && atfData.numTextures > 1,
                     premultipliedAlpha, false, scale);
-
             concreteTexture.uploadAtfData(data, 0, async);
             concreteTexture.onRestore = function():void
             {
@@ -520,7 +516,6 @@ package starling.textures
             var nativeTexture:TextureBase;
             var concreteTexture:ConcreteTexture;
             var context:Context3D = Starling.context;
-
             if (context == null)
                 throw new MissingContextError();
 
@@ -529,7 +524,6 @@ package starling.textures
             var useRectTexture:Boolean = !forcePotTexture && !mipMapping &&
                 Starling.current.profile != "baselineConstrained" &&
                 format.indexOf("compressed") == -1;
-
             if (useRectTexture)
             {
                 actualWidth = Math.ceil(origWidth - 0.000000001); // avoid floating point errors
@@ -602,7 +596,6 @@ package starling.textures
             var frame:Rectangle = this.frame;
             var width:Number = this.width;
             var height:Number = this.height;
-
             if (frame)
                 sRectangle.setTo(-frame.x, -frame.y, width, height);
             else
@@ -617,7 +610,6 @@ package starling.textures
             {
                 var scaleX:Number = bounds.width / frameWidth;
                 var scaleY:Number = bounds.height / frameHeight;
-
                 if (scaleX != 1.0 || scaleY != 1.0 || bounds.x != 0 || bounds.y != 0)
                 {
                     sMatrix.identity();
@@ -804,7 +796,6 @@ package starling.textures
         {
             var target:Starling = Starling.current;
             var profile:String = target ? target.profile : "baseline";
-
             if (profile == "baseline" || profile == "baselineConstrained")
                 return 2048;
             else

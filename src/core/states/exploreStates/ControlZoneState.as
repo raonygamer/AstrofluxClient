@@ -28,57 +28,31 @@ package core.states.exploreStates
 	public class ControlZoneState extends DisplayState
 	{
 		public static var COLOR:uint = 3225899;
-		
 		private static var planetExploreAreas:Dictionary = null;
-		
 		private var min:Number = 0;
-		
 		private var max:Number = 1;
-		
 		private var value:Number = 0;
-		
 		private var _exploring:Boolean = false;
-		
 		private var exploreEffect:Vector.<Emitter>;
-		
 		private var effectBackground:Bitmap;
-		
 		private var effectContainer:Bitmap;
-		
 		private var effectTarget:GameObject;
-		
 		private var hasDrawnBody:Boolean = false;
-		
 		private var exploreText:Text;
-		
 		private var closeButton:ButtonExpandableHud;
-		
 		private var timer:Timer = new Timer(1000,1);
-		
 		private var startTime:Number = 0;
-		
 		private var finishTime:Number = 0;
-		
 		private var areaTypes:Dictionary = new Dictionary();
-		
 		private var areas:Vector.<ExploreArea>;
-		
 		private var planetGfx:Image;
-		
 		private var areaBox:Sprite;
-		
 		private var areasText:Text;
-		
 		private var exploreMap:ExploreMap;
-		
 		private var b:Body;
-		
 		private var hasCollectedReward:Boolean = false;
-		
 		private var bodyAreas:Array;
-		
 		private var exploredAreas:Array;
-		
 		private var message:Message;
 		
 		public function ControlZoneState(g:Game, b:Body, message:Message = null)

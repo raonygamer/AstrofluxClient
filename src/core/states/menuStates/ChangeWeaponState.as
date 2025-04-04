@@ -11,7 +11,6 @@ package core.states.menuStates
 	public class ChangeWeaponState extends DisplayState
 	{
 		private var p:Player;
-		
 		private var slot:int;
 		
 		public function ChangeWeaponState(g:Game, p:Player, slot:int, isRoot:Boolean = false)

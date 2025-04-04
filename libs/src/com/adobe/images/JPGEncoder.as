@@ -53,7 +53,6 @@ package com.adobe.images
 				21, 34, 37, 47, 50, 56, 59, 61,
 				35, 36, 48, 49, 57, 58, 62, 63
 			];
-
 		private var YTable:Array = new Array(64);
 		private var UVTable:Array = new Array(64);
 		private var fdtbl_Y:Array = new Array(64);
@@ -176,7 +175,6 @@ package com.adobe.images
 				0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8,
 				0xf9, 0xfa
 			];
-
 		private var std_dc_chrominance_nrcodes:Array = [0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0];
 		private var std_dc_chrominance_values:Array = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 		private var std_ac_chrominance_nrcodes:Array = [0, 0, 2, 1, 2, 4, 4, 3, 4, 7, 5, 4, 4, 0, 1, 2, 0x77];
@@ -463,7 +461,6 @@ package com.adobe.images
 			writeWord(0xFFC4); // marker
 			writeWord(0x01A2); // length
 			var i:int;
-
 			writeByte(0); // HTYDCinfo
 			for (i = 0; i < 16; i++)
 			{
@@ -529,7 +526,6 @@ package com.adobe.images
 			var EOB:BitString = HTAC[0x00];
 			var M16zeroes:BitString = HTAC[0xF0];
 			var i:int;
-
 			var DU_DCT:Array = fDCTQuant(CDU, fdtbl);
 			// ZigZag reorder
 			for (i = 0; i < 64; i++)

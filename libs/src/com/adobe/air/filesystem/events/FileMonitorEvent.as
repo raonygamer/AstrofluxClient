@@ -42,7 +42,6 @@ package com.adobe.air.filesystem.events
     public static const CREATE:String = "onFileCreate";
     public static const ADD_VOLUME:String = "onVolumeAdd";
     public static const REMOVE_VOLUME:String = "onVolumeRemove";
-
     public var file:File;
     public function FileMonitorEvent(type:String, bubbles:Boolean = false,
         cancelable:Boolean = false)

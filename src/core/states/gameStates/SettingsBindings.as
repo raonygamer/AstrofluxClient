@@ -13,15 +13,10 @@ package core.states.gameStates
 	public class SettingsBindings extends Sprite
 	{
 		private var g:Game;
-		
 		private var keybinds:KeyBinds;
-		
 		private var currentHeight:Number = 0;
-		
 		private var currentWidth:Number = 50;
-		
 		private var scrollArea:ScrollContainer;
-		
 		private var keybindList:Vector.<SettingsKeybind> = new Vector.<SettingsKeybind>();
 		
 		public function SettingsBindings(g:Game)

@@ -61,7 +61,6 @@ package com.adobe.utils
 		public static function addLeadingZero(n:Number):String
 		{
 			var out:String = String(n);
-
 			if (n < 10 && n > -1)
 			{
 				out = "0" + out;

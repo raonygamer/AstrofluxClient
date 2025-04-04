@@ -9,23 +9,15 @@ package core.login
 	public class ServiceRoomSelector extends Sprite
 	{
 		public static const FULL:int = 1000;
-		
 		public static const OPEN_SUPPORTERS:int = 950;
-		
 		public static const NEW_ROOM_THRESHOLD:int = 950;
-		
 		public static var playerLevel:int = 0;
-		
 		public static var isSupporter:Boolean = false;
-		
 		public static var totalFree:int = 0;
-		
 		private var rooms:Array;
-		
 		private var roomPreviews:Array = [];
 		
 		private var callback:Function;
-		
 		private var isAutoSelectingRoom:Boolean = false;
 		
 		public function ServiceRoomSelector(rooms:Array, callback:Function)

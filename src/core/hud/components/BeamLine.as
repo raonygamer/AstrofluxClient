@@ -6,25 +6,15 @@ package core.hud.components
 	public class BeamLine extends MeshBatch
 	{
 		private var period:int = 100;
-		
 		public var nodeFrequence:int;
-		
 		public var thickness:Number;
-		
 		public var amplitude:Number;
-		
 		private var ampFactor:Number;
-		
 		private var glowWidth:Number;
-		
 		private var glowColor:Number;
-		
 		private var _color:uint;
-		
 		private var lineTexture:String;
-		
 		private var lines:Vector.<Line> = new Vector.<Line>();
-		
 		private var g:Game;
 		
 		public function BeamLine(g:Game)

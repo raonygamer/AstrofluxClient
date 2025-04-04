@@ -27,23 +27,14 @@ package core.states.gameStates
 	public class LandedRecycle extends LandedState
 	{
 		private var junkTextItems:Array;
-		
 		private var mineralTextItems:Array;
-		
 		private var recycleButton:ImageButton;
-		
 		private var myCargo:Cargo;
-		
 		private var recycling:Boolean = false;
-		
 		private var recycledItems:int = 0;
-		
 		private var takeButton:Button;
-		
 		private var selectAllButton:Button;
-		
 		private var scrollContainer:ScrollContainer = new ScrollContainer();
-		
 		private var scrollContainer2:ScrollContainer = new ScrollContainer();
 		
 		public function LandedRecycle(g:Game, body:Body)

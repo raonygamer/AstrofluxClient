@@ -16,25 +16,15 @@ package core.artifact
 	public class ArtifactBox extends Sprite
 	{
 		private var p:Player;
-		
 		private var g:Game;
-		
 		public var a:Artifact;
-		
 		private var textureManager:ITextureManager;
-		
 		private var artifactImage:Image;
-		
 		private var frame:Image;
-		
 		private var toolTip:ToolTip;
-		
 		private var colors:Array = [0xaaaaaa,0x4488ff,0x44ee44,0xff44ff,16761634];
-		
 		public var locked:Boolean;
-		
 		public var unlockable:Boolean;
-		
 		public var slot:int;
 		
 		public function ArtifactBox(g:Game, a:Artifact)

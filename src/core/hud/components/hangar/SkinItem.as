@@ -29,45 +29,25 @@ package core.hud.components.hangar
 	public class SkinItem extends Sprite
 	{
 		public static const MODE_SWITCH:int = 0;
-		
 		public static const MODE_BUY:int = 1;
-		
 		public static const MODE_PREVIEW:int = 2;
-		
 		public static const MODE_SPINNER:int = 3;
-		
 		private var g:Game;
-		
 		private var obj:Object;
-		
 		private var mode:int;
-		
 		public var buyContainer:Sprite = new Sprite();
-		
 		public var buyButton:Button = null;
-		
 		private var premanufacturedDetails:Sprite = new Sprite();
-		
 		private var hasSpecialWeapon:Boolean = false;
-		
 		private var specialweapon:Sprite = new Sprite();
-		
 		private var premanufactured:Sprite = new Sprite();
-		
 		private var specialStats:Sprite = new Sprite();
-		
 		private var specialCount:int = 0;
-		
 		private var stats:SkinItemBaseStats;
-		
 		private var cost:CreditLabel;
-		
 		private var desc:Text = new Text(0,50,true,"Verdana");
-		
 		private var emitters:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var clickedButton:Button;
-		
 		private var activateButton:Button;
 		
 		public function SkinItem(g:Game, obj:Object, mode:int)

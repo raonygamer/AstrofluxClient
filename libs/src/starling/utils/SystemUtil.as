@@ -32,7 +32,6 @@ package starling.utils
         private static var sAIR:Boolean;
         private static var sEmbeddedFonts:Array = null;
         private static var sSupportsDepthAndStencil:Boolean = true;
-
         /** @private */
         public function SystemUtil()
         {
@@ -55,14 +54,12 @@ package starling.utils
             {
                 var nativeAppClass:Object = getDefinitionByName("flash.desktop::NativeApplication");
                 var nativeApp:EventDispatcher = nativeAppClass["nativeApplication"] as EventDispatcher;
-
                 nativeApp.addEventListener(Event.ACTIVATE, onActivate, false, 0, true);
                 nativeApp.addEventListener(Event.DEACTIVATE, onDeactivate, false, 0, true);
 
                 var appDescriptor:XML = nativeApp["applicationDescriptor"];
                 var ns:Namespace = appDescriptor.namespace ();
                 var ds:String = appDescriptor.ns::initialWindow.ns::depthAndStencil.toString().toLowerCase();
-
                 sSupportsDepthAndStencil = (ds == "true");
                 sAIR = true;
             }
@@ -192,7 +189,6 @@ package starling.utils
                 var style:String = font.fontStyle;
                 var isBold:Boolean = style == FontStyle.BOLD || style == FontStyle.BOLD_ITALIC;
                 var isItalic:Boolean = style == FontStyle.ITALIC || style == FontStyle.BOLD_ITALIC;
-
                 if (fontName == font.fontName && bold == isBold && italic == isItalic &&
                         fontType == font.fontType)
                 {

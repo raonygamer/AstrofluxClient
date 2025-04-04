@@ -90,7 +90,6 @@ package com.adobe.air.net
 			var dir:File = getStorageDir();
 			var fName:String = generateKeyHash(key);
 			var file:File = dir.resolvePath(fName);
-
 			return file;
 		}
 
@@ -99,7 +98,6 @@ package com.adobe.air.net
 
 			var key:String = generateKeyHash(url);
 			var file:File = getItemFile(key);
-
 			// todo: do we need to check if the dir exists?
 
 			if (file.exists)
@@ -133,10 +131,8 @@ package com.adobe.air.net
 		private function onDataLoad(event:Event):void
 		{
 			var loader:DynamicURLLoader = DynamicURLLoader(event.target);
-
 			var f:File = File(loader.file);
 			var key:String = String(loader.key);
-
 			var fileStream:FileStream = new FileStream();
 			fileStream.open(f, FileMode.WRITE);
 			fileStream.writeBytes(loader.data as ByteArray);

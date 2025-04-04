@@ -13,7 +13,6 @@ package core.states.gameStates
 	public class LandedExplore extends LandedState
 	{
 		private var sceneSM:DisplayStateMachine;
-		
 		private var container:Sprite;
 		
 		public function LandedExplore(g:Game, body:Body)

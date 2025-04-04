@@ -22,7 +22,6 @@ package starling.textures
         private var _numTextures:int;
         private var _isCubeMap:Boolean;
         private var _data:ByteArray;
-
         /** Create a new instance by parsing the given byte array. */
         public function AtfData(data:ByteArray)
         {

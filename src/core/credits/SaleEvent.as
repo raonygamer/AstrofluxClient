@@ -3,7 +3,6 @@ package core.credits
 	public class SaleEvent
 	{
 		public var start:Date;
-		
 		public var end:Date;
 		
 		public function SaleEvent(year:int, month:int, day:int, hour:int, duration:int)

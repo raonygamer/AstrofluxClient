@@ -5,9 +5,7 @@ package generics
 	public class Color
 	{
 		private static const lR:Number = 0.213;
-		
 		private static const lG:Number = 0.715;
-		
 		private static const lB:Number = 0.072;
 		
 		public function Color()

@@ -8,7 +8,6 @@ package facebook
    public class FBWaitable
    {
       private var subscribers:Object;
-
       private var _value:Object = null;
 
       public function FBWaitable()

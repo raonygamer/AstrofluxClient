@@ -17,29 +17,17 @@ package core.hud.components.playerList
 	public class PlayerList extends Sprite
 	{
 		public static var WIDTH:Number = 658;
-		
 		public static var HEIGHT:Number = 500;
-		
 		public static var PADDING:Number = 50;
-		
 		public static var GROUP_MARGIN:Number = 10;
-		
 		private var g:Game;
-		
 		private var groups:Vector.<Group>;
-		
 		private var mapBgr:Image;
-		
 		private var closeButton:ButtonExpandableHud;
-		
 		private var listContainer:ScrollContainer;
-		
 		private var groupListItems:Vector.<GroupListItem>;
-		
 		private var onlineFriends:Sprite;
-		
 		private var friendBoxes:Vector.<FriendDisplayBox> = new Vector.<FriendDisplayBox>();
-		
 		private var isViewingOnlineFriends:Boolean = false;
 		
 		public function PlayerList(g:Game)

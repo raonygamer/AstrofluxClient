@@ -33,7 +33,6 @@ package starling.textures
         private var _scale:Number;
         private var _transformationMatrix:Matrix;
         private var _transformationMatrixToRoot:Matrix;
-
         /** Creates a new SubTexture containing the specified region of a parent texture.
          *
          *  @param parent     The texture you want to create a SubTexture from.

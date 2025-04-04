@@ -11,13 +11,9 @@ package core.hud.components.pvp
 	public class PvpScreen extends Sprite
 	{
 		public static var WIDTH:Number = 698;
-		
 		public static var HEIGHT:Number = 538;
-		
 		private var bgr:Image;
-		
 		private var closeButton:ButtonExpandableHud;
-		
 		public var g:Game;
 		
 		public function PvpScreen(g:Game)

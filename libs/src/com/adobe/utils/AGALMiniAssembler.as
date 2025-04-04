@@ -46,19 +46,15 @@ package com.adobe.utils
 		// Constants
 		// ----------------------------------------------------------------------
 		protected static const REGEXP_OUTER_SPACES:RegExp = /^\s+|\s+$/g;
-
 		// ======================================================================
 		// Properties
 		// ----------------------------------------------------------------------
 		// AGAL bytes and error buffer
 		private var _agalcode:ByteArray = null;
 		private var _error:String = "";
-
 		private var debugEnabled:Boolean = false;
-
 		private static var initialized:Boolean = false;
 		public var verbose:Boolean = false;
-
 		// ======================================================================
 		// Getters
 		// ----------------------------------------------------------------------
@@ -96,12 +92,10 @@ package com.adobe.utils
 		public function assemble(mode:String, source:String, version:uint = 1, ignorelimits:Boolean = false):ByteArray
 		{
 			var start:uint = getTimer();
-
 			_agalcode = new ByteArray();
 			_error = "";
 
 			var isFrag:Boolean = false;
-
 			if (mode == FRAGMENT)
 				isFrag = true;
 			else if (mode != VERTEX)
@@ -120,7 +114,6 @@ package com.adobe.utils
 			var nops:int = 0;
 			var i:int;
 			var lng:int = lines.length;
-
 			for (i = 0; i < lng && _error == ""; i++)
 			{
 				var line:String = new String(lines[i]);
@@ -149,7 +142,6 @@ package com.adobe.utils
 					continue;
 				}
 				var opFound:OpCode = OPMAP[opCode[0]];
-
 				// if debug is enabled, output the opcodes
 				if (debugEnabled)
 					trace(opFound);
@@ -194,7 +186,6 @@ package com.adobe.utils
 
 				// get operands, use regexp
 				var regs:Array;
-
 				// will match both syntax
 				regs = line.match(/vc\[([vof][acostdip]?)(\d*)?(\.[xyzw](\+\d{1,3})?)?\](\.[xyzw]{1,4})?|([vof][acostdip]?)(\d*)?(\.[xyzw]{1,4})?/gi);
 
@@ -207,7 +198,6 @@ package com.adobe.utils
 				var badreg:Boolean = false;
 				var pad:uint = 64 + 64 + 32;
 				var regLength:uint = regs.length;
-
 				for (var j:int = 0; j < regLength; j++)
 				{
 					var isRelative:Boolean = false;
@@ -229,7 +219,6 @@ package com.adobe.utils
 						break;
 					}
 					var regFound:Register = REGMAP[res[0]];
-
 					// if debug is enabled, output the registers
 					if (debugEnabled)
 						trace(regFound);
@@ -270,7 +259,6 @@ package com.adobe.utils
 					// trace( "REGNUM: " +regs[j] );
 					var idxmatch:Array = isRelative ? relreg[0].match(/\d+/) : regs[j].match(/\d+/);
 					var regidx:uint = 0;
-
 					if (idxmatch)
 						regidx = uint(idxmatch[0]);
 
@@ -288,7 +276,6 @@ package com.adobe.utils
 					var reltype:uint = 0;
 					var relsel:uint = 0;
 					var reloffset:int = 0;
-
 					if (isDest && isRelative)
 					{
 						_error = "error: relative can not be destination";
@@ -567,13 +554,10 @@ package com.adobe.utils
 		private static const OPMAP:Dictionary = new Dictionary();
 		private static const REGMAP:Dictionary = new Dictionary();
 		private static const SAMPLEMAP:Dictionary = new Dictionary();
-
 		private static const MAX_NESTING:int = 4;
 		private static const MAX_OPCODES:int = 2048;
-
 		private static const FRAGMENT:String = "fragment";
 		private static const VERTEX:String = "vertex";
-
 		// masks and shifts
 		private static const SAMPLER_TYPE_SHIFT:uint = 8;
 		private static const SAMPLER_DIM_SHIFT:uint = 12;
@@ -581,13 +565,11 @@ package com.adobe.utils
 		private static const SAMPLER_REPEAT_SHIFT:uint = 20;
 		private static const SAMPLER_MIPMAP_SHIFT:uint = 24;
 		private static const SAMPLER_FILTER_SHIFT:uint = 28;
-
 		// regmap flags
 		private static const REG_WRITE:uint = 0x1;
 		private static const REG_READ:uint = 0x2;
 		private static const REG_FRAG:uint = 0x20;
 		private static const REG_VERT:uint = 0x40;
-
 		// opmap flags
 		private static const OP_SCALAR:uint = 0x1;
 		private static const OP_SPECIAL_TEX:uint = 0x8;
@@ -598,7 +580,6 @@ package com.adobe.utils
 		private static const OP_VERSION2:uint = 0x100;
 		private static const OP_INCNEST:uint = 0x200;
 		private static const OP_DECNEST:uint = 0x400;
-
 		// opcodes
 		private static const MOV:String = "mov";
 		private static const ADD:String = "add";
@@ -642,7 +623,6 @@ package com.adobe.utils
 		private static const SGN:String = "sgn";
 		private static const SEQ:String = "seq";
 		private static const SNE:String = "sne";
-
 		// registers
 		private static const VA:String = "va";
 		private static const VC:String = "vc";
@@ -654,7 +634,6 @@ package com.adobe.utils
 		private static const FS:String = "fs";
 		private static const FO:String = "fo";
 		private static const FD:String = "fd";
-
 		// samplers
 		private static const D2:String = "2d";
 		private static const D3:String = "3d";
@@ -700,7 +679,6 @@ package com.adobe.utils
 		private var _flags:uint;
 		private var _name:String;
 		private var _numRegister:uint;
-
 		// ======================================================================
 		// Getters
 		// ----------------------------------------------------------------------
@@ -754,7 +732,6 @@ package com.adobe.utils
 		private var _longName:String;
 		private var _flags:uint;
 		private var _range:uint;
-
 		// ======================================================================
 		// Getters
 		// ----------------------------------------------------------------------
@@ -811,7 +788,6 @@ package com.adobe.utils
 		private var _flag:uint;
 		private var _mask:uint;
 		private var _name:String;
-
 		// ======================================================================
 		// Getters
 		// ----------------------------------------------------------------------

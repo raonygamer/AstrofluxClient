@@ -12,27 +12,16 @@ package core.ship
 	public class Ship extends Unit
 	{
 		public var engine:Engine;
-		
 		public var weapons:Vector.<Weapon> = new Vector.<Weapon>();
-		
 		protected var _usingBoost:Boolean;
-		
 		public var boostBonus:int;
-		
 		public var isTeleporting:Boolean;
-		
 		private var converger:Converger;
-		
 		public var isVisible:Boolean = false;
-		
 		public var nextUpdate:Number = 0;
-		
 		public var rollDir:Number = 0;
-		
 		public var rollMod:Number = 0;
-		
 		public var rollSpeed:Number = 0;
-		
 		public var rollPassive:Number = 0;
 		
 		public function Ship(g:Game)

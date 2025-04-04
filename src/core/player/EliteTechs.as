@@ -12,29 +12,17 @@ package core.player
 	public class EliteTechs
 	{
 		public static const MAX_LEVEL:Number = 100;
-		
 		public static const COST_INCREASE:Number = 1.025;
-		
 		public static const COST_SUM:Number = 432.548654;
-		
 		public static const PRIMARY_COST_SUM:Number = 3200000;
-		
 		public static const SECONDARY_COST_SUM:Number = 540000;
-		
 		public static const FLUX_COST_SUM:Number = 12000;
-		
 		public static const HYDROGEN_CRYSTALS:String = "d6H3w_34pk2ghaQcXYBDag";
-		
 		public static const PLASMA_FLUIDS:String = "H5qybQDy9UindMh9yYIeqg";
-		
 		public static const IRIDIUM:String = "gO_f-y0QEU68vVwJ_XVmOg";
-		
 		public static const WEAPON_ELITE_TECHS:Vector.<String> = Vector.<String>(["AddKineticDamage","AddEnergyDamage","AddCorrosiveDamage","AddKineticBaseDamage","AddEnergyBaseDamage","AddCorrosiveBaseDamage","AddKineticDot5","AddEnergyDot5","AddCorrosiveDot5","AddKineticDot10","AddEnergyDot10","AddCorrosiveDot10","AddKineticDot20","AddEnergyDot20","AddCorrosiveDot20","AddEnergyBurn","AddCorrosiveBurn","AddHealthVamp","AddShieldVamp","AddDualVamp","KineticPenetration","EnergyPenetration","CorrosivePenetration","AddExtraProjectiles","IncreaseDirectDamage","IncreaseDebuffDamage","IncreaseRange","IncreaseRefire","IncreaseGuidance","ReducePowerCost","DisableHealing","DisableShieldRegen","ReduceTargetDamage","ReduceTargetArmor","IncreaseAOE","AddAOE","IncreaseNrHits","IncreaseSpeed","IncreasePetHp"]);
-		
 		public static const WEAPON_ELITE_TECHS_NAME:Vector.<String> = Vector.<String>(["Kinetic Damage","Energy Damage","Corrosive Damage","Kinetic Damage","Energy Damage","Corrosive Damage","Kinetic DoT 5 Seconds","Energy DoT 5 Seconds","Corrosive DoT 5 Seconds","Kinetic DoT 10 Seconds","Energy DoT 10 Seconds","Corrosive DoT 10 Seconds","Kinetic DoT 20 Seconds","Energy DoT 20 Seconds","Corrosive DoT 20 Seconds","Energy Burn 10 Seconds","Corrosive Burn 10 Seconds","Health Leech","Shield Leech","Health and Shield Leech","Reduce Kinetic Resitance","Reduce Energy Resitance","Reduce Corrosive Resitance","Extra Projectiles","Improved Direct Damage","Improved DoT","Improved Range","Improved Attack Speed","Improved Velocity and Guidance","Reduced the Power Cost","Disables target Healing","Disables target Shield Regen","Reduce Target Damage done","Reduce Target Armor","Improved Area Of Effect","Improved Area Of Effect","Improved Number of Hits","Increase Speed","Increase Pet HP and Shield"]);
-		
 		public static const ELITE_TECHS:Vector.<String> = Vector.<String>(["IncreaseShield","IncreaseShieldRegen","ConvertShield","IncreaseHealth","IncreaseArmor","ConvertHealth","IncreaseSheildDuration","ReduceSheildCooldown","IncreaseSpeedBoostAmount","IncreaseSpeedBoostDuration","ReduceSpeedBoostCooldown","IncreaseArmorConvBonus","ReduceArmorConvCooldown","IncreaseDamage","IncreaseRefire","ReducePowerCost","IncreaseDmgBoostDuration","IncreaseDmgBoostBonus","ReduceDmgBoostPowerCost","IncreaseEngineSpeed","UnbreakableArmor"]);
-		
 		public static const ELITE_TECHS_NAME:Vector.<String> = Vector.<String>(["Maximum Shield","Shield Regen","Convert Shield","Maximum Health","Improved Armor","Convert Health","Lasting Harden Shields","Rapid Recharge Harden Sheilds","Overcharged Speed Boost","Lasting Speed Boost","Rapid Recharge Speed Boost","Optimized Repair","Rapid Recharge Repair","Over-Charged Weapons","Hyper-Charged Weapons","Optimized Weapons","Lasting Power Boost","Super Charged Power Boost","Optimized Power Boost","Improved Engines","Unbreakable Armor"]);
 		
 		public function EliteTechs()

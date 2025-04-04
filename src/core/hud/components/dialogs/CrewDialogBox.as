@@ -26,37 +26,22 @@ package core.hud.components.dialogs
 	public class CrewDialogBox extends Sprite
 	{
 		private var t:Text = new Text();
-		
 		private var face:Image = new Image(Texture.empty(1,1));
-		
 		private var box:Box;
-		
 		private var closeButton:Button;
-		
 		private var soundManager:ISound;
-		
 		private var g:Game;
-		
 		private var tutorial:Tutorial;
-		
 		private var bgrQuad:Quad = new Quad(100,100,0);
-		
 		private var readTime:int;
-		
 		private var readTimer:Timer;
-		
 		private var keyTimer:Timer;
-		
 		private var voice:String;
 		
 		private var callback:Function;
-		
 		private var crewNumber:int;
-		
 		private var showCloseButton:Boolean;
-		
 		private var showOverlay:Boolean;
-		
 		private var endKeys:Array;
 		
 		public function CrewDialogBox(g:Game, tutorial:Tutorial)

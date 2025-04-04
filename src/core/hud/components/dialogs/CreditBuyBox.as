@@ -19,23 +19,14 @@ package core.hud.components.dialogs
 	public class CreditBuyBox extends Sprite
 	{
 		private var g:Game;
-		
 		private var cost:int;
-		
 		private var caption:String;
-		
 		private var textureManager:ITextureManager;
-		
 		private var countText:Text = new Text();
-		
 		private var captionText:Text = new Text();
-		
 		private var box:Box;
-		
 		private var cancelButton:Button;
-		
 		private var acceptButton:Button;
-		
 		private var bgr:Quad = new Quad(100,100,0);
 		
 		public function CreditBuyBox(g:Game, cost:int, caption:String)

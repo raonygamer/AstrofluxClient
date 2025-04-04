@@ -11,11 +11,8 @@ package core.states.player
 	public class Landed implements IState
 	{
 		private var player:Player;
-		
 		private var body:Body;
-		
 		private var sm:StateMachine;
-		
 		private var g:Game;
 		
 		public function Landed(player:Player, body:Body, g:Game)

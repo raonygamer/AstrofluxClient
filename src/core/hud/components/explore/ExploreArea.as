@@ -31,71 +31,38 @@ package core.hud.components.explore
 	public class ExploreArea extends Sprite
 	{
 		public static var COLOR:uint = 3225899;
-		
 		private var min:Number = 0;
-		
 		private var max:Number = 1;
-		
 		private var value:Number = 0;
-		
 		private var _exploring:Boolean = false;
-		
 		private var finished:Boolean = false;
-		
 		private var failed:Boolean = false;
-		
 		private var successfulEvents:int = 0;
-		
 		private var totalEvents:int = 0;
-		
 		public var lootClaimed:Boolean = false;
-		
 		private var confirmInstantExploreBox:CreditBuyBox;
-		
 		private var actionButton:Button;
-		
 		public var body:Body;
-		
 		private var g:Game;
-		
 		private var timer:Timer = new Timer(1000,1);
-		
 		private var startTime:Number = 0;
-		
 		private var finishTime:Number = 0;
-		
 		private var failTime:Number = 0;
-		
 		private var areaTypes:Dictionary = areaTypes;
-		
 		private var playerExplores:Dictionary = playerExplores;
-		
 		public var areaKey:String;
-		
 		public var level:Number;
-		
 		public var rewardLevel:Number;
-		
 		public var size:int;
-		
 		private var areaName:TextBitmap;
-		
 		public var type:int;
-		
 		public var specialTypes:Array;
-		
 		private var teamKey:String = null;
-		
 		private var progressBar:ExploreProgressBar;
-		
 		private var box:Box;
-		
 		private var boxFinished:Box;
-		
 		private var exploreMapArea:ExploreMapArea;
-		
 		private var exploreTimer:HudTimer;
-		
 		private var overlay:Sprite;
 		
 		private var exploreStartedCallback:Function = null;

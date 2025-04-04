@@ -12,25 +12,15 @@ package core.hud.components.pvp
 	public class TeamSafeZone
 	{
 		private var textureManager:ITextureManager;
-		
 		public var zoneRadius:Number = 350;
-		
 		public var team:int = -1;
-		
 		private var g:Game;
-		
 		private var friendlyZone:Image;
-		
 		private var enemyZone:Image;
-		
 		private var img:Image;
-		
 		public var friendlyColor:uint = 255;
-		
 		public var enemyColor:uint = 16711680;
-		
 		public var x:int;
-		
 		public var y:int;
 		
 		public function TeamSafeZone(g:Game, obj:Object, team:int)

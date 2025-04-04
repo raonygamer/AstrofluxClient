@@ -5,15 +5,10 @@ package core.hud.components
 	public class TextBitmapNumberAnimation extends TextBitmap
 	{
 		private var current:int;
-		
 		private var from:int;
-		
 		private var to:int;
-		
 		private var increase:int;
-		
 		private var delay:Number;
-		
 		private var id:int = Math.random() * 100;
 		
 		private var callback:Function;

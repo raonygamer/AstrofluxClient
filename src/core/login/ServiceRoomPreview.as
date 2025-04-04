@@ -14,47 +14,27 @@ package core.login
 	public class ServiceRoomPreview extends Sprite
 	{
 		public static var WIDTH:int = 300;
-		
 		public static const roomNames:Array = ["alpha","beta","gamma","delta","epsilon","zeta","eta","theta","iota","kappa","lambda","mu","beta","nu","xi","omicron","pi","rho","sigma","tau","upsilon","phi","chi","psi","omega"];
-		
 		public var info:RoomInfo;
-		
 		private var _name:Text = new Text();
-		
 		private var online:Text = new Text();
-		
 		private var friends:Text = new Text();
-		
 		private var status:Text = new Text();
-		
 		private var level:Text = new Text();
-		
 		private var recommended:Text = new Text();
-		
 		private var recommendedBg:Quad;
-		
 		private var connection:Connection;
 		
 		private var selectCallback:Function;
-		
 		public var enabled:Boolean = false;
-		
 		public var even:Boolean = true;
-		
 		private var serviceRoomSelector:ServiceRoomSelector;
-		
 		private var bg:Quad;
-		
 		private var isSupporter:Boolean = false;
-		
 		public var avgLevel:int = -1;
-		
 		public var playerLevel:int = -1;
-		
 		private var onlineFriends:Vector.<Friend>;
-		
 		private var friendsTooltip:Sprite;
-		
 		public var isClosing:Boolean = false;
 		
 		public function ServiceRoomPreview(info:RoomInfo, selectCallback:Function, serviceRoomSelector:ServiceRoomSelector)

@@ -44,7 +44,6 @@ package com.adobe.fileformats.vcard
 			var type:String;
 			var typeTmp:String;
 			var line:String;
-
 			for (var i:uint = 0; i < lines.length; ++i)
 			{
 				line = lines[i];

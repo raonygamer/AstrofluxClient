@@ -100,17 +100,14 @@ package starling.textures
     {
         private static const USE_DOUBLE_BUFFERING_DATA_NAME:String =
             "starling.textures.RenderTexture.useDoubleBuffering";
-
         private var _activeTexture:Texture;
         private var _bufferTexture:Texture;
         private var _helperImage:Image;
         private var _drawing:Boolean;
         private var _bufferReady:Boolean;
         private var _isPersistent:Boolean;
-
         // helper object
         private static var sClipRect:Rectangle = new Rectangle();
-
         /** Creates a new RenderTexture with a certain size (in points). If the texture is
          *  persistent, its contents remains intact after each draw call, allowing you to use the
          *  texture just like a canvas. If it is not, it will be cleared before each draw call.
@@ -197,7 +194,6 @@ package starling.textures
             var wasCacheEnabled:Boolean = painter.cacheEnabled;
             var filter:FragmentFilter = object.filter;
             var mask:DisplayObject = object.mask;
-
             painter.cacheEnabled = false;
             painter.pushState();
 
@@ -232,7 +228,6 @@ package starling.textures
         {
             var painter:Painter = Starling.painter;
             var state:RenderState = painter.state;
-
             if (!Starling.current.contextValid)
                 return;
 
@@ -329,7 +324,6 @@ package starling.textures
             {
                 var painter:Painter = Starling.painter;
                 var sharedData:Dictionary = painter.sharedData;
-
                 if (USE_DOUBLE_BUFFERING_DATA_NAME in sharedData)
                 {
                     return sharedData[USE_DOUBLE_BUFFERING_DATA_NAME];

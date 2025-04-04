@@ -12,9 +12,7 @@ package core.boss
 	public class BossManager
 	{
 		private var g:Game;
-		
 		public var bosses:Vector.<Boss>;
-		
 		public var callbackMessages:Vector.<Message>;
 		
 		public var callbackFunctions:Vector.<Function>;

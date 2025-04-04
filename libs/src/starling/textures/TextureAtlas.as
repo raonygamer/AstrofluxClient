@@ -74,10 +74,8 @@ package starling.textures
         private var _atlasTexture:Texture;
         private var _subTextures:Dictionary;
         private var _subTextureNames:Vector.<String>;
-
         /** helper objects */
         private static var sNames:Vector.<String> = new <String>[];
-
         /** Create a texture atlas from a texture by parsing the regions from an XML file. */
         public function TextureAtlas(texture:Texture, atlasXml:XML = null)
         {
@@ -102,7 +100,6 @@ package starling.textures
             var scale:Number = _atlasTexture.scale;
             var region:Rectangle = new Rectangle();
             var frame:Rectangle = new Rectangle();
-
             for each (var subTexture:XML in atlasXml.SubTexture)
             {
                 var name:String = StringUtil.clean(subTexture.@name);
@@ -115,7 +112,6 @@ package starling.textures
                 var frameWidth:Number = parseFloat(subTexture.@frameWidth) / scale;
                 var frameHeight:Number = parseFloat(subTexture.@frameHeight) / scale;
                 var rotated:Boolean = parseBool(subTexture.@rotated);
-
                 region.setTo(x, y, width, height);
                 frame.setTo(frameX, frameY, frameWidth, frameHeight);
 

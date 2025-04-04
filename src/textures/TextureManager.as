@@ -27,31 +27,18 @@ package textures
 	public class TextureManager extends starling.display.Sprite implements ITextureManager
 	{
 		public static var BASIC_TEXTURE:Texture;
-		
 		public static var BASIC_TEXTURES:Vector.<Texture>;
-		
 		private static const pathToTextures:String = "/textures/";
-		
 		private static var xmlDict:Dictionary;
-		
 		private static var textureAtlasDict:Dictionary = new Dictionary();
-		
 		private var pLoaded:int = 0;
-		
 		private var itemsArray:Array = [];
-		
 		private var totalItems:int;
-		
 		private var currItem:int = 1;
-		
 		private var currentRequest:String = "";
-		
 		private var fs:GameFS;
-		
 		private var _client:Client;
-		
 		private var callbackQueue:Dictionary;
-		
 		private var dataManager:IDataManager;
 		
 		public function TextureManager(client:Client)

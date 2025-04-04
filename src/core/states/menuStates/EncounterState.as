@@ -19,9 +19,7 @@ package core.states.menuStates
 	public class EncounterState extends DisplayState
 	{
 		public static var WIDTH:Number = 658;
-		
 		public static var PADDING:Number = 31;
-		
 		private var mainBody:ScrollContainer;
 		
 		public function EncounterState(g:Game, isRoot:Boolean = false)

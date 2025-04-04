@@ -40,7 +40,6 @@ package com.adobe.serialization.json
 
 		/** The string that is going to represent the object we're encoding */
 		private var jsonString:String;
-
 		/**
 		 * Creates a new JSONEncoder.
 		 *
@@ -121,7 +120,6 @@ package com.adobe.serialization.json
 			var ch:String;
 			// store the length in a local variable to reduce lookups
 			var len:Number = str.length;
-
 			// loop over all of the characters in the string
 			for (var i:int = 0; i < len; i++)
 			{
@@ -168,11 +166,9 @@ package com.adobe.serialization.json
 						{
 							// get the hex digit(s) of the character (either 1 or 2 digits)
 							var hexCode:String = ch.charCodeAt(0).toString(16);
-
 							// ensure that there are 4 digits by adjusting
 							// the # of zeros accordingly.
 							var zeroPad:String = hexCode.length == 2 ? "00" : "000";
-
 							// create the unicode escape sequence with 4 hex digits
 							s += "\\u" + zeroPad + hexCode;
 						}
@@ -200,7 +196,6 @@ package com.adobe.serialization.json
 		{
 			// create a string to store the array's jsonstring value
 			var s:String = "";
-
 			// loop over the elements in the array and add their converted
 			// values to the string
 			var length:int = a.length;
@@ -248,7 +243,6 @@ package com.adobe.serialization.json
 		{
 			// create a string to store the object's jsonstring value
 			var s:String = "";
-
 			// determine if o is a class instance or a plain object
 			var classInfo:XML = describeType(o);
 			if (classInfo.@name.toString() == "Object")
@@ -257,7 +251,6 @@ package com.adobe.serialization.json
 				// as a variable so we don't have to keep looking up o[key]
 				// when testing for valid values to convert
 				var value:Object;
-
 				// loop over the keys in the object and add their converted
 				// values to the string
 				for (var key:String in o)

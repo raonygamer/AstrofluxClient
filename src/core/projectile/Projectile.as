@@ -21,127 +21,66 @@ package core.projectile
 	public class Projectile extends GameObject
 	{
 		private static const DT:Number = 33;
-		
 		private static const DTxDT_HALF:Number = Math.pow(33,2) * 0.5;
-		
 		public var numberOfHits:int;
-		
 		public var alive:Boolean;
-		
 		public var ttl:int;
-		
 		public var ttlMax:int;
-		
 		public var speed:Point = new Point();
-		
 		public var speedMax:Number;
-		
 		public var rotationSpeedMax:Number;
-		
 		public var acceleration:Number;
-		
 		public var stateMachine:StateMachine;
-		
 		public var unit:Unit;
-		
 		public var weapon:Weapon;
-		
 		public var dmgRadius:int;
-		
 		public var wave:Boolean;
-		
 		public var waveDirection:int;
-		
 		public var waveAmplitude:Number;
-		
 		public var waveFrequency:Number;
-		
 		public var clusterProjectile:String;
-		
 		public var clusterNrOfSplits:int;
-		
 		public var clusterNrOfProjectiles:int;
-		
 		public var clusterAngle:Number;
-		
 		public var aiAlwaysExplode:Boolean;
-		
 		public var oldPos:Point = new Point();
-		
 		public var boomerangReturnTime:int;
-		
 		public var boomerangReturning:Boolean;
-		
 		public var direction:int;
-		
 		public var ps:PlayerShip;
-		
 		public var range:Number;
-		
 		public var debuffType:int;
-		
 		public var target:Unit;
-		
 		public var targetProjectile:Projectile;
-		
 		public var error:Point;
-		
 		public var convergenceTime:int;
-		
 		public var convergenceCounter:int;
-		
 		public var collisionRadius:Number;
-		
 		public var useShipSystem:Boolean;
-		
 		public var course:Heading = new Heading();
-		
 		public var thrustEmitters:Vector.<Emitter>;
-		
 		public var randomAngle:Boolean;
-		
 		public var explosionEffect:String;
-		
 		public var explosionSound:String;
-		
 		public var isVisible:Boolean = false;
-		
 		public var isEnemy:Boolean;
-		
 		public var isHeal:Boolean;
-		
 		public var aiStuck:Boolean;
-		
 		public var aiStuckDuration:int;
-		
 		public var aiTargetSelf:Boolean;
-		
 		public var aiDelayedAcceleration:Boolean;
-		
 		public var aiDelayedAccelerationTime:int = 0;
-		
 		private var g:Game;
-		
 		public var ai:String;
-		
 		public var errorRot:Number;
-		
 		public var hasRibbonTrail:Boolean = false;
-		
 		public var useRibbonOffset:Boolean = false;
-		
 		public var ribbonThickness:Number = 0;
-		
 		public var ribbonTrail:RibbonTrail;
-		
 		private var followingRibbonSegment:RibbonSegment = new RibbonSegment();
-		
 		public var followingRibbonSegmentLine:Vector.<RibbonSegment> = new <RibbonSegment>[followingRibbonSegment];
-		
 		private var hasDoneFirstUpdate:Boolean = false;
-		
 		private var tempVx:Number = 0;
-		
 		private var tempVy:Number = 0;
 		
 		public function Projectile(g:Game)

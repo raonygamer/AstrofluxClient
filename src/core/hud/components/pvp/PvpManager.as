@@ -11,65 +11,35 @@ package core.hud.components.pvp
 	public class PvpManager
 	{
 		public static const MATCH_WARMUP:int = 0;
-		
 		public static const MATCH_STARTING:int = 1;
-		
 		public static const MATCH_RUNNING:int = 2;
-		
 		public static const MATCH_ENDED:int = 3;
-		
 		public static const MATCH_CLOSED:int = 4;
-		
 		public static const ITEM_HEALTH:String = "health";
-		
 		public static const ITEM_HEALTH_SMALL:String = "healthSmall";
-		
 		public static const ITEM_SHIELD:String = "shield";
-		
 		public static const ITEM_SHIELD_SMALL:String = "shieldSmall";
-		
 		public static const ITEM_QUAD:String = "quad";
-		
 		public static const ITEM_DOMINATION_ZONE:String = "dominationZone";
-		
 		public static const ITEM_TEAM1_SAFE_ZONE:String = "safezoneT1";
-		
 		public static const ITEM_TEAM2_SAFE_ZONE:String = "safezoneT2";
-		
 		protected var g:Game;
-		
 		public var type:String;
-		
 		protected var scoreLimit:int;
-		
 		protected var matchState:int;
-		
 		protected var roomStartTime:Number;
-		
 		protected var matchStartTime:Number;
-		
 		protected var matchEndTime:Number;
-		
 		protected var roomEndTime:Number;
-		
 		protected var endGameScreenTime:Number;
-		
 		protected var requestTime:Number;
-		
 		public var matchEnded:Boolean;
-		
 		public var scoreListUpdated:Boolean;
-		
 		protected var scoreList:Vector.<PvpScoreHolder>;
-		
 		protected var timerText:Text;
-		
 		protected var scoreText:Text;
-		
 		protected var leaderText:Text;
-		
 		protected var map:Map;
-		
 		protected var isLoaded:Boolean = false;
 		
 		public function PvpManager(g:Game, addTexts:Boolean = true)

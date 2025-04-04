@@ -13,19 +13,12 @@ package core.hud.components
 	public class ShopIcons extends DisplayObjectContainer
 	{
 		private var g:Game;
-		
 		private var xpBoostActive:Boolean = false;
-		
 		private var tractorBeamActive:Boolean = false;
-		
 		private var xpProtectionActive:Boolean = false;
-		
 		private var cargoProtectionActive:Boolean = false;
-		
 		private var supporterActive:Boolean = false;
-		
 		private var confirmBox:PopupConfirmMessage = null;
-		
 		private var textureManager:ITextureManager = TextureLocator.getService();
 		
 		public function ShopIcons(g:Game)

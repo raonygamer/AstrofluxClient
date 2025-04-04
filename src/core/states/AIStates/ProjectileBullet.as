@@ -11,23 +11,14 @@ package core.states.AIStates
 	public class ProjectileBullet implements IState
 	{
 		protected var m:Game;
-		
 		protected var p:Projectile;
-		
 		protected var sm:StateMachine;
-		
 		protected var isEnemy:Boolean;
-		
 		private var globalInterval:Number = 1000;
-		
 		private var localTargetList:Vector.<Unit>;
-		
 		private var nextGlobalUpdate:Number;
-		
 		private var nextLocalUpdate:Number;
-		
 		private var localRangeSQ:Number;
-		
 		private var firstUpdate:Boolean;
 		
 		public function ProjectileBullet(m:Game, p:Projectile)

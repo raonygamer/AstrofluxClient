@@ -17,7 +17,6 @@ package core.clan
 	public class PlayerClanLogo extends Sprite
 	{
 		private var g:Game;
-		
 		private var player:Player;
 		
 		private var callback:Function;

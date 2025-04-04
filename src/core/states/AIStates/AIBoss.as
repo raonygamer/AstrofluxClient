@@ -13,17 +13,11 @@ package core.states.AIStates
 	public class AIBoss implements IState
 	{
 		private var b:Boss;
-		
 		private var g:Game;
-		
 		private var courseSendTime:Number;
-		
 		private var courseSendInterval:Number = 3000;
-		
 		private var rotationSpeedCurrent:Number = 0;
-		
 		private var nextRegen:Number;
-		
 		private var sm:StateMachine;
 		
 		public function AIBoss(g:Game, b:Boss)

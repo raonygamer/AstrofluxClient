@@ -9,9 +9,7 @@ package core.hud.components
 	public class ButtonNewMission extends ButtonHud
 	{
 		private var g:Game;
-		
 		private var tween:TweenMax;
-		
 		private var hintArrow:Image;
 		
 		public function ButtonNewMission(clickCallback:Function, g:Game)

@@ -9,39 +9,22 @@ package data
 	public class Settings
 	{
 		public var sb:SceneBase;
-		
 		public var keybinds:KeyBinds;
-		
 		private var dirty:Boolean = false;
-		
 		private var soundManager:ISound;
-		
 		private var _musicVolume:Number = 0.5;
-		
 		private var _effectVolume:Number = 0.5;
-		
 		private var _showHud:Boolean = true;
-		
 		private var _showLatency:Boolean = false;
-		
 		private var _showEffects:Boolean = true;
-		
 		private var _showBackground:Boolean = true;
-		
 		private var _mouseAim:Boolean = true;
-		
 		private var _keyboardAim:Boolean = true;
-		
 		private var _rotationSpeed:Number = 1;
-		
 		private var _mouseFire:Boolean = false;
-		
 		private var _iWantAllTimedMissions:Boolean = false;
-		
 		private var _fireWithHotkeys:Boolean = true;
-		
 		private var _quality:int = 0;
-		
 		private var _chatMuted:String = "";
 		
 		public function Settings()

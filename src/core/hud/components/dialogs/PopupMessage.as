@@ -12,13 +12,10 @@ package core.hud.components.dialogs
 	public class PopupMessage extends Sprite
 	{
 		protected var textField:Text;
-		
 		protected var box:Box = new Box(200,100,"highlight",1,15);
-		
 		public var closeButton:Button;
 		
 		public var callback:Function;
-		
 		protected var bgr:Quad = new Quad(100,100,0x22000000);
 		
 		public function PopupMessage(closeText:String = "OK", borderColor:uint = 5592405)

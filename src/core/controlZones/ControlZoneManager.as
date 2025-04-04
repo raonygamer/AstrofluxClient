@@ -8,9 +8,7 @@ package core.controlZones
 	public class ControlZoneManager
 	{
 		public static var claimData:Message;
-		
 		private var g:Game;
-		
 		public var controlZones:Vector.<ControlZone> = new Vector.<ControlZone>();
 		
 		public function ControlZoneManager(g:Game)

@@ -13,21 +13,13 @@ package core.states.gameStates.missions
 	public class MissionsState extends PlayState
 	{
 		private var goTo:String;
-		
 		private var bg:Image;
-		
 		private var closeButton:ButtonExpandableHud;
-		
 		private var storyButton:ButtonExpandableHud;
-		
 		private var dailyButton:ButtonExpandableHud;
-		
 		private var timedButton:ButtonExpandableHud;
-		
 		private var activeButton:ButtonExpandableHud;
-		
 		private var activePage:Sprite;
-		
 		private var tween:TweenMax;
 		
 		public function MissionsState(g:Game, goTo:String = "")

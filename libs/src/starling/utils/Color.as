@@ -32,7 +32,6 @@ package starling.utils
         public static const NAVY:uint = 0x000080;
         public static const FUCHSIA:uint = 0xff00ff;
         public static const PURPLE:uint = 0x800080;
-
         /** Returns the alpha part of an ARGB color (0 - 255). */
         public static function getAlpha(color:uint):int
         {
@@ -93,7 +92,6 @@ package starling.utils
             var red:uint = ((color >> 16) & 0xff) * factor;
             var green:uint = ((color >> 8) & 0xff) * factor;
             var blue:uint = (color & 0xff) * factor;
-
             if (alpha > 255)
                 alpha = 255;
             if (red > 255)
@@ -114,17 +112,14 @@ package starling.utils
             var startR:uint = (startColor >> 16) & 0xff;
             var startG:uint = (startColor >> 8) & 0xff;
             var startB:uint = (startColor) & 0xff;
-
             var endA:uint = (endColor >> 24) & 0xff;
             var endR:uint = (endColor >> 16) & 0xff;
             var endG:uint = (endColor >> 8) & 0xff;
             var endB:uint = (endColor) & 0xff;
-
             var newA:uint = startA + (endA - startA) * ratio;
             var newR:uint = startR + (endR - startR) * ratio;
             var newG:uint = startG + (endG - startG) * ratio;
             var newB:uint = startB + (endB - startB) * ratio;
-
             return (newA << 24) | (newR << 16) | (newG << 8) | newB;
         }
 

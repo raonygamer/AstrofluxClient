@@ -37,7 +37,6 @@ package com.adobe.protocols.dict.events
 	public class MatchEvent extends Event
 	{
 		private var _matches:Array;
-
 		public static const MATCH:String = "match";
 
 		public function MatchEvent(type:String, bubbles:Boolean = false,

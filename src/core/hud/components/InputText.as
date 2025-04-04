@@ -11,7 +11,6 @@ package core.hud.components
 	public class InputText extends TextInput
 	{
 		public static var globalStyleProvider:IStyleProvider;
-		
 		private static var textFormat:TextFormat = new TextFormat("Verdana",12,0xffffff);
 		
 		public function InputText(x:int, y:int, w:int, h:int)

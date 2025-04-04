@@ -75,7 +75,6 @@ package starling.events
             var height:int = 32 * scale;
             var thickness:Number = 1.5 * scale;
             var shape:Shape = new Shape();
-
             // draw dark outline
             shape.graphics.lineStyle(thickness, 0x0, 0.3);
             shape.graphics.drawCircle(width / 2, height / 2, radius + thickness);

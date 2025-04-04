@@ -9,7 +9,6 @@ package core.states.menuStates
 	public class UpgradesState extends DisplayState
 	{
 		private var techTree:TechTree;
-		
 		private var p:Player;
 		
 		public function UpgradesState(g:Game, p:Player)

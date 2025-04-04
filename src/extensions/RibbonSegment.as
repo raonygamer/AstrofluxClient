@@ -7,19 +7,12 @@ package extensions
 	public class RibbonSegment
 	{
 		private static var sHelperMatrix:Matrix = new Matrix();
-		
 		private static var sHelperPoint:Point = new Point();
-		
 		public var ribbonTrail:RibbonTrail;
-		
 		public var x0:Number = 0;
-		
 		public var y0:Number = 0;
-		
 		public var x1:Number = 0;
-		
 		public var y1:Number = 0;
-		
 		public var alpha:Number = 1;
 		
 		public function RibbonSegment()

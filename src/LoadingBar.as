@@ -8,7 +8,6 @@ package
 	public class LoadingBar extends Sprite
 	{
 		private var status:TextBitmap;
-		
 		private var percent:TextField;
 		
 		public function LoadingBar(x:Number, y:Number)

@@ -3,13 +3,10 @@ package core.hud.components
 	public class ButtonPvP extends ButtonHud
 	{
 		public var text1:Text;
-		
 		public var text2:Text;
 		
 		private var callback:Function;
-		
 		private var maxWidthT1:int = 30;
-		
 		private var maxWidthT2:int = 30;
 		
 		public function ButtonPvP(callback:Function, type:String)

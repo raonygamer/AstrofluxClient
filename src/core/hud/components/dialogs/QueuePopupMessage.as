@@ -9,9 +9,7 @@ package core.hud.components.dialogs
 	public class QueuePopupMessage extends PopupMessage
 	{
 		private var type:String;
-		
 		private var timeText:Text;
-		
 		public var confirmButton:Button;
 		
 		public function QueuePopupMessage(type:String)

@@ -23,55 +23,30 @@ package core.hud.components
 	public class CrewDisplayBox extends Sprite
 	{
 		private static const HEIGHT:int = 128;
-		
 		private static const WIDTH:int = 117;
-		
 		public static const IMAGES_SPECIALS:Vector.<String> = Vector.<String>(["spec_cold.png","spec_heat.png","spec_radiation.png","spec_first_contact.png","spec_trade.png","spec_collaboration.png","spec_kinetic.png","spec_energy.png","spec_bio_weapons.png"]);
-		
 		public static const IMAGES_SKILLS:Vector.<String> = Vector.<String>(["skill_environment.png","skill_diplomacy.png","skill_combat.png"]);
-		
 		private var exploreTimer:HudTimer;
-		
 		private var img:Image;
-		
 		private var selectedFlash:Quad = new Quad(5 * 60,190,0xffffff);
-		
 		private var crewMember:CrewMember;
-		
 		private var area:ExploreArea;
-		
 		private var injuryTimer:HudTimer;
-		
 		private var injuryStatus:TextBitmap;
-		
 		private var upgradeArtifactBox:ArtifactCargoBox;
-		
 		private var upgradeInstantButton:Button;
-		
 		private var upgradeArtifactTimer:HudTimer;
-		
 		private var box:GradientBox;
-		
 		private var nextY:int = 30;
-		
 		public var selected:Boolean;
-		
 		private var g:Game;
-		
 		private var confirmBox:PopupConfirmMessage;
-		
 		private var p:Player;
-		
 		private var crewState:CrewState;
-		
 		private var inSelectState:Boolean;
-		
 		private var upgradeStatus:Text = new Text();
-		
 		private var textY:int = 155;
-		
 		private var selectButton:Button;
-		
 		private var inUse:Boolean = false;
 		
 		public function CrewDisplayBox(g:Game, crewMember:CrewMember, area:ExploreArea, p:Player = null, inSelectState:Boolean = true, crewState:CrewState = null)

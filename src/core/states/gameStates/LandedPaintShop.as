@@ -24,19 +24,12 @@ package core.states.gameStates
 	public class LandedPaintShop extends LandedState
 	{
 		private var preview:GameObject;
-		
 		private var sliderShipHue:Slider;
-		
 		private var sliderShipBrightness:Slider;
-		
 		private var sliderShipSaturation:Slider;
-		
 		private var sliderShipContrast:Slider;
-		
 		private var sliderEngineHue:Slider;
-		
 		private var fleetObj:FleetObj;
-		
 		private var emitters:Vector.<Emitter> = new Vector.<Emitter>();
 		
 		public function LandedPaintShop(g:Game, body:Body)

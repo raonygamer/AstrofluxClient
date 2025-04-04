@@ -70,11 +70,9 @@ package starling.display
         private var _cameraPosition:Vector3D;
         private var _enterFrameEvent:EnterFrameEvent;
         private var _enterFrameListeners:Vector.<DisplayObject>;
-
         // helper objects
         private static var sMatrix:Matrix = new Matrix();
         private static var sMatrix3D:Matrix3D = new Matrix3D();
-
         /** @private */
         public function Stage(width:int, height:int, color:uint = 0)
         {
@@ -131,7 +129,6 @@ package starling.display
             var painter:Painter = Starling.painter;
             var state:RenderState = painter.state;
             var context:Context3D = painter.context;
-
             if (destination == null)
             {
                 var width:int = context.backBufferWidth;
@@ -317,7 +314,6 @@ package starling.display
         {
             var instances:Vector.<Starling> = Starling.all;
             var numInstances:int = instances.length;
-
             for (var i:int = 0; i < numInstances; ++i)
                 if (instances[i].stage == this)
                     return instances[i];

@@ -27,35 +27,20 @@ package core.states.gameStates
 	public class PodState extends PlayState
 	{
 		private var bgr:Image;
-		
 		private var tracks1:Image;
-		
 		private var tracks2:Image;
-		
 		private const TRACK1_Y:Number = 140;
-		
 		private const TRACK2_Y:Number = 340;
-		
 		private var podsContainer:Sprite;
-		
 		private var buttonContainer:Sprite;
-		
 		private var lootContainer:Sprite;
-		
 		private var buy1Button:Button;
-		
 		private var buy10Button:Button;
-		
 		private var boughtPods:int = 0;
-		
 		private var nrOfPodsText:TextField;
-		
 		private var closeButton:ButtonExpandableHud;
-		
 		private var pods:Vector.<Pod> = new Vector.<Pod>();
-		
 		private var floatTween:TweenMax;
-		
 		private var currentPod:Pod;
 		
 		public function PodState(g:Game)
@@ -680,15 +665,10 @@ import textures.TextureLocator;
 class Pod extends Sprite
 {
 	public var top:Image;
-	
 	public var bottom:Image;
-	
 	public var center:Button;
-	
 	private var lootText:TextBitmap;
-	
 	private var cTween:TweenMax;
-	
 	private var tween:TweenMax;
 	
 	public function Pod(g:Game)

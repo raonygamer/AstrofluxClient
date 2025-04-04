@@ -12,25 +12,15 @@ package core.text
 	public class TextManager
 	{
 		public var inactiveTexts:Vector.<TextParticle>;
-		
 		public var textHandler:TextHandler;
-		
 		private var g:Game;
-		
 		private var dmgTextCounter:int = 0;
-		
 		private var missionCompleteText:TextParticle;
-		
 		private var bossSpawnedText:TextParticle;
-		
 		private var uberRankCompleteText:TextParticle;
-		
 		private var uberRankExtraLifeText:TextParticle;
-		
 		private var uberTaskText:TextParticle;
-		
 		private var latestMissionUpdateText:TextParticle;
-		
 		private var isPlayingNewMissionArrived:Boolean = false;
 		
 		public function TextManager(g:Game)

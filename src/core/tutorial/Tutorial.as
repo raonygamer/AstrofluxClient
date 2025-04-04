@@ -22,63 +22,34 @@ package core.tutorial
 	public class Tutorial
 	{
 		private static var dialogs:Vector.<CrewDialogBox> = new Vector.<CrewDialogBox>();
-		
 		private var g:Game;
-		
 		private var soundManager:ISound;
-		
 		private var tutorialArray:Array;
-		
 		private var introStartId:String = "intro start";
-		
 		private var introId:String = "intro";
-		
 		private var controlsHint:Image;
-		
 		private var dialogBox:CrewDialogBox;
-		
 		private var showExploreAdviceId:String = "explore areas";
-		
 		private var showCompressorAdviceId:String = "compressor advice";
-		
 		private var showMissionCompleteAdviceId:String = "mission complete";
-		
 		private var showForumAdviceId:String = "forum";
-		
 		private var showFacebookInviteHintId:String = "facebook invites";
-		
 		private var showArtifactUpgradeAdviceId:String = "artifact upgrade";
-		
 		private var showCargoAdviceId:String = "cargo upgrade";
-		
 		private var showUpgradeAdviceId:String = "upgrade tree";
-		
 		private var showExploreAdvice2Id:String = "can leave explore";
-		
 		private var showArtifactFoundId:String = "artifact found";
-		
 		private var showSendCrewHintId:String = "send crew to explore";
-		
 		private var showForgotCrewHintId:String = "forgot crew on explore";
-		
 		private var showLandingHintId:String = "land on body";
-		
 		private var showKillSpawnerHintId:String = "kill spawner";
-		
 		private var showShopLocationHintId:String = "weapon factory location";
-		
 		private var showShopAdviceId:String = "weapon production";
-		
 		private var showWarpGateHintId:String = "warp gate location";
-		
 		private var showChangeWeaponId:String = "change weapon";
-		
 		private var showWarpGateAdviceId:String = "warp license";
-		
 		private var showMapTargetAdviceId:String = "map targets";
-		
 		private var showRecycleAdviceId:String = "recycle";
-		
 		private var showSpecialUnlocksId:String = "special unlocks";
 		
 		public function Tutorial(g:Game)

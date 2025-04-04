@@ -11,33 +11,19 @@ package core.hud.components
 	public class Box extends Sprite
 	{
 		protected static var normalTexture:Texture;
-		
 		protected static var highlightTexture:Texture;
-		
 		protected static var buyTexture:Texture;
-		
 		protected static var lightTexture:Texture;
-		
 		protected static var themeLoaded:Boolean;
-		
 		public static const STYLE_HIGHLIGHT:String = "highlight";
-		
 		public static const STYLE_NORMAL:String = "normal";
-		
 		public static const STYLE_BUY:String = "buy";
-		
 		public static const STYLE_DARK_GRAY:String = "light";
-		
 		protected static const BUTTON_SCALE_9_GRID:Rectangle = new Rectangle(25,25,8,4);
-		
 		protected var w:Number;
-		
 		protected var h:Number;
-		
 		protected var styleImage:Image;
-		
 		protected var _style:String;
-		
 		protected var _padding:Number;
 		
 		public function Box(width:Number, height:Number, style:String = "normal", alpha:Number = 1, padding:Number = 20)

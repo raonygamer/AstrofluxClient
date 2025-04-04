@@ -13,7 +13,6 @@ package core.hud.components.credits
 	public class RedeemSuccess extends PopupMessage
 	{
 		private var container:Sprite;
-		
 		private var g:Game;
 		
 		public function RedeemSuccess(g:Game, skin:String)

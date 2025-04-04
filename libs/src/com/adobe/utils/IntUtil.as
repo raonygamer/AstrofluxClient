@@ -68,7 +68,6 @@ package com.adobe.utils
 
 		/** String for quick lookup of a hex character based on index */
 		private static var hexChars:String = "0123456789abcdef";
-
 		/**
 		 * Outputs the hex value of a int, allowing the developer to specify
 		 * the endinaness in the process.  Hex output is lowercase.
@@ -84,7 +83,6 @@ package com.adobe.utils
 		public static function toHex(n:int, bigEndian:Boolean = false):String
 		{
 			var s:String = "";
-
 			if (bigEndian)
 			{
 				for (var i:int = 0; i < 4; i++)

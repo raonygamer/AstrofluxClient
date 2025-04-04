@@ -16,65 +16,35 @@ package core.hud.components.techTree
 	public class TechLevelIcon extends Sprite
 	{
 		public static var ICON_WIDTH:int = 40;
-		
 		public static var ICON_PADDING:int = 5;
-		
 		public static const STATE_UPGRADED:String = "upgraded";
-		
 		public static const STATE_CAN_BE_UPGRADED:String = "can be upgraded";
-		
 		public static const STATE_CANT_BE_UPGRADED:String = "can\'t be upgraded";
-		
 		public static const STATE_LOCKED:String = "locked";
-		
 		public static const STATE_SELECTED:String = "selected";
-		
 		public static const STATE_SKIN_LOCKED:String = "skin locked";
-		
 		public var level:int;
-		
 		public var playerLevel:int;
-		
 		public var mineralType1:String;
-		
 		public var mineralType2:String;
-		
 		public var table:String;
-		
 		public var tech:String;
-		
 		public var upgradeName:String;
-		
 		public var description:String;
-		
 		private var bitmap:Image;
-		
 		private var bitmapHover:Image;
-		
 		private var bitmapNotAvailable:Image;
-		
 		private var bitmapAvailable:Image;
-		
 		private var bitmapSelected:Image;
-		
 		private var bitmapMax:Image;
-		
 		private var bitmapLocked:Image;
-		
 		private var bitmapSkinLocked:Image;
-		
 		private var textureManager:ITextureManager;
-		
 		private var dataManager:IDataManager;
-		
 		private var number:TextBitmap;
-		
 		private var techItemObject:Object;
-		
 		private var state:String;
-		
 		private var tb:TechBar;
-		
 		private var showTooltip:Boolean;
 		
 		public function TechLevelIcon(tb:TechBar, state:String, level:int, techSkill:TechSkill, showTooltip:Boolean)

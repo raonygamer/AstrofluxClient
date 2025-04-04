@@ -78,9 +78,7 @@ package com.adobe.air.filesystem
 		public static const DEFAULT_MONITOR_INTERVAL:Number = 1000;
 		private var _interval:Number;
 		private var fileExists:Boolean = false;
-
 		private var lastModifiedTime:Number;
-
 		/**
 		 *  Constructor
 		 *
@@ -197,7 +195,6 @@ package com.adobe.air.filesystem
 		private function onTimerEvent(e:TimerEvent):void
 		{
 			var outEvent:FileMonitorEvent;
-
 			if (fileExists != _file.exists)
 			{
 				if (_file.exists)
@@ -222,7 +219,6 @@ package com.adobe.air.filesystem
 				}
 
 				var modifiedTime:Number = _file.modificationDate.getTime();
-
 				if (modifiedTime == lastModifiedTime)
 				{
 					return;

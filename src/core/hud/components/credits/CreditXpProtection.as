@@ -8,7 +8,6 @@ package core.hud.components.credits
 	public class CreditXpProtection extends CreditDayItem
 	{
 		private var selectedDays:int;
-		
 		private var price:int;
 		
 		public function CreditXpProtection(g:Game, parent:Sprite)

@@ -8,9 +8,7 @@ package core.states.ship
 	public class LandedShip implements IState
 	{
 		private var sm:StateMachine;
-		
 		private var ship:PlayerShip;
-		
 		private var body:Body;
 		
 		public function LandedShip(ship:PlayerShip, body:Body)

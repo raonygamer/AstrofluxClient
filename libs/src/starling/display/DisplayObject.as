@@ -139,27 +139,17 @@ package starling.display
         private var _orientationChanged:Boolean;
         private var _is3D:Boolean;
         private var _maskee:DisplayObject;
-
         // internal members (for fast access on rendering)
 
         /** @private */ internal var _parent:DisplayObjectContainer;
-
         /** @private */ internal var _lastParentOrSelfChangeFrameID:uint;
-
         /** @private */ internal var _lastChildChangeFrameID:uint;
-
         /** @private */ internal var _tokenFrameID:uint;
-
         /** @private */ internal var _pushToken:BatchToken = new BatchToken();
-
         /** @private */ internal var _popToken:BatchToken = new BatchToken();
-
         /** @private */ internal var _hasVisibleArea:Boolean;
-
         /** @private */ internal var _filter:FragmentFilter;
-
         /** @private */ internal var _mask:DisplayObject;
-
         // helper objects
 
         private static var sAncestors:Vector.<DisplayObject> = new <DisplayObject>[];
@@ -171,7 +161,6 @@ package starling.display
         private static var sHelperMatrixAlt:Matrix = new Matrix();
         private static var sHelperMatrix3D:Matrix3D = new Matrix3D();
         private static var sHelperMatrixAlt3D:Matrix3D = new Matrix3D();
-
         /** @private */
         public function DisplayObject()
         {
@@ -217,7 +206,6 @@ package starling.display
         {
             var commonParent:DisplayObject;
             var currentObject:DisplayObject;
-
             if (out)
                 out.identity();
             else
@@ -423,7 +411,6 @@ package starling.display
         {
             var commonParent:DisplayObject;
             var currentObject:DisplayObject;
-
             if (out)
                 out.identity();
             else
@@ -571,7 +558,6 @@ package starling.display
         {
             var parent:DisplayObject = _parent || _maskee;
             var frameID:int = Starling.frameID;
-
             _lastParentOrSelfChangeFrameID = frameID;
             _hasVisibleArea = _alpha != 0.0 && _visible && _maskee == null &&
                 _scaleX != 0.0 && _scaleY != 0.0;
@@ -589,7 +575,6 @@ package starling.display
         public function get requiresRedraw():Boolean
         {
             var frameID:uint = Starling.frameID;
-
             return _lastParentOrSelfChangeFrameID == frameID ||
                 _lastChildChangeFrameID == frameID;
         }
@@ -601,7 +586,6 @@ package starling.display
         {
             var object:DisplayObject = this;
             var max:uint = 0xffffffff;
-
             while (object && object._tokenFrameID != max)
             {
                 object._tokenFrameID = max;
@@ -621,7 +605,6 @@ package starling.display
                 object2:DisplayObject):DisplayObject
         {
             var currentObject:DisplayObject = object1;
-
             while (currentObject)
             {
                 sAncestors[sAncestors.length] = currentObject; // avoiding 'push'
@@ -745,7 +728,6 @@ package starling.display
                         var d:Number = _scaleY * cos;
                         var tx:Number = _x - _pivotX * a - _pivotY * c;
                         var ty:Number = _y - _pivotX * b - _pivotY * d;
-
                         _transformationMatrix.setTo(a, b, c, d, tx, ty);
                     }
                 }
@@ -774,7 +756,6 @@ package starling.display
         public function set transformationMatrix(matrix:Matrix):void
         {
             const PI_Q:Number = Math.PI / 4.0;
-
             setRequiresRedraw();
             _orientationChanged = false;
             _transformationMatrix.copyFrom(matrix);

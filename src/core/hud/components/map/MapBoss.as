@@ -9,11 +9,8 @@ package core.hud.components.map
 	public class MapBoss
 	{
 		private var boss:Boss;
-		
 		private var scale:Number = 0.4;
-		
 		private var layer:Sprite = new Sprite();
-		
 		private var scull:Image;
 		
 		public function MapBoss(container:Sprite, boss:Boss)

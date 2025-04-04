@@ -7,11 +7,8 @@ package generics
 	public class Localize
 	{
 		private static var langObj:Object;
-		
 		public static var language:String = "en";
-		
 		public static var activateLanguageSelection:Boolean = false;
-		
 		private static var r:RegExp = new RegExp(/(\W+)/g);
 		
 		public function Localize()

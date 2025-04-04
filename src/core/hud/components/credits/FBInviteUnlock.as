@@ -8,7 +8,6 @@ package core.hud.components.credits
 	public class FBInviteUnlock extends Button
 	{
 		private var g:Game;
-		
 		private var nrReq:int;
 		
 		private var successCallBack:Function;

@@ -53,7 +53,6 @@ package starling.display
         private var _muted:Boolean;
         private var _wasStopped:Boolean;
         private var _soundTransform:SoundTransform;
-
         /** Creates a movie clip from the provided textures and with the specified default framerate.
          *  The movie will have the size of the first frame. */
         public function MovieClip(textures:Vector.<Texture>, fps:Number = 12)
@@ -74,7 +73,6 @@ package starling.display
             if (fps <= 0)
                 throw new ArgumentError("Invalid fps: " + fps);
             var numFrames:int = textures.length;
-
             _defaultFrameDuration = 1.0 / fps;
             _loop = true;
             _playing = true;
@@ -260,7 +258,6 @@ package starling.display
             // Thus, we have to start over with the remaining time whenever that happens.
 
             var frame:MovieClipFrame = _frames[_currentFrameID];
-
             if (_wasStopped)
             {
                 // if the clip was stopped and started again,
@@ -304,7 +301,6 @@ package starling.display
             var frameAction:Function = null;
             var previousFrameID:int = _currentFrameID;
             var changedFrame:Boolean;
-
             while (passedTime >= restTimeInFrame)
             {
                 changedFrame = false;
@@ -518,7 +514,6 @@ class MovieClipFrame
         if (action != null)
         {
             var numArgs:int = action.length;
-
             if (numArgs == 0)
                 action();
             else if (numArgs == 1)

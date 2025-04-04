@@ -7,9 +7,7 @@ package core.login
 	public class ConnectStatus extends Sprite
 	{
 		private var connectTween:TweenMax;
-		
 		private var connectText:Text = new Text();
-		
 		private var connectSubText:Text = new Text();
 		
 		public function ConnectStatus()

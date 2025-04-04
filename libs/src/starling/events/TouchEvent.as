@@ -57,15 +57,12 @@ package starling.events
     {
         /** Event type for touch or mouse input. */
         public static const TOUCH:String = "touch";
-
         private var _shiftKey:Boolean;
         private var _ctrlKey:Boolean;
         private var _timestamp:Number;
         private var _visitedObjects:Vector.<EventDispatcher>;
-        
         /** Helper object. */
         private static var sTouches:Vector.<Touch> = new <Touch>[];
-        
         /** Creates a new TouchEvent instance. */
         public function TouchEvent(type:String, touches:Vector.<Touch>=null, shiftKey:Boolean=false,
                                    ctrlKey:Boolean=false, bubbles:Boolean=true)
@@ -97,7 +94,6 @@ package starling.events
         {
             _timestamp = -1.0;
             var numTouches:int = touches ? touches.length : 0;
-
             for (var i:int=0; i<numTouches; ++i)
                 if (touches[i].timestamp > _timestamp)
                     _timestamp = touches[i].timestamp;
@@ -112,13 +108,11 @@ package starling.events
             if (out == null) out = new <Touch>[];
             var allTouches:Vector.<Touch> = data as Vector.<Touch>;
             var numTouches:int = allTouches.length;
-            
             for (var i:int=0; i<numTouches; ++i)
             {
                 var touch:Touch = allTouches[i];
                 var correctTarget:Boolean = touch.isTouching(target);
                 var correctPhase:Boolean = (phase == null || phase == touch.phase);
-                    
                 if (correctTarget && correctPhase)
                     out[out.length] = touch; // avoiding 'push'
             }
@@ -136,11 +130,9 @@ package starling.events
         {
             getTouches(target, phase, sTouches);
             var numTouches:int = sTouches.length;
-            
             if (numTouches > 0) 
             {
                 var touch:Touch = null;
-                
                 if (id < 0) touch = sTouches[0];
                 else
                 {

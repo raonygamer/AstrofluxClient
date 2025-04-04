@@ -7,11 +7,8 @@ package core.pools
 	public class RibbonTrailPool
 	{
 		private var meshBatch:MeshBatch;
-		
 		private var inactiveRibbonTrails:Vector.<RibbonTrail>;
-		
 		private var activeRibbonTrails:Vector.<RibbonTrail>;
-		
 		private var g:Game;
 		
 		public function RibbonTrailPool(g:Game)

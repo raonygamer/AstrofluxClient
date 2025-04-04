@@ -47,7 +47,6 @@ package starling.display
     {
         private var _scale9Grid:Rectangle;
         private var _tileGrid:Rectangle;
-
         // helper objects
         private static var sPadding:Padding = new Padding();
         private static var sBounds:Rectangle = new Rectangle();
@@ -57,7 +56,6 @@ package starling.display
         private static var sPosRows:Vector.<Number> = new Vector.<Number>(3, true);
         private static var sTexCols:Vector.<Number> = new Vector.<Number>(3, true);
         private static var sTexRows:Vector.<Number> = new Vector.<Number>(3, true);
-
         /** Creates an image with a texture mapped onto it. */
         public function Image(texture:Texture)
         {
@@ -205,7 +203,6 @@ package starling.display
             var frame:Rectangle = texture.frame;
             var absScaleX:Number = scaleX > 0 ? scaleX : -scaleX;
             var absScaleY:Number = scaleY > 0 ? scaleY : -scaleY;
-
             // If top and bottom row / left and right column are empty, this is actually
             // a scale3 grid. In that case, we want the 'caps' to maintain their aspect ratio.
 
@@ -221,7 +218,6 @@ package starling.display
             var prevNumVertices:int = vertexData.numVertices;
             var numVertices:int, numQuads:int;
             var correction:Number;
-
             // The following rectangles are used to figure everything out.
             // The meaning of each is depicted in this sketch: http://i.imgur.com/KUcv71O.jpg
 
@@ -229,7 +225,6 @@ package starling.display
             var textureBounds:Rectangle = Pool.getRectangle();
             var pixelBounds:Rectangle = Pool.getRectangle();
             var intersection:Rectangle = Pool.getRectangle();
-
             gridCenter.copyFrom(_scale9Grid);
             textureBounds.setTo(0, 0, texture.frameWidth, texture.frameHeight);
 
@@ -357,7 +352,6 @@ package starling.display
         {
             const posAttr:String = "position";
             const texAttr:String = "texCoords";
-
             var row:int, col:int;
             var colWidthPos:Number, rowHeightPos:Number;
             var colWidthTex:Number, rowHeightTex:Number;
@@ -368,7 +362,6 @@ package starling.display
             var currentU:Number = 0.0;
             var currentV:Number = 0.0;
             var vertexID:int = 0;
-
             for (row = 0; row < 3; ++row)
             {
                 rowHeightPos = posRows[row];
@@ -433,7 +426,6 @@ package starling.display
             var invScaleY:Number = scaleY > 0 ? 1.0 / scaleY : -1.0 / scaleY;
             var frameWidth:Number = _tileGrid.width > 0 ? _tileGrid.width : texture.frameWidth;
             var frameHeight:Number = _tileGrid.height > 0 ? _tileGrid.height : texture.frameHeight;
-
             frameWidth *= invScaleX;
             frameHeight *= invScaleY;
 
@@ -443,7 +435,6 @@ package starling.display
             var tileHeight:Number = texture.height * (frameHeight / texture.frameHeight);
             var modX:Number = (_tileGrid.x * invScaleX) % frameWidth;
             var modY:Number = (_tileGrid.y * invScaleY) % frameHeight;
-
             if (modX < 0)
                 modX += frameWidth;
             if (modY < 0)
@@ -451,7 +442,6 @@ package starling.display
 
             var startX:Number = modX + tileX;
             var startY:Number = modY + tileY;
-
             if (startX > (frameWidth - tileWidth))
                 startX -= frameWidth;
             if (startY > (frameHeight - tileHeight))
@@ -464,7 +454,6 @@ package starling.display
             var currentX:Number;
             var currentY:Number = startY;
             var vertexID:int = 0;
-
             indexData.numIndices = 0;
 
             while (currentY < bounds.height)

@@ -23,53 +23,29 @@ package core.hud.components
 	public class ShopItemBar extends Sprite
 	{
 		private static var SPECIAL_WEAPON_BLOOD_CLAW:String = "P6XvSQpMr0q7kQUsjeHvwQ";
-		
 		private static var SPECIAL_WEAPON_X27S:String = "w3-ZtQ-y_kiefCpnvFo88A";
-		
 		private static var SPECIAL_WEAPON_SPORE:String = "nRRv5U5g30adeYN9X2C78Q";
-		
 		private var priceItems:Vector.<PriceCommodities>;
-		
 		private var dataManager:IDataManager;
-		
 		private var textureManager:ITextureManager;
-		
 		private var buyObj:Object;
-		
 		private var alreadyAquiredText:TextBitmap;
-		
 		private var buyButton:Button;
-		
 		private var buyWithFluxButton:Button;
-		
 		private var confirmBuyWithFlux:CreditBuyBox;
-		
 		private var nameText:TextBitmap;
-		
 		private var weaponIcon:Image;
-		
 		private var g:Game;
-		
 		private var _canAfford:Boolean = true;
-		
 		private var _hasItem:Boolean = false;
-		
 		private var infoContainer:Sprite;
-		
 		private var selectContainer:Sprite;
-		
 		private var selectQuad:Quad;
-		
 		private var selected:Boolean = false;
-		
 		private var hover:Boolean = false;
-		
 		private var table:String;
-		
 		private var key:String;
-		
 		private var orText:TextBitmap;
-		
 		private var fluxCost:int;
 		
 		public function ShopItemBar(g:Game, parent:Sprite, shopItem:Object, fluxCost:int)

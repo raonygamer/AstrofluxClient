@@ -8,22 +8,16 @@ package facebook
    public class FB
    {
       private static var access_token:String = null;
-
       private static var app_id:String = null;
-
       private static var debug:Boolean = false;
-
       private static var uiFlashId:String = null;
-
       private static var uiCallbackId:Number = 0;
-
       private static var allowedMethods:Object = {
             "GET": 1,
             "POST": 1,
             "DELETE": 1,
             "PUT": 1
          };
-
       private static var readOnlyCalls:Object = {
             "fql_query": 1,
             "fql_multiquery": 1,
@@ -32,13 +26,9 @@ package facebook
             "stream_get": 1,
             "users_getinfo": 1
          };
-
       private static var data:FBData = new FBData();
-
       private static var _formatRE:RegExp = /(\{[^\}^\{]+\})/g;
-
       private static var _trimRE:RegExp = /^\s*|\s*$/g;
-
       private static var _quoteRE:RegExp = /["\\\x00-\x1f\x7f-\x9f]/g;
 
       public function FB()

@@ -14,7 +14,6 @@ package core.states.gameStates
 	public class RoamingState extends PlayState
 	{
 		private var mayLand:Boolean;
-		
 		private var exitDialog:PopupConfirmMessage;
 		
 		public function RoamingState(g:Game)

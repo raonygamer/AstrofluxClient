@@ -118,12 +118,10 @@ package starling.utils
     {
         // This HTTPStatusEvent is only available in AIR
         private static const HTTP_RESPONSE_STATUS:String = "httpResponseStatus";
-
         private var _starling:Starling;
         private var _numLostTextures:int;
         private var _numRestoredTextures:int;
         private var _numLoadingQueues:int;
-
         private var _defaultTextureOptions:TextureOptions;
         private var _checkPolicyFile:Boolean;
         private var _keepAtlasXmls:Boolean;
@@ -131,20 +129,16 @@ package starling.utils
         private var _numConnections:int;
         private var _verbose:Boolean;
         private var _queue:Array;
-
         private var _textures:Dictionary;
         private var _atlases:Dictionary;
         private var _sounds:Dictionary;
         private var _xmls:Dictionary;
         private var _objects:Dictionary;
         private var _byteArrays:Dictionary;
-
         /** helper objects */
         private static var sNames:Vector.<String> = new <String>[];
-
         /** Regex for name / extension extraction from URL. */
         private static const NAME_REGEX:RegExp = /([^\?\/\\]+?)(?:\.([\w\-]+))?(?:\?.*)?$/;
-
         /** Create a new AssetManager. The 'scaleFactor' and 'useMipmaps' parameters define
          *  how enqueued bitmaps will be converted to textures. */
         public function AssetManager(scaleFactor:Number = 1, useMipmaps:Boolean = false)
@@ -171,13 +165,10 @@ package starling.utils
         {
             for each (var texture:Texture in _textures)
                 texture.dispose();
-
             for each (var atlas:TextureAtlas in _atlases)
                 atlas.dispose();
-
             for each (var xml:XML in _xmls)
                 System.disposeXML(xml);
-
             for each (var byteArray:ByteArray in _byteArrays)
                 byteArray.clear();
         }
@@ -224,7 +215,6 @@ package starling.utils
 
             for each (var atlas:TextureAtlas in _atlases)
                 atlas.getNames(prefix, out);
-
             out.sort(Array.CASEINSENSITIVE);
             return out;
         }
@@ -520,7 +510,6 @@ package starling.utils
                 {
                     var typeXml:XML = describeType(rawAsset);
                     var childNode:XML;
-
                     if (_verbose)
                         log("Looking for static embedded assets in '" +
                                 (typeXml.@name).split("::").pop() + "'");
@@ -570,7 +559,6 @@ package starling.utils
                 options:TextureOptions = null):String
         {
             var filename:String = null;
-
             if (getQualifiedClassName(asset) == "flash.filesystem::File")
             {
                 filename = asset["name"];
@@ -623,7 +611,6 @@ package starling.utils
 
             const PROGRESS_PART_ASSETS:Number = 0.9;
             const PROGRESS_PART_XMLS:Number = 1.0 - PROGRESS_PART_ASSETS;
-
             var i:int;
             var canceled:Boolean = false;
             var xmls:Vector.<XML> = new <XML>[];
@@ -631,7 +618,6 @@ package starling.utils
             var assetCount:int = _queue.length;
             var assetProgress:Array = [];
             var assetIndex:int = 0;
-
             for (i = 0; i < assetCount; ++i)
                 assetProgress[i] = 0.0;
 
@@ -683,7 +669,6 @@ package starling.utils
 
                 var sum:Number = 0.0;
                 var len:int = assetProgress.length;
-
                 for (i = 0; i < len; ++i)
                     sum += assetProgress[i];
 
@@ -719,7 +704,6 @@ package starling.utils
                 var xml:XML = xmls[index];
                 var rootNode:String = xml.localName();
                 var xmlProgress:Number = (index + 1) / (xmls.length + 1);
-
                 if (rootNode == "TextureAtlas")
                 {
                     name = getName(xml.@imagePath.toString());
@@ -793,7 +777,6 @@ package starling.utils
                 onProgress:Function, onComplete:Function):void
         {
             var canceled:Boolean = false;
-
             addEventListener(Event.CANCEL, cancel);
             loadRawAsset(rawAsset, progress, process);
 
@@ -803,7 +786,6 @@ package starling.utils
                 var bytes:ByteArray;
                 var object:Object = null;
                 var xml:XML = null;
-
                 // the 'current' instance might have changed by now
                 // if we're running in a set-up with multiple instances.
                 _starling.makeCurrent();
@@ -996,7 +978,6 @@ package starling.utils
             var urlLoader:URLLoader = null;
             var urlRequest:URLRequest = null;
             var url:String = null;
-
             if (rawAsset is Class)
             {
                 setTimeout(complete, 1, new rawAsset());
@@ -1037,7 +1018,6 @@ package starling.utils
                 {
                     var headers:Array = event["responseHeaders"];
                     var contentType:String = getHttpHeader(headers, "Content-Type");
-
                     if (contentType && /(audio|image)\//.exec(contentType))
                         extension = contentType.split("/").pop();
                 }
@@ -1053,7 +1033,6 @@ package starling.utils
             {
                 var bytes:ByteArray = transformData(urlLoader.data as ByteArray, url);
                 var sound:Sound;
-
                 if (bytes == null)
                 {
                     complete(null);
@@ -1136,7 +1115,6 @@ package starling.utils
         protected function getName(rawAsset:Object):String
         {
             var name:String;
-
             if (rawAsset is String)
                 name = rawAsset as String;
             else if (rawAsset is URLRequest)
@@ -1186,7 +1164,6 @@ package starling.utils
             var start:int = 0;
             var length:int = bytes.length;
             var wanted:int = char.charCodeAt(0);
-
             // recognize BOMs
 
             if (length >= 4 &&

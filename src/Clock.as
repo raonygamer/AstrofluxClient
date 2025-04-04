@@ -9,27 +9,16 @@ package {
 	public class Clock extends EventDispatcher
 	{
 		public static const CLOCK_READY:String = "clockReady";
-		
 		private var connection:Connection;
-		
 		private var client:Client;
-		
 		private var deltas:Array;
-		
 		private var responsePending:Boolean;
-		
 		private var lockedInServerTime:Boolean;
-		
 		private var timeRequestSent:Number;
-		
 		private var syncTimeDelta:Number = 0;
-		
 		private var maxDeltas:Number;
-		
 		private var latencyError:Number;
-		
 		public var latency:Number;
-		
 		private var beginning:Number;
 		
 		public function Clock(connection:Connection, client:Client)

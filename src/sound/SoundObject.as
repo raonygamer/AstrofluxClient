@@ -12,23 +12,14 @@ package sound
 	public class SoundObject extends Sound
 	{
 		private var position:Number;
-		
 		private var sc:SoundChannel;
-		
 		private var loop:Boolean;
-		
 		public var isPlaying:Boolean = false;
-		
 		private var _volume:Number;
-		
 		public var multipleAllowed:Boolean = false;
-		
 		public var key:String;
-		
 		private var _originalVolume:Number;
-		
 		private var soundChannels:Vector.<SoundChannel> = new Vector.<SoundChannel>();
-		
 		private var oldTime:int = 0;
 		
 		public function SoundObject(url:String)

@@ -42,18 +42,15 @@ package starling.display
     public class Button extends DisplayObjectContainer
     {
         private static const MAX_DRAG_DIST:Number = 50;
-
         private var _upState:Texture;
         private var _downState:Texture;
         private var _overState:Texture;
         private var _disabledState:Texture;
-
         private var _contents:Sprite;
         private var _body:Image;
         private var _textField:TextField;
         private var _textBounds:Rectangle;
         private var _overlay:Sprite;
-
         private var _scaleWhenDown:Number;
         private var _scaleWhenOver:Number;
         private var _alphaWhenDown:Number;
@@ -62,7 +59,6 @@ package starling.display
         private var _enabled:Boolean;
         private var _state:String;
         private var _triggerBounds:Rectangle;
-
         /** Creates a button with a set of state-textures and (optionally) some text.
          *  Any state that is left 'null' will display the up-state texture. Beware that all
          *  state textures should have the same dimensions. */
@@ -114,12 +110,10 @@ package starling.display
         {
             var prevWidth:Number = _body.width;
             var prevHeight:Number = _body.height;
-
             _body.readjustSize();
 
             var scaleX:Number = _body.width / prevWidth;
             var scaleY:Number = _body.height / prevHeight;
-
             _textBounds.x *= scaleX;
             _textBounds.y *= scaleY;
             _textBounds.width *= scaleX;
@@ -153,7 +147,6 @@ package starling.display
 
             var touch:Touch = event.getTouch(this);
             var isWithinBounds:Boolean;
-
             if (!_enabled)
             {
                 return;
@@ -507,7 +500,6 @@ package starling.display
 
             var newWidth:Number = value / (this.scaleX || 1.0);
             var scale:Number = newWidth / (_body.width || 1.0);
-
             _body.width = newWidth;
             _textBounds.x *= scale;
             _textBounds.width *= scale;
@@ -521,7 +513,6 @@ package starling.display
         {
             var newHeight:Number = value / (this.scaleY || 1.0);
             var scale:Number = newHeight / (_body.height || 1.0);
-
             _body.height = newHeight;
             _textBounds.y *= scale;
             _textBounds.height *= scale;

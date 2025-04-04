@@ -49,10 +49,8 @@ package starling.events
         private var _height:Number;
         private var _cancelled:Boolean;
         private var _bubbleChain:Vector.<EventDispatcher>;
-
         /** Helper object. */
         private static var sHelperPoint:Point = new Point();
-
         /** Creates a new Touch object. */
         public function Touch(id:int)
         {
@@ -136,7 +134,6 @@ package starling.events
             {
                 var length:int = 1;
                 var element:DisplayObject = _target;
-
                 _bubbleChain.length = 1;
                 _bubbleChain[0] = element;
 

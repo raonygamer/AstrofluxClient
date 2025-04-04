@@ -6,17 +6,11 @@ package core.credits
 	public class SalesManager
 	{
 		public static const TYPE_FLUX:String = "flux";
-		
 		public static const TYPE_ITEM:String = "item";
-		
 		public static const TYPE_SPECIAL_SKIN:String = "sskin";
-		
 		public static const TYPE_PACKAGE:String = "pack";
-		
 		public static var eventList:Vector.<SaleEvent> = null;
-		
 		public var saleList:Vector.<Sale> = new Vector.<Sale>();
-		
 		private var g:Game;
 		
 		public function SalesManager(g:Game)

@@ -55,7 +55,6 @@ package starling.utils
         {
             var pos:int;
             var length:int = string.length;
-
             for (pos = 0; pos < length; ++pos)
                 if (string.charCodeAt(pos) > 0x20)
                     break;
@@ -87,7 +86,6 @@ package starling.utils
         {
             var startPos:int, endPos:int;
             var length:int = string.length;
-
             for (startPos = 0; startPos < length; ++startPos)
                 if (string.charCodeAt(startPos) > 0x20)
                     break;

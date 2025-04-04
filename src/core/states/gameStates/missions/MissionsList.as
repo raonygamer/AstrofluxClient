@@ -10,15 +10,10 @@ package core.states.gameStates.missions
 	public class MissionsList extends Sprite
 	{
 		public static var instance:MissionsList;
-		
 		private var g:Game;
-		
 		private var missions:Vector.<Mission>;
-		
 		private var missionViews:Vector.<MissionView> = new Vector.<MissionView>();
-		
 		private var missionsContainer:ScrollContainer;
-		
 		private var majorType:String;
 		
 		public function MissionsList(g:Game)

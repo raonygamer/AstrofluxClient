@@ -18,13 +18,9 @@ package core.hud.components.hotkeys
 	public class Abilities extends Sprite
 	{
 		private var hotkeys:Vector.<AbilityHotkey> = new Vector.<AbilityHotkey>();
-		
 		private var g:Game;
-		
 		private var dataManager:IDataManager;
-		
 		private var textureManager:ITextureManager;
-		
 		private var keyBinds:KeyBinds;
 		
 		public function Abilities(g:Game)

@@ -26,169 +26,87 @@ package core.unit
 	public class Unit extends GameObject
 	{
 		private static const HP_MAXWIDTH:int = 20;
-		
 		private static const HP_MINWIDTH:int = 10;
-		
 		private static const HP_MAXWIDTH_PVP:int = 50;
-		
 		private var damageFilter:ColorMatrixFilter;
-		
 		private var healFilter:ColorMatrixFilter;
-		
 		protected var hpBar:Image;
-		
 		protected var shieldBar:Image;
-		
 		private var _bodyName:String;
-		
 		public var syncId:int;
-		
 		public var parentObj:GameObject;
-		
 		public var disableHealEndtime:Number;
-		
 		public var slowDownEndtime:Number;
-		
 		public var slowDown:Number;
-		
 		public var nextHitEffectReady:Number = 0;
-		
 		public var lastDmgText:TextParticle;
-		
 		public var lastDmgTextOffset:int;
-		
 		public var lastDmgTime:Number;
-		
 		public var lastDmg:int;
-		
 		public var lastHealText:TextParticle;
-		
 		public var lastHealTextOffset:int;
-		
 		public var lastHealTime:Number;
-		
 		public var lastHeal:int;
-		
 		public var team:int;
-		
 		public var stateMachine:StateMachine;
-		
 		public var hasDmgBoost:Boolean;
-		
 		public var dmgBoostCD:int;
-		
 		public var dmgBoostNextRdy:Number;
-		
 		public var dmgBoostEndTime:Number;
-		
 		public var dmgBoostDuration:int;
-		
 		public var dmgBoostCost:Number;
-		
 		public var usingDmgBoost:Boolean;
-		
 		public var dmgBoostBonus:Number;
-		
 		public var alive:Boolean;
-		
 		public var uberDifficulty:Number;
-		
 		public var uberLevelFactor:Number;
-		
 		public var hp:int;
-		
 		private var _hpMax:int;
-		
 		public var armorThreshold:int;
-		
 		public var armorThresholdBase:int;
-		
 		public var shieldHp:int;
-		
 		protected var _shieldHpMax:int;
-		
 		public var xp:int;
-		
 		public var level:int;
-		
 		public var collisionRadius:Number;
-		
 		public var explosionEffect:String;
-		
 		public var explosionSound:String;
-		
 		public var shieldRegen:int;
-		
 		public var shieldRegenBase:int;
-		
 		public var shieldRegenCounter:int = 0;
-		
 		public var shieldRegenDuration:int = 1000;
-		
 		public var shieldRegenBonus:Number = 1;
-		
 		public var hpRegen:Number;
-		
 		public var hpRegenCounter:int;
-		
 		public var hpRegenDuration:int = 1000;
-		
 		public var invulnerable:Boolean = false;
-		
 		public var essential:Boolean = true;
-		
 		public var resistances:Vector.<Number>;
-		
 		private var barMaxWidth:int = 0;
-		
 		private var isFlashing:Boolean = false;
-		
 		protected var g:Game;
-		
 		private var _speed:Point;
-		
 		public var weaponPos:Point;
-		
 		public var enginePos:Point;
-		
 		public var group:Group;
-		
 		public var factions:Vector.<String>;
-		
 		public var isHostile:Boolean;
-		
 		public var dotTimers:Vector.<TweenMax>;
-		
 		public var dotEffect:String;
-		
 		public var obj:Object;
-		
 		public var active:Boolean = true;
-		
 		public var hideIfInactive:Boolean;
-		
 		public var triggersToActivte:int = 1;
-		
 		public var triggers:Vector.<Trigger>;
-		
 		public var lastBulletLocal:Number = 0;
-		
 		public var lastBulletGlobal:Number = 0;
-		
 		public var lastBulletTargetList:Vector.<Unit> = null;
-		
 		public var isBossUnit:Boolean = false;
-		
 		public var forceupdate:Boolean;
-		
 		public var originalFilter:ColorMatrixFilter;
-		
 		public var owner:PlayerShip = null;
-		
 		private var updateHealthBarTime:Number = 0;
-		
 		public var isInjured:Boolean = false;
-		
 		private var miniBarsAreAddedToCanvas:Boolean = false;
 		
 		public function Unit(g:Game)

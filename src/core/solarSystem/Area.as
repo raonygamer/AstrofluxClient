@@ -6,29 +6,17 @@ package core.solarSystem
 	public class Area
 	{
 		public static const TOTALSKILLTYPES:int = 3;
-		
 		public static const MINEVENTS:int = 4;
-		
 		public static const TOTALSPECIALTYPES:int = 9;
-		
 		public static const SKILLTYPE:Vector.<String> = Vector.<String>(["Survival","Diplomacy","Combat"]);
-		
 		public static const SKILLTYPEHTML:Vector.<String> = Vector.<String>(["Survival","Diplomacy","Combat"]);
-		
 		public static const REWARD_ACTIONS:Vector.<Array> = Vector.<Array>([["Salvaged","Discovered","Excavated"],["Bribe","Smuggled","Traded"],["Stole","Pillaged","Robbed"]]);
-		
 		public static const SPECIALTYPE:Vector.<String> = Vector.<String>(["Cold","Heat","Radiation","First Contact","Trade","Collaboration","Kinetic Weapons","Energy Weapons","Bio Weapons"]);
-		
 		public static const SPECIALTYPEHTML:Vector.<String> = Vector.<String>(["<FONT COLOR=\'#4682B4\'>" + SPECIALTYPE[0] + "</FONT>","<FONT COLOR=\'#FF2400\'>" + SPECIALTYPE[1] + "</FONT>","<FONT COLOR=\'#9CCB19\'>" + SPECIALTYPE[2] + "</FONT>","<FONT COLOR=\'#8B0000\'>" + SPECIALTYPE[3] + "</FONT>","<FONT COLOR=\'#7B0000\'>" + SPECIALTYPE[4] + "</FONT>","<FONT COLOR=\'#9151ff\'>" + SPECIALTYPE[5] + "</FONT>","<FONT COLOR=\'#ffffff\'>" + SPECIALTYPE[6] + "</FONT>","<FONT COLOR=\'#ffdfdf\'>" + SPECIALTYPE[7] + "</FONT>","<FONT COLOR=\'#23ff23\'>" + SPECIALTYPE[8] + "</FONT>"]);
-		
 		public static const SPECIALCOLORTYPE:Vector.<uint> = Vector.<uint>([4620980,16720896,10275609,9109504,8060928,9523711,0xffffff,0xffdfdf,2359075]);
-		
 		public static const COLORTYPE:Vector.<uint> = Vector.<uint>([0x55ff55,0x5555ff,0xff3333]);
-		
 		public static const COLORTYPESTR:Vector.<String> = Vector.<String>(["#55ff55","#5555ff","#ff3333"]);
-		
 		public static const COLORTYPEFILL:Vector.<uint> = Vector.<uint>([0x22bb22,0x2222bb,0xbb1111]);
-		
 		public static const SIZE:Vector.<String> = Vector.<String>(["Tiny","Small","Small","Medium","Medium","Large","Large","Very Large","Very Large","Gigantic"]);
 		
 		public function Area()

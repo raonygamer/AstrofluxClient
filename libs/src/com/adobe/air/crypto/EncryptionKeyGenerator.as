@@ -97,10 +97,8 @@ package com.adobe.air.crypto
 		 * encryption key.
 		 */
 		public static const ENCRYPTED_DB_PASSWORD_ERROR_ID:uint = 3138;
-
 		private static const STRONG_PASSWORD_PATTERN:RegExp = /(?=^.{8,32}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
 		private static const SALT_ELS_KEY:String = "com.adobe.air.crypto::EncryptedDBSalt$$$";
-
 		// ------- Constructor -------
 
 		/**
@@ -201,7 +199,6 @@ package com.adobe.air.crypto
 			}
 
 			var concatenatedPassword:String = concatenatePassword(password);
-
 			var saltKey:String;
 			if (overrideSaltELSKey == null)
 			{
@@ -220,11 +217,8 @@ package com.adobe.air.crypto
 			}
 
 			var unhashedKey:ByteArray = xorBytes(concatenatedPassword, salt);
-
 			var hashedKey:String = SHA256.hashBytes(unhashedKey);
-
 			var encryptionKey:ByteArray = generateEncryptionKey(hashedKey);
-
 			return encryptionKey;
 		}
 
@@ -234,7 +228,6 @@ package com.adobe.air.crypto
 		{
 			var len:int = pwd.length;
 			var targetLength:int = 32;
-
 			if (len == targetLength)
 			{
 				return pwd;
@@ -242,9 +235,7 @@ package com.adobe.air.crypto
 
 			var repetitions:int = Math.floor(targetLength / len);
 			var excess:int = targetLength % len;
-
 			var result:String = "";
-
 			for (var i:uint = 0; i < repetitions; i++)
 			{
 				result += pwd;
@@ -258,7 +249,6 @@ package com.adobe.air.crypto
 		private function makeSalt():ByteArray
 		{
 			var result:ByteArray = new ByteArray;
-
 			for (var i:uint = 0; i < 8; i++)
 			{
 				result.writeUnsignedInt(Math.round(Math.random() * uint.MAX_VALUE));
@@ -270,7 +260,6 @@ package com.adobe.air.crypto
 		private function xorBytes(passwordString:String, salt:ByteArray):ByteArray
 		{
 			var result:ByteArray = new ByteArray();
-
 			for (var i:uint = 0; i < 32; i += 4)
 			{
 				// Extract 4 bytes from the password string and convert to a uint
@@ -281,7 +270,6 @@ package com.adobe.air.crypto
 
 				salt.position = i;
 				var o2:uint = salt.readUnsignedInt();
-
 				var xor:uint = o1 ^ o2;
 				result.writeUnsignedInt(xor);
 			}
@@ -292,7 +280,6 @@ package com.adobe.air.crypto
 		private function generateEncryptionKey(hash:String):ByteArray
 		{
 			var result:ByteArray = new ByteArray();
-
 			// select a range of 128 bits (32 hex characters) from the hash
 			// In this case, we'll use the bits starting from position 17
 			for (var i:uint = 0; i < 32; i += 2)

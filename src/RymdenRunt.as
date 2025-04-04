@@ -14,23 +14,14 @@ package
 	public class RymdenRunt extends Sprite
 	{
 		public static var s:Starling;
-		
 		public static var origin:String = "not set";
-		
 		public static var isInFocus:Boolean = true;
-		
 		public static var instance:RymdenRunt;
-		
 		public static var info:Object;
-		
 		public static var isDesktop:Boolean;
-		
 		public static var isBuggedFlashVersion:Boolean = false;
-		
 		public static var parameters:Object = {};
-		
 		public static var partnerSegmentArray:Array = [];
-		
 		private static var startTime:Date = new Date();
 		
 		public function RymdenRunt(info:Object = null)

@@ -7,9 +7,7 @@ package core.states
 	public class SceneStateMachine
 	{
 		private var currentRoom:ISceneState;
-		
 		private var profile:ISceneState;
-		
 		private var stage:Stage;
 		
 		public function SceneStateMachine(stage:Stage)

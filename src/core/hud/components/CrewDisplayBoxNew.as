@@ -20,63 +20,34 @@ package core.hud.components
 	public class CrewDisplayBoxNew extends Sprite
 	{
 		private static const HEIGHT:int = 58;
-		
 		private static const WIDTH:int = 52;
-		
 		private static const textX1:int = 60;
-		
 		private static const textX2:int = 175;
-		
 		private static const textY1:int = 7;
-		
 		private static const textY2:int = 30;
-		
 		public static const MODE_SHIP:int = 0;
-		
 		public static const MODE_CANTINA:int = 1;
-		
 		public static const MODE_UPGRADE_ARTIFACT:int = 2;
-		
 		private var exploreTimer:HudTimer;
-		
 		private var trainingTimer:HudTimer;
-		
 		private var trainInstantButton:Button;
-		
 		private var upgradeArtifactBox:ArtifactCargoBox;
-		
 		private var upgradeInstantButton:Button;
-		
 		private var upgradeArtifactTimer:HudTimer;
-		
 		private var img:Image;
-		
 		public var crewMember:CrewMember;
-		
 		private var injuryTimer:HudTimer;
-		
 		private var injuryStatus:Text;
-		
 		private var box:Quad;
-		
 		private var g:Game;
-		
 		private var bgColor:uint = 1717572;
-		
 		public var mode:int;
-		
 		private var isSelected:Boolean = false;
-		
 		private var selectButton:Button;
-		
 		private var waitingTween:TweenMax;
-		
 		private var trainingCompleteText:Text;
-		
 		private var onBoardShipText:Text;
-		
 		private var hovering:Boolean = false;
-		
 		private var doUpdate:Boolean = true;
 		
 		public function CrewDisplayBoxNew(g:Game, crewMember:CrewMember, mode:int = 0)

@@ -16,11 +16,8 @@ package
 	public class Minilogo extends MovieClip
 	{
 		public static var showLogo:Boolean = true;
-		
 		private var align:String;
-		
 		private var t:Tween;
-		
 		private var rect:Rectangle;
 		
 		public function Minilogo(align:String = "BC")

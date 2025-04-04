@@ -8,43 +8,24 @@ package core.credits
 	public class CreditManager extends EventDispatcher
 	{
 		public static const COST_SMALL:int = 3;
-		
 		public static const COST_MEDIUM:int = 6;
-		
 		public static const RESET_COST:int = 20;
-		
 		public static const RESET_PACKAGE_COST:int = 100;
-		
 		public static const INSTANTEXPLORE_COST_SMALL:int = 30;
-		
 		public static const INSTANTEXPLORE_COST_MEDIUM:int = 50;
-		
 		public static const INSTANTEXPLORE_COST_LARGE:int = 90;
-		
 		public static const TYPE_DAILY:String = "daily";
-		
 		public static const TYPE_MISSION:String = "missions";
-		
 		public static const TYPE_LEVEL:String = "level";
-		
 		public static const TYPE_LANDED:String = "planetLanded";
-		
 		public static const TYPE_CLEARED:String = "planetCleared";
-		
 		public static const TYPE_FBLIKE:String = "fbLike";
-		
 		public static const TYPE_INVITE_1:String = "InviteRewardFlux1";
-		
 		public static const TYPE_INVITE_2:String = "InviteRewardFlux2";
-		
 		public static const TYPE_PVP:String = "pvp";
-		
 		public static var FLUX:int = 0;
-		
 		private static var artifactCosts:Array = [2,3,5,7,12,20,30,45,60];
-		
 		private var g:Game;
-		
 		private var p:Player;
 		
 		public function CreditManager(g:Game)

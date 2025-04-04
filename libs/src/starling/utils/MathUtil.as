@@ -19,7 +19,6 @@ package starling.utils
     public class MathUtil
     {
         private static const TWO_PI:Number = Math.PI * 2.0;
-
         /** @private */
         public function MathUtil()
         {
@@ -38,7 +37,6 @@ package starling.utils
             var vectorY:Number = pointB.y - pointA.y;
             var vectorZ:Number = pointB.z - pointA.z;
             var lambda:Number = -pointA.z / vectorZ;
-
             out.x = pointA.x + lambda * vectorX;
             out.y = pointA.y + lambda * vectorY;
 
@@ -57,17 +55,14 @@ package starling.utils
             var v1y:Number = b.y - a.y;
             var v2x:Number = p.x - a.x;
             var v2y:Number = p.y - a.y;
-
             var dot00:Number = v0x * v0x + v0y * v0y;
             var dot01:Number = v0x * v1x + v0y * v1y;
             var dot02:Number = v0x * v2x + v0y * v2y;
             var dot11:Number = v1x * v1x + v1y * v1y;
             var dot12:Number = v1x * v2x + v1y * v2y;
-
             var invDen:Number = 1.0 / (dot00 * dot11 - dot01 * dot01);
             var u:Number = (dot11 * dot02 - dot01 * dot12) * invDen;
             var v:Number = (dot00 * dot12 - dot01 * dot02) * invDen;
-
             return (u >= 0) && (v >= 0) && (u + v < 1);
         }
 

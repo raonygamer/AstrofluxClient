@@ -18,51 +18,28 @@ package core.hud.components
 	public class HealthAndShield extends DisplayObjectContainer
 	{
 		private static const HP_WIDTH:Number = 120;
-		
 		private static const SHIELD_WIDTH:Number = 120;
-		
 		private var playerHPBar:Image;
-		
 		private var colorGreen:uint;
-		
 		private var colorYellow:uint;
-		
 		private var colorRed:uint;
-		
 		private var playerHPText:TextField;
-		
 		private var playerHP:Image;
-		
 		private var playerHPBarBgr:Image;
-		
 		private var playerHPBarBgrGreen:Texture;
-		
 		private var playerHPBarBgrYellow:Texture;
-		
 		private var playerHPBarBgrRed:Texture;
-		
 		private var playerShieldBar:Image;
-		
 		private var playerShieldBarBgr:Image;
-		
 		private var colorBlue:uint;
-		
 		private var playerShieldText:TextField;
-		
 		private var playerShield:Image;
-		
 		private var textureManager:ITextureManager;
-		
 		private var toolTip:ToolTip;
-		
 		private var g:Game;
-		
 		private var warningOverlay:Quad = new Quad(1,1);
-		
 		private var inLowHp:Boolean = false;
-		
 		private var lowHpTween:TweenMax = null;
-		
 		private var oldTotal:Number = 0;
 		
 		public function HealthAndShield(g:Game)

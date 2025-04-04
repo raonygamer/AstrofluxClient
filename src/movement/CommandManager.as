@@ -10,9 +10,7 @@ package movement
 	public class CommandManager
 	{
 		public var commands:Vector.<Command> = new Vector.<Command>();
-		
 		private var sendBuffer:Vector.<Command> = new Vector.<Command>();
-		
 		private var g:Game;
 		
 		public function CommandManager(g:Game)

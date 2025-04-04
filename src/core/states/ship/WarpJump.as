@@ -12,13 +12,9 @@ package core.states.ship
 	public class WarpJump implements IState
 	{
 		private var ship:PlayerShip;
-		
 		private var sm:StateMachine;
-		
 		private var g:Game;
-		
 		private var hyperDriveEngaged:Boolean = false;
-		
 		private var warpJumpEffect:Vector.<Emitter>;
 		
 		public function WarpJump(g:Game, ship:PlayerShip)

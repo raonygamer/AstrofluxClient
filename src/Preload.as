@@ -13,9 +13,7 @@ package
 	public class Preload extends EventDispatcher
 	{
 		private var textureManager:ITextureManager;
-		
 		private var loadingBar:LoadingBar;
-		
 		private var imageLoadingStarted:Boolean = false;
 		
 		public function Preload(container:Sprite)

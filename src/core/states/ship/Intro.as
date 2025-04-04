@@ -10,17 +10,11 @@ package core.states.ship
 	public class Intro implements IState
 	{
 		private var ship:PlayerShip;
-		
 		private var sm:StateMachine;
-		
 		private var g:Game;
-		
 		private var hyperDriveEngaged:Boolean = true;
-		
 		private var warpJumpEffect:Vector.<Emitter>;
-		
 		private var startX:Number = 0;
-		
 		private var startY:Number = 0;
 		
 		public function Intro(g:Game, ship:PlayerShip, startX:Number, startY:Number)

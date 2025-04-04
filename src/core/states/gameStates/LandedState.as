@@ -25,31 +25,18 @@ package core.states.gameStates
 	public class LandedState extends GameState
 	{
 		protected var body:Body;
-		
 		protected var dataManager:IDataManager;
-		
 		protected var bg:Image;
-		
 		private var container:Sprite;
-		
 		private var menuHud:MenuHud;
-		
 		public var leaveButton:ButtonExpandableHud;
-		
 		private var shipButton:ButtonExpandableHud;
-		
 		private var fleetButton:ButtonExpandableHud;
-		
 		private var defaultButton:ButtonExpandableHud;
-		
 		private var cargoButton:ButtonExpandableHud;
-		
 		private var artifactButton:ButtonExpandableHud;
-		
 		private var crewButton:ButtonExpandableHud;
-		
 		private var bgrOverlay:Quad;
-		
 		private var bgrMenuOverlay:Quad;
 		
 		public function LandedState(g:Game, body:Body, stationName:String)

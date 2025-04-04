@@ -101,20 +101,16 @@ package starling.rendering
          *  <code>"position:float2"</code> */
         public static const VERTEX_FORMAT:VertexDataFormat =
             VertexDataFormat.fromString("position:float2");
-
         private var _vertexBuffer:VertexBuffer3D;
         private var _vertexBufferSize:int; // in bytes
         private var _indexBuffer:IndexBuffer3D;
         private var _indexBufferSize:int; // in number of indices
         private var _indexBufferUsesQuadLayout:Boolean;
-
         private var _mvpMatrix3D:Matrix3D;
         private var _onRestore:Function;
         private var _programBaseName:String;
-
         // helper objects
         private static var sProgramNameCache:Dictionary = new Dictionary();
-
         /** Creates a new effect. */
         public function Effect()
         {
@@ -184,7 +180,6 @@ package starling.rendering
             var numIndices:int = indexData.numIndices;
             var isQuadLayout:Boolean = indexData.useQuadLayout;
             var wasQuadLayout:Boolean = _indexBufferUsesQuadLayout;
-
             if (_indexBuffer)
             {
                 if (numIndices <= _indexBufferSize)
@@ -291,7 +286,6 @@ package starling.rendering
                     "m44 op, va0, vc0", // 4x4 matrix transform to output clipspace
                     "seq v0, va0, va0" // this is a hack that always produces "1"
                 ].join("\n");
-
             var fragmentShader:String =
                 "mov oc, v0"; // output color: white
 
@@ -333,7 +327,6 @@ package starling.rendering
             var baseName:String = this.programBaseName;
             var variantName:uint = this.programVariantName;
             var nameCache:Dictionary = sProgramNameCache[baseName];
-
             if (nameCache == null)
             {
                 nameCache = new Dictionary();
@@ -341,7 +334,6 @@ package starling.rendering
             }
 
             var name:String = nameCache[variantName];
-
             if (name == null)
             {
                 if (variantName)
@@ -363,7 +355,6 @@ package starling.rendering
             var name:String = this.programName;
             var painter:Painter = Starling.painter;
             var program:Program = painter.getProgram(name);
-
             if (program == null)
             {
                 program = createProgram();

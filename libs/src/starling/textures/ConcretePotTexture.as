@@ -29,11 +29,9 @@ package starling.textures
     internal class ConcretePotTexture extends ConcreteTexture
     {
         private var _textureReadyCallback:Function;
-
         private static var sMatrix:Matrix = new Matrix();
         private static var sRectangle:Rectangle = new Rectangle();
         private static var sOrigin:Point = new Point();
-
         /** Creates a new instance with the given parameters. */
         public function ConcretePotTexture(base:flash.display3D.textures.Texture, format:String,
                 width:int, height:int, mipMapping:Boolean,
@@ -70,7 +68,6 @@ package starling.textures
             potBase.uploadFromBitmapData(data);
 
             var buffer:BitmapData = null;
-
             if (data.width != nativeWidth || data.height != nativeHeight)
             {
                 buffer = new BitmapData(nativeWidth, nativeHeight, true, 0);

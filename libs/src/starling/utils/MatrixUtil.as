@@ -27,7 +27,6 @@ package starling.utils
         private static var sPoint3D:Vector3D = new Vector3D();
         private static var sMatrixData:Vector.<Number> =
             new <Number>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
         /** @private */
         public function MatrixUtil()
         {
@@ -150,7 +149,6 @@ package starling.utils
             var cosX:Number = Math.cos(skewX);
             var sinY:Number = Math.sin(skewY);
             var cosY:Number = Math.cos(skewY);
-
             matrix.setTo(matrix.a * cosY - matrix.b * sinX,
                     matrix.a * sinY + matrix.b * cosX,
                     matrix.c * cosY - matrix.d * sinX,
@@ -190,7 +188,6 @@ package starling.utils
         {
             var sin:Number = Math.sin(angle);
             var cos:Number = Math.cos(angle);
-
             matrix.setTo(matrix.a * cos + matrix.c * sin, matrix.b * cos + matrix.d * sin,
                     matrix.c * cos - matrix.a * sin, matrix.d * cos - matrix.b * sin,
                     matrix.tx, matrix.ty);
@@ -210,7 +207,6 @@ package starling.utils
             var cosX:Number = Math.cos(skewX);
             var sinY:Number = Math.sin(skewY);
             var cosY:Number = Math.cos(skewY);
-
             matrix.setTo(matrix.a * cosY + matrix.c * sinY,
                     matrix.b * cosY + matrix.d * sinY,
                     matrix.c * cosX - matrix.a * sinX,
@@ -253,7 +249,6 @@ package starling.utils
             var highestValue:Number = 0.0;
             var valueString:String;
             var value:Number;
-
             for (var i:int = 0; i < numValues; ++i)
             {
                 value = Math.abs(data[i]);
@@ -262,7 +257,6 @@ package starling.utils
             }
 
             var numChars:int = highestValue.toFixed(precision).length + 1;
-
             for (var y:int = 0; y < numRows; ++y)
             {
                 for (var x:int = 0; x < numCols; ++x)
@@ -298,10 +292,8 @@ package starling.utils
             // at the modelview matrix.
 
             const E:Number = 0.0001;
-
             var doSnap:Boolean = false;
             var aSq:Number, bSq:Number, cSq:Number, dSq:Number;
-
             if (matrix.b + E > 0 && matrix.b - E < 0 && matrix.c + E > 0 && matrix.c - E < 0)
             {
                 // what we actually want is 'Math.abs(matrix.a)', but squaring
@@ -364,7 +356,6 @@ package starling.utils
             const near:Number = 1;
             const scaleX:Number = stageWidth / width;
             const scaleY:Number = stageHeight / height;
-
             // set up general perspective
             sMatrixData[0] = 2 * focalLength / stageWidth; // 0,0
             sMatrixData[5] = -2 * focalLength / stageHeight; // 1,1  [negative to invert y-axis]

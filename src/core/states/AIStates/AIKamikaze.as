@@ -11,13 +11,9 @@ package core.states.AIStates
 	public class AIKamikaze implements IState
 	{
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var startTime:Number;
-		
 		private var startDelay:Number = 1000;
 		
 		public function AIKamikaze(g:Game, s:EnemyShip, target:Unit, targetPos:Heading, nextTurnDirection:int)

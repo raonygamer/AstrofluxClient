@@ -10,19 +10,12 @@ package core.states
 	public class GameStateMachine
 	{
 		private var previousState:IGameState;
-		
 		private var currentState:IGameState;
-		
 		private var currentTime:Number;
-		
 		private var newTime:Number;
-		
 		private var frameTime:Number;
-		
 		private var accumulator:Number = 0;
-		
 		private var _clock:Clock;
-		
 		private var inputManager:IInput;
 		
 		public function GameStateMachine()

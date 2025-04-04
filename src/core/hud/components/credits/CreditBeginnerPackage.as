@@ -14,7 +14,6 @@ package core.hud.components.credits
 	public class CreditBeginnerPackage extends CreditPackageItem
 	{
 		private var previewBox:Box;
-		
 		private var overlay:Quad;
 		
 		public function CreditBeginnerPackage(g:Game, parent:Sprite, spinner:Boolean = false)

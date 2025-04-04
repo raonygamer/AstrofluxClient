@@ -10,31 +10,18 @@ package core.boss
 	public class BossComponent extends Unit
 	{
 		public var offset:Point;
-		
 		public var imageOffset:Point;
-		
 		public var imageScale:Number;
-		
 		public var imageAngle:Number;
-		
 		public var imageRotationSpeed:Number;
-		
 		public var imageRotationSpeedCurrent:Number = 0;
-		
 		public var imageRotationMax:Number;
-		
 		public var imageRotationMin:Number;
-		
 		public var imagePivotPoint:Point;
-		
 		private var currentAngleOffset:Number = 0;
-		
 		public var effect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		public var effectX:int = 0;
-		
 		public var effectY:int = 0;
-		
 		public var effectTarget:GameObject = new GameObject();
 		
 		public function BossComponent(g:Game)

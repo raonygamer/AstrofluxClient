@@ -17,7 +17,6 @@ package core.hud.components.friends
 	public class FriendDisplayBox extends Sprite
 	{
 		private var friend:Friend;
-		
 		private var reputationIcon:Image;
 		
 		public function FriendDisplayBox(g:Game, friend:Friend)

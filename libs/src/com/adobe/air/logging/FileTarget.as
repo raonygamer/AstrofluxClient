@@ -50,7 +50,6 @@ package com.adobe.air.logging
 	public class FileTarget extends LineFormattedTarget
 	{
 		private const DEFAULT_LOG_PATH:String = "app-storage:/application.log";
-
 		private var log:File;
 
 		public function FileTarget(logFile:File = null)

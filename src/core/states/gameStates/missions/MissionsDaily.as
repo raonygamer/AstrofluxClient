@@ -6,7 +6,6 @@ package core.states.gameStates.missions
 	public class MissionsDaily extends Sprite
 	{
 		private var g:Game;
-		
 		private var list:DailyList;
 		
 		public function MissionsDaily(g:Game)

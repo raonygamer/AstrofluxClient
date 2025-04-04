@@ -10,15 +10,10 @@ package core.deathLine
 	public class DeathLineManager
 	{
 		private var g:Game;
-		
 		public var lines:Vector.<DeathLine> = new Vector.<DeathLine>();
-		
 		private var last:Point = new Point();
-		
 		private var isCut:Boolean = true;
-		
 		public var lineBatch:MeshBatch = new MeshBatch();
-		
 		private var selectedLineId:String = "";
 		
 		public function DeathLineManager(g:Game)

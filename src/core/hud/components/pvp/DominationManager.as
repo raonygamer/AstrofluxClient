@@ -15,53 +15,29 @@ package core.hud.components.pvp
 	public class DominationManager extends PvpManager
 	{
 		public var zones:Vector.<DominationZone> = new Vector.<DominationZone>();
-		
 		public var safeZones:Vector.<TeamSafeZone> = new Vector.<TeamSafeZone>();
-		
 		private var score:Vector.<int> = new Vector.<int>();
-		
 		private var scoreTextBlueTeam:Text;
-		
 		private var scoreTextRedTeam:Text;
-		
 		private const SCORE_LIMIT:Number = 1000;
-		
 		private const BAR_MAX_WIDTH:Number = 96;
-		
 		private var blueTeamBar:Quad = new Quad(100,24,0x222222);
-		
 		private var blueTeamBarBackground:Quad = new Quad(96,20,0x222288);
-		
 		private var blueTeamBarFill:Quad = new Quad(1,20,0x4444ff);
-		
 		private var blueZone1:Image;
-		
 		private var blueZone2:Image;
-		
 		private var blueZone3:Image;
-		
 		private var blueZone4:Image;
-		
 		private var blueZone5:Image;
-		
 		private var redTeamBar:Quad = new Quad(100,24,0x222222);
-		
 		private var redTeamBarBackground:Quad = new Quad(96,20,0x880000);
-		
 		private var redTeamBarFill:Quad = new Quad(1,20,0xff4444);
-		
 		private var redZone1:Image;
-		
 		private var redZone2:Image;
-		
 		private var redZone3:Image;
-		
 		private var redZone4:Image;
-		
 		private var redZone5:Image;
-		
 		private var container:Sprite = new Sprite();
-		
 		private var id:int = 1;
 		
 		public function DominationManager(g:Game)

@@ -9,9 +9,7 @@ package core.states.gameStates
 	public class PlayerListState extends PlayState implements IGameState
 	{
 		private var playerList:PlayerList;
-		
 		private var friendsButton:ButtonExpandableHud;
-		
 		private var systemPlayersButton:ButtonExpandableHud;
 		
 		public function PlayerListState(g:Game)

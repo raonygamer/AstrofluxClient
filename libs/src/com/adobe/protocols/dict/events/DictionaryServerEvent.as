@@ -37,7 +37,6 @@ package com.adobe.protocols.dict.events
 	public class DictionaryServerEvent extends Event
 	{
 		public static const SERVERS:String = "servers";
-
 		private var _servers:Array;
 
 		public function DictionaryServerEvent(type:String, bubbles:Boolean = false,
@@ -60,7 +59,6 @@ package com.adobe.protocols.dict.events
 		{
 			var out:DictionaryServerEvent = new DictionaryServerEvent(type,
 					bubbles, cancelable);
-
 			out.servers = _servers;
 
 			return out;

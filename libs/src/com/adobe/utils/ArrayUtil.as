@@ -79,7 +79,6 @@ package com.adobe.utils
 		public static function removeValueFromArray(arr:Array, value:Object):void
 		{
 			var len:uint = arr.length;
-
 			for (var i:Number = len; i > -1; i--)
 			{
 				if (arr[i] === value)
@@ -109,10 +108,8 @@ package com.adobe.utils
 		public static function createUniqueCopy(a:Array):Array
 		{
 			var newArray:Array = new Array();
-
 			var len:Number = a.length;
 			var item:Object;
-
 			for (var i:uint = 0; i < len; ++i)
 			{
 				item = a[i];
@@ -172,7 +169,6 @@ package com.adobe.utils
 			}
 
 			var len:Number = arr1.length;
-
 			for (var i:Number = 0; i < len; i++)
 			{
 				if (arr1[i] !== arr2[i])

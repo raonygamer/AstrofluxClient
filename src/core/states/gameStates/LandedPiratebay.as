@@ -16,15 +16,10 @@ package core.states.gameStates
 	public class LandedPiratebay extends LandedState
 	{
 		private var shopItemBars:Vector.<ShopItemBar> = new Vector.<ShopItemBar>();
-		
 		private var myCargo:Cargo;
-		
 		private var container:ScrollContainer;
-		
 		private var infoContainer:Sprite = new Sprite();
-		
 		private var hasBought:Boolean = false;
-		
 		private var fluxCost:int;
 		
 		public function LandedPiratebay(g:Game, body:Body, startMusic:Boolean = true)

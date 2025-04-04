@@ -37,7 +37,6 @@ package com.adobe.protocols.dict.util
 	public class CompleteResponseEvent extends Event
 	{
 		private var _response:String;
-
 		public static const COMPLETE_RESPONSE:String = "completeResponse";
 
 		public function CompleteResponseEvent(type:String, bubbles:Boolean = false,

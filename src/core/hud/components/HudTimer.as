@@ -7,15 +7,10 @@ package core.hud.components
 	public class HudTimer extends Sprite
 	{
 		private var time:Text;
-		
 		private var startTime:Number;
-		
 		private var finishTime:Number;
-		
 		private var g:Game;
-		
 		private var complete:Boolean;
-		
 		private var running:Boolean = false;
 		
 		public function HudTimer(g:Game, textSize:int = 11)

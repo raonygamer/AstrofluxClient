@@ -6,23 +6,14 @@ package core.states.gameStates
 	public class ShopState extends PlayState
 	{
 		public static const STATE_XP_BOOST:String = "xpBoost";
-		
 		public static const STATE_TRACTOR_BEAM:String = "tractorBeam";
-		
 		public static const STATE_XP_PROTECTION:String = "xpProtection";
-		
 		public static const STATE_CARGO_PROTECTION:String = "cargoProtection";
-		
 		public static const STATE_SUPPORTER_PACKAGE:String = "supporterPackage";
-		
 		public static const STATE_POWER_PACKAGE:String = "powerPackage";
-		
 		public static const STATE_MEGA_PACKAGE:String = "megaPackage";
-		
 		public static const STATE_BEGINNER_PACKAGE:String = "beginnerPackage";
-		
 		public static const STATE_PODS:String = "podPackage";
-		
 		private var shop:Shop;
 		
 		public function ShopState(g:Game, state:String = "")

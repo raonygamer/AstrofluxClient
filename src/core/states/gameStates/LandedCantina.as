@@ -12,13 +12,9 @@ package core.states.gameStates
 	public class LandedCantina extends LandedState
 	{
 		public static var WIDTH:Number = 698;
-		
 		private var mainBody:ScrollContainer;
-		
 		private var selectedCrewMember:CrewDetails;
-		
 		private var crewMembers:Vector.<CrewMember>;
-		
 		private var crew:Vector.<CrewDisplayBoxNew> = new Vector.<CrewDisplayBoxNew>();
 		
 		public function LandedCantina(g:Game, body:Body)

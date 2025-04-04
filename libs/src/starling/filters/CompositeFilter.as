@@ -127,9 +127,7 @@ class CompositeEffect extends FilterEffect
     public static const VERTEX_FORMAT:VertexDataFormat =
         FilterEffect.VERTEX_FORMAT.extend(
             "texCoords1:float2, texCoords2:float2, texCoords3:float2");
-
     private var _layers:Vector.<CompositeLayer>;
-
     private static var sLayers:Array = [];
     private static var sOffset:Vector.<Number> = new <Number>[0, 0, 0, 0];
     private static var sColor:Vector.<Number> = new <Number>[0, 0, 0, 0];
@@ -160,7 +158,6 @@ class CompositeEffect extends FilterEffect
         for each (var layer:CompositeLayer in _layers)
             if (layer.texture)
                 out[out.length] = layer;
-
         return out;
     }
 
@@ -169,12 +166,10 @@ class CompositeEffect extends FilterEffect
         var layers:Array = getUsedLayers(sLayers);
         var numLayers:int = layers.length;
         var i:int;
-
         if (numLayers)
         {
             var vertexShader:Array = ["m44 op, va0, vc0"]; // transform position to clip-space
             var layer:CompositeLayer = _layers[0];
-
             for (i = 0; i < numLayers; ++i) // v0-4 -> texture coords
             vertexShader.push(
                     StringUtil.format("add v{0}, va{1}, vc{2}", i, i + 1, i + 4) // add offset
@@ -183,13 +178,11 @@ class CompositeEffect extends FilterEffect
         var fragmentShader:Array = [
                 "seq ft5, v0, v0" // ft5 -> 1, 1, 1, 1
             ];
-
         for (i = 0; i < numLayers; ++i)
         {
             var fti:String = "ft" + i;
             var fci:String = "fc" + i;
             var vi:String = "v" + i;
-
             layer = _layers[i];
 
             fragmentShader.push(
@@ -235,7 +228,6 @@ override protected function get programVariantName():uint
     var layer:CompositeLayer;
     var layers:Array = getUsedLayers(sLayers);
     var numLayers:int = layers.length;
-
     for (var i:int = 0; i < numLayers; ++i)
     {
         layer = layers[i];
@@ -258,7 +250,6 @@ override protected function beforeDraw(context:Context3D):void
 {
     var layers:Array = getUsedLayers(sLayers);
     var numLayers:int = layers.length;
-
     if (numLayers)
     {
         for (var i:int = 0; i < numLayers; ++i)
@@ -266,7 +257,6 @@ override protected function beforeDraw(context:Context3D):void
             var layer:CompositeLayer = layers[i];
             var texture:Texture = layer.texture;
             var alphaFactor:Number = layer.replaceColor ? 1.0 : layer.alpha;
-
             sOffset[0] = -layer.x / (texture.root.nativeWidth / texture.scale);
             sOffset[1] = -layer.y / (texture.root.nativeHeight / texture.scale);
             sColor[0] = Color.getRed(layer.color) * alphaFactor / 255.0;
@@ -291,7 +281,6 @@ override protected function afterDraw(context:Context3D):void
 {
     var layers:Array = getUsedLayers(sLayers);
     var numLayers:int = layers.length;
-
     for (var i:int = 0; i < numLayers; ++i)
     {
         context.setTextureAt(i, null);

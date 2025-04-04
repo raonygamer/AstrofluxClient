@@ -7,23 +7,14 @@ package core.states.AIStates
 	public class AIStateFactory
 	{
 		public static const BULLET:String = "bullet";
-		
 		public static const HOMING_MISSILE:String = "homingMissile";
-		
 		public static const BLASTWAVE:String = "blastwave";
-		
 		public static const MINE:String = "mine";
-		
 		public static const BOOMERANG:String = "boomerang";
-		
 		public static const BOUNCING:String = "bouncing";
-		
 		public static const CLUSTER:String = "cluster";
-		
 		public static const INSTANTSPLITTING:String = "instantSplitting";
-		
 		public static const INSTANT:String = "instant";
-		
 		public static const TARGETPAINT:String = "targetPainter";
 		
 		public function AIStateFactory()

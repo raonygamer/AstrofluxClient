@@ -32,16 +32,13 @@ package starling.core
         private var _background:Quad;
         private var _labels:TextField;
         private var _values:TextField;
-
         private var _frameCount:int = 0;
         private var _totalTime:Number = 0;
-
         private var _fps:Number = 0;
         private var _memory:Number = 0;
         private var _gpuMemory:Number = 0;
         private var _drawCount:int = 0;
         private var _skipCount:int = 0;
-
         /** Creates a new Statistics Box. */
         public function StatsDisplay()
         {
@@ -52,7 +49,6 @@ package starling.core
             const height:Number = supportsGpuMem ? 35 : 27;
             const gpuLabel:String = supportsGpuMem ? "\ngpu memory:" : "";
             const labels:String = "frames/sec:\nstd memory:" + gpuLabel + "\ndraw calls:";
-
             _labels = new TextField(width, height, labels);
             _labels.format.setTo(fontName, fontSize, fontColor, Align.LEFT);
             _labels.batchable = true;

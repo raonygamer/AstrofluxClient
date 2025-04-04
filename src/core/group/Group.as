@@ -7,9 +7,7 @@ package core.group
 	public class Group
 	{
 		private var _players:Vector.<Player> = new Vector.<Player>();
-		
 		private var _id:String;
-		
 		private var g:Game;
 		
 		public function Group(g:Game, id:String)

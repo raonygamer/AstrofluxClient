@@ -6,7 +6,6 @@ package core.states
 	public class StateMachine
 	{
 		private var previousState:IState;
-		
 		private var currentState:IState;
 		
 		public function StateMachine()

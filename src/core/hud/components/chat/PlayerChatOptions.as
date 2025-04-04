@@ -12,13 +12,9 @@ package core.hud.components.chat
 	public class PlayerChatOptions extends ScrollContainer
 	{
 		private var g:Game;
-		
 		private var obj:Object;
-		
 		private var muteImage:Image;
-		
 		private var messageImage:Image;
-		
 		private var banImage:Image;
 		
 		public function PlayerChatOptions(g:Game, obj:Object)

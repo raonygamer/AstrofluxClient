@@ -22,17 +22,11 @@ package core.projectile
 	public class ProjectileManager
 	{
 		public var inactiveProjectiles:Vector.<Projectile>;
-		
 		public var projectiles:Vector.<Projectile>;
-		
 		public var projectilesById:Dictionary;
-		
 		private var TARGET_TYPE_SHIP:String = "ship";
-		
 		private var TARGET_TYPE_SPAWNER:String = "spawner";
-		
 		private var g:Game;
-		
 		private var meshBatch:MeshBatch;
 		
 		public function ProjectileManager(g:Game)

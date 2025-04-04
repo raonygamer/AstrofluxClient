@@ -13,25 +13,15 @@ package core.hud.components
 	public class ToolTip
 	{
 		private static var g:SceneBase;
-		
 		private static var toolTips:Vector.<ToolTip> = new Vector.<ToolTip>();
-		
 		private var container:ScrollContainer;
-		
 		private var target:DisplayObject;
-		
 		private var s:String;
-		
 		private var imgs:Vector.<Image>;
-		
 		private var imgsData:Array;
-		
 		private var maxWidth:int;
-		
 		private var hover:Boolean;
-		
 		private var c:uint;
-		
 		public var type:String;
 		
 		public function ToolTip(m:SceneBase, target:DisplayObject, tooltip:String, images:Array = null, type:String = "", maxWidth:int = 200)

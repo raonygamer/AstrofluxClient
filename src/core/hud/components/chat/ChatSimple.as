@@ -8,11 +8,8 @@ package core.hud.components.chat
 	public class ChatSimple extends Sprite
 	{
 		private var g:Game;
-		
 		private var tf:Label;
-		
 		private var maxLines:int = 10;
-		
 		private var nextTimeout:Number = 0;
 		
 		public function ChatSimple(g:Game)

@@ -26,39 +26,23 @@ package core.states.exploreStates
 	public class SelectTeamState extends DisplayState
 	{
 		public static var WIDTH:Number = 698;
-		
 		public static var PADDING:Number = 31;
-		
 		private var effectBackground:Bitmap;
 		
 		private var _callback:Function;
-		
 		private var confirmBox:PopupConfirmMessage;
-		
 		private var sendButton:Button;
-		
 		private var sizeText:TextBitmap;
-		
 		private var mainBody:ScrollContainer;
-		
 		private var clock:Image;
-		
 		private var hr:Image;
-		
 		private var time:TextBitmap;
-		
 		private var chance:Text;
-		
 		private var crewBoxes:Vector.<CrewDisplayBox> = new Vector.<CrewDisplayBox>();
-		
 		private var selectedCrew:Vector.<CrewDisplayBox> = new Vector.<CrewDisplayBox>();
-		
 		private var selectedText:TextBitmap;
-		
 		private var selectedText3:TextBitmap;
-		
 		private var b:Body;
-		
 		private var area:ExploreArea;
 		
 		public function SelectTeamState(g:Game, b:Body, area:ExploreArea)

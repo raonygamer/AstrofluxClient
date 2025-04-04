@@ -9,97 +9,51 @@ package camerafocus
 	public final class StarlingCameraFocus
 	{
 		private var _stage:Stage;
-		
 		private var _stageContainer:DisplayObject;
-		
 		private var _focusPosition:Point;
-		
 		private var _focusTracker:Point;
-		
 		private var _focusOrientation:Point;
-		
 		public var _focusCurrentLoc:Point;
-		
 		public var speed:Point;
-		
 		private var _focusLastLoc:Point;
-		
 		private var _focusDistX:Number;
-		
 		private var _focusDistY:Number;
-		
 		public var focusTarget:Object;
-		
 		private var _layersInfo:Dictionary;
-		
 		private var _boundaryLayer:DisplayObject;
-		
 		private var _switch:Boolean;
-		
 		private var _targetLastX:Number;
-		
 		private var _targetLastY:Number;
-		
 		private var _targetCurrentX:Number;
-		
 		private var _targetCurrentY:Number;
-		
 		private var _zoomFactor:Number;
-		
 		private var _intensity:Number;
-		
 		private var _shakeTimer:int;
-		
 		private var _shakeDecay:Number;
-		
 		public var trackStep:uint;
-		
 		public var swapStep:uint;
-		
 		public var zoomStep:uint;
-		
 		private var _tempStep:uint;
-		
 		private var _step:uint;
-		
 		public var ignoreLeftBound:Boolean;
-		
 		public var ignoreRightBound:Boolean;
-		
 		public var ignoreTopBound:Boolean;
-		
 		public var ignoreBottomBound:Boolean;
-		
 		public var isFocused:Boolean;
-		
 		public var isSwaping:Boolean;
-		
 		public var isZooming:Boolean;
-		
 		public var isShaking:Boolean;
-		
 		public var enableCallBack:Boolean;
-		
 		private var _boundaryEvent:CameraFocusEvent;
-		
 		private var _swapStartedEvent:CameraFocusEvent;
-		
 		private var _swapFinishedEvent:CameraFocusEvent;
-		
 		private var _zoomStartedEvent:CameraFocusEvent;
-		
 		private var _zoomFinishedEvent:CameraFocusEvent;
-		
 		private var _shakeStartedEvent:CameraFocusEvent;
-		
 		private var _shakeFinishedEvent:CameraFocusEvent;
-		
 		private var _upperLeftX:Number;
-		
 		private var _upperLeftY:Number;
-		
 		private var _lowerRightX:Number;
-		
 		private var _lowerRightY:Number;
 		
 		public function StarlingCameraFocus(aStage:Stage, aStageContainer:DisplayObject, aFocusTarget:Object, aLayersInfo:Array, aAutoStart:Boolean = false)

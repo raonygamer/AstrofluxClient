@@ -17,27 +17,16 @@ package core.hud.components.radar
 	public class Radar extends Sprite
 	{
 		public static const outerDetectionRadius:Number = 5000;
-		
 		public static const innerDetectionRadius:Number = 2500;
-		
 		private var unitsDetected:Number = 0;
-		
 		public var radius:Number = 60;
-		
 		private var textureManager:ITextureManager;
-		
 		private var g:Game;
-		
 		private var blips:Vector.<Blip> = new Vector.<Blip>();
-		
 		private var loaded:Boolean = false;
-		
 		private var blipBatch:MeshBatch = new MeshBatch();
-		
 		private var firstHalf:Boolean = true;
-		
 		private var quadBatch:MeshBatch = new MeshBatch();
-		
 		private var updateCount:int = 0;
 		
 		public function Radar(g:Game)
@@ -224,17 +213,11 @@ import textures.TextureLocator;
 class Blip extends Image
 {
 	private static const scale:Number = 10;
-	
 	public static var radarRadius:Number = 60;
-	
 	public var go:GameObject;
-	
 	private var blipWidth:Number;
-	
 	private var blipHeight:Number;
-	
 	private var radius:Number;
-	
 	private var g:Game;
 	
 	public function Blip(go:GameObject, ps:PlayerShip, g:Game)

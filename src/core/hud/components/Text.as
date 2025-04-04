@@ -14,39 +14,22 @@ package core.hud.components
 	public class Text extends DisplayObjectContainer
 	{
 		public static var H_ALIGN_LEFT:int = 0;
-		
 		public static var H_ALIGN_RIGHT:int = 1;
-		
 		public static var H_ALIGN_CENTER:int = 2;
-		
 		public static var V_ALIGN_TOP:int = 0;
-		
 		public static var V_ALIGN_MIDDLE:int = 1;
-		
 		public static var V_ALIGN_BOTTOM:int = 2;
-		
 		private static var BACKGROUND_COLOR:uint = 0;
-		
 		private static var GLOW_COLOR:uint = 16777215;
-		
 		private static var LEADING:int = 8;
-		
 		private var texture:Texture;
-		
 		protected var finalLayer:Image;
-		
 		private var layer:Bitmap = new Bitmap();
-		
 		protected var tf:TextField;
-		
 		private var format:TextFormat;
-		
 		protected var _hAlign:int = H_ALIGN_LEFT;
-		
 		private var _vAlign:int = V_ALIGN_TOP;
-		
 		private var _centerVertical:Boolean = false;
-		
 		private var oldText:String = "";
 		
 		public function Text(x:int = 0, y:int = 0, useWordWrap:Boolean = false, fontFamily:String = "DAIDRR")

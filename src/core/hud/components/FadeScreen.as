@@ -28,49 +28,27 @@ package core.hud.components
 	public class FadeScreen extends EventDispatcher
 	{
 		private static var Promotion:Class;
-		
 		private var fadeTime:int = 150;
-		
 		private var period:int = 30;
-		
 		private var currentStep:int = 0;
-		
 		private var bgrQuad:Quad = new Quad(1000,1000,4278190080);
-		
 		private var screenText:ScreenTextField = new ScreenTextField(12 * 60,160);
-		
 		private var screen:Sprite;
-		
 		private var loadingText:TextBitmap;
-		
 		private var fadeInSteps:int = fadeTime / period;
-		
 		private var fadeOutSteps:int = fadeTime / period;
-		
 		private var fadeInTimer:Timer = new Timer(period,fadeInSteps);
-		
 		private var fadeOutTimer:Timer = new Timer(period,fadeOutSteps);
-		
 		private var loadingImage:Image;
-		
 		private var loadingImage2:Image;
-		
 		private var tween:TweenMax;
-		
 		private var tween2:TweenMax;
-		
 		private var texts:Array = [];
-		
 		private var textsPvp:Array = [];
-		
 		private var textureManager:ITextureManager;
-		
 		private var promotionButton:NativeImageButton;
-		
 		private var promotionUrl:String = "";
-		
 		private var topPvpPlayersList:TopPvPPlayersList;
-		
 		private var stage:Stage;
 		
 		public function FadeScreen(stage:Stage)

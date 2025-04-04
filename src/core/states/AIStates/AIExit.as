@@ -8,11 +8,8 @@ package core.states.AIStates
 	public class AIExit implements IState
 	{
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var endTime:Number;
 		
 		public function AIExit(g:Game, s:EnemyShip)

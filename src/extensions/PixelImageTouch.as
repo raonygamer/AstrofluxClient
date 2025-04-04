@@ -9,7 +9,6 @@ package extensions
 	public class PixelImageTouch extends Image
 	{
 		private var _hitArea:PixelHitArea;
-		
 		private var threshold:uint;
 		
 		public function PixelImageTouch(texture:Texture, hitArea:PixelHitArea = null, threshold:uint = 255)

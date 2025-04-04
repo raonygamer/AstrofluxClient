@@ -14,73 +14,39 @@ package core.hud.components
 	public class ScreenTextField extends TextField
 	{
 		public static const PARAGRAPH_FINISHED:String = "paragraphFinished";
-		
 		public static const PAGE_FINISHED:String = "pageFinished";
-		
 		public static const ANIMATION_FINISHED:String = "animationFinished";
-		
 		public static const BEFORE_FADE_OUT:String = "beforeFadeOut";
-		
 		private var CARET_SOUND:String = "jS2TrMck2EOVxw72l0pf9A";
-		
 		private var randomChars:String = "a b c d e f g h i j k l m n o p q r s t u v 1 2 3 4 5 6 7 8 9 0 ! @ # $ % ^ & * ( ) { } < > / ?";
-		
 		private var charArray:Array = randomChars.split(" ");
-		
 		private var pageText:String = "";
-		
 		private var currentParagraph:int = 0;
-		
 		private var currentPage:int = 0;
-		
 		private var _textArray:Array = null;
-		
 		private var showCaret:Boolean = true;
-		
 		public var caretDelay:Number = 30;
-		
 		public var caretIncrement:Number = 1;
-		
 		public var paragraphReadTime:Number = 1000;
-		
 		public var pageReadTime:Number = 4000;
-		
 		public var paragraphInitTime:Number = 500;
-		
 		public var randomCharAmount:Number = 0;
-		
 		public var period:Number = 33;
-		
 		public var newRowTime:Number = 720;
-		
 		public var fadeOutDelay:Number = 0;
-		
 		public var glowFilter:GlowFilter;
-		
 		public var glowColor:uint = 16777215;
-		
 		public var glowAlpha:Number = 1;
-		
 		public var glowBlurX:Number = 2;
-		
 		public var glowBlurY:Number = 2;
-		
 		public var fadeOutTime:Number = 500;
-		
 		public var fadeOutBlurX:Number = 100;
-		
 		public var fadeOutBlurStrength:int = 6;
-		
 		public var fadeOutBlurAlpha:Number = 1;
-		
 		private var soundManager:ISound;
-		
 		public var id:String = "";
-		
 		private var stopPlaying:Boolean;
-		
 		public var duration:Number = 0;
-		
 		public var fadeOut:Boolean = true;
 		
 		public function ScreenTextField(width:int = 450, height:int = 800, duration:Number = 6000, color:uint = 16777215, glowColor:uint = 16777215, fadeOutDelay:Number = 0)

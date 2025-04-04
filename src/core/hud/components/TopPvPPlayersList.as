@@ -11,7 +11,6 @@ package core.hud.components
 	public class TopPvPPlayersList extends Sprite
 	{
 		private static var topPvpPlayersList:Array;
-		
 		private var textureManager:ITextureManager;
 		
 		public function TopPvPPlayersList()

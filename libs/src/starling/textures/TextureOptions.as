@@ -23,7 +23,6 @@ package starling.textures
         private var _premultipliedAlpha:Boolean;
         private var _forcePotTexture:Boolean;
         private var _onReady:Function = null;
-
         /** Creates a new instance with the given options. */
         public function TextureOptions(scale:Number = 1.0, mipMapping:Boolean = false,
                 format:String = "bgra", premultipliedAlpha:Boolean = true,

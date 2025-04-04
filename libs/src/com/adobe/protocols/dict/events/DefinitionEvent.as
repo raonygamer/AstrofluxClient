@@ -39,7 +39,6 @@ package com.adobe.protocols.dict.events
 	public class DefinitionEvent extends Event
 	{
 		public static const DEFINITION:String = "definition";
-
 		private var _definition:Definition;
 
 		public function DefinitionEvent(type:String, bubbles:Boolean = false,

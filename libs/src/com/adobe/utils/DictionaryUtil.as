@@ -51,7 +51,6 @@ package com.adobe.utils
 		public static function getKeys(d:Dictionary):Array
 		{
 			var a:Array = new Array();
-
 			for (var key:Object in d)
 			{
 				a.push(key);
@@ -74,7 +73,6 @@ package com.adobe.utils
 		public static function getValues(d:Dictionary):Array
 		{
 			var a:Array = new Array();
-
 			for each (var value:Object in d)
 			{
 				a.push(value);

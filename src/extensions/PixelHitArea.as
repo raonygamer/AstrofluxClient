@@ -11,27 +11,16 @@ package extensions
 	public class PixelHitArea
 	{
 		private static var hitAreas:Dictionary;
-		
 		private static var id:int = 0;
-		
 		public var width:Number;
-		
 		public var height:Number;
-		
 		public var name:String;
-		
 		public var scaleBitmapData:Number;
-		
 		private var sampleWidth:uint;
-		
 		private var sampleHeight:uint;
-		
 		private var alphaData:Vector.<uint>;
-		
 		private var tempData:Vector.<uint>;
-		
 		private var createTime:int;
-		
 		private var _disposed:Boolean;
 		
 		public function PixelHitArea(bitmap:Bitmap, bitmapSampling:Number = 1, name:String = "")

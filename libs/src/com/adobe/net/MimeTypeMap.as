@@ -148,7 +148,6 @@ package com.adobe.net
 				["video/x-msvideo", "avi"],
 				["video/x-sgi-movie", "movie"],
 				["x-conference/x-cooltalk", "ice"]];
-
 		/**
 		 * Returns the mimetype for the given extension.
 		 */

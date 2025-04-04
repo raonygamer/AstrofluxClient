@@ -18,9 +18,7 @@ package core.hud.components.shipMenu
 	public class WeaponSelector extends Sprite
 	{
 		private var g:Game;
-		
 		private var p:Player;
-		
 		private var icons:Vector.<MenuSelectIcon> = new Vector.<MenuSelectIcon>();
 		
 		public function WeaponSelector(g:Game, p:Player)

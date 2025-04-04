@@ -9,19 +9,12 @@ package core.hud.components
 	public class SettingsKeybind extends Sprite
 	{
 		private var type:int;
-		
 		private var bg:Box;
-		
 		private var description:Text;
-		
 		private var buttonOne:Button;
-		
 		private var buttonTwo:Button;
-		
 		private var keybinds:KeyBinds;
-		
 		private var currentButton:Button;
-		
 		private var currentNumber:int;
 		
 		public function SettingsKeybind(keybinds:KeyBinds, type:int, x:int, y:int)

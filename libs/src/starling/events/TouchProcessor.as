@@ -60,22 +60,17 @@ package starling.events
         private var _multitapTime:Number = 0.3;
         private var _multitapDistance:Number = 25;
         private var _touchEvent:TouchEvent;
-
         private var _touchMarker:TouchMarker;
         private var _simulateMultitouch:Boolean;
-
         /** A vector of arrays with the arguments that were passed to the "enqueue"
          *  method (the oldest being at the end of the vector). */
         protected var _queue:Vector.<Array>;
-
         /** The list of all currently active touches. */
         protected var _currentTouches:Vector.<Touch>;
-
         /** Helper objects. */
         private static var sUpdatedTouches:Vector.<Touch> = new <Touch>[];
         private static var sHoveringTouchData:Vector.<Object> = new <Object>[];
         private static var sHelperPoint:Point = new Point();
-
         /** Creates a new TouchProcessor that will dispatch events to the given stage. */
         public function TouchProcessor(stage:Stage)
         {
@@ -107,7 +102,6 @@ package starling.events
         {
             var i:int;
             var touch:Touch;
-
             _elapsedTime += passedTime;
             sUpdatedTouches.length = 0;
 
@@ -191,7 +185,6 @@ package starling.events
             for each (var touchData:Object in sHoveringTouchData)
                 if (touchData.touch.target != touchData.target)
                     _touchEvent.dispatch(touchData.bubbleChain);
-
             // dispatch events for the rest of our updated touches
             for each (touch in touches)
                 touch.dispatchEvent(_touchEvent);
@@ -234,7 +227,6 @@ package starling.events
             var distTop:Number = mouse.globalY;
             var distBottom:Number = _stage.stageHeight - distTop;
             var minDist:Number = Math.min(distLeft, distRight, distTop, distBottom);
-
             // the new hover point should be just outside the stage, near the point where
             // the mouse point was last to be seen.
 
@@ -283,7 +275,6 @@ package starling.events
                 width:Number = 1.0, height:Number = 1.0):Touch
         {
             var touch:Touch = getCurrentTouch(touchID);
-
             if (touch == null)
             {
                 touch = new Touch(touchID);
@@ -308,7 +299,6 @@ package starling.events
         {
             var nearbyTap:Touch = null;
             var minSqDist:Number = _multitapDistance * _multitapDistance;
-
             for each (var tap:Touch in _lastTaps)
             {
                 var sqDist:Number = Math.pow(tap.globalX - touch.globalX, 2) +
@@ -347,7 +337,6 @@ package starling.events
             for each (var touch:Touch in _currentTouches)
                 if (touch.id == touchID)
                     return touch;
-
             return null;
         }
 
@@ -356,7 +345,6 @@ package starling.events
             for each (var touch:Touch in touches)
                 if (touch.id == touchID)
                     return true;
-
             return false;
         }
 
@@ -375,7 +363,6 @@ package starling.events
 
             _simulateMultitouch = value;
             var target:Starling = Starling.current;
-
             if (value && _touchMarker == null)
             {
                 if (Starling.current.contextValid)
@@ -464,7 +451,6 @@ package starling.events
 
                     var mouseTouch:Touch = getCurrentTouch(0);
                     var mockedTouch:Touch = getCurrentTouch(1);
-
                     if (mouseTouch)
                         _touchMarker.moveMarker(mouseTouch.globalX, mouseTouch.globalY);
 
@@ -500,7 +486,6 @@ package starling.events
             {
                 var nativeAppClass:Object = getDefinitionByName("flash.desktop::NativeApplication");
                 var nativeApp:Object = nativeAppClass["nativeApplication"];
-
                 if (enable)
                     nativeApp.addEventListener("deactivate", onInterruption, false, 0, true);
                 else

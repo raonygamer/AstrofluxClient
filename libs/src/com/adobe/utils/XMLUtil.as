@@ -44,7 +44,6 @@ package com.adobe.utils
 		 * @playerversion Flash 9.0
 		 */
 		public static const TEXT:String = "text";
-
 		/**
 		 * Constant representing a comment node type returned from XML.nodeKind.
 		 *
@@ -54,7 +53,6 @@ package com.adobe.utils
 		 * @playerversion Flash 9.0
 		 */
 		public static const COMMENT:String = "comment";
-
 		/**
 		 * Constant representing a processing instruction type returned from XML.nodeKind.
 		 *
@@ -64,7 +62,6 @@ package com.adobe.utils
 		 * @playerversion Flash 9.0
 		 */
 		public static const PROCESSING_INSTRUCTION:String = "processing-instruction";
-
 		/**
 		 * Constant representing an attribute type returned from XML.nodeKind.
 		 *
@@ -74,7 +71,6 @@ package com.adobe.utils
 		 * @playerversion Flash 9.0
 		 */
 		public static const ATTRIBUTE:String = "attribute";
-
 		/**
 		 * Constant representing a element type returned from XML.nodeKind.
 		 *
@@ -84,7 +80,6 @@ package com.adobe.utils
 		 * @playerversion Flash 9.0
 		 */
 		public static const ELEMENT:String = "element";
-
 		/**
 		 * Checks whether the specified string is valid and well formed XML.
 		 *
@@ -99,7 +94,6 @@ package com.adobe.utils
 		public static function isValidXML(data:String):Boolean
 		{
 			var xml:XML;
-
 			try
 			{
 				xml = new XML(data);
@@ -152,7 +146,6 @@ package com.adobe.utils
 		protected static function getSiblingByIndex(x:XML, count:int):XML
 		{
 			var out:XML;
-
 			try
 			{
 				out = x.parent().children()[x.childIndex() + count];

@@ -65,7 +65,6 @@ package com.adobe.net.proxies
 		private var port:int = 0;
 		private var deferredEventHandlers:Object = new Object();
 		private var buffer:String = new String();
-
 		/**
 		 * Construct a new RFC2817Socket object. If you pass in the host and the port,
 		 * no proxy will be used. If you want to use a proxy, instantiate with no
@@ -87,7 +86,6 @@ package com.adobe.net.proxies
 
 			var deferredSocketDataHandler:Object = this.deferredEventHandlers[ProgressEvent.SOCKET_DATA];
 			var deferredConnectHandler:Object = this.deferredEventHandlers[Event.CONNECT];
-
 			if (deferredSocketDataHandler != null)
 			{
 				super.removeEventListener(ProgressEvent.SOCKET_DATA, deferredSocketDataHandler.listener, deferredSocketDataHandler.useCapture);
@@ -144,7 +142,6 @@ package com.adobe.net.proxies
 		private function checkResponse(event:ProgressEvent):void
 		{
 			var responseCode:String = this.buffer.substr(this.buffer.indexOf(" ") + 1, 3);
-
 			if (responseCode.search(/^2/) == -1)
 			{
 				var ioError:IOErrorEvent = new IOErrorEvent(IOErrorEvent.IO_ERROR);

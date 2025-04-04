@@ -18,39 +18,22 @@ package core.hud.components.map
 	public class MapBodyBase extends starling.display.Sprite
 	{
 		protected var radius:Number = 5;
-		
 		protected var body:Body;
-		
 		protected var layer:starling.display.Sprite = new starling.display.Sprite();
-		
 		protected var orbits:starling.display.Sprite = new starling.display.Sprite();
-		
 		protected var crew:starling.display.Sprite = new starling.display.Sprite();
-		
 		public var selected:Boolean = false;
-		
 		protected var hover:Boolean;
-		
 		protected var text:TextBitmap = new TextBitmap();
-		
 		protected var percentage:TextBitmap = new TextBitmap();
-		
 		protected var line:Line;
-		
 		protected var imgHover:Image;
-		
 		protected var imgSelected:Image;
-		
 		protected var selectedColor:uint = 11184895;
-		
 		protected var g:Game;
-		
 		protected var textureManager:ITextureManager;
-		
 		private var layerHeight:Number;
-		
 		private var layerWidth:Number;
-		
 		private var textWidth:Number;
 		
 		public function MapBodyBase(g:Game, container:starling.display.Sprite, body:Body)

@@ -16,21 +16,13 @@ package core.states.gameStates
 	public class IntroState extends PlayState
 	{
 		private var ship:PlayerShip;
-		
 		private var hyperDriveEngaged:Boolean = true;
-		
 		private var overlay:Sprite = new Sprite();
-		
 		private var stf:ScreenTextField = new ScreenTextField(450,800,20000);
-		
 		private var box:Box;
-		
 		private var countdownText:TextField;
-		
 		private var countdownTime:Number;
-		
 		private var startX:Number = 0;
-		
 		private var startY:Number = 0;
 		
 		public function IntroState(g:Game)

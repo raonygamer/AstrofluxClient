@@ -8,9 +8,7 @@ package core.friend
 	public class FriendManager
 	{
 		private var g:Game;
-		
 		private var me:Player;
-		
 		private var requests:Array = [];
 		
 		private var onlineFriendsCallback:Function;

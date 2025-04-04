@@ -11,59 +11,32 @@ package core.hud.components
 	public class UberStats extends Sprite
 	{
 		private var g:Game;
-		
 		public var uberMaxLevel:Number = 100;
-		
 		public var uberMinLevel:Number = 1;
-		
 		public var uberDifficultyAtTopRank:Number = 2000;
-		
 		public var uberTopRank:Number = 10;
-		
 		public var uberLevel:Number = 0;
-		
 		public var uberLives:Number = 3;
-		
 		public var uberRank:Number = 0;
-		
 		private var oldScore:Number = 0;
-		
 		private var oldXpLeft:int = 0;
-		
 		private var oldBossesLeft:int = 0;
-		
 		private var oldMiniBossesLeft:int = 0;
-		
 		private var oldSpawnerLeft:int = 0;
-		
 		private var oldUberRank:int = 0;
-		
 		private var optionalRank:int = 3;
-		
 		private var scoreTime:Number = 0;
-		
 		private var lives:Dictionary = new Dictionary();
-		
 		private var rankText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
-		
 		private var challengeText:TextBitmap = new TextBitmap();
-		
 		private var missionText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
-		
 		private var optionalMissionText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
-		
 		private var xpText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
-		
 		private var optionalText:TextBitmap = new TextBitmap();
-		
 		private var scoreText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
-		
 		private var highscoreText:TextField = new TextField(200,20,"",new TextFormat("DAIDRR"));
-		
 		private var lifes:TextBitmap = new TextBitmap();
-		
 		private var oldCompleted:Boolean = false;
-		
 		private var oldOptionalCompleted:Boolean = false;
 		
 		public function UberStats(g:Game)

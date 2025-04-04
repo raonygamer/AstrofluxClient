@@ -69,14 +69,12 @@ package starling.display
 
         private var _children:Vector.<DisplayObject>;
         private var _touchGroup:Boolean;
-
         // helper objects
         private static var sHelperMatrix:Matrix = new Matrix();
         private static var sHelperPoint:Point = new Point();
         private static var sBroadcastListeners:Vector.<DisplayObject> = new <DisplayObject>[];
         private static var sSortBuffer:Vector.<DisplayObject> = new <DisplayObject>[];
         private static var sCacheToken:BatchToken = new BatchToken();
-
         // construction
 
         /** @private */
@@ -112,7 +110,6 @@ package starling.display
         public function addChildAt(child:DisplayObject, index:int):DisplayObject
         {
             var numChildren:int = _children.length;
-
             if (index >= 0 && index <= numChildren)
             {
                 setRequiresRedraw();
@@ -209,7 +206,6 @@ package starling.display
         public function getChildAt(index:int):DisplayObject
         {
             var numChildren:int = _children.length;
-
             if (index < 0)
                 index = numChildren + index;
 
@@ -302,7 +298,6 @@ package starling.display
                 out = new Rectangle();
 
             var numChildren:int = _children.length;
-
             if (numChildren == 0)
             {
                 getTransformationMatrix(targetSpace, sHelperMatrix);
@@ -317,7 +312,6 @@ package starling.display
             {
                 var minX:Number = Number.MAX_VALUE, maxX:Number = -Number.MAX_VALUE;
                 var minY:Number = Number.MAX_VALUE, maxY:Number = -Number.MAX_VALUE;
-
                 for (var i:int = 0; i < numChildren; ++i)
                 {
                     _children[i].getBounds(targetSpace, out);
@@ -348,7 +342,6 @@ package starling.display
             var localX:Number = localPoint.x;
             var localY:Number = localPoint.y;
             var numChildren:int = _children.length;
-
             for (var i:int = numChildren - 1; i >= 0; --i) // front to back!
             {
                 var child:DisplayObject = _children[i];
@@ -375,11 +368,9 @@ package starling.display
             var frameID:uint = painter.frameID;
             var cacheEnabled:Boolean = frameID != 0;
             var selfOrParentChanged:Boolean = _lastParentOrSelfChangeFrameID == frameID;
-
             for (var i:int = 0; i < numChildren; ++i)
             {
                 var child:DisplayObject = _children[i];
-
                 if (child._hasVisibleArea)
                 {
                     if (selfOrParentChanged)
@@ -401,7 +392,6 @@ package starling.display
                         var popToken:BatchToken = cacheEnabled ? child._popToken : null;
                         var filter:FragmentFilter = child._filter;
                         var mask:DisplayObject = child._mask;
-
                         painter.pushState(pushToken);
                         painter.setStateTo(child.transformationMatrix, child.alpha, child.blendMode);
 
@@ -439,7 +429,6 @@ package starling.display
             var fromIndex:int = sBroadcastListeners.length;
             getChildEventListeners(this, event.type, sBroadcastListeners);
             var toIndex:int = sBroadcastListeners.length;
-
             for (var i:int = fromIndex; i < toIndex; ++i)
                 sBroadcastListeners[i].dispatchEvent(event);
 
@@ -526,7 +515,6 @@ package starling.display
                 listeners:Vector.<DisplayObject>):void
         {
             var container:DisplayObjectContainer = object as DisplayObjectContainer;
-
             if (object.hasEventListener(eventType))
                 listeners[listeners.length] = object; // avoiding 'push'
 
@@ -534,7 +522,6 @@ package starling.display
             {
                 var children:Vector.<DisplayObject> = container._children;
                 var numChildren:int = children.length;
-
                 for (var i:int = 0; i < numChildren; ++i)
                     getChildEventListeners(children[i], eventType, listeners);
             }

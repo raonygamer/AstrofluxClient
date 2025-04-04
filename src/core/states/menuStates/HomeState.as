@@ -32,21 +32,13 @@ package core.states.menuStates
 	public class HomeState extends DisplayState
 	{
 		private const COLUMN_WIDTH:int = 280;
-		
 		private var dataManager:IDataManager;
-		
 		private var infoContainer:Box;
-		
 		private var shipContainer:Box;
-		
 		private var weaponsContainer:Box;
-		
 		private var artifactsContainer:Box;
-		
 		private var crewContainer:Box;
-		
 		private var p:Player;
-		
 		private var shipImage:MovieClip;
 		
 		public function HomeState(g:Game, p:Player)

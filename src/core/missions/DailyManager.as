@@ -8,7 +8,6 @@ package core.missions
 	public class DailyManager
 	{
 		private var g:Game;
-		
 		public var resetTime:Number;
 		
 		public function DailyManager(g:Game)

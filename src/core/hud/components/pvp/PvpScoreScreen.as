@@ -12,17 +12,11 @@ package core.hud.components.pvp
 	public class PvpScoreScreen extends PvpScreen
 	{
 		private var leaveButton:Button;
-		
 		private var addedItems:Vector.<PvpScoreHolder>;
-		
 		private var scrollArea:ScrollContainer;
-		
 		private var mainBody:Sprite;
-		
 		private var infoBox:Box;
-		
 		private var rewardBox:Box;
-		
 		private var contentBody:Sprite;
 		
 		public function PvpScoreScreen(g:Game)

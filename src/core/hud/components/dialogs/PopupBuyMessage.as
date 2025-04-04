@@ -9,11 +9,8 @@ package core.hud.components.dialogs
 	public class PopupBuyMessage extends PopupConfirmMessage
 	{
 		public static const BOUGHT_WITH_FLUX:String = "fluxBuy";
-		
 		private var priceMinerals:Vector.<PriceCommodities> = new Vector.<PriceCommodities>();
-		
 		private var fluxButton:Button;
-		
 		private var g:Game;
 		
 		public function PopupBuyMessage(g:Game)

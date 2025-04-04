@@ -5,23 +5,14 @@ package core.credits
 	public class Sale
 	{
 		public var type:String;
-		
 		public var startTime:Number;
-		
 		public var endTime:Number;
-		
 		public var normalPrice:int;
-		
 		public var salePrice:int;
-		
 		public var saleBonus:int;
-		
 		public var key:String;
-		
 		public var vaultKey:String;
-		
 		public var description:String;
-		
 		private var g:Game;
 		
 		public function Sale(g:Game)

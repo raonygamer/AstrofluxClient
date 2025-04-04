@@ -12,15 +12,11 @@ package
 	public class IDI extends MovieClip
 	{
 		public var idnet:*;
-		
 		private var appID:String = "5510146c694862c3f000054d";
-		
 		private var verbose:Boolean = true;
-		
 		private var showPreloader:Boolean = false;
 		
 		private var loginCallback:Function;
-		
 		private var loggedIn:Boolean = false;
 		
 		public function IDI(callback:Function)

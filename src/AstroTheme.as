@@ -26,19 +26,12 @@ package
 	public class AstroTheme extends AeonDesktopTheme
 	{
 		protected static var chatTabTextFormat:TextFormat = new TextFormat("DAIDRR",12,0xffffff);
-		
 		protected var scrollBarThumbSkinTextures:Texture;
-		
 		private const inputFormat:TextFormat = new TextFormat("Verdana",12,0xffffff);
-		
 		private const toolTipFormat:TextFormat = new TextFormat("Verdana",11,0xffaa44);
-		
 		private const chatFormat:TextFormat = new TextFormat("Verdana",11,0xffffff);
-		
 		private const shopListFormat:TextFormat = new TextFormat("DAIDRR",14,16689475);
-		
 		private const artifactSetupDefaultFormat:TextFormat = new TextFormat("DAIDRR",10,0xb0b0b0);
-		
 		private const artifactSetupSelectedFormat:TextFormat = new TextFormat("DAIDRR",10,0xffffff);
 		
 		public function AstroTheme()

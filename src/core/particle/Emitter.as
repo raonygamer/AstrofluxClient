@@ -11,139 +11,72 @@ package core.particle
 	public class Emitter
 	{
 		public static var POOL_SIZE_MIN:int = 5;
-		
 		public static var POOL_SIZE_MAX:int = 100;
-		
 		public static var IS_HIGH_GRAPHICS:Boolean = true;
-		
 		public var name:String;
-		
 		private var _txt:Texture;
-		
 		public var speed:Number;
-		
 		public var speedVariance:Number;
-		
 		public var sourceVarianceX:Number = 0;
-		
 		public var sourceVarianceY:Number = 0;
-		
 		public var gravityX:Number = 0;
-		
 		public var gravityY:Number = 0;
-		
 		public var useFriction:Boolean;
-		
 		public var alive:Boolean;
-		
 		public var angle:Number;
-		
 		public var posX:Number = 0;
-		
 		public var posY:Number = 0;
-		
 		public var steadyStream:Boolean;
-		
 		public var followEmitter:Boolean;
-		
 		public var followTarget:Boolean;
-		
 		public var target:GameObject;
-		
 		public var targetPosX:Number = 0;
-		
 		public var targetPosY:Number = 0;
-		
 		public var global:Boolean;
-		
 		public var delay:Number;
-		
 		public var ttl:int;
-		
 		public var ttlVariance:int;
-		
 		private var _startSize:Number;
-		
 		public var startSizeVariance:Number;
-		
 		private var _finishSize:Number;
-		
 		public var finishSizeVariance:Number;
-		
 		public var angleVariance:Number;
-		
 		public var uniformDistribution:Boolean;
-		
 		public var centralGravity:Boolean;
-		
 		private var maxRadius:Number;
-		
 		private var maxSize:Number;
-		
 		public var startAlpha:Number;
-		
 		public var startAlphaVariance:Number;
-		
 		public var finishAlpha:Number;
-		
 		public var startBlendMode:String;
-		
 		public var finishBlendMode:String;
-		
 		public var shakeIntensity:Number = 0;
-		
 		public var shakeDuration:Number = 0;
-		
 		public var key:String;
-		
 		public var guid:String;
-		
 		public var xOffset:int = 0;
-		
 		public var yOffset:int = 0;
-		
 		public var canvasTarget:Sprite;
-		
 		public var oldImageKey:String = "";
-		
 		private var _maxParticles:int;
-		
 		private var _duration:int;
-		
 		public var isEmitting:Boolean;
-		
 		private var timeElapsed:int = 0;
-		
 		private var emittAccum:Number = 0;
-		
 		private var g:Game;
-		
 		public var particles:Vector.<Particle>;
-		
 		private var inactiveParticles:Vector.<Particle>;
-		
 		public var collectiveMeshBatch:CollectiveMeshBatch;
-		
 		public var isOnScreen:Boolean = false;
-		
 		public var forceUpdate:Boolean;
-		
 		public var distanceToCamera:int = 0;
-		
 		public var distanceToCameraX:int = 0;
-		
 		public var distanceToCameraY:int = 0;
-		
 		public var nextDistanceCalculation:int = -1;
-		
 		private var MAX_CALC_DELAY:int = 5000;
-		
 		private var _startColor:uint = 0;
-		
 		private var _originalStartColor:uint = 0;
-		
 		private var _finishColor:uint = 0;
-		
 		private var _originalFinishColor:uint = 0;
 		
 		public function Emitter(g:Game)

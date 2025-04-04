@@ -7,7 +7,6 @@ package core.states.gameStates.missions
 	public class MissionsTimed extends Sprite
 	{
 		private var g:Game;
-		
 		private var missionsList:MissionsList;
 		
 		public function MissionsTimed(g:Game)

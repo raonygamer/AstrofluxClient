@@ -9,13 +9,9 @@ package core.hud.components
 	public class ButtonCargo extends ButtonHud
 	{
 		public static var serverSaysCargoIsFull:Boolean = false;
-		
 		private var capacityBar:Image;
-		
 		private var g:Game;
-		
 		private var fadeTween:TweenMax;
-		
 		private var text:TextBitmap;
 		
 		public function ButtonCargo(g:Game, clickCallback:Function)

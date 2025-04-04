@@ -110,7 +110,6 @@ package starling.rendering
         private var _numAttributes:int;
         private var _premultipliedAlpha:Boolean;
         private var _tinted:Boolean;
-
         private var _posOffset:int; // in bytes
         private var _colOffset:int; // in bytes
         private var _vertexSize:int; // in bytes
@@ -119,7 +118,6 @@ package starling.rendering
         private static var sHelperPoint:Point = new Point();
         private static var sHelperPoint3D:Vector3D = new Vector3D();
         private static var sBytes:ByteArray = new ByteArray();
-
         /** Creates an empty VertexData object with the given format and initial capacity.
          *
          *  @param format
@@ -228,7 +226,6 @@ package starling.rendering
                     var x:Number, y:Number;
                     var pos:int = targetVertexID * _vertexSize + _posOffset;
                     var endPos:int = pos + (numVertices * _vertexSize);
-
                     while (pos < endPos)
                     {
                         targetRawData.position = pos;
@@ -252,7 +249,6 @@ package starling.rendering
                 {
                     var srcAttr:VertexDataAttribute = _attributes[i];
                     var tgtAttr:VertexDataAttribute = target.getAttribute(srcAttr.name);
-
                     if (tgtAttr) // only copy attributes that exist in the target, as well
                     {
                         if (srcAttr.offset == _posOffset)
@@ -280,7 +276,6 @@ package starling.rendering
         {
             var sourceAttribute:VertexDataAttribute = getAttribute(attrName);
             var targetAttribute:VertexDataAttribute = target.getAttribute(attrName);
-
             if (sourceAttribute == null)
                 throw new ArgumentError("Attribute '" + attrName + "' not found in source data");
 
@@ -314,7 +309,6 @@ package starling.rendering
             var sourceDelta:int = _vertexSize - sourceAttribute.size;
             var targetDelta:int = target._vertexSize - targetAttribute.size;
             var attributeSizeIn32Bits:int = sourceAttribute.size / 4;
-
             sourceData.position = vertexID * _vertexSize + sourceAttribute.offset;
             targetData.position = targetVertexID * target._vertexSize + targetAttribute.offset;
 
@@ -351,7 +345,6 @@ package starling.rendering
         public function trim():void
         {
             var numBytes:int = _numVertices * _vertexSize;
-
             sBytes.length = numBytes;
             sBytes.position = 0;
             sBytes.writeBytes(_rawData, 0, numBytes);
@@ -562,7 +555,6 @@ package starling.rendering
                 var offset:int = attrName == "position" ? _posOffset : getAttribute(attrName).offset;
                 var position:int = vertexID * _vertexSize + offset;
                 var x:Number, y:Number, i:int;
-
                 if (matrix == null)
                 {
                     for (i = 0; i < numVertices; ++i)
@@ -646,7 +638,6 @@ package starling.rendering
                 var offset:int = attrName == "position" ? _posOffset : getAttribute(attrName).offset;
                 var position:int = vertexID * _vertexSize + offset;
                 var x:Number, y:Number, i:int;
-
                 for (i = 0; i < numVertices; ++i)
                 {
                     _rawData.position = position;
@@ -704,7 +695,6 @@ package starling.rendering
                         var pos:int = attribute.offset;
                         var oldColor:uint;
                         var newColor:uint;
-
                         for (var j:int = 0; j < _numVertices; ++j)
                         {
                             _rawData.position = pos;
@@ -762,7 +752,6 @@ package starling.rendering
             var offset:int = attrName == "position" ? _posOffset : getAttribute(attrName).offset;
             var pos:int = vertexID * _vertexSize + offset;
             var endPos:int = pos + numVertices * _vertexSize;
-
             while (pos < endPos)
             {
                 _rawData.position = pos;
@@ -788,7 +777,6 @@ package starling.rendering
             var offset:int = attrName == "position" ? _posOffset : getAttribute(attrName).offset;
             var pos:int = vertexID * _vertexSize + offset;
             var endPos:int = pos + numVertices * _vertexSize;
-
             while (pos < endPos)
             {
                 _rawData.position = pos;
@@ -818,7 +806,6 @@ package starling.rendering
             var offset:int = attrName == "color" ? _colOffset : getAttribute(attrName).offset;
             var colorPos:int = vertexID * _vertexSize + offset;
             var alphaPos:int, alpha:Number, rgba:uint;
-
             for (i = 0; i < numVertices; ++i)
             {
                 alphaPos = colorPos + 3;
@@ -858,14 +845,12 @@ package starling.rendering
             var offset:int = attrName == "color" ? _colOffset : getAttribute(attrName).offset;
             var pos:int = vertexID * _vertexSize + offset;
             var endPos:int = pos + (numVertices * _vertexSize);
-
             if (alpha > 1.0)
                 alpha = 1.0;
             else if (alpha < 0.0)
                 alpha = 0.0;
 
             var rgba:uint = ((color << 8) & 0xffffff00) | (int(alpha * 255.0) & 0xff);
-
             if (rgba == 0xffffffff && numVertices == _numVertices)
                 _tinted = false;
             else if (rgba != 0xffffffff)
@@ -939,7 +924,6 @@ package starling.rendering
 
             var buffer:VertexBuffer3D = context.createVertexBuffer(
                     _numVertices, _vertexSize / 4, bufferUsage);
-
             if (upload)
                 uploadToVertexBuffer(buffer);
             return buffer;
@@ -959,7 +943,6 @@ package starling.rendering
         private final function getAttribute(attrName:String):VertexDataAttribute
         {
             var i:int, attribute:VertexDataAttribute;
-
             for (i = 0; i < _numAttributes; ++i)
             {
                 attribute = _attributes[i];
@@ -982,7 +965,6 @@ package starling.rendering
         private static function premultiplyAlpha(rgba:uint):uint
         {
             var alpha:uint = rgba & 0xff;
-
             if (alpha == 0xff)
                 return rgba;
             else
@@ -991,7 +973,6 @@ package starling.rendering
                 var r:uint = ((rgba >> 24) & 0xff) * factor;
                 var g:uint = ((rgba >> 16) & 0xff) * factor;
                 var b:uint = ((rgba >> 8) & 0xff) * factor;
-
                 return (r & 0xff) << 24 |
                     (g & 0xff) << 16 |
                     (b & 0xff) << 8 | alpha;
@@ -1001,7 +982,6 @@ package starling.rendering
         private static function unmultiplyAlpha(rgba:uint):uint
         {
             var alpha:uint = rgba & 0xff;
-
             if (alpha == 0xff || alpha == 0x0)
                 return rgba;
             else
@@ -1010,7 +990,6 @@ package starling.rendering
                 var r:uint = ((rgba >> 24) & 0xff) / factor;
                 var g:uint = ((rgba >> 16) & 0xff) / factor;
                 var b:uint = ((rgba >> 8) & 0xff) / factor;
-
                 return (r & 0xff) << 24 |
                     (g & 0xff) << 16 |
                     (b & 0xff) << 8 | alpha;
@@ -1031,7 +1010,6 @@ package starling.rendering
             {
                 var oldLength:int = _numVertices * vertexSize;
                 var newLength:int = value * _vertexSize;
-
                 if (_rawData.length > oldLength)
                 {
                     _rawData.position = oldLength;
@@ -1089,14 +1067,12 @@ package starling.rendering
             var srcVertexSize:int = _format.vertexSize;
             var tgtVertexSize:int = value.vertexSize;
             var numAttributes:int = value.numAttributes;
-
             sBytes.length = value.vertexSize * _numVertices;
 
             for (a = 0; a < numAttributes; ++a)
             {
                 var tgtAttr:VertexDataAttribute = value.attributes[a];
                 var srcAttr:VertexDataAttribute = getAttribute(tgtAttr.name);
-
                 if (srcAttr) // copy attributes that exist in both targets
                 {
                     pos = tgtAttr.offset;

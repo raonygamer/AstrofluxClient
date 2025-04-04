@@ -15,39 +15,22 @@ package core.artifact
 	public class ArtifactCargoBox extends Sprite
 	{
 		private static const COLOR_ACTIVE:uint = 16777215;
-		
 		private static const COLOR_SELECTED_RECYCLE:uint = 12203572;
-		
 		private static const COLOR_SELECTED_UPGRADE:uint = 8978312;
-		
 		private var p:Player;
-		
 		private var g:Game;
-		
 		public var hint:Boolean = false;
-		
 		public var a:Artifact;
-		
 		private var recycleMode:Boolean;
-		
 		private var upgradeMode:Boolean;
-		
 		private var isInSetup:Boolean;
-		
 		private var textureManager:ITextureManager;
-		
 		private var frame:Image;
-		
 		private var toolTip:ToolTip;
-		
 		private var COLOR_NORMAL:uint = 6513507;
-		
 		protected var hintNewContainer:Image;
-		
 		private var lock:Image;
-		
 		private var artifactImage:Image;
-		
 		private var upgradingImage:Image;
 		
 		public function ArtifactCargoBox(g:Game, a:Artifact)

@@ -12,49 +12,27 @@ package core.player
 	public class CrewMember
 	{
 		public static const RANKS:Vector.<String> = Vector.<String>(["Rookie","Private","Corporal","Sergeant","Sergeant major","2nd lieutenant","Lieutenant"]);
-		
 		public var key:String;
-		
 		public var name:String;
-		
 		private var _imageKey:String;
-		
 		public var texture:Texture;
-		
 		public var skills:Array;
-		
 		public var specials:Array;
-		
 		public var solarSystem:String;
-		
 		public var body:String;
-		
 		public var area:String;
-		
 		public var fullLocation:String;
-		
 		public var injuryStart:Number;
-		
 		public var injuryEnd:Number;
-		
 		public var trainingEnd:Number;
-		
 		public var trainingType:int;
-		
 		public var missions:int;
-		
 		public var successMissions:int;
-		
 		public var rank:int;
-		
 		public var seed:int;
-		
 		public var skillPoints:int;
-		
 		public var artifact:String;
-		
 		public var artifactEnd:Number;
-		
 		private var g:Game;
 		
 		public function CrewMember(g:Game)

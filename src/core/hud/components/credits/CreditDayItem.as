@@ -12,31 +12,18 @@ package core.hud.components.credits
 	public class CreditDayItem extends CreditBaseItem
 	{
 		public static var PRICE_1_DAY:int = 75;
-		
 		public static var PRICE_3_DAY:int = 215;
-		
 		public static var PRICE_7_DAY:int = 425;
-		
 		protected var buyContainer:Sprite = new Sprite();
-		
 		protected var descriptionContainer:Sprite = new Sprite();
-		
 		protected var aquiredContainer:Sprite = new Sprite();
-		
 		protected var waitingContainer:Sprite = new Sprite();
-		
 		protected var description:String;
-		
 		protected var confirmText:String = "";
-		
 		protected var preview:String;
-		
 		protected var aquiredText:Text = new Text();
-		
 		protected var expiryTime:Number;
-		
 		protected var aquired:Boolean = false;
-		
 		protected var bundles:Array = [];
 		
 		public function CreditDayItem(g:Game, parent:Sprite)

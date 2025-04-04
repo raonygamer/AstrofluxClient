@@ -47,16 +47,11 @@ package starling.display
     public class Mesh extends DisplayObject
     {
         /** @private */ internal var _style:MeshStyle;
-
         /** @private */ internal var _vertexData:VertexData;
-
         /** @private */ internal var _indexData:IndexData;
-
         /** @private */ internal var _pixelSnapping:Boolean;
-
         private static var sDefaultStyle:Class = MeshStyle;
         private static var sDefaultStyleFactory:Function = null;
-
         /** Creates a new mesh with the given vertices and indices.
          *  If you don't pass a style, an instance of <code>MeshStyle</code> will be created
          *  for you. Note that the format of the vertex data will be matched to the
@@ -145,7 +140,6 @@ package starling.display
         private function createDefaultMeshStyle():MeshStyle
         {
             var meshStyle:MeshStyle;
-
             if (sDefaultStyleFactory != null)
             {
                 if (sDefaultStyleFactory.length == 0)
@@ -392,7 +386,6 @@ package starling.display
         {
             var vertexData:VertexData = new VertexData(null, polygon.numVertices);
             var indexData:IndexData = new IndexData(polygon.numTriangles);
-
             polygon.copyToVertexData(vertexData);
             polygon.triangulate(indexData);
 

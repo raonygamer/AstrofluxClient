@@ -13,43 +13,24 @@ package core.engine
 	public class Engine extends GameObject
 	{
 		public var thrustEmitters:Vector.<Emitter>;
-		
 		public var idleThrustEmitters:Vector.<Emitter>;
-		
 		public var speed:Number;
-		
 		private var _rotationSpeed:Number;
-		
 		public var rotationMod:Number;
-		
 		public var acceleration:Number;
-		
 		public var accelerating:Boolean;
-		
 		private var g:Game;
-		
 		public var ship:Ship;
-		
 		public var alive:Boolean;
-		
 		public var dual:Boolean = false;
-		
 		public var dualDistance:int = 0;
-		
 		public var obj:Object;
-		
 		public var colorHue:Number = 0;
-		
 		public var ribbonBaseMovingRatio:Number = 1;
-		
 		public var hasRibbonTrail:Boolean = false;
-		
 		public var ribbonThickness:Number = 0;
-		
 		public var ribbonTrail:RibbonTrail;
-		
 		private var followingRibbonSegment:RibbonSegment = new RibbonSegment();
-		
 		public var followingRibbonSegmentLine:Vector.<RibbonSegment> = new <RibbonSegment>[followingRibbonSegment];
 		
 		public function Engine(g:Game)

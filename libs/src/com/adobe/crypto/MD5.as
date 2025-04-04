@@ -46,7 +46,6 @@ package com.adobe.crypto
 	{
 
 		public static var digest:ByteArray;
-
 		/**
 		 * Performs the MD5 hash algorithm on a string.
 		 *
@@ -87,19 +86,16 @@ package com.adobe.crypto
 			var b:int = -271733879;
 			var c:int = -1732584194;
 			var d:int = 271733878;
-
 			// variables to store previous values
 			var aa:int;
 			var bb:int;
 			var cc:int;
 			var dd:int;
-
 			// create the blocks from the string and
 			// save the length as a local var to reduce
 			// lookup in the loop below
 			var x:Array = createBlocks(s);
 			var len:int = x.length;
-
 			// loop over all of the blocks
 			for (var i:int = 0; i < len; i += 16)
 			{

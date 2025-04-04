@@ -10,7 +10,6 @@ package core.states.gameStates
 	public class MenuState extends PlayState
 	{
 		private var menuHud:MenuHud;
-		
 		private var menuState:Class;
 		
 		public function MenuState(g:Game, menuState:Class)

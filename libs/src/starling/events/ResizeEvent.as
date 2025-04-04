@@ -28,7 +28,6 @@ package starling.events
     {
         /** Event type for a resized Flash player. */
         public static const RESIZE:String = "resize";
-
         /** Creates a new ResizeEvent. */
         public function ResizeEvent(type:String, width:int, height:int, bubbles:Boolean = false)
         {

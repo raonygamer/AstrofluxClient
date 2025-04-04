@@ -67,15 +67,11 @@ package starling.rendering
     public class RenderState
     {
         /** @private */ internal var _alpha:Number;
-
         /** @private */ internal var _blendMode:String;
-
         /** @private */ internal var _modelviewMatrix:Matrix;
-
         private static const CULLING_VALUES:Vector.<String> = new <String>
             [Context3DTriangleFace.NONE, Context3DTriangleFace.FRONT,
                 Context3DTriangleFace.BACK, Context3DTriangleFace.FRONT_AND_BACK];
-
         private var _miscOptions:uint;
         private var _clipRect:Rectangle;
         private var _renderTarget:Texture;
@@ -84,11 +80,9 @@ package starling.rendering
         private var _projectionMatrix3D:Matrix3D;
         private var _projectionMatrix3DRev:uint;
         private var _mvpMatrix3D:Matrix3D;
-
         // helper objects
         private static var sMatrix3D:Matrix3D = new Matrix3D();
         private static var sProjectionMatrix3DRev:uint = 0;
-
         /** Creates a new render state with the default settings. */
         public function RenderState()
         {
@@ -105,7 +99,6 @@ package starling.rendering
                 var cullingChanges:Boolean = (_miscOptions & 0xf00) != (renderState._miscOptions & 0xf00);
                 var clipRectChanges:Boolean = _clipRect || renderState._clipRect ?
                     !RectangleUtil.compare(_clipRect, renderState._clipRect) : false;
-
                 if (_blendMode != renderState._blendMode ||
                         currentTarget != nextTarget || clipRectChanges || cullingChanges)
                 {
@@ -298,7 +291,6 @@ package starling.rendering
             var newTarget:TextureBase = target ? target.base : null;
             var newOptions:uint = MathUtil.min(antiAlias, 16) | uint(enableDepthAndStencil) << 4;
             var optionsChange:Boolean = newOptions != (_miscOptions & 0xff);
-
             if (currentTarget != newTarget || optionsChange)
             {
                 if (_onDrawRequired != null)

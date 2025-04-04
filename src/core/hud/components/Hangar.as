@@ -20,23 +20,14 @@ package core.hud.components
 	public class Hangar extends Sprite
 	{
 		private var textureManager:ITextureManager;
-		
 		private var selectedItemContainer:ScrollContainer = new ScrollContainer();
-		
 		private var g:Game;
-		
 		private var body:Body;
-		
 		private var mode:int;
-		
 		private const MODE_SHOP:int = 1;
-		
 		private const MODE_SWITCH_SKIN:int = 2;
-		
 		private var skins:Array = [];
-		
 		private var skinsItems:Array;
-		
 		private var list:List = new List();
 		
 		public function Hangar(g:Game, body:Body = null)

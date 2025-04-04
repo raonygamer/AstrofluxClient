@@ -12,21 +12,13 @@ package core.states.gameStates
 	public class SettingsState extends PlayState
 	{
 		private var goTo:String;
-		
 		private var settings:Settings;
-		
 		private var bg:Image;
-		
 		private var closeButton:ButtonExpandableHud;
-		
 		private var generalButton:ButtonExpandableHud;
-		
 		private var bindingsButton:ButtonExpandableHud;
-		
 		private var chatButton:ButtonExpandableHud;
-		
 		private var activeButton:ButtonExpandableHud;
-		
 		private var activePage:Sprite;
 		
 		public function SettingsState(g:Game, goTo:String = "")

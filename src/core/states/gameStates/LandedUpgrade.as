@@ -9,11 +9,8 @@ package core.states.gameStates
 	public class LandedUpgrade extends LandedState
 	{
 		private var myCargo:Cargo;
-		
 		private var stopMusic:Boolean = true;
-		
 		private var techTree:TechTree;
-		
 		private var shownOffer:Boolean = false;
 		
 		public function LandedUpgrade(g:Game, body:Body)

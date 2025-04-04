@@ -14,11 +14,8 @@ package core.hud.components
 	public class ButtonClan extends ButtonHud
 	{
 		private var g:Game;
-		
 		private var troonsPerMinute:TextField;
-		
 		private var clanLogo:Image;
-		
 		private var troonIcon:Image;
 		
 		public function ButtonClan(clickCallback:Function, g:Game)

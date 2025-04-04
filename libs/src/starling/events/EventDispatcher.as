@@ -38,10 +38,8 @@ package starling.events
     public class EventDispatcher
     {
         private var _eventListeners:Dictionary;
-
         /** Helper object. */
         private static var sBubbleChains:Array = [];
-
         /** Creates an EventDispatcher. */
         public function EventDispatcher()
         {
@@ -67,18 +65,15 @@ package starling.events
         {
             var listeners:Vector.<Function> = _eventListeners[type] as Vector.<Function>;
             var numListeners:int = listeners ? listeners.length : 0;
-
             if (numListeners > 0)
             {
                 // we must not modify the original vector, but work on a copy.
                 // (see comment in 'invokeEvent')
 
                 var index:int = listeners.indexOf(listener);
-
                 if (index != -1)
                 {
                     var restListeners:Vector.<Function> = listeners.slice(0, index);
-
                     for (var i:int = index + 1; i < numListeners; ++i)
                         restListeners[i - 1] = listeners[i];
 
@@ -105,7 +100,6 @@ package starling.events
     public function dispatchEvent(event:Event):void
     {
         var bubbles:Boolean = event.bubbles;
-
         if (!bubbles && (_eventListeners == null || !(event.type in _eventListeners)))
             return; // no need to do anything
 
@@ -133,7 +127,6 @@ package starling.events
         var listeners:Vector.<Function> = _eventListeners ?
             _eventListeners[event.type] as Vector.<Function> : null;
         var numListeners:int = listeners == null ? 0 : listeners.length;
-
         if (numListeners)
         {
             event.setCurrentTarget(this);
@@ -146,7 +139,6 @@ package starling.events
             {
                 var listener:Function = listeners[i] as Function;
                 var numArgs:int = listener.length;
-
                 if (numArgs == 0)
                     listener();
                 else if (numArgs == 1)
@@ -175,7 +167,6 @@ package starling.events
         var chain:Vector.<EventDispatcher>;
         var element:DisplayObject = this as DisplayObject;
         var length:int = 1;
-
         if (sBubbleChains.length > 0)
         {
             chain = sBubbleChains.pop();

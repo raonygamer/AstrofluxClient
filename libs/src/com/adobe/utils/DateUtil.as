@@ -225,7 +225,6 @@ package com.adobe.utils
 		public static function getShortYear(d:Date):String
 		{
 			var dStr:String = String(d.getFullYear());
-
 			if (dStr.length < 3)
 			{
 				return dStr;
@@ -254,7 +253,6 @@ package com.adobe.utils
 		{
 			var d1ms:Number = d1.getTime();
 			var d2ms:Number = d2.getTime();
-
 			if (d1ms > d2ms)
 			{
 				return -1;
@@ -288,7 +286,6 @@ package com.adobe.utils
 		public static function getShortHour(d:Date):int
 		{
 			var h:int = d.hours;
-
 			if (h == 0 || h == 12)
 			{
 				return 12;
@@ -349,7 +346,6 @@ package com.adobe.utils
 			{
 				var dateParts:Array = str.split(" ");
 				var day:String = null;
-
 				if (dateParts[0].search(/\d/) == -1)
 				{
 					day = dateParts.shift().replace(/\W/, "");
@@ -362,12 +358,9 @@ package com.adobe.utils
 				var hour:Number = int(timeParts.shift());
 				var minute:Number = int(timeParts.shift());
 				var second:Number = (timeParts.length > 0) ? int(timeParts.shift()) : 0;
-
 				var milliseconds:Number = Date.UTC(year, month, date, hour, minute, second, 0);
-
 				var timezone:String = dateParts.shift();
 				var offset:Number = 0;
-
 				if (timezone.search(/\d/) == -1)
 				{
 					switch (timezone)
@@ -539,12 +532,10 @@ package com.adobe.utils
 				var year:Number = Number(dateArr.shift());
 				var month:Number = Number(dateArr.shift());
 				var date:Number = Number(dateArr.shift());
-
 				var multiplier:Number;
 				var offsetHours:Number;
 				var offsetMinutes:Number;
 				var offsetStr:String;
-
 				if (timeStr.indexOf("Z") != -1)
 				{
 					multiplier = 1;
@@ -574,7 +565,6 @@ package com.adobe.utils
 				var secondsArr:Array = (timeArr.length > 0) ? String(timeArr.shift()).split(".") : null;
 				var seconds:Number = (secondsArr != null && secondsArr.length > 0) ? Number(secondsArr.shift()) : 0;
 				// var milliseconds:Number = (secondsArr != null && secondsArr.length > 0) ? Number(secondsArr.shift()) : 0;
-
 				var milliseconds:Number = (secondsArr != null && secondsArr.length > 0) ? 1000 * parseFloat("0." + secondsArr.shift()) : 0;
 				var utc:Number = Date.UTC(year, month - 1, date, hour, minutes, seconds, milliseconds);
 				var offset:Number = (((offsetHours * 3600000) + (offsetMinutes * 60000)) * multiplier);
@@ -618,7 +608,6 @@ package com.adobe.utils
 			var seconds:Number = d.getUTCSeconds();
 			var milliseconds:Number = d.getUTCMilliseconds();
 			var sb:String = new String();
-
 			sb += d.getUTCFullYear();
 			sb += "-";
 

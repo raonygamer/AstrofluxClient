@@ -37,7 +37,6 @@ package starling.text
         private var _verticalAlign:String;
         private var _kerning:Boolean;
         private var _leading:Number;
-
         /** Creates a new TextFormat instance with the given properties. */
         public function TextFormat(font:String = "Verdana", size:Number = 12, color:uint = 0x0,
                 horizontalAlign:String = "center", verticalAlign:String = "center")

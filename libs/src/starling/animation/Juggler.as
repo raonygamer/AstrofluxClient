@@ -52,9 +52,7 @@ package starling.animation
         private var _objectIDs:Dictionary;
         private var _elapsedTime:Number;
         private var _timeScale:Number;
-
         private static var sCurrentObjectID:uint;
-
         /** Create an empty juggler. */
         public function Juggler()
         {
@@ -105,7 +103,6 @@ package starling.animation
         public function remove(object:IAnimatable):uint
         {
             var objectID:uint = 0;
-
             if (object && object in _objectIDs)
             {
                 var dispatcher:EventDispatcher = object as EventDispatcher;
@@ -138,7 +135,6 @@ package starling.animation
             for (var i:int = _objects.length - 1; i >= 0; --i)
             {
                 var object:IAnimatable = _objects[i];
-
                 if (_objectIDs[object] == objectID)
                 {
                     remove(object);
@@ -313,11 +309,9 @@ package starling.animation
                 throw new ArgumentError("target must not be null");
 
             var tween:Tween = Tween.starling_internal::fromPool(target, time);
-
             for (var property:String in properties)
             {
                 var value:Object = properties[property];
-
                 if (tween.hasOwnProperty(property))
                     tween[property] = value;
                 else if (target.hasOwnProperty(Tween.getPropertyName(property)))
@@ -341,7 +335,6 @@ package starling.animation
             var numObjects:int = _objects.length;
             var currentIndex:int = 0;
             var i:int;
-
             time *= _timeScale;
             if (numObjects == 0 || time == 0)
                 return;
@@ -382,7 +375,6 @@ package starling.animation
         private function onRemove(event:Event):void
         {
             var objectID:uint = remove(event.target as IAnimatable);
-
             if (objectID)
             {
                 var tween:Tween = event.target as Tween;

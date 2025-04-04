@@ -20,7 +20,6 @@ package starling.filters
     {
         private var _blurX:Number;
         private var _blurY:Number;
-
         /** Create a new BlurFilter. For each blur direction, the number of required passes is
          *  <code>Math.ceil(blur)</code>.
          *
@@ -44,7 +43,6 @@ package starling.filters
                 input2:Texture = null, input3:Texture = null):Texture
         {
             var effect:BlurEffect = this.effect as BlurEffect;
-
             if (_blurX == 0 && _blurY == 0)
             {
                 effect.strength = 0;
@@ -55,7 +53,6 @@ package starling.filters
             var blurY:Number = Math.abs(_blurY);
             var outTexture:Texture = input0;
             var inTexture:Texture;
-
             effect.direction = BlurEffect.HORIZONTAL;
 
             while (blurX > 0)
@@ -110,7 +107,6 @@ package starling.filters
         {
             var paddingX:Number = (_blurX ? Math.ceil(Math.abs(_blurX)) + 3 : 1) / resolution;
             var paddingY:Number = (_blurY ? Math.ceil(Math.abs(_blurY)) + 3 : 1) / resolution;
-
             padding.setTo(paddingX, paddingX, paddingY, paddingY);
         }
 
@@ -151,18 +147,13 @@ class BlurEffect extends FilterEffect
 {
     public static const HORIZONTAL:String = "horizontal";
     public static const VERTICAL:String = "vertical";
-
     private static const MAX_SIGMA:Number = 2.0;
-
     private var _strength:Number;
     private var _direction:String;
-
     private var _offsets:Vector.<Number> = new <Number>[0, 0, 0, 0];
     private var _weights:Vector.<Number> = new <Number>[0, 0, 0, 0];
-
     // helpers
     private var sTmpWeights:Vector.<Number> = new Vector.<Number>(5, true);
-
     /** Creates a new BlurEffect.
      *
      *  @param direction     horizontal or vertical
@@ -187,7 +178,6 @@ class BlurEffect extends FilterEffect
                 "add v3, va1, vc4.xyxx", // pos: +1 |     (only 1st two values are relevant)
                 "add v4, va1, vc4.zwxx" // pos: +2 |
             ].join("\n");
-
         // v0-v4 - kernel position
         // fs0   - input texture
         // fc0   - weight data
@@ -214,7 +204,6 @@ class BlurEffect extends FilterEffect
                 "mul ft4, ft4, fc0.zzzz       ", // multiply with weight
                 "add  oc, ft5, ft4            " // add to output color
             ].join("\n");
-
         return Program.fromSource(vertexShader, fragmentShader);
     }
 
@@ -247,7 +236,6 @@ class BlurEffect extends FilterEffect
 
         var sigma:Number;
         var pixelSize:Number;
-
         if (_direction == HORIZONTAL)
         {
             sigma = _strength * MAX_SIGMA;
@@ -261,7 +249,6 @@ class BlurEffect extends FilterEffect
 
         const twoSigmaSq:Number = 2 * sigma * sigma;
         const multiplier:Number = 1.0 / Math.sqrt(twoSigmaSq * Math.PI);
-
         // get weights on the exact pixels (sTmpWeights) and calculate sums (_weights)
 
         for (var i:int = 0; i < 5; ++i)
@@ -275,7 +262,6 @@ class BlurEffect extends FilterEffect
 
         var weightSum:Number = _weights[0] + 2 * _weights[1] + 2 * _weights[2];
         var invWeightSum:Number = 1.0 / weightSum;
-
         _weights[0] *= invWeightSum;
         _weights[1] *= invWeightSum;
         _weights[2] *= invWeightSum;
@@ -284,7 +270,6 @@ class BlurEffect extends FilterEffect
 
         var offset1:Number = (pixelSize * sTmpWeights[1] + 2 * pixelSize * sTmpWeights[2]) / _weights[1];
         var offset2:Number = (3 * pixelSize * sTmpWeights[3] + 4 * pixelSize * sTmpWeights[4]) / _weights[2];
-
         // depending on pass, we move in x- or y-direction
 
         if (_direction == HORIZONTAL)

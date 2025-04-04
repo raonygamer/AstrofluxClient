@@ -30,25 +30,15 @@ package core.states.gameStates
 	public class Shop extends Sprite
 	{
 		private var g:Game;
-		
 		private var container:Sprite = new ScrollContainer();
-		
 		private var infoContainer:Sprite = new Sprite();
-		
 		private var bg:Image;
-		
 		private var items:Array = [];
-		
 		private var closeButton:ButtonExpandableHud;
-		
 		private var balance:CreditLabel = new CreditLabel();
-		
 		private var textureManager:ITextureManager;
-		
 		private var redeemButton:Button;
-		
 		private var state:String;
-		
 		private var pods:CreditPods;
 		
 		public function Shop(g:Game, state:String = "")

@@ -8,15 +8,10 @@ package facebook
    public class FBQuery extends FBWaitable
    {
       private static var counter:int = 0;
-
       public var name:String = "";
-
       public var hasDependency:Boolean = false;
-
       public var fields:Array;
-
       public var table:String = null;
-
       public var where:Object = null;
 
       public function FBQuery()

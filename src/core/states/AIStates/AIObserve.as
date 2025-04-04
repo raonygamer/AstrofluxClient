@@ -10,9 +10,7 @@ package core.states.AIStates
 	public class AIObserve implements IState
 	{
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
 		
 		public function AIObserve(g:Game, s:EnemyShip, t:Unit, target:Heading, nextTurnDirection:int)

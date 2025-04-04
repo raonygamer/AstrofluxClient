@@ -7,9 +7,7 @@ package core.particle
 	public class EmitterManager
 	{
 		public var emitters:Vector.<Emitter>;
-		
 		private var g:Game;
-		
 		private var inactiveEmitters:Vector.<Emitter>;
 		
 		public function EmitterManager(m:Game)

@@ -12,21 +12,13 @@ package core.turret
 	public class Turret extends Unit
 	{
 		public var weapon:Weapon;
-		
 		public var aimSkill:Number;
-		
 		public var aimArc:Number;
-		
 		public var target:Ship;
-		
 		public var visionRange:int;
-		
 		public var offset:Point;
-		
 		public var startAngle:Number;
-		
 		public var angleTargetPos:Point;
-		
 		public var rotationSpeed:Number;
 		
 		public function Turret(g:Game)

@@ -8,21 +8,13 @@ package core.hud.components.techTree
 	public class TechBar extends Sprite
 	{
 		private var maxLevel:int;
-		
 		public var tech:String;
-		
 		public var table:String;
-		
 		public var eti:EliteTechIcon;
-		
 		private var _playerLevel:int;
-		
 		private var techIcons:Vector.<TechLevelIcon>;
-		
 		private var eliteTechIcon:EliteTechIcon;
-		
 		private var me:Player;
-		
 		private var _selectedTechLevelIcon:TechLevelIcon;
 		
 		public function TechBar(g:Game, techSkill:TechSkill, me:Player, showCanBeUpgraded:Boolean = true, showTooltip:Boolean = false, overrideSkinLevel:int = -1)

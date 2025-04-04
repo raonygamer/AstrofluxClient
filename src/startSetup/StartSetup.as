@@ -24,65 +24,35 @@ package startSetup
 	public class StartSetup extends Sprite implements IStartSetup
 	{
 		private var _skin:String = "hiTDnI9Ex0iLeFAktBnX0w";
-		
 		private var _pvp:Boolean = false;
-		
 		private var _split:String = "";
-		
 		public var _joinName:String = "";
-		
 		private var textureManager:ITextureManager;
-		
 		private var dataManager:IDataManager;
-		
 		private var confirmButton:Button;
-		
 		private var pvpButton:Button;
-		
 		private var stf:ScreenTextField;
-		
 		private var description:Text;
-		
 		private var space:Sprite = new Sprite();
-		
 		private var timeAdjust:Number = 1;
-		
 		private const SELECT_PVP:Boolean = false;
-		
 		private var skipWakeUpCaptain:Boolean = true;
-		
 		private var skinStats:StartShipBaseStats;
-		
 		private var pickShipButton1:PickButton;
-		
 		private var pickShipButton2:PickButton;
-		
 		private var pickShipButton3:PickButton;
-		
 		private var pm:ParallaxManager;
-		
 		private var soundManager:ISound;
-		
 		private var speedUpSpace:Boolean = false;
-		
 		private var freezeSpace:Boolean = false;
-		
 		private var logBook:Text;
-		
 		private var textIndex:int = 0;
-		
 		private var shakeTween1:TweenMax;
-		
 		private var shakeTween2:TweenMax;
-		
 		private var ships:Array = new Array(3);
-		
 		private var isRunning:Boolean;
-		
 		private var _progressText:Text = new Text();
-		
 		private var _timer:Date = new Date();
-		
 		private var _timeStart:int;
 		
 		public function StartSetup()

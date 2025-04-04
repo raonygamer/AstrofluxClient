@@ -18,37 +18,21 @@ package sound
 	public class SoundManager extends Sprite implements ISound
 	{
 		private static var audioPath:String = "/sound/";
-		
 		public static const TYPE_MUSIC:String = "music";
-		
 		public static const TYPE_EFFECT:String = "effects";
-		
 		public static const TYPE_VOICE:String = "voice";
-		
 		private var musicObjects:Dictionary = new Dictionary();
-		
 		private var effectObjects:Dictionary = new Dictionary();
-		
 		private var soundObjects:Dictionary = new Dictionary();
-		
 		private var soundObjectsByName:Dictionary = new Dictionary();
-		
 		private var callbackQueue:Dictionary = new Dictionary();
-		
 		private var _effectVolume:Number = 0.5;
-		
 		private var _musicVolume:Number = 0.5;
-		
 		private var loadItems:Array;
-		
 		private var totalItems:int = 0;
-		
 		private var currItem:int = 0;
-		
 		private var percentageLoaded:int = 0;
-		
 		private var fs:GameFS;
-		
 		private var _client:Client;
 		
 		public function SoundManager(client:Client)

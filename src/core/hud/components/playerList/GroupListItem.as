@@ -9,11 +9,8 @@ package core.hud.components.playerList
 	public class GroupListItem extends Sprite
 	{
 		private var g:Game;
-		
 		private var group:Group;
-		
 		private var playerListItems:Vector.<PlayerListItem>;
-		
 		private var separator:Quad;
 		
 		public function GroupListItem(g:Game, group:Group)

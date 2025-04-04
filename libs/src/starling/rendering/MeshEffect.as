@@ -33,14 +33,11 @@ package starling.rendering
          *  <code>"position:float2, texCoords:float2, color:bytes4"</code> */
         public static const VERTEX_FORMAT:VertexDataFormat =
             FilterEffect.VERTEX_FORMAT.extend("color:bytes4");
-
         private var _alpha:Number;
         private var _tinted:Boolean;
         private var _optimizeIfNotTinted:Boolean;
-
         // helper objects
         private static var sRenderAlpha:Vector.<Number> = new Vector.<Number>(4, true);
-
         /** Creates a new MeshEffect instance. */
         public function MeshEffect()
         {
@@ -65,7 +62,6 @@ package starling.rendering
         override protected function createProgram():Program
         {
             var vertexShader:String, fragmentShader:String;
-
             if (texture)
             {
                 if (_optimizeIfNotTinted && !_tinted && _alpha == 1.0)

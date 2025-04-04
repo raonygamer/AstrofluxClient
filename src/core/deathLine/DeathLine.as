@@ -7,11 +7,8 @@ package core.deathLine
 	public class DeathLine extends Line
 	{
 		private var g:Game;
-		
 		public var nextDistanceCalculation:Number = -1;
-		
 		private var distanceToCamera:Number = 0;
-		
 		public var id:String = "";
 		
 		public function DeathLine(g:Game, color:uint = 16777215, alpha:Number = 1)

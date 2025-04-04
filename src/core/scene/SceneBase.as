@@ -31,97 +31,51 @@ package core.scene
 	public class SceneBase extends DisplayObjectContainer implements ISceneState
 	{
 		public static var settings:Settings;
-		
 		public var myCargo:Cargo;
-		
 		private var clockInitComplete:Boolean;
-		
 		private var userJoinedComplete:Boolean;
-		
 		public var room:Room;
-		
 		public var client:Client;
-		
 		private var connection:Connection;
-		
 		protected var roomId:String;
-		
 		protected var serviceRoomId:String;
-		
 		public var serviceConnection:Connection;
-		
 		protected var clock:Clock;
-		
 		public var canvas:Sprite = new Sprite();
-		
 		private var hud:Sprite = new Sprite();
-		
 		private var menu:Sprite = new Sprite();
-		
 		private var overlay:Sprite = new Sprite();
-		
 		public const CANVAS_BACKGROUND:String = "canvasBackground";
-		
 		public const CANVAS_BODIES:String = "canvasBodies";
-		
 		public const CANVAS_DROPS:String = "canvasDrops";
-		
 		public const CANVAS_SPAWNERS:String = "canvasSpawmers";
-		
 		public const CANVAS_TURRETS:String = "canvasTurrets";
-		
 		public const CANVAS_BOSSES:String = "canvasBosses";
-		
 		public const CANVAS_ENEMY_SHIPS:String = "canvasEnemyShip";
-		
 		public const CANVAS_PLAYER_SHIPS:String = "canvasPlayerShip";
-		
 		public const CANVAS_PROJECTILES:String = "canvasProjectiles";
-		
 		public const CANVAS_EFFECTS:String = "canvasEffects";
-		
 		public const CANVAS_TEXTS:String = "canvasTexts";
-		
 		public var canvasBackground:DisplayObjectContainer = new Sprite();
-		
 		public var canvasBodies:Sprite = new Sprite();
-		
 		public var canvasDrops:Sprite = new Sprite();
-		
 		public var canvasSpawners:Sprite = new Sprite();
-		
 		public var canvasTurrets:Sprite = new Sprite();
-		
 		public var canvasBosses:Sprite = new Sprite();
-		
 		public var canvasEnemyShips:Sprite = new Sprite();
-		
 		public var canvasPlayerShips:Sprite = new Sprite();
-		
 		public var canvasProjectiles:Sprite = new Sprite();
-		
 		public var canvasEffects:Sprite = new Sprite();
-		
 		public var canvasTexts:Sprite = new Sprite();
-		
 		private var layersInfo:Array;
-		
 		private var connectionHandlers:Dictionary = new Dictionary();
-		
 		private var serviceHandlers:Dictionary = new Dictionary();
-		
 		protected var _stateMachine:SceneStateMachine;
-		
 		protected var _leaving:Boolean;
-		
 		public var blockHotkeys:Boolean = false;
-		
 		public var camera:StarlingCameraFocus;
-		
 		private var resizeCallbacks:Array = [];
-		
 		public var time:Number = 0;
-		
 		public var messageCounter:Dictionary = new Dictionary();
 		
 		public function SceneBase(client:Client, serviceConnection:Connection, connection:Connection, room:Room)
@@ -910,6 +864,7 @@ package core.scene
 		
 		private function anyMessage(m:Message) : void
 		{
+			Console.write(m);
 		}
 		
 		private function duplicateLogin(m:Message) : void

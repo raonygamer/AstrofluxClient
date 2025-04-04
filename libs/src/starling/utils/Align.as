@@ -23,19 +23,14 @@ package starling.utils
 
         /** Horizontal left alignment. */
         public static const LEFT:String = "left";
-
         /** Horizontal right alignment. */
         public static const RIGHT:String = "right";
-
         /** Vertical top alignment. */
         public static const TOP:String = "top";
-
         /** Vertical bottom alignment. */
         public static const BOTTOM:String = "bottom";
-
         /** Centered alignment. */
         public static const CENTER:String = "center";
-
         /** Indicates whether the given alignment string is valid. */
         public static function isValid(align:String):Boolean
         {

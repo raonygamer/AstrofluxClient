@@ -20,21 +20,13 @@ package core.hud.components
 	public class SaleSpinner extends PopupMessage
 	{
 		private var g:Game;
-		
 		private var container:Sprite = new Sprite();
-		
 		private var sales:Vector.<Sale> = new Vector.<Sale>();
-		
 		private var current:int = 0;
-		
 		private var tween:TweenMax;
-		
 		private var supporterPackage:CreditSupporterItem;
-		
 		private var beginnerPackage:CreditBeginnerPackage;
-		
 		private var powerPackage:CreditPowerPackage;
-		
 		private var megaPackage:CreditMegaPackage;
 		
 		public function SaleSpinner(g:Game)

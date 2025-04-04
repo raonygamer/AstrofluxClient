@@ -17,11 +17,8 @@ package core.hud.components.shipMenu
 	public class ArtifactSelector extends Sprite
 	{
 		private var g:Game;
-		
 		private var p:Player;
-		
 		private var icons:Vector.<MenuSelectIcon> = new Vector.<MenuSelectIcon>();
-		
 		private var textureManager:ITextureManager;
 		
 		public function ArtifactSelector(g:Game, p:Player)

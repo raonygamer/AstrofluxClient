@@ -49,9 +49,7 @@ package starling.animation
         public static const EASE_OUT_BOUNCE:String = "easeOutBounce";
         public static const EASE_IN_OUT_BOUNCE:String = "easeInOutBounce";
         public static const EASE_OUT_IN_BOUNCE:String = "easeOutInBounce";
-
         private static var sTransitions:Dictionary;
-
         /** @private */
         public function Transitions()
         {

@@ -13,11 +13,8 @@ package core.login
 	public class RecoverDialog extends Sprite
 	{
 		private var recoverEmail:LoginInput;
-		
 		private var recoverButton:LoginButton;
-		
 		private var cancelButton:LoginButton;
-		
 		private var login:Login;
 		
 		public function RecoverDialog(login:Login)

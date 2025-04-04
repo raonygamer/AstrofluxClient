@@ -7,7 +7,6 @@ package core.unit
 	public class UnitManager
 	{
 		private var g:Game;
-		
 		public var units:Vector.<Unit> = new Vector.<Unit>();
 		
 		public function UnitManager(g:Game)

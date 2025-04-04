@@ -13,13 +13,9 @@ package core.states.gameStates
 	public class SettingsChat extends Sprite
 	{
 		private static var labelFormat:TextFormat = new TextFormat("DAIDRR",13,0xffffff,"left");
-		
 		private var g:Game;
-		
 		private var xpos:int = 50;
-		
 		private var ypos:int = 0;
-		
 		private var scrollArea:ScrollContainer;
 		
 		public function SettingsChat(g:Game)

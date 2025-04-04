@@ -17,35 +17,20 @@ package core.hud.components.cargo
 	public class CargoItem extends Sprite
 	{
 		public static const STYLE_HUD:String = "hud";
-		
 		public static const STYLE_CARGO:String = "cargo";
-		
 		public var table:String;
-		
 		public var item:String;
-		
 		public var amount:int;
-		
 		public var type:String;
-		
 		private var dataManager:IDataManager;
-		
 		private var textureManager:ITextureManager;
-		
 		private var itemImage:Image;
-		
 		private var nameText:TextBitmap;
-		
 		private var quantityText:TextBitmap;
-		
 		public var itemName:String;
-		
 		private var toolTip:ToolTip;
-		
 		private var style:String;
-		
 		private var g:SceneBase;
-		
 		private var bgr:Quad;
 		
 		public function CargoItem(g:SceneBase, table:String, item:String, type:String, amount:int)

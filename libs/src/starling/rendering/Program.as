@@ -38,9 +38,7 @@ package starling.rendering
         private var _vertexShader:ByteArray;
         private var _fragmentShader:ByteArray;
         private var _program3D:Program3D;
-
         private static var sAssembler:AGALMiniAssembler = new AGALMiniAssembler();
-
         /** Creates a program from the given AGAL (Adobe Graphics Assembly Language) bytecode. */
         public function Program(vertexShader:ByteArray, fragmentShader:ByteArray)
         {

@@ -44,7 +44,6 @@ package com.adobe.serialization.json
 		 * @tiptext
 		 */
 		public var type:int;
-
 		/**
 		 * The value of the token
 		 *
@@ -53,7 +52,6 @@ package com.adobe.serialization.json
 		 * @tiptext
 		 */
 		public var value:Object;
-
 		/**
 		 * Creates a new JSONToken with a specific token type and value.
 		 *
@@ -75,7 +73,6 @@ package com.adobe.serialization.json
 		 * @see #create()
 		 */
 		internal static const token:JSONToken = new JSONToken();
-
 		/**
 		 * Factory method to create instances.  Because we don't need more than one instance
 		 * of a token at a time, we can always use the same instance to improve performance

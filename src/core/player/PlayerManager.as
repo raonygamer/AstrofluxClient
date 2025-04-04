@@ -41,17 +41,11 @@ package core.player
 	public class PlayerManager extends EventDispatcher
 	{
 		public static var banMinutes:int = 0;
-		
 		public static var isAllChannels:Boolean = false;
-		
 		private var _me:Player;
-		
 		private var _playersById:Dictionary;
-		
 		private var _players:Vector.<Player>;
-		
 		private var _enemyPlayers:Vector.<Player>;
-		
 		private var g:Game;
 		
 		public function PlayerManager(g:Game)

@@ -17,19 +17,12 @@ package core.hud.components.map
 	public class MapPlayer
 	{
 		private var player:Player;
-		
 		private var scale:Number = 0.35;
-		
 		private var layer:Image;
-		
 		private var text:TextBitmap;
-		
 		private var g:Game;
-		
 		private var supporterImage:Image;
-		
 		private var lastTeam:int;
-		
 		private var isDomination:Boolean;
 		
 		public function MapPlayer(container:Sprite, player:Player, g:Game, isDomination:Boolean)

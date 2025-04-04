@@ -23,7 +23,6 @@ package starling.filters
         private var _compositeFilter:CompositeFilter;
         private var _distance:Number;
         private var _angle:Number;
-
         /** Creates a new DropShadowFilter instance with the specified parameters.
          *
          * @param distance   the offset distance of the shadow, in points.
@@ -81,7 +80,6 @@ package starling.filters
         {
             var offsetX:Number = Math.cos(_angle) * _distance;
             var offsetY:Number = Math.sin(_angle) * _distance;
-
             _compositeFilter.setOffsetAt(0, offsetX, offsetY);
 
             var blurPadding:Padding = _blurFilter.padding;
@@ -89,7 +87,6 @@ package starling.filters
             var right:Number = blurPadding.right;
             var top:Number = blurPadding.top;
             var bottom:Number = blurPadding.bottom;
-
             if (offsetX > 0)
                 right += offsetX;
             else

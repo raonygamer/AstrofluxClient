@@ -3,23 +3,14 @@ package core
 	public class uri
 	{
 		private var _source:String = "";
-		
 		private var _scheme:String = "";
-		
 		private var _host:String = "";
-		
 		private var _username:String = "";
-		
 		private var _password:String = "";
-		
 		private var _port:int = -1;
-		
 		private var _path:String = "";
-		
 		private var _query:String = "";
-		
 		private var _fragment:String = "";
-		
 		private var _r:RegExp = /\\/g;
 		
 		public function uri(raw:String)

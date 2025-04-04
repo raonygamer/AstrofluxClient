@@ -15,16 +15,12 @@ package starling.utils
     {
         /** The ID of the first vertex. */
         public var vertexID:int;
-
         /** The total number of vertices. */
         public var numVertices:int;
-
         /** The ID of the first index. */
         public var indexID:int;
-
         /** The total number of indices. */
         public var numIndices:int;
-
         /** Creates a new MeshSubset. */
         public function MeshSubset(vertexID:int = 0, numVertices:int = -1,
                 indexID:int = 0, numIndices:int = -1)

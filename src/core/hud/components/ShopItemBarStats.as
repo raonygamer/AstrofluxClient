@@ -10,13 +10,9 @@ package core.hud.components
 	public class ShopItemBarStats extends starling.display.Sprite
 	{
 		private static const BAR_WIDTH:Number = 18;
-		
 		private static const BAR_HEIGHT:Number = 14;
-		
 		private var bar:Texture;
-		
 		private var barFull:Texture;
-		
 		private var compact:Boolean;
 		
 		public function ShopItemBarStats(obj:Object, compact:Boolean = false)

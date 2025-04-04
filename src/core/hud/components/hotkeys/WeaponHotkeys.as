@@ -15,15 +15,10 @@ package core.hud.components.hotkeys
 	public class WeaponHotkeys extends DisplayObjectContainer
 	{
 		private var g:Game;
-		
 		public var selectedHotkey:WeaponHotkey;
-		
 		private var hotkeys:Vector.<WeaponHotkey>;
-		
 		private var ship:PlayerShip;
-		
 		private var player:Player;
-		
 		private var textureManager:ITextureManager;
 		
 		public function WeaponHotkeys(g:Game)

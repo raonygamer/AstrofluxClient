@@ -33,37 +33,21 @@ package core.states.gameStates
 	public class ClanState extends PlayState implements IGameState
 	{
 		private var confirmBuyWithFlux:CreditBuyBox;
-		
 		private var createClanButton:Button;
-		
 		private var viewContainer:Sprite = new Sprite();
-		
 		private var scrollContainer:ScrollContainer = new ScrollContainer();
-		
 		private var applicationsList:ScrollContainer = new ScrollContainer();
-		
 		private var dataManager:IDataManager;
-		
 		private const STATUS_CLAN:String = "clan";
-		
 		private const STATUS_EDIT:String = "edit";
-		
 		private const STATUS_APPLY:String = "apply";
-		
 		private const STATUS_HANDLE_APPLICATIONS:String = "handle_applications";
-		
 		private const STATUS_TOP_CLANS:String = "clans";
-		
 		private var STATUS:String = "";
-		
 		private var bgr:Image;
-		
 		private var toClan:String;
-		
 		private var searchField:TextInput;
-		
 		private var searchButton:Button;
-		
 		private var clanApplicationCheck:ClanApplicationCheck;
 		
 		public function ClanState(g:Game, toClan:String = "")

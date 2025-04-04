@@ -24,7 +24,6 @@ package starling.utils
         private var _right:Number;
         private var _top:Number;
         private var _bottom:Number;
-
         /** Creates a new instance with the given properties. */
         public function Padding(left:Number = 0, right:Number = 0, top:Number = 0, bottom:Number = 0)
         {
@@ -35,7 +34,6 @@ package starling.utils
         public function setTo(left:Number = 0, right:Number = 0, top:Number = 0, bottom:Number = 0):void
         {
             var changed:Boolean = _left != left || _right != right || _top != top || _bottom != bottom;
-
             _left = left;
             _right = right;
             _top = top;

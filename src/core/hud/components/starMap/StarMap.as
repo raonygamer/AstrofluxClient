@@ -32,79 +32,42 @@ package core.hud.components.starMap
 	public class StarMap extends Sprite
 	{
 		public static var selectedSolarSystem:SolarSystem;
-		
 		private static const PADDING:Number = 30;
-		
 		public static var friendsInSelectedSystem:Array = [];
-		
 		private var g:Game;
-		
 		private var p:Player;
-		
 		private var dataManager:IDataManager;
-		
 		private var discoveredSolarSystemsKeys:Array;
-		
 		private var allSolarSystems:Object;
-		
 		private var solarSystemIcons:Array;
-		
 		private var _height:Number;
-		
 		private var _width:Number;
-		
 		private var animationTween:TweenMax;
-		
 		private var textureManager:ITextureManager;
-		
 		private var container:Sprite;
-		
 		private var warpPathContainer:Sprite;
-		
 		private var galaxyText:Text;
-		
 		private var crewText:Text;
-		
 		private var crewBullet:Image;
-		
 		private var friendsInSystem:Sprite;
-		
 		private var friendsBullet:Image;
-		
 		private var crewAndFriendContainer:Sprite;
-		
 		private var _selectedWarpPath:WarpPath;
-		
 		private var allowBuy:Boolean;
-		
 		private var _currentSolarSystemKey:String;
-		
 		private var _currentSolarSystem:SolarSystem;
-		
 		private var focusSolarSystemKey:String;
-		
 		private var neighbours:Array;
-		
 		private var _warpPathLicenses:Array;
-		
 		private var _warpPaths:Array;
-		
 		private var confirmBuyWithFlux:CreditBuyBox;
-		
 		private var aquiredContainer:Sprite;
-		
 		private var aquiredText:Text;
-		
 		private var buyContainer:Sprite;
-		
 		private var buyButton:Button;
-		
 		private var buyWithFluxButton:Button;
-		
 		private var buyWithInviteButton:FBInviteUnlock = null;
-		
 		private var shipImage:MovieClip;
-		
 		private var orText:Text;
 		
 		public function StarMap(g:Game, width:Number = 540, height:Number = 240, allowBuy:Boolean = false, focusSolarSystemKey:String = "")
@@ -840,9 +803,7 @@ import starling.display.Sprite;
 class Node
 {
 	private var _children:Vector.<Node> = new Vector.<Node>();
-	
 	public var parent:Node = null;
-	
 	private var _key:String;
 	
 	public function Node(key:String)

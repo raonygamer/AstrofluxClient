@@ -33,29 +33,17 @@ package core.states.gameStates.missions
 	public class MissionView extends Sprite
 	{
 		private var mission:Mission;
-		
 		private var g:Game;
-		
 		private var heading:Text;
-		
 		private var description:Text;
-		
 		private var missionType:Object;
-		
 		private var box:GradientBox;
-		
 		private var dataManager:IDataManager;
-		
 		private var fluxIcon:Image;
-		
 		private var dropBase:DropBase;
-		
 		private var boxWidth:int;
-		
 		private var textureManager:ITextureManager;
-		
 		private var tween:TweenMax;
-		
 		private var timeLeft:Text = new Text();
 		
 		public function MissionView(game:Game, mission:Mission, boxWidth:int)

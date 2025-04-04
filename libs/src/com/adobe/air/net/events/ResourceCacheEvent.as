@@ -40,10 +40,8 @@ package com.adobe.air.net.events
 
 		public static const ITEM_READY:String = "onPathReady";
 		public static const ITEM_CACHED:String = "onItemCached";
-
 		[Bindable]
 		public var key:String;
-
 		[Bindable]
 		public var file:File;
 
@@ -59,7 +57,6 @@ package com.adobe.air.net.events
 			var out:ResourceCacheEvent = new ResourceCacheEvent(type,
 					bubbles,
 					cancelable);
-
 			out.key = key;
 			out.file = file;
 

@@ -6,31 +6,18 @@ package core.weapon
 	public class Heat
 	{
 		public static const LOCKOUT_TIME:int = 2000;
-		
 		public static const MAX:Number = 1;
-		
 		public static const REGEN:Number = 0.05;
-		
 		private var _lastUpdate:Number;
-		
 		private var _regen:Number;
-		
 		private var _current:Number;
-		
 		private var _max:Number = 1;
-		
 		private var _lockoutEnd:Number;
-		
 		private var g:Game;
-		
 		private var time:Number;
-		
 		private var reg:Number;
-		
 		private var cost:Number;
-		
 		private var n:int;
-		
 		private var s:PlayerShip;
 		
 		public function Heat(g:Game, ship:PlayerShip)

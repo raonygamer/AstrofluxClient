@@ -19,15 +19,10 @@ package core.hud
 	public class MenuHud extends Sprite
 	{
 		private var continueGameCallback:Function;
-		
 		private var g:Game;
-		
 		private var buttons:Vector.<ImageButton> = new Vector.<ImageButton>();
-		
 		private var bgr:Image;
-		
 		private var continueGameButton:ButtonExpandableHud;
-		
 		public var stateMachine:DisplayStateMachine;
 		
 		public function MenuHud(g:Game, continueGameCallback:Function)

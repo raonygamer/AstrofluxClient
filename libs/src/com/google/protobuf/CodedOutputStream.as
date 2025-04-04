@@ -474,7 +474,6 @@ package com.google.protobuf
 
             var low:int = bytes.readInt();
             var high:int = bytes.readInt();
-
             return new Int64(high, low);
         }
     }

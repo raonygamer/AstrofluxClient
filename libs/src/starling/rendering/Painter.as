@@ -76,7 +76,6 @@ package starling.rendering
     {
         // the key for the programs stored in 'sharedData'
         private static const PROGRAM_DATA_NAME:String = "starling.rendering.Painter.Programs";
-
         // members
 
         private var _stage3D:Stage3D;
@@ -89,7 +88,6 @@ package starling.rendering
         private var _stencilReferenceValues:Dictionary;
         private var _clipRectStack:Vector.<Rectangle>;
         private var _batchCacheExclusions:Vector.<DisplayObject>;
-
         private var _batchProcessor:BatchProcessor;
         private var _batchProcessorCurr:BatchProcessor; // current  processor
         private var _batchProcessorPrev:BatchProcessor; // previous processor (cache)
@@ -98,19 +96,15 @@ package starling.rendering
         private var _actualRenderTarget:TextureBase;
         private var _actualCulling:String;
         private var _actualBlendMode:String;
-
         private var _backBufferWidth:Number;
         private var _backBufferHeight:Number;
         private var _backBufferScaleFactor:Number;
-
         private var _state:RenderState;
         private var _stateStack:Vector.<RenderState>;
         private var _stateStackPos:int;
         private var _stateStackLength:int;
-
         // shared data
         private static var sSharedData:Dictionary = new Dictionary();
-
         // helper objects
         private static var sMatrix:Matrix = new Matrix();
         private static var sPoint3D:Vector3D = new Vector3D();
@@ -119,7 +113,6 @@ package starling.rendering
         private static var sBufferRect:Rectangle = new Rectangle();
         private static var sScissorRect:Rectangle = new Rectangle();
         private static var sMeshSubset:MeshSubset = new MeshSubset();
-
         // construction
 
         /** Creates a new Painter object. Normally, it's not necessary to create any custom
@@ -420,14 +413,12 @@ package starling.rendering
         private function renderMask(mask:DisplayObject):void
         {
             var wasCacheEnabled:Boolean = cacheEnabled;
-
             pushState();
             cacheEnabled = false;
             _state.alpha = 0.0;
 
             var matrix:Matrix = null;
             var matrix3D:Matrix3D = null;
-
             if (mask.stage)
             {
                 _state.setModelviewMatricesToIdentity();
@@ -462,7 +453,6 @@ package starling.rendering
             var stack:Vector.<Rectangle> = _clipRectStack;
             var stackLength:uint = stack.length;
             var intersection:Rectangle = Pool.getRectangle();
-
             if (stackLength)
                 RectangleUtil.intersect(stack[stackLength - 1], clipRect, intersection);
             else
@@ -476,7 +466,6 @@ package starling.rendering
         {
             var stack:Vector.<Rectangle> = _clipRectStack;
             var stackLength:uint = stack.length;
-
             if (stackLength == 0)
                 throw new Error("Trying to pop from empty clip rectangle stack");
 
@@ -493,7 +482,6 @@ package starling.rendering
         {
             var quad:Quad = mask as Quad;
             var is3D:Boolean = mask.is3D || (maskee && maskee.is3D && mask.stage == null);
-
             if (quad && !is3D && quad.texture == null)
             {
                 if (mask.stage)
@@ -588,7 +576,6 @@ package starling.rendering
         {
             var meshBatch:MeshBatch;
             var subset:MeshSubset = sMeshSubset;
-
             if (!startToken.equals(endToken))
             {
                 pushState();
@@ -685,7 +672,6 @@ package starling.rendering
         private function applyBlendMode():void
         {
             var blendMode:String = _state.blendMode;
-
             if (blendMode != _actualBlendMode)
             {
                 BlendMode.get (_state.blendMode).activate();
@@ -696,7 +682,6 @@ package starling.rendering
         private function applyCulling():void
         {
             var culling:String = _state.culling;
-
             if (culling != _actualCulling)
             {
                 _context.setCulling(culling);
@@ -707,7 +692,6 @@ package starling.rendering
         private function applyRenderTarget():void
         {
             var target:TextureBase = _state.renderTargetBase;
-
             if (target != _actualRenderTarget)
             {
                 if (target)
@@ -727,13 +711,11 @@ package starling.rendering
         private function applyClipRect():void
         {
             var clipRect:Rectangle = _state.clipRect;
-
             if (clipRect)
             {
                 var width:int, height:int;
                 var projMatrix:Matrix3D = _state.projectionMatrix3D;
                 var renderTarget:Texture = _state.renderTarget;
-
                 if (renderTarget)
                 {
                     width = renderTarget.root.nativeWidth;

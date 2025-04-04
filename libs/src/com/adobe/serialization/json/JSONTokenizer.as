@@ -43,25 +43,19 @@ package com.adobe.serialization.json
 		 * hex, etc.
 		 */
 		private var strict:Boolean;
-
 		/** The object that will get parsed from the JSON string */
 		private var obj:Object;
-
 		/** The JSON string to be parsed */
 		private var jsonString:String;
-
 		/** The current parsing location in the JSON string */
 		private var loc:int;
-
 		/** The current character in the JSON string during parsing */
 		private var ch:String;
-
 		/**
 		 * The regular expression used to make sure the string does not
 		 * contain invalid control characters.
 		 */
 		private const controlCharsRegExp:RegExp = /[\x00-\x1F]/;
-
 		/**
 		 * Constructs a new JSONDecoder to parse a JSON string
 		 * into a native object.
@@ -86,7 +80,6 @@ package com.adobe.serialization.json
 		public function getNextToken():JSONToken
 		{
 			var token:JSONToken = null;
-
 			// skip any whitespace / comments since the last
 			// token was read
 			skipIgnored();
@@ -126,7 +119,6 @@ package com.adobe.serialization.json
 
 				case 't': // attempt to read true
 					var possibleTrue:String = "t" + nextChar() + nextChar() + nextChar();
-
 					if (possibleTrue == "true")
 					{
 						token = JSONToken.create(JSONTokenType.TRUE, true);
@@ -141,7 +133,6 @@ package com.adobe.serialization.json
 
 				case 'f': // attempt to read false
 					var possibleFalse:String = "f" + nextChar() + nextChar() + nextChar() + nextChar();
-
 					if (possibleFalse == "false")
 					{
 						token = JSONToken.create(JSONTokenType.FALSE, false);
@@ -156,7 +147,6 @@ package com.adobe.serialization.json
 
 				case 'n': // attempt to read null
 					var possibleNull:String = "n" + nextChar() + nextChar() + nextChar();
-
 					if (possibleNull == "null")
 					{
 						token = JSONToken.create(JSONTokenType.NULL, null);
@@ -171,7 +161,6 @@ package com.adobe.serialization.json
 
 				case 'N': // attempt to read NaN
 					var possibleNaN:String = "N" + nextChar() + nextChar();
-
 					if (possibleNaN == "NaN")
 					{
 						token = JSONToken.create(JSONTokenType.NAN, NaN);
@@ -268,7 +257,6 @@ package com.adobe.serialization.json
 					JSONTokenType.STRING,
 					// Attach resulting string to the token to return it
 					unescapeString(jsonString.substr(loc, quoteIndex - loc)));
-
 			// Move past the closing quote in the input string.  This updates the next
 			// character in the input stream to be the character one after the closing quote
 			loc = quoteIndex + 1;
@@ -336,9 +324,7 @@ package com.adobe.serialization.json
 
 							// Save the characters as a string we'll convert to an int
 							var hexValue:String = "";
-
 							var unicodeEndPosition:int = nextSubstringStartPosition + 4;
-
 							// Make sure there are enough characters in the string leftover
 							if (unicodeEndPosition > len)
 							{
@@ -408,7 +394,6 @@ package com.adobe.serialization.json
 			// the string to accumulate the number characters
 			// into that we'll convert to a number at the end
 			var input:String = "";
-
 			// check for a negative number
 			if (ch == '-')
 			{
@@ -522,7 +507,6 @@ package com.adobe.serialization.json
 
 			// convert the string to a number value
 			var num:Number = Number(input);
-
 			if (isFinite(num) && !isNaN(num))
 			{
 				// the token for the number that we've read
@@ -555,7 +539,6 @@ package com.adobe.serialization.json
 		private final function skipIgnored():void
 		{
 			var originalLoc:int;
-
 			// keep trying to skip whitespace and comments as long
 			// as we keep advancing past the original location
 			do

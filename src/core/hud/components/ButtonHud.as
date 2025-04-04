@@ -13,47 +13,27 @@ package core.hud.components
 	public class ButtonHud extends DisplayObjectContainer
 	{
 		public static const TYPE_MAP:String = "button_map.png";
-		
 		public static const TYPE_SHIP:String = "button_ship.png";
-		
 		public static const TYPE_CARGO:String = "button_cargo.png";
-		
 		public static const TYPE_SETTINGS:String = "button_settings.png";
-		
 		public static const TYPE_PVP:String = "button_pvp.png";
-		
 		public static const TYPE_ARTIFACTS:String = "button_artifacts.png";
-		
 		public static const TYPE_LEADERBOARD:String = "button_leaderboard.png";
-		
 		public static const TYPE_ENCOUNTERS:String = "button_encounters.png";
-		
 		public static const TYPE_PAY:String = "button_pay.png";
-		
 		public static const TYPE_MISSIONS:String = "button_missions.png";
-		
 		public static const TYPE_NEW_MISSION:String = "button_new_mission.png";
-		
 		public static const TYPE_SHOP_BG:String = "button_shop_bg";
-		
 		public static const TYPE_PLAYERS:String = "button_players.png";
-		
 		public static const TYPE_PVP_MENU:String = "button_pvpmatch.png";
-		
 		public static const TYPE_HUD_PVP:String = "button_play_pvp.png";
-		
 		public static const TYPE_JOIN_PVP:String = "button_join_pvp.png";
 		
 		private var clickCallback:Function;
-		
 		private var image:Image;
-		
 		private var hoverImage:Image;
-		
 		protected var hintNewContainer:Image;
-		
 		private var _enabled:Boolean = true;
-		
 		private var tw:TweenMax;
 		
 		public function ButtonHud(clickCallback:Function, buttonType:String = "button_ship.png", loadCallback:Function = null)

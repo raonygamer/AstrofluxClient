@@ -7,41 +7,24 @@ package fl.transitions
    public class Tween extends EventDispatcher
    {
       protected static var _mc:MovieClip = new MovieClip();
-
       public var isPlaying:Boolean = false;
-
       public var obj:Object = null;
-
       public var prop:String = "";
 
       public var func:Function;
-
       public var begin:Number = NaN;
-
       public var change:Number = NaN;
-
       public var useSeconds:Boolean = false;
-
       public var prevTime:Number = NaN;
-
       public var prevPos:Number = NaN;
-
       public var looping:Boolean = false;
-
       private var _duration:Number = NaN;
-
       private var _time:Number = NaN;
-
       private var _fps:Number = NaN;
-
       private var _position:Number = NaN;
-
       private var _startTime:Number = NaN;
-
       private var _intervalID:uint = 0;
-
       private var _finish:Number = NaN;
-
       private var _timer:Timer = null;
 
       public function Tween(param1:Object, param2:String, param3:Function, param4:Number, param5:Number, param6:Number, param7:Boolean = false)

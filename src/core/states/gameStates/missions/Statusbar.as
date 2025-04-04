@@ -17,13 +17,9 @@ package core.states.gameStates.missions
 	public class Statusbar extends Sprite
 	{
 		private var label:TextField;
-		
 		private var g:Game;
-		
 		private var daily:Daily;
-		
 		private var bg:Image;
-		
 		private var front:Image;
 		
 		public function Statusbar(g:Game, daily:Daily)

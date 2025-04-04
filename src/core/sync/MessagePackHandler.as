@@ -7,53 +7,29 @@ package core.sync
 	public class MessagePackHandler
 	{
 		private var g:Game;
-		
 		private const PLAYER_COURSE:String = "a";
-		
 		private const PLAYER_FIRE:String = "b";
-		
 		private const AI_STATE_CHANGED:String = "c";
-		
 		private const PLAYER_SPEED_BOOST:String = "d";
-		
 		private const PLAYER_CONV_SHIELD:String = "e";
-		
 		private const PLAYER_DMG_BOOST:String = "f";
-		
 		private const PLAYER_HARDEN_SHIELD:String = "g";
-		
 		private const PLAYER_XP_GAIN:String = "h";
-		
 		private const PLAYER_XP_LOSS:String = "i";
-		
 		private const PLAYER_DAMAGED:String = "j";
-		
 		private const ENEMY_DAMAGED:String = "k";
-		
 		private const TURRET_DAMAGED:String = "l";
-		
 		private const SPAWNER_DAMAGED:String = "m";
-		
 		private const BEAM_PICKUP:String = "n";
-		
 		private const PICKUP:String = "o";
-		
 		private const ENEMY_FIRE:String = "p";
-		
 		private const TURRET_FIRE:String = "q";
-		
 		private const ENEMY_KILLED:String = "r";
-		
 		private const TURRET_KILLED:String = "s";
-		
 		private const SPAWNER_KILLED:String = "t";
-		
 		private const SPAWN_DROPS:String = "u";
-		
 		private const PLAYER_POWERUP:String = "v";
-		
 		private const PLAYER_TROON_GAIN:String = "x";
-		
 		private const AI_TELEPORT:String = "z";
 		
 		public function MessagePackHandler(g:Game)

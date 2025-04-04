@@ -6,23 +6,14 @@ package core.friend
 	public class Friend
 	{
 		public var id:String;
-		
 		public var name:String;
-		
 		public var currentSolarSystem:String;
-		
 		public var currentRoom:String;
-		
 		public var skin:String;
-		
 		public var level:int;
-		
 		public var reputation:int;
-		
 		public var clan:String;
-		
 		public var isOnline:Boolean = false;
-		
 		private var g:Game;
 		
 		public function Friend()

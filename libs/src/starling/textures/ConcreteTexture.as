@@ -52,7 +52,6 @@ package starling.textures
         private var _scale:Number;
         private var _onRestore:Function;
         private var _dataUploaded:Boolean;
-
         /** @private
          *
          *  Creates a ConcreteTexture object from a TextureBase, storing information about size,

@@ -27,75 +27,42 @@ package core.hud.components
 	public class CrewDetails extends Sprite
 	{
 		private static const HEIGHT:int = 58;
-		
 		private static const WIDTH:int = 52;
-		
 		private static const textX1:int = 60;
-		
 		private static const textX2:int = 175;
-		
 		private static const textY1:int = 7;
-		
 		private static const textY2:int = 30;
-		
 		public static const MODE_SHIP:int = 0;
-		
 		public static const MODE_CANTINA:int = 1;
-		
 		public static const MODE_REPORT:int = 2;
-		
 		public static const IMAGES_SPECIALS:Vector.<String> = Vector.<String>(["spec_cold.png","spec_heat.png","spec_radiation.png","spec_first_contact.png","spec_trade.png","spec_collaboration.png","spec_kinetic.png","spec_energy.png","spec_bio_weapons.png"]);
-		
 		public static const IMAGES_SKILLS:Vector.<String> = Vector.<String>(["skill_environment.png","skill_diplomacy.png","skill_combat.png"]);
-		
 		private var exploreTimer:HudTimer;
-		
 		private var img:Image;
-		
 		public var crewMember:CrewMember;
-		
 		private var injuryTimer:HudTimer;
-		
 		private var injuryStatus:Text;
-		
 		private var g:Game;
-		
 		private var bgColor:uint = 1717572;
 		
 		private var requestReloadCallback:Function;
 		
 		public var requestRemovalCallback:Function;
-		
 		private var raiseButtons:Array;
-		
 		private var dismissButton:Button;
-		
 		private var trainButton:Button;
-		
 		public var mode:int;
-		
 		private var statusTween:TweenMax;
-		
 		private var skillPointsText:Text;
-		
 		private var skillPointsValue:Text;
-		
 		private var skillPointsValueTween1:TweenMax;
-		
 		private var skillPointsValueTween2:TweenMax;
-		
 		private var nextY:int = 0;
-		
 		private var specialSkillsHolder:Sprite;
-		
 		private var specialSkills:Dictionary;
-		
 		private var acceptButton:Button;
-		
 		private var confirmBuyWithFlux:CreditBuyBox;
-		
 		private var confirmTraining:PopupConfirmMessage;
-		
 		private var confirmDismiss:PopupConfirmMessage;
 		
 		public function CrewDetails(g:Game, crewMember:CrewMember, requestReloadCallback:Function = null, showTraining:Boolean = true, mode:int = 0)

@@ -11,9 +11,7 @@ package core.group
 	public class GroupManager extends EventDispatcher
 	{
 		private var g:Game;
-		
 		private var _groups:Vector.<Group>;
-		
 		private var _invites:Vector.<Invite>;
 		
 		public function GroupManager(g:Game)

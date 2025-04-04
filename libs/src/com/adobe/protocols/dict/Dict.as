@@ -62,12 +62,9 @@ package com.adobe.protocols.dict
 		// public static var DEFINITION_HEADER:String = "definitionHeader";
 		// public static var MATCH:String = "match";
 		// public static var NO_MATCH:String = "noMatch";
-
 		public static var FIRST_MATCH:uint = 0;
 		public static var ALL_DATABASES:uint = 1;
-
 		private var socket:SocketHelper;
-
 		private var dbShortList:Boolean;
 
 		public function Dict()

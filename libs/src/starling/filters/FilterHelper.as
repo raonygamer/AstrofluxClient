@@ -45,10 +45,8 @@ package starling.filters
         private var _renderTarget:Texture;
         private var _targetBounds:Rectangle;
         private var _target:DisplayObject;
-
         // helpers
         private var sRegion:Rectangle = new Rectangle();
-
         /** Creates a new, empty instance. */
         public function FilterHelper(textureFormat:String = "bgra")
         {
@@ -84,7 +82,6 @@ package starling.filters
         {
             var texture:Texture;
             var subTexture:SubTexture;
-
             if (_numPasses >= 0)
                 if (_numPasses-- == 0)
                     return null;
@@ -143,7 +140,6 @@ package starling.filters
             var maxNativeSize:int = Texture.maxSize;
             var newNativeWidth:int = getNativeSize(width, newScale);
             var newNativeHeight:int = getNativeSize(height, newScale);
-
             if (newNativeWidth > maxNativeSize || newNativeHeight > maxNativeSize)
             {
                 factor = maxNativeSize / Math.max(newNativeWidth, newNativeHeight);
@@ -169,7 +165,6 @@ package starling.filters
         private function getNativeSize(size:Number, textureScale:Number):int
         {
             var nativeSize:Number = size * textureScale;
-
             if (_usePotTextures)
                 return nativeSize > _sizeStep ? MathUtil.getNextPowerOfTwo(nativeSize) : _sizeStep;
             else

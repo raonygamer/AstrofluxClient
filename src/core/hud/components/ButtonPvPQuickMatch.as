@@ -8,17 +8,11 @@ package core.hud.components
 	public class ButtonPvPQuickMatch extends Sprite
 	{
 		private var joinQueue:ButtonPvP;
-		
 		private var leaveQueue:ButtonPvP;
-		
 		private var acceptQueue:ButtonPvP;
-		
 		private var tmpButton:ButtonPvP;
-		
 		private var type:String;
-		
 		private var queueInfo:QueueInfoHolder;
-		
 		private var g:Game;
 		
 		public function ButtonPvPQuickMatch(g:Game, type:String, qi:QueueInfoHolder, avilable:Boolean = true)

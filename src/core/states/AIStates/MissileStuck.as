@@ -12,23 +12,14 @@ package core.states.AIStates
 	public class MissileStuck implements IState
 	{
 		private var m:Game;
-		
 		private var p:Projectile;
-		
 		private var sm:StateMachine;
-		
 		private var isEnemy:Boolean;
-		
 		private var stuckShip:Ship = null;
-		
 		private var stuckUnit:Unit = null;
-		
 		private var stuckOffset:Point;
-		
 		private var stuckAngle:Number;
-		
 		private var startAngle:Number;
-		
 		private var pos:Point;
 		
 		public function MissileStuck(m:Game, p:Projectile)

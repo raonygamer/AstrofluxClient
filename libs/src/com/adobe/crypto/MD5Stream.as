@@ -51,31 +51,25 @@ package com.adobe.crypto
     public class MD5Stream
     {
         private static var mask:int = 0xFF;
-
         private var arr:Array = [];
-
         /* running count of length */
         private var arrLen:int;
-
         // initialize the md buffers
         private var a:int = 1732584193;
         private var b:int = -271733879;
         private var c:int = -1732584194;
         private var d:int = 271733878;
-
         // variables to store previous values
         private var aa:int;
         private var bb:int;
         private var cc:int;
         private var dd:int;
-
         /* index for data read */
         private var arrIndexLen:int = 0;
         /* index for hash computation */
         private var arrProcessIndex:int = 0;
         /* index for removing stale arr values */
         private var cleanIndex:int = 0;
-
         /**
          * Change this value from the default (16384) in the range of
          * MBs to actually affect GC as GC allocates in pools of
@@ -189,8 +183,7 @@ package com.adobe.crypto
             if (arrProcessIndex - cleanIndex > memoryBlockSize)
             {
                 var newarr:Array = new Array();
-
-                /* AS Arrays in sparse arrays. arr[2002] can exist 
+                /* AS Arrays in sparse arrays. arr[2002] can exist
                  * without values for arr[0] - arr[2001] */
                 for (var j:int = arrProcessIndex; j < arr.length; j++)
                 {
@@ -214,7 +207,6 @@ package com.adobe.crypto
         private function hashRemainingChunks(bUpdate:Boolean = true):void
         {
             var len:int = arr.length;
-
             /* leave a 16 word block untouched if we are called from
              * update. This is because, padArray() can modify the last
              * block and this modification has to happen before we

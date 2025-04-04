@@ -17,139 +17,73 @@ package core.weapon
 	public class Weapon extends GameObject
 	{
 		public static const TYPE_FLEE:int = 0;
-		
 		public static const TYPE_ANTIPROJECTILE:int = 1;
-		
 		public var type:String;
-		
 		public var dmg:Damage;
-		
 		public var debuffType:int;
-		
 		public var debuffDuration:int;
-		
 		public var debuffValue:Damage;
-		
 		public var debuffEffect:String;
-		
 		public var debuffType2:int;
-		
 		public var debuffDuration2:int;
-		
 		public var debuffValue2:Damage;
-		
 		public var debuffEffect2:String;
-		
 		public var fireEffect:String;
-		
 		public var dmgRadius:int;
-		
 		public var numberOfHits:int;
-		
 		public var reloadTime:Number;
-		
 		public var speed:Number;
-		
 		public var acceleration:Number;
-		
 		public var ttl:int;
 		
 		public var projectileFunction:String;
-		
 		public var range:Number;
-		
 		public var friction:Number;
-		
 		public var angleVariance:Number;
-		
 		public var positionYVariance:Number;
-		
 		public var positionXVariance:Number;
-		
 		public var sideShooter:Boolean;
-		
 		public var positionOffsetX:Number;
-		
 		public var positionOffsetY:Number;
-		
 		public var maxProjectiles:int;
-		
 		public var projectiles:Vector.<Projectile>;
-		
 		public var multiNrOfP:int;
-		
 		public var multiOffset:Number;
-		
 		public var multiAngleOffset:Number;
-		
 		public var multiSpreadStart:Boolean;
-		
 		public var fireSound:String;
-		
 		public var alive:Boolean;
-		
 		public var fireNextTime:Number;
-		
 		public var rotationSpeed:Number;
-		
 		public var unit:Unit;
-		
 		public var target:Unit;
-		
 		public var hasTechTree:Boolean;
-		
 		public var key:String;
-		
 		public var useShipSystem:Boolean;
-		
 		public var randomAngle:Boolean;
-		
 		public var techIconFileName:String;
-		
 		public var specialCondition:String;
-		
 		public var specialBonusPercentage:Number;
-		
 		public var waveDirection:int;
-		
 		public var isMissileWeapon:Boolean;
-		
 		public var fireBackwards:Boolean;
-		
 		public var aimArc:Number;
-		
 		public var level:int;
-		
 		public var heatCost:Number;
-		
 		public var shieldVamp:Number;
-		
 		public var healthVamp:Number;
-		
 		public var burst:int;
-		
 		public var burstDelay:Number;
-		
 		public var burstCurrent:int;
-		
 		public var active:Boolean;
-		
 		public var hotkey:int;
-		
 		public var hasChargeUp:Boolean;
-		
 		public var chargeUpTimeMax:Number;
-		
 		protected var g:Game;
-		
 		protected var _fire:Boolean;
-		
 		public var chargeUpTime:Number;
-		
 		public var lastFire:Number = 0;
-		
 		public var global:Boolean = false;
-		
 		public var triggerMeleeAnimation:Boolean = false;
 		
 		public var fireCallback:Function;

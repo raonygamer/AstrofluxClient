@@ -13,35 +13,20 @@ package core.hud.components.shipMenu
 	public class MenuSelectIcon extends Sprite
 	{
 		private static const WIDTH:int = 40;
-		
 		private static const HEIGHT:int = 40;
-		
 		public static const BITMAP_WEAPON:String = "slot_weapon.png";
-		
 		public static const BITMAP_ARTIFACT:String = "slot_artifact.png";
-		
 		public static const BITMAP_CREW:String = "slot_crew.png";
-		
 		public static const BITMAP_FRIEND:String = "slot_friend.png";
-		
 		private var bmp:Image;
-		
 		private var bgrBmp:Image;
-		
 		private var lockBmp:Image;
-		
 		public var number:int = 0;
-		
 		private var _captionText:Text;
-		
 		private var _levelText:Text;
-		
 		private var _numberText:Text;
-		
 		private var textureManager:ITextureManager;
-		
 		private var _locked:Boolean;
-		
 		private var _inUse:Boolean;
 		
 		public function MenuSelectIcon(number:int, texture:Texture, type:String, locked:Boolean, inUse:Boolean, enabled:Boolean, level:int = 0, caption:String = null)

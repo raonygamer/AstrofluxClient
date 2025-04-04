@@ -13,11 +13,8 @@ package core.states.AIStates
 	public class AIReturnOrbit implements IState
 	{
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var target:Point;
 		
 		public function AIReturnOrbit(g:Game, s:EnemyShip, angle:Number, startTime:Number, t:Heading, nextTurnDirection:int)

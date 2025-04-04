@@ -11,11 +11,8 @@ package core.hud.components.starMap
 	public class TransitButton extends starling.display.Sprite
 	{
 		public var target:SolarSystem;
-		
 		private var hovered:Boolean;
-		
 		private var color:uint;
-		
 		private var textureImage:Image;
 		
 		public function TransitButton(target:SolarSystem, color:uint)

@@ -8,15 +8,10 @@ package core.states.AIStates
 	public class Mine implements IState
 	{
 		private var g:Game;
-		
 		private var p:Projectile;
-		
 		private var sm:StateMachine;
-		
 		private var activateTime:Number;
-		
 		private var delay:int;
-		
 		private var activated:Boolean = false;
 		
 		public function Mine(g:Game, p:Projectile, delay:int)

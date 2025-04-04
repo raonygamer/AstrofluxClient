@@ -9,7 +9,6 @@ package core.hud.components.credits
 	public class CreditExpBoost extends CreditDayItem
 	{
 		private var selectedDays:int;
-		
 		private var price:int;
 		
 		public function CreditExpBoost(g:Game, parent:Sprite)

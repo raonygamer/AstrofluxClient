@@ -9,9 +9,7 @@ package startSetup
 	public class StartShipBaseStats extends Sprite
 	{
 		private var skinObj:Object;
-		
 		private var speed:int;
-		
 		private var tweenDelay:Number = 0.7;
 		
 		public function StartShipBaseStats(skinObj:Object, speed:int)

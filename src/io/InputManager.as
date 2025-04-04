@@ -12,23 +12,14 @@ package io
 	public class InputManager implements IInput
 	{
 		private var _isMousePressed:Boolean;
-		
 		private var _isRightMousePressed:Boolean = false;
-		
 		private var downKeys:Dictionary;
-		
 		private var pressedKeys:Dictionary;
-		
 		private var releasedKeys:Dictionary;
-		
 		private var mouseHasMoved:Boolean;
-		
 		private var prevMouseX:Number;
-		
 		private var prevMouseY:Number;
-		
 		private var stage:Stage;
-		
 		private var listedListenerKeys:Array = [];
 		
 		public function InputManager(stage:Stage)

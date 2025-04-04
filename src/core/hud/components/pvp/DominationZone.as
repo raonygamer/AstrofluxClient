@@ -12,47 +12,26 @@ package core.hud.components.pvp
 	public class DominationZone
 	{
 		private var textureManager:ITextureManager;
-		
 		public var zoneRadius:Number = 250;
-		
 		public var id:int;
-		
 		public var name:String = "";
-		
 		public var ownerTeam:int;
-		
 		public var capCounter:int;
-		
 		public var nrTeam:Vector.<int> = new Vector.<int>();
-		
 		private var g:Game;
-		
 		private var friendlyZone:Image;
-		
 		private var neutralZone:Image;
-		
 		private var enemyZone:Image;
-		
 		private var img:Image;
-		
 		public var friendlyColor:uint = 255;
-		
 		public var neutralColor:uint = 16777215;
-		
 		public var enemyColor:uint = 16711680;
-		
 		public var x:int;
-		
 		public var y:int;
-		
 		private var oldCapCounter:int = 0;
-		
 		public var status:int = 0;
-		
 		public const STATUS_IDLE:int = 0;
-		
 		public const STATUS_MY_TEAM_ASSAULTING:int = 1;
-		
 		public const STATUS_OPPONENT_TEAM_ASSAULTING:int = 2;
 		
 		public function DominationZone(g:Game, obj:Object, id:int)

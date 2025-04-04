@@ -11,15 +11,10 @@ package core.hud.components.dialogs
 	public class CreditGainBox extends PopupMessage
 	{
 		private var g:Game;
-		
 		private var targetName:String;
-		
 		private var countText:Text;
-		
 		private var countText2:Text;
-		
 		private var creditBmp:Image;
-		
 		private var podsBmp:Image;
 		
 		public function CreditGainBox(g:Game, nrOfCredits:int, nrOfPods:int, type:String, name:String = "")

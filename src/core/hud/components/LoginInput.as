@@ -11,15 +11,10 @@ package core.hud.components
 	public class LoginInput extends Sprite
 	{
 		private static var textColor:uint = 16777215;
-		
 		private static var textFormat:starling.text.TextFormat = new starling.text.TextFormat("DAIDRR",12,textColor);
-		
 		private static var errorFormat:starling.text.TextFormat = new starling.text.TextFormat("DAIDRR",10,0xff0000,"center");
-		
 		private var placeholder:TextField;
-		
 		private var errorText:TextField;
-		
 		public var input:TextInput;
 		
 		public function LoginInput(placeholderText:String)

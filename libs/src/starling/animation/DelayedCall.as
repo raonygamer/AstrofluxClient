@@ -31,7 +31,6 @@ package starling.animation
         private var _callback:Function;
         private var _args:Array;
         private var _repeatCount:int;
-
         /** Creates a delayed call. */
         public function DelayedCall(callback:Function, delay:Number, args:Array = null)
         {
@@ -75,7 +74,6 @@ package starling.animation
                     // save call & args: they might be changed through an event listener
                     var call:Function = _callback;
                     var args:Array = _args;
-
                     // in the callback, people might want to call "reset" and re-add it to the
                     // juggler; so this event has to be dispatched *before* executing 'call'.
                     dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
@@ -138,7 +136,6 @@ package starling.animation
         // delayed call pooling
 
         private static var sPool:Vector.<DelayedCall> = new <DelayedCall>[];
-
         /** @private */
         starling_internal static function fromPool(call:Function, delay:Number,
                 args:Array = null):DelayedCall

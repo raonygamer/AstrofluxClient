@@ -12,15 +12,10 @@ package core.states.AIStates
 	public class Missile implements IState
 	{
 		private var g:Game;
-		
 		private var p:Projectile;
-		
 		private var sm:StateMachine;
-		
 		private var isEnemy:Boolean;
-		
 		private var engine:GameObject;
-		
 		private var startTime:Number;
 		
 		public function Missile(g:Game, p:Projectile)

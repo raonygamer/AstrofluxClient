@@ -29,61 +29,33 @@ package core.hud.components.explore
 	public class ExploreMapArea extends starling.display.Sprite
 	{
 		private static const ALPHA_COMPLETE:Number = 0.6;
-		
 		private static const ALPHA_START:Number = 0.3;
-		
 		public var key:String;
-		
 		public var area:Object;
-		
 		private var shell:Vector.<Point>;
-		
 		public var size:int;
-		
 		private var a:Number;
-		
 		private var g:Game;
-		
 		private var color:uint;
-		
 		private var color_fill:uint;
-		
 		private var color_fill_done:uint;
-		
 		private var map:ExploreMap;
-		
 		private var selected:Boolean;
-		
 		private var mouseOver:Boolean;
-		
 		private var x_max:int;
-		
 		private var fractionText:TextBitmap;
-		
 		private var kx:Number;
-		
 		private var ky:Number;
-		
 		private var x_mid:Number;
-		
 		private var y_mid:Number;
-		
 		private var infoBox:starling.display.Sprite;
-		
 		private var infoBoxBgr:Quad;
-		
 		public var explore:Explore;
-		
 		public var fraction:int = 0;
-		
 		private var areaTexture:Texture;
-		
 		private var areaImage:PixelImageTouch;
-		
 		private var tween:TweenMax;
-		
 		private var needRedraw:Boolean = true;
-		
 		private var fader:Number = 0.02;
 		
 		public function ExploreMapArea(g:Game, map:ExploreMap, area:Object, shell:Vector.<Point>, kx:Number, ky:Number, x_max:int)

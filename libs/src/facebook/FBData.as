@@ -9,7 +9,6 @@ package facebook
    public class FBData
    {
       private var timer:int = -1;
-
       private var queue:Array;
 
       public function FBData()

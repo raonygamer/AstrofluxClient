@@ -7,11 +7,8 @@ package core.hud.components.radar
 	public class Compas
 	{
 		public static const WIDTH:Number = 700;
-		
 		public static const HEIGHT:Number = 450;
-		
 		private var arrows:Vector.<TargetArrow> = new Vector.<TargetArrow>();
-		
 		private var g:Game;
 		
 		public function Compas(g:Game)

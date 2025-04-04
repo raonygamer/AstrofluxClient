@@ -10,15 +10,10 @@ package core.hud.components.map
 	public class MapPvpZone extends Sprite
 	{
 		private var g:Game;
-		
 		private var dz:DominationZone;
-		
 		private var img:Image;
-		
 		private var currentOwner:int;
-		
 		private var zone:Image;
-		
 		private var lastBlink:Number = 0;
 		
 		public function MapPvpZone(g:Game, dz:DominationZone)

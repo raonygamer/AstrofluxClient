@@ -13,9 +13,7 @@ package core.hud.components.radar
 	public class TargetArrow extends Sprite
 	{
 		public var target:GameObject;
-		
 		private var g:Game;
-		
 		private var tween:TweenMax;
 		
 		public function TargetArrow(g:Game, target:GameObject, color:uint)

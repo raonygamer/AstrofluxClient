@@ -29,71 +29,39 @@ package core.hud.components.techTree
 	public class TechTree extends Sprite
 	{
 		private static const UPGRADE_LEVEL_REQUIREMENTS:Array = [1,2,4,8,12,16];
-		
 		private var container:ScrollContainer = new ScrollContainer();
-		
 		private var myCargo:Cargo;
-		
 		private var _nrOfUpgrades:Vector.<int> = Vector.<int>([0,0,0,0,0,0,0]);
 		
 		private var upgradeCallback:Function;
-		
 		private var buyWithResourcesButton:Button;
-		
 		private var switchEliteTechButton:Button;
-		
 		private var buyWithFluxButton:Button;
-		
 		private var resetButton:Button;
-		
 		private var resetPackageButton:Button;
-		
 		private var cheatButton:Button;
-		
 		private var confirmBox:LootPopupConfirmMessage;
-		
 		public var techBars:Vector.<TechBar> = new Vector.<TechBar>();
-		
 		public var techSelectedForUpgrade:TechLevelIcon = null;
-		
 		public var eliteTechSelectedForUpgrade:EliteTechIcon = null;
-		
 		private var eliteSlider:Slider = new Slider();
-		
 		private var eliteSliderLabel:Text = new Text();
-		
 		private var canUpgrade:Boolean;
-		
 		private var g:Game;
-		
 		private var me:Player;
-		
 		private var scrollHeight:Number;
-		
 		private var upgradeInfo:Sprite = new Sprite();
-		
 		private var nameText:Text = new Text();
-		
 		private var description:Text = new Text();
-		
 		private var descriptionNextLevel:Text = new Text();
-		
 		private var eliteUpgradeHeading:TextBitmap = new TextBitmap();
-		
 		private var mineralType1Cost:PriceCommodities = null;
-		
 		private var mineralType2Cost:PriceCommodities = null;
-		
 		private var mineralType3Cost:PriceCommodities = null;
-		
 		private var mineralType4Cost:PriceCommodities = null;
-		
 		private var autoUpdateEliteUpgradeStartValue:int = 0;
-		
 		private var upgradeEliteLevelTo:int = 1;
-		
 		private var isUpgradingEliteTech:Boolean = false;
-		
 		private var fluxReset:int = 0;
 		
 		public function TechTree(g:Game, scrollHeight:Number = 400, canUpgrade:Boolean = false, upgradeCallback:Function = null)

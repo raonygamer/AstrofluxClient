@@ -12,27 +12,16 @@ package core.hud.components
 	public class Experience extends DisplayObjectContainer
 	{
 		private var regularXpBarColor:uint = 16777011;
-		
 		private var boostXpBarColor:uint = 3407667;
-		
 		private var xpBar:ScaleImage;
-		
 		private var bgr:ScaleImage;
-		
 		private var flashBar:ScaleImage;
-		
 		private var xpText:TextField;
-		
 		private var g:Game;
-		
 		private var p:Player;
-		
 		private var tt:ToolTip;
-		
 		private var oldXp:int = -1;
-		
 		private var oldXpBoost:Boolean = false;
-		
 		private var tw:TweenMax;
 		
 		public function Experience(g:Game)

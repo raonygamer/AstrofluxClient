@@ -34,10 +34,8 @@ package starling.filters
     {
         private var _mapX:Number;
         private var _mapY:Number;
-
         // helpers
         private static var sBounds:Rectangle = new Rectangle();
-
         /** Creates a new displacement map filter that uses the provided map texture. */
         public function DisplacementMapFilter(mapTexture:Texture,
                 componentX:uint = 0, componentY:uint = 0,
@@ -60,7 +58,6 @@ package starling.filters
             var offsetX:Number = 0.0, offsetY:Number = 0.0;
             var targetBounds:Rectangle = pool.targetBounds;
             var stage:Stage = pool.target.stage;
-
             if (stage && (targetBounds.x < 0 || targetBounds.y < 0))
             {
                 // 'targetBounds' is actually already intersected with the stage bounds.
@@ -93,7 +90,6 @@ package starling.filters
             var mapY:Number = (_mapY + mapOffsetY + padding.top) / mapTexture.height;
             var maxU:Number = inputTexture.width / mapTexture.width;
             var maxV:Number = inputTexture.height / mapTexture.height;
-
             mapTexture.setTexCoords(vertexData, 0, "mapTexCoords", -mapX, -mapY);
             mapTexture.setTexCoords(vertexData, 1, "mapTexCoords", -mapX + maxU, -mapY);
             mapTexture.setTexCoords(vertexData, 2, "mapTexCoords", -mapX, -mapY + maxV);
@@ -104,7 +100,6 @@ package starling.filters
         {
             var paddingX:Number = Math.ceil(Math.abs(dispEffect.scaleX) / 2);
             var paddingY:Number = Math.ceil(Math.abs(dispEffect.scaleY) / 2);
-
             padding.setTo(paddingX, paddingX, paddingY, paddingY);
         }
 
@@ -241,14 +236,12 @@ class DisplacementMapEffect extends FilterEffect
 {
     public static const VERTEX_FORMAT:VertexDataFormat =
         FilterEffect.VERTEX_FORMAT.extend("mapTexCoords:float2");
-
     private var _mapTexture:Texture;
     private var _mapRepeat:Boolean;
     private var _componentX:uint;
     private var _componentY:uint;
     private var _scaleX:Number;
     private var _scaleY:Number;
-
     // helper objects
     private static var sOffset:Vector.<Number> = new <Number>[0.5, 0.5, 0.0, 0.0];
     private static var sMatrix:Matrix3D = new Matrix3D();
@@ -275,7 +268,6 @@ class DisplacementMapEffect extends FilterEffect
                     "mov  v0, va1", // pass input texture coordinates to fragment program
                     "mov  v1, va2" // pass map texture coordinates to fragment program
                 ].join("\n");
-
             // v0:    input texCoords
             // v1:    map texCoords
             // fc0:   offset (0.5, 0.5)
@@ -289,7 +281,6 @@ class DisplacementMapEffect extends FilterEffect
                     "add ft3,  v0, ft2", // add displacement values to texture coords
                     tex("oc", "ft3", 0, texture) // read input texture at displaced coords
                 ].join("\n");
-
             return Program.fromSource(vertexShader, fragmentShader);
         }
         else
@@ -345,7 +336,6 @@ class DisplacementMapEffect extends FilterEffect
         var scale:Number = Starling.contentScaleFactor;
         var textureWidth:Number = texture.root.nativeWidth;
         var textureHeight:Number = texture.root.nativeHeight;
-
         for (var i:int = 0; i < 16; ++i)
             sMatrixData[i] = 0;
 

@@ -45,7 +45,6 @@ package com.adobe.air.filesystem
     {
       var v:Array = File.getRootDirectories();
       var os:String = Capabilities.os;
-
       if (os.indexOf("Mac") > -1)
       {
         v = File(v[0]).resolvePath("Volumes").getDirectoryListing();

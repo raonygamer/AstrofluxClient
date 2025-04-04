@@ -8,17 +8,11 @@ package core.hud.components.dialogs
 	public class DailyRewardMessage extends CreditGainBox
 	{
 		public static const DAILY_REWARD_FLUX:Vector.<int> = Vector.<int>([4,8,12,0,16]);
-		
 		public static const DAILY_REWARD_PODS:Vector.<int> = Vector.<int>([0,0,0,1,1]);
-		
 		private var g:Game;
-		
 		private var countText:Text;
-		
 		private var combo:int;
-		
 		private var boxXPos:int = 0;
-		
 		private var dayTextField:Text;
 		
 		public function DailyRewardMessage(g:Game, nrOfCredits:int, combo:int)
@@ -108,15 +102,10 @@ import textures.TextureLocator;
 class DailyRewardChild extends Sprite
 {
 	public static var boxWidth:int = 90;
-	
 	private var textField:Text;
-	
 	private var textField2:Text;
-	
 	private var image:Image;
-	
 	private var dayTextField:Text;
-	
 	private var box:Box;
 	
 	public function DailyRewardChild(flux:int, pods:int, combo:int, highlight:Boolean)

@@ -28,25 +28,15 @@ package core.states.exploreStates
 	public class ReportState extends DisplayState
 	{
 		private var area:ExploreArea;
-		
 		private var loadText:TextBitmap = new TextBitmap();
-		
 		private var levelUpHeading:TextBitmap = new TextBitmap();
-		
 		private var firstStepContainer:Sprite = new Sprite();
-		
 		private var crewStepContainers:Vector.<Sprite> = new Vector.<Sprite>();
-		
 		private var rewardStepContainer:Sprite = new Sprite();
-		
 		private var nextButton:Button;
-		
 		private var rewardTweens:Vector.<TweenMax> = new Vector.<TweenMax>();
-		
 		private var crewTweens:Vector.<Vector.<TweenMax>> = new Vector.<Vector.<TweenMax>>();
-		
 		private var currentCrewIndex:int;
-		
 		private var crewMembers:Array = [];
 		
 		public function ReportState(g:Game, area:ExploreArea)

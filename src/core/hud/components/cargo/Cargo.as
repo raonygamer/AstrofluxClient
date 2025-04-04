@@ -29,11 +29,8 @@ package core.hud.components.cargo
 	public class Cargo extends Sprite
 	{
 		private static const TYPE_MINERAL:String = "mineral";
-		
 		private static const TYPE_SPACE_JUNK:String = "spaceJunk";
-		
 		private static const TYPE_DATA_ITEM:String = "dataItem";
-		
 		private static const upgradeCosts:Array = new Array({"9PxxP960kkejxGFHhy608A":0},{"9PxxP960kkejxGFHhy608A":20},{
 			"h2-67R6yGEmPpWkPHATIeQ":20,
 			"lmPr7d35rkq0Ev6RQRJGVw":1
@@ -57,27 +54,16 @@ package core.hud.components.cargo
 			"K0RisGHC2UqZks1UVcYFOA":20,
 			"lmPr7d35rkq0Ev6RQRJGVw":15
 		});
-		
 		private var _commodities:Vector.<CargoItem> = new Vector.<CargoItem>();
-		
 		private var _spaceJunk:Vector.<CargoItem> = new Vector.<CargoItem>();
-		
 		private var _dataItems:Vector.<CargoItem> = new Vector.<CargoItem>();
-		
 		private var _minerals:Vector.<CargoItem> = new Vector.<CargoItem>();
-		
 		private var playerId:String;
-		
 		private var g:Game;
-		
 		private var container:ScrollContainer = new ScrollContainer();
-		
 		private var confirmBox:PopupConfirmMessage = null;
-		
 		private var upgradeNames:Array = new Array("Compressor 1a","Compressor 5V","Compressor 5V-S","Compressor 7z","Shrinker X2k","Shrinker 85-5k","Shrinker X10k");
-		
 		public var compressorCapacities:Array = new Array(100,200,500,1000,2000,5000,10000);
-		
 		public var spaceJunkCount:int = 0;
 		
 		public function Cargo(g:Game, playerId:String)

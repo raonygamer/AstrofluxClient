@@ -12,15 +12,10 @@ package core.states.AIStates
 	public class AITeleportEntry implements IState
 	{
 		private var g:Game;
-		
 		private var s:EnemyShip;
-		
 		private var sm:StateMachine;
-		
 		private var targetX:Number;
-		
 		private var targetY:Number;
-		
 		private var emitters1:Vector.<Emitter>;
 		
 		public function AITeleportEntry(g:Game, s:EnemyShip, course:Heading)

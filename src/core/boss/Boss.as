@@ -20,103 +20,54 @@ package core.boss
 	public class Boss extends GameObject
 	{
 		public var alive:Boolean;
-		
 		public var isHostile:Boolean;
-		
 		public var key:String;
-		
 		public var xp:int;
-		
 		public var level:int;
-		
 		public var hp:int;
-		
 		public var hpMax:int;
-		
 		public var resetTime:Number;
-		
 		public var respawnTime:Number;
-		
 		public var speed:Number;
-		
 		public var acceleration:Number;
-		
 		public var rotationSpeed:Number;
-		
 		public var rotationForced:Boolean;
-		
 		public var targetRange:int;
-		
 		public var holonomic:Boolean;
-		
 		public var orbitOrign:Point;
-		
 		public var orbitRadius:Point;
-		
 		public var turrets:Vector.<Turret>;
-		
 		public var spawners:Vector.<Spawner>;
-		
 		public var bossComponents:Vector.<BossComponent>;
-		
 		public var allComponents:Vector.<Unit>;
-		
 		public var target:Unit;
-		
 		public var angleTargetPos:Point;
-		
 		public var course:Heading;
-		
 		public var parentBody:Body;
-		
 		public var explosionEffect:String;
-		
 		public var explosionSound:String;
-		
 		public var bossRadius:int;
-		
 		public var currentWaypoint:Waypoint = null;
-		
 		public var waypoints:Vector.<Waypoint>;
-		
 		public var bodyDestroyStart:Number = 0;
-		
 		public var bodyDestroyEnd:Number = 0;
-		
 		public var bodyTarget:Body;
-		
 		public var awaitingActivation:Boolean;
-		
 		public var stateMachine:StateMachine = new StateMachine();
-		
 		protected var g:Game;
-		
 		private var error:Point = null;
-		
 		private var errorAngle:Number;
-		
 		private var convergeTime:Number = 1000;
-		
 		private var convergeStartTime:Number;
-		
 		private var errorOldTime:Number;
-		
 		private var oldAngle:Number;
-		
 		public var teleportExitTime:Number = 0;
-		
 		public var teleportExitPoint:Point;
-		
 		public var hpRegen:int;
-		
 		public var factions:Vector.<String> = new Vector.<String>();
-		
 		public var uberDifficulty:Number = 0;
-		
 		public var uberLevelFactor:Number = 0;
-		
 		private var teleportDestinationImage:Image;
-		
 		private var teleportChannelImage:Image;
 		
 		public function Boss(g:Game)

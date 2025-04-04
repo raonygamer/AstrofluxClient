@@ -24,45 +24,25 @@ package core.spawner
 	public class Spawner extends Unit
 	{
 		public static const TYPE_ORGANIC:String = "organic";
-		
 		public static const TYPE_MECH:String = "mech";
-		
 		public static const TYPE_ABSTRACT:String = "abstract";
-		
 		public var spawnerType:String;
-		
 		public var orbitRadius:int;
-		
 		public var orbitAngle:Number = 0;
-		
 		public var angleVelocity:Number = 0;
-		
 		public var rotationSpeed:Number = 0;
-		
 		public var angleOffset:Number = 0;
-		
 		public var hidden:Boolean;
-		
 		public var innerRadius:int;
-		
 		public var outerRadius:int;
-		
 		public var key:String;
-		
 		public var objKey:String;
-		
 		public var offset:Point;
-		
 		public var turrets:Vector.<Turret>;
-		
 		public var imageOffset:Point;
-		
 		public var imageScale:Number;
-		
 		public var initialHardenedShield:Boolean = false;
-		
 		private var aiHardenedShieldEffect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var deadTextures:Vector.<Texture>;
 		
 		public function Spawner(g:Game)

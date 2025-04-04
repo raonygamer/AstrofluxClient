@@ -45,7 +45,6 @@ package com.adobe.crypto
 	public class SHA1
 	{
 		public static var digest:ByteArray;
-
 		/**
 		 *  Performs the SHA1 hash algorithm on a string.
 		 *
@@ -59,7 +58,6 @@ package com.adobe.crypto
 		{
 			var blocks:Array = createBlocksFromString(s);
 			var byteArray:ByteArray = hashBlocks(blocks);
-
 			return IntUtil.toHex(byteArray.readInt(), true)
 				+ IntUtil.toHex(byteArray.readInt(), true)
 				+ IntUtil.toHex(byteArray.readInt(), true)
@@ -79,7 +77,6 @@ package com.adobe.crypto
 		{
 			var blocks:Array = SHA1.createBlocksFromByteArray(data);
 			var byteArray:ByteArray = hashBlocks(blocks);
-
 			return IntUtil.toHex(byteArray.readInt(), true)
 				+ IntUtil.toHex(byteArray.readInt(), true)
 				+ IntUtil.toHex(byteArray.readInt(), true)
@@ -101,7 +98,6 @@ package com.adobe.crypto
 		{
 			var blocks:Array = SHA1.createBlocksFromString(s);
 			var byteArray:ByteArray = hashBlocks(blocks);
-
 			// ByteArray.toString() returns the contents as a UTF-8 string,
 			// which we can't use because certain byte sequences might trigger
 			// a UTF-8 conversion.  Instead, we convert the bytes to characters
@@ -127,11 +123,9 @@ package com.adobe.crypto
 			var h2:int = 0x98badcfe;
 			var h3:int = 0x10325476;
 			var h4:int = 0xc3d2e1f0;
-
 			var len:int = blocks.length;
 			var w:Array = new Array(80);
 			var temp:int;
-
 			// loop over all of the blocks
 			for (var i:int = 0; i < len; i += 16)
 			{
@@ -142,7 +136,6 @@ package com.adobe.crypto
 				var c:int = h2;
 				var d:int = h3;
 				var e:int = h4;
-
 				// 80 steps to process each block
 				var t:int;
 				for (t = 0; t < 20; t++)

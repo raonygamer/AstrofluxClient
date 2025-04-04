@@ -24,10 +24,8 @@ package starling.events
     {
         /** Event type for a key that was released. */
         public static const KEY_UP:String = "keyUp";
-
         /** Event type for a key that was pressed. */
         public static const KEY_DOWN:String = "keyDown";
-
         private var _charCode:uint;
         private var _keyCode:uint;
         private var _keyLocation:uint;
@@ -35,7 +33,6 @@ package starling.events
         private var _ctrlKey:Boolean;
         private var _shiftKey:Boolean;
         private var _isDefaultPrevented:Boolean;
-
         /** Creates a new KeyboardEvent. */
         public function KeyboardEvent(type:String, charCode:uint = 0, keyCode:uint = 0,
                 keyLocation:uint = 0, ctrlKey:Boolean = false,

@@ -32,39 +32,22 @@ package core.hud.components.credits
 	public class BuyFlux extends starling.display.Sprite
 	{
 		private var g:Game;
-		
 		private var textureManager:ITextureManager;
-		
 		private var bgrQuad:Quad;
-		
 		private var bundles:Array;
-		
 		private var box:Box;
-		
 		private var textLayer:starling.display.Sprite;
-		
 		private var buttonLayer:starling.display.Sprite;
-		
 		private var nativeLayer:flash.display.Sprite;
-		
 		private const DARK_GREY:uint = 2302755;
-		
 		private const LIGHT_GREY:uint = 5131854;
-		
 		private const GREEN:uint = 4718367;
-		
 		private const YELLOW:uint = 15582483;
-		
 		private const GOLD:uint = 15526144;
-		
 		public var sale:Boolean = false;
-		
 		public var saleMultiplier:Number = 2;
-		
 		public var saleDesc:String = "";
-		
 		public var saleEvent:Sale;
-		
 		public var bgWidth:int;
 		
 		public function BuyFlux(g:Game)

@@ -3,17 +3,11 @@ package core.player
 	public class TechSkill
 	{
 		public var tech:String;
-		
 		public var table:String;
-		
 		public var level:int;
-		
 		public var name:String;
-		
 		public var activeEliteTech:String;
-		
 		public var activeEliteTechLevel:int;
-		
 		public var eliteTechs:Vector.<EliteTechSkill> = new Vector.<EliteTechSkill>();
 		
 		public function TechSkill(name:String = "", tech:String = "", table:String = "", level:int = 0, activeEliteTech:String = "", activeEliteTechLevel:int = 0)

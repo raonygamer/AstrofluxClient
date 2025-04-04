@@ -13,21 +13,13 @@ package core.hud.components.map
 	public class MapKilled
 	{
 		private var scale:Number = 0.4;
-		
 		private var layer:Sprite = new Sprite();
-		
 		private var scull:Image;
-		
 		private var g:Game;
-		
 		private var timeLeftOnKillAnimation:Number = 0;
-		
 		private const dropShowTime:Number = 60000;
-		
 		private var isRunningAnimation:Boolean = false;
-		
 		private var tween1:TweenMax;
-		
 		private var tween2:TweenMax;
 		
 		public function MapKilled(container:Sprite, g:Game)

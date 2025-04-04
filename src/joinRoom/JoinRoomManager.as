@@ -26,31 +26,18 @@ package joinRoom
 	public class JoinRoomManager extends EventDispatcher implements IJoinRoomManager
 	{
 		private var stage:Stage;
-		
 		private var client:Client;
-		
 		private var serviceConnection:Connection;
-		
 		private var connection:Connection;
-		
 		private var room:Room;
-		
 		private var roomStateMachine:SceneStateMachine;
-		
 		private var dataManager:IDataManager;
-		
 		private var joinData:Object;
-		
 		private var playerInfo:Object = {};
-		
 		private var _desiredRoomId:String = null;
-		
 		private var _desiredSystemType:String = "friendly";
-		
 		private var inited:Boolean = false;
-		
 		private var session:String = GUID.create();
-		
 		private var login:Login;
 		
 		public function JoinRoomManager(client:Client, stage:Stage, joinData:Object, login:Login)
@@ -330,6 +317,7 @@ package joinRoom
 			StartSetup.showProgressText("Joining game room");
 			client.multiplayer.createJoinRoom(room.id,room.roomType,false,room.data,room.joinData,handleJoin,function(param1:PlayerIOError):void
 			{
+				Console.write(param1);
 			});
 		}
 		

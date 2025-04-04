@@ -12,19 +12,12 @@ package core.states
 	public class DisplayState implements IDisplayState
 	{
 		protected var sm:DisplayStateMachine;
-		
 		protected var g:Game;
-		
 		protected var textureManager:ITextureManager;
-		
 		protected var container:Sprite;
-		
 		private var rootState:Class;
-		
 		private var isRoot:Boolean;
-		
 		private var parent:Sprite;
-		
 		public var backButton:Button;
 		
 		public function DisplayState(g:Game, rootState:Class, isRoot:Boolean = false)

@@ -15,25 +15,15 @@ package core.hud.components.chat
 	public class ChatInputText extends Sprite
 	{
 		private static const SPAM_TIME_LIMIT:int = 1000;
-		
 		private static const SPAM_TIME_LIMIT_GLOBAL:int = 30000;
-		
 		private var g:Game;
-		
 		private var history:Vector.<String> = new Vector.<String>();
-		
 		private var nextRdySendTime:Number = 0;
-		
 		private var nextGlobalRdySendTime:Number = 0;
-		
 		public var chatMode:String = "local";
-		
 		private var savedPrivateTarget:String = "";
-		
 		public var lastPrivateReceived:String = "";
-		
 		private var input:TextInput;
-		
 		private var tabs:TabBar = new TabBar();
 		
 		public function ChatInputText(g:Game, x:int, y:int, w:int, h:int)

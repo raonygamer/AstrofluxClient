@@ -10,21 +10,13 @@ package core.hud.components
 	public class BossHealth extends Sprite
 	{
 		private static const HP_WIDTH:Number = 600;
-		
 		private static const BOSS_DISPLAY_RANGE:Number = 1440000;
-		
 		private static const BOSS_HIDE_RANGE:Number = 5760000;
-		
 		private var bossHPBarBgr:ScaleImage;
-		
 		private var bossHPBar:ScaleImage;
-		
 		private var bossHPText:TextBitmap;
-		
 		private var bossNameText:TextBitmap;
-		
 		private var textureManager:ITextureManager;
-		
 		private var g:Game;
 		
 		public function BossHealth(g:Game)

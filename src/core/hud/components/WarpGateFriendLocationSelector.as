@@ -11,9 +11,7 @@ package core.hud.components
 	public class WarpGateFriendLocationSelector extends Sprite
 	{
 		protected var box:Box = new Box(5 * 60,200,"highlight",18);
-		
 		protected var closeButton:Button;
-		
 		protected var bgr:Quad = new Quad(100,100,0x22000000);
 		
 		private var callback:Function;

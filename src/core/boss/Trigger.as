@@ -10,55 +10,30 @@ package core.boss
 	public class Trigger
 	{
 		public var id:int;
-		
 		public var target:int;
-		
 		public var delay:Number;
-		
 		public var activate:Boolean;
-		
 		public var inactivate:Boolean;
-		
 		public var vulnerable:Boolean;
-		
 		public var invulnerable:Boolean;
-		
 		public var kill:Boolean;
-		
 		public var threshhold:Number;
-		
 		public var inactivateSelf:Boolean;
-		
 		public var editBase:Boolean;
-		
 		public var speed:int;
-		
 		public var rotationSpeed:Number;
-		
 		public var targetRange:int;
-		
 		public var rotationForced:Boolean;
-		
 		public var acceleration:Number;
-		
 		public var xpos:int;
-		
 		public var ypos:int;
-		
 		public var radius:int;
-		
 		public var explosionEffect:String;
-		
 		public var soundName:String;
-		
 		private var triggerRdy:Boolean;
-		
 		private var activationTarget:Unit;
-		
 		private var activationTargetBoss:Boss;
-		
 		private var activationOwner:Unit;
-		
 		private var g:Game;
 		
 		public function Trigger(g:Game)

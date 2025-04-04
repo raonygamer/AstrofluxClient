@@ -7,9 +7,7 @@ package core.states
 	public class DisplayStateMachine
 	{
 		public var parent:Sprite;
-		
 		private var previousState:IDisplayState;
-		
 		private var currentState:IDisplayState;
 		
 		public function DisplayStateMachine(parent:Sprite)

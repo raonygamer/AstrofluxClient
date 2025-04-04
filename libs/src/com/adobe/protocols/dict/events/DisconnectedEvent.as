@@ -47,7 +47,6 @@ package com.adobe.protocols.dict.events
     public override function clone():Event
     {
       var out:DisconnectedEvent = new DisconnectedEvent(type, bubbles, cancelable);
-
       return out;
     }
 

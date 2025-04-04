@@ -15,69 +15,37 @@ package core.weapon
 	public class Beam extends Weapon
 	{
 		private var startEffect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var startEffect2:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		private var endEffect:Vector.<Emitter> = new Vector.<Emitter>();
-		
 		public var startPos:Point = new Point();
-		
 		public var startPos2:Point = new Point();
-		
 		public var endPos:Point = new Point();
-		
 		public var lastPos:Point = new Point();
-		
 		private var lines:Vector.<BeamLine> = new Vector.<BeamLine>();
-		
 		private var lineBatch:MeshBatch = new MeshBatch();
-		
 		private var ready:Boolean = false;
-		
 		public var nrTargets:int = 0;
-		
 		public var secondaryTargets:Vector.<Unit> = new Vector.<Unit>();
-		
 		private var beamColor:uint = 16777215;
-		
 		private var beamAmplitude:Number = 2;
-		
 		private var beamThickness:Number = 1;
-		
 		private var startBeamAlpha:Number = 1;
-		
 		private var beamAlpha:Number = 1;
-		
 		private var beams:int = 3;
-		
 		private var beamNodes:Number = 0;
-		
 		private var glowColor:uint = 16711680;
-		
 		private var oldDrawBeam:Boolean;
-		
 		private var drawBeam:Boolean;
-		
 		private var targetBody:Body;
-		
 		private var chargeUpMax:int;
-		
 		private var chargeUPCurrent:int = 0;
-		
 		private var chargeUpCounter:int = 0;
-		
 		private var chargeUpNext:int = 8;
-		
 		private var chargeUpExpire:Number = 2000;
-		
 		private var lastDamaged:Number = 0;
-		
 		private var twin:Boolean = false;
-		
 		private var twinOffset:Number = 0;
-		
 		private var obj:Object;
-		
 		private var effectsInitialized:Boolean = false;
 		
 		public function Beam(g:Game)

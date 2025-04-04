@@ -40,7 +40,6 @@ package com.google.protobuf
         {
             var high:String = "00000000" + uint(_high).toString(16);
             var low:String = "00000000" + uint(_low).toString(16);
-
             return "0x" + high.substr(high.length - 8) + low.substr(low.length - 8);
         }
 
@@ -53,7 +52,6 @@ package com.google.protobuf
         {
             var high:int = _high;
             var low:uint = _low;
-
             if (bit >= 64)
             {
                 high = 0;
@@ -79,7 +77,6 @@ package com.google.protobuf
         {
             var high:int = _high;
             var low:uint = _low;
-
             if (bit >= 64)
             {
                 high = 0;

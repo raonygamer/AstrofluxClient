@@ -15,13 +15,10 @@ package startSetup
 		private var bgr:Box;
 		
 		private var callback:Function;
-		
 		private var image:Image;
 		
 		public var mouseOverCallback:Function = null;
-		
 		private var isSelected:Boolean = false;
-		
 		private var rotationTween:TweenMax;
 		
 		public function PickButton(imageName:String, callback:Function, isGuiTexture:Boolean = false)

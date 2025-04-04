@@ -196,7 +196,6 @@ package starling.core
     {
         /** The version of the Starling framework. */
         public static const VERSION:String = "2.1.1";
-
         // members
 
         private var _stage:Stage; // starling.display.stage!
@@ -215,18 +214,14 @@ package starling.core
         private var _supportHighResolutions:Boolean;
         private var _skipUnchangedFrames:Boolean;
         private var _showStats:Boolean;
-
         private var _viewPort:Rectangle;
         private var _previousViewPort:Rectangle;
         private var _clippedViewPort:Rectangle;
-
         private var _nativeStage:flash.display.Stage;
         private var _nativeStageEmpty:Boolean;
         private var _nativeOverlay:Sprite;
-
         private static var sCurrent:Starling;
         private static var sAll:Vector.<Starling> = new <Starling>[];
-
         // construction
 
         /** Creates a new Starling instance.
@@ -292,7 +287,6 @@ package starling.core
             // register touch/mouse event handlers
             for each (var touchEventType:String in touchEventTypes)
                 stage.addEventListener(touchEventType, onTouch, false, 0, true);
-
             // register other event handlers
             stage.addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
             stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey, false, 0, true);
@@ -337,7 +331,6 @@ package starling.core
 
             for each (var touchEventType:String in touchEventTypes)
                 _nativeStage.removeEventListener(touchEventType, onTouch, false);
-
             _touchProcessor.dispose();
             _painter.dispose();
             _stage.dispose();
@@ -432,7 +425,6 @@ package starling.core
                 var shareContext:Boolean = _painter.shareContext;
                 var scaleX:Number = _viewPort.width / _stage.stageWidth;
                 var scaleY:Number = _viewPort.height / _stage.stageHeight;
-
                 _painter.nextFrame();
                 _painter.pixelSize = 1.0 / contentScaleFactor;
                 _painter.state.setProjectionMatrix(
@@ -479,7 +471,6 @@ package starling.core
 
                 var contentScaleFactor:Number =
                     _supportHighResolutions ? _nativeStage.contentsScaleFactor : 1.0;
-
                 _painter.configureBackBuffer(_clippedViewPort, contentScaleFactor,
                         _antiAliasing, true);
             }
@@ -624,7 +615,6 @@ package starling.core
             var keyEvent:starling.events.KeyboardEvent = new starling.events.KeyboardEvent(
                     event.type, event.charCode, event.keyCode, event.keyLocation,
                     event.ctrlKey, event.altKey, event.shiftKey);
-
             makeCurrent();
             _stage.dispatchEvent(keyEvent);
 
@@ -636,7 +626,6 @@ package starling.core
         {
             var stageWidth:int = event.target.stageWidth;
             var stageHeight:int = event.target.stageHeight;
-
             if (contextValid)
                 dispatchResizeEvent();
             else
@@ -670,7 +659,6 @@ package starling.core
             var pressure:Number = 1.0;
             var width:Number = 1.0;
             var height:Number = 1.0;
-
             // figure out general touch properties
             if (event is MouseEvent)
             {
@@ -690,7 +678,6 @@ package starling.core
             else
             {
                 var touchEvent:TouchEvent = event as TouchEvent;
-
                 // On a system that supports both mouse and touch input, the primary touch point
                 // is dispatched as mouse event as well. Since we don't want to listen to that
                 // event twice, we ignore the primary touch in that case.
@@ -746,7 +733,6 @@ package starling.core
         private function get touchEventTypes():Array
         {
             var types:Array = [];
-
             if (multitouchEnabled)
                 types.push(TouchEvent.TOUCH_BEGIN, TouchEvent.TOUCH_MOVE, TouchEvent.TOUCH_END);
 
@@ -917,7 +903,6 @@ package starling.core
             {
                 var stageWidth:int = _stage.stageWidth;
                 var stageHeight:int = _stage.stageHeight;
-
                 if (_statsDisplay == null)
                 {
                     _statsDisplay = new StatsDisplay();
@@ -1169,7 +1154,6 @@ function isNativeDisplayObjectEmpty(object:DisplayObject):Boolean
     {
         var container:DisplayObjectContainer = object as DisplayObjectContainer;
         var numChildren:int = container.numChildren;
-
         for (var i:int = 0; i < numChildren; ++i)
         {
             if (!isNativeDisplayObjectEmpty(container.getChildAt(i)))

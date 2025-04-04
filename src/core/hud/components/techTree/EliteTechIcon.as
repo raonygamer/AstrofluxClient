@@ -22,71 +22,38 @@ package core.hud.components.techTree
 	public class EliteTechIcon extends Sprite
 	{
 		public static var ICON_WIDTH:int = 40;
-		
 		public static var ICON_PADDING:int = 5;
-		
 		public static const STATE_LOCKED:String = "locked";
-		
 		public static const STATE_NO_SPECIAL:String = "no special selected";
-		
 		public static const STATE_SELECTED:String = "selected";
-		
 		public static const STATE_UPGRADABLE:String = "special selected and can be upgraded";
-		
 		public static const STATE_FULLY_UPGRADED:String = "fully upgraded";
-		
 		public static const STATE_CANT_BE_UPGRADED:String = "cant upgrade";
-		
 		public var level:int;
-		
 		public var mineralType1:String;
-		
 		public var mineralType2:String;
-		
 		public var table:String;
-		
 		public var tech:String;
-		
 		public var upgradeNameRaw:String;
-		
 		public var upgradeName:String;
-		
 		public var description:String;
-		
 		public var techSkill:TechSkill;
-		
 		private var bitmap:Image;
-		
 		private var bitmapHover:Image;
-		
 		private var bitmapNotAvailable:Image;
-		
 		private var bitmapAvailable:Image;
-		
 		private var bitmapSelected:Image;
-		
 		private var bitmapMax:Image;
-		
 		private var bitmapLocked:Image;
-		
 		private var textureManager:ITextureManager;
-		
 		private var dataManager:IDataManager;
-		
 		private var techItemObject:Object;
-		
 		private var state:String;
-		
 		private var tb:TechBar;
-		
 		private var showTooltip:Boolean;
-		
 		private var canBeUpgraded:Boolean;
-		
 		private var number:TextField;
-		
 		private var g:Game;
-		
 		private var icon:Image;
 		
 		public function EliteTechIcon(g:Game, tb:TechBar, state:String, techSkill:TechSkill, showTooltip:Boolean, canBeUpgraded:Boolean)

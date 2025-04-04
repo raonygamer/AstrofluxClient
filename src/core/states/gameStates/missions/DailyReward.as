@@ -18,9 +18,7 @@ package core.states.gameStates.missions
 	public class DailyReward extends Sprite
 	{
 		private static var textureManager:ITextureManager;
-		
 		private var g:Game;
-		
 		private var daily:Daily;
 		
 		public function DailyReward(g:Game, daily:Daily)

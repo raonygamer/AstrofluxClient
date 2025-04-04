@@ -7,9 +7,7 @@ package core.hud.components
 	public class ImageButton extends InteractiveImage
 	{
 		private var callback:Function;
-		
 		protected var disabledSource:Texture;
-		
 		protected var toggleSource:Texture;
 		
 		public function ImageButton(callback:Function, bd:Texture = null, hoverBd:Texture = null, disabledBd:Texture = null, toggleBd:Texture = null, caption:String = null, alwaysShowCaption:Boolean = false)

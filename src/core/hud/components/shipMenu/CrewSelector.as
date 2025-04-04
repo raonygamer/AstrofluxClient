@@ -17,11 +17,8 @@ package core.hud.components.shipMenu
 	public class CrewSelector extends Sprite
 	{
 		private var g:Game;
-		
 		private var p:Player;
-		
 		private var icons:Vector.<MenuSelectIcon> = new Vector.<MenuSelectIcon>();
-		
 		private var textureManager:ITextureManager;
 		
 		public function CrewSelector(g:Game, p:Player)
