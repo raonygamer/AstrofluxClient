@@ -1,6 +1,4 @@
 package joinRoom {
-import com.adobe.crypto.MD5;
-
 import core.hud.components.dialogs.PopupMessage;
 import core.hud.components.starMap.StarMap;
 import core.player.Player;
@@ -128,7 +126,7 @@ public class JoinRoomManager extends EventDispatcher implements IJoinRoomManager
             }
             if (_desiredSystemType == "clan") {
                 if (playerInfo.clan != "") {
-                    _desiredRoomId = MD5.hash(playerInfo.currentSolarSystem + playerInfo.clan);
+                    _desiredRoomId = MD5Util.hashString(playerInfo.currentSolarSystem + playerInfo.clan);
                 } else {
                     _desiredSystemType = "friendly";
                     _desiredRoomId = null;
@@ -208,7 +206,7 @@ public class JoinRoomManager extends EventDispatcher implements IJoinRoomManager
                     failedCallback("Friend instance not found");
                     return;
                 }
-                if (_loc3_.data.systemType == "clan" && _loc3_.id != MD5.hash(_loc3_.data.solarSystemKey + player.clanId)) {
+                if (_loc3_.data.systemType == "clan" && _loc3_.id != MD5Util.hashString(_loc3_.data.solarSystemKey + player.clanId)) {
                     failedCallback("Your friend is in a private clan instance.");
                     return;
                 }

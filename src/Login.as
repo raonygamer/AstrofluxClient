@@ -1,5 +1,4 @@
 package {
-import com.adobe.crypto.MD5;
 import com.greensock.TweenMax;
 import com.hurlant.crypto.rsa.RSAKey;
 import com.hurlant.util.Hex;
@@ -490,7 +489,7 @@ public class Login extends Sprite {
     }
 
     private function getY8Str2(id:String):String {
-        return MD5.hash(id);
+        return MD5Util.hashString(id);
     }
 
     private function tryCreateNewUserY8(error:PlayerIOError):void {

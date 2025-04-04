@@ -88,8 +88,6 @@ public class WarpGateFriendLocationSelector extends Sprite {
 }
 }
 
-import com.adobe.crypto.MD5;
-
 import core.friend.Friend;
 import core.hud.components.Button;
 import core.hud.components.Style;
@@ -164,7 +162,7 @@ class WarpToFriendRow extends Sprite {
             _loc4_.desiredSystemType = "hostile";
         } else if (type == "clan") {
             if (Game.instance.me.clanId) {
-                _loc3_ = MD5.hash(StarMap.selectedSolarSystem.key + Game.instance.me.clanId);
+                _loc3_ = MD5Util.hashString(StarMap.selectedSolarSystem.key + Game.instance.me.clanId);
                 _loc4_.desiredRoomId = _loc3_;
                 _loc4_.desiredSystemType = "clan";
             }

@@ -11,7 +11,9 @@
           </entries>
           <sdk name="Flex 4.16.1 with AIR 50.0" />
         </dependencies>
-        <compiler-options />
+        <compiler-options>
+          <option name="additionalOptions" value="-compiler.strict=true -compiler.incremental=true -benchmark -compiler.compress=true" />
+        </compiler-options>
         <packaging-air-desktop use-generated-descriptor="false" custom-descriptor-path="$MODULE_DIR$/src/application.xml" package-file-name="AstrofluxClient" />
         <packaging-android />
         <packaging-ios />

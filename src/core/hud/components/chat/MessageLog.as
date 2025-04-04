@@ -1,10 +1,10 @@
 package core.hud.components.chat {
-import com.adobe.utils.StringUtil;
-
 import core.hud.components.ImageButton;
 import core.player.Player;
 import core.scene.Game;
 import core.scene.SceneBase;
+
+import mx.utils.StringUtil;
 
 import starling.display.DisplayObjectContainer;
 import starling.events.Event;

@@ -1,6 +1,4 @@
 package data {
-import com.adobe.serialization.json.JSONDecoder;
-
 import core.artifact.Artifact;
 
 import debug.Console;
@@ -133,9 +131,10 @@ public class DataManager extends Sprite implements IDataManager {
     }
 
     public function cacheCommonData():void {
-        var _loc2_:ByteArray = new EmbeddedAssets.CacheFile() as ByteArray;
-        var _loc1_:JSONDecoder = new JSONDecoder(_loc2_.readUTFBytes(_loc2_.length), true);
-        json = _loc1_.getValue();
+        var fileBytes:ByteArray = new EmbeddedAssets.CacheFile() as ByteArray;
+        var fileString:String = fileBytes.readUTFBytes(fileBytes.length);
+        var json:Object = JSON.parse(fileString);
+        this.json = json;
     }
 
     private function loadFromBigDB(table:String, key:String, callback:Function):void {

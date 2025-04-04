@@ -1,6 +1,4 @@
 package generics {
-import com.adobe.serialization.json.JSONDecoder;
-
 import flash.utils.ByteArray;
 
 import mx.resources.Locale;
@@ -34,9 +32,10 @@ public class Localize {
     }
 
     public static function cacheLanguageData():void {
-        var _loc2_:ByteArray = new EmbeddedAssets.LanguageFile() as ByteArray;
-        var _loc1_:JSONDecoder = new JSONDecoder(_loc2_.readUTFBytes(_loc2_.length), true);
-        langObj = _loc1_.getValue();
+        var langBytes:ByteArray = new EmbeddedAssets.LanguageFile() as ByteArray;
+        var langString:String = langBytes.readUTFBytes(langBytes.length);
+        var json:Object = JSON.parse(langString);
+        langObj = json;
     }
 
     public static function newData(val:String):void {
