@@ -9,7 +9,7 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="Flex 4.16.1 with AIR 50.0" />
+          <sdk name="AIR_20.0" />
         </dependencies>
         <compiler-options>
           <option name="additionalOptions" value="-compiler.strict=true -compiler.incremental=true -benchmark -compiler.compress=true" />
@@ -27,7 +27,7 @@
       <sourceFolder url="file://$MODULE_DIR$/out/production/AstrofluxClient" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Flex 4.16.1 with AIR 50.0" jdkType="Flex SDK Type (new)" />
+    <orderEntry type="jdk" jdkName="AIR_20.0" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="assets" level="project" />
     <orderEntry type="library" exported="" name="libs" level="project" />
