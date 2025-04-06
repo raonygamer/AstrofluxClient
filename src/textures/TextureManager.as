@@ -218,7 +218,7 @@ public class TextureManager extends starling.display.Sprite implements ITextureM
         if (_loc4_ == null) {
             throw new Error("Texture atlas is null! key: " + textureAtlas);
         }
-        var _loc3_:Vector.<Texture> = _loc4_.getTextures(prefix.replace(".png", ""));
+        var _loc3_:Vector.<Texture> = Vector.<Texture>(_loc4_.getTextures(prefix.replace(".png", "")));
         if (_loc3_ == null) {
             throw new Error("Texture is null, can not be!!! FileName: " + prefix + " atlas: " + textureAtlas);
         }
