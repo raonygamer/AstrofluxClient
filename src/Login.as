@@ -33,10 +33,12 @@ import feathers.core.FocusManager;
 
 import flash.display.Loader;
 import flash.events.Event;
+import flash.events.MouseEvent;
 import flash.external.ExternalInterface;
 import flash.net.SharedObject;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
+import flash.net.navigateToURL;
 import flash.system.Security;
 import flash.utils.ByteArray;
 
@@ -65,8 +67,10 @@ import starling.events.KeyboardEvent;
 import starling.events.TouchEvent;
 import starling.text.BitmapFont;
 import starling.text.TextField;
+import starling.text.TextFieldAutoSize;
 import starling.text.TextFormat;
 import starling.textures.Texture;
+import starling.utils.Align;
 import starling.utils.AssetManager;
 
 import startSetup.IStartSetup;
@@ -156,8 +160,7 @@ public class Login extends Sprite {
         Starling.current.stage.color = 0;
         Starling.current.nativeStage.color = 0;
     }
-    public var bar2:String = "Verdana_ttf$767177d9989c7323c60db8a483bd906b-639850078";
-    public var ba3:String = "Russo_One_ttf$106c15525f996d3d73a9291202e5dc2e1347241993";
+
     private var textureManager:TextureManager;
     private var soundManager:SoundManager;
     private var isLoggedIn:Boolean;
@@ -263,6 +266,19 @@ public class Login extends Sprite {
         logoContainer.addChild(logo);
         addChild(effectContainer);
         addChild(logoContainer);
+
+        /*** START MODIFIED ***/
+        var infoText:TextField = new TextField(0, 0, "", new TextFormat("DAIDRR", 12, 0xffffff));
+        infoText.x = 10;
+        infoText.y = 10;
+        infoText.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
+        infoText.format.horizontalAlign = Align.LEFT;
+        infoText.text =
+                "Astroflux Client - v" + CLIENT_VERSION + "\n" +
+                "Repository: https://github.com/raonygamer/AstrofluxClient";
+        addChild(infoText);
+        /*** END MODIFIED ***/
+
         if (!RymdenRunt.isDesktop) {
             try {
                 ExternalInterface.addCallback("fbLike", onFBLike);
