@@ -918,6 +918,9 @@ public class Login extends Sprite {
         var _loc4_:Array = [15907921, 6210749, 14305875];
         _loc2_ = 0;
         while (_loc2_ < 100) {
+            if (logoContainer == null)
+                return;
+
             _loc3_ = new Image(_loc1_);
             _loc3_.blendMode = "add";
             _loc3_.x = 0;

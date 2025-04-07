@@ -6,6 +6,11 @@ import data.IDataManager;
 
 import generics.Localize;
 
+import starling.animation.Transitions;
+
+import starling.animation.Tween;
+import starling.core.Starling;
+
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.events.EventDispatcher;
@@ -34,12 +39,13 @@ public class Preload extends EventDispatcher {
 
     private function preloadComplete():void {
         loadingBar.update(Localize.t("Done!"), 100);
-        TweenMax.to(loadingBar, 0.3, {
-            "alpha": 0,
-            "onComplete": function ():void {
-                dispatchEventWith("preloadComplete");
-            }
-        });
+        var tween:Tween = new Tween(loadingBar, 0.3, Transitions.LINEAR);
+        tween.onComplete = function ():void {
+            dispatchEventWith("preloadComplete");
+            Starling.juggler.remove(tween);
+        };
+        tween.animate("alpha", 0);
+        Starling.juggler.add(tween);
     }
 
     private function onImagePreloadProgress(e:Event):void {
