@@ -80,7 +80,7 @@ public class JoinRoomManager extends EventDispatcher implements IJoinRoomManager
             client.errorLog.writeError("Tried to init joinroom more than once.", "", "", {});
             return;
         }
-        Console.write("Joinroom init.");
+        Game.printTimeStamp("JoinedRoomManager Init");
         inited = true;
         StartSetup.showProgressText(Localize.t("List service room"));
         client.multiplayer.listRooms("service", null, 1000, 0, handleServiceRooms, function (param1:PlayerIOError):void {
@@ -89,11 +89,10 @@ public class JoinRoomManager extends EventDispatcher implements IJoinRoomManager
     }
 
     public function joinServiceRoom(id:String):void {
+        Game.printTimeStamp("Joined service room");
         login.removeEffects();
         client.multiplayer.createJoinRoom(id, "service", true, {}, {"client_version": 1388}, handleJoinServiceRoom, function (param1:PlayerIOError):void {
-            if (param1.errorID != 2) {
-                showErrorDialog("Join service room failed, please try again later. Contact us on Astroflux Discord for support.", true, param1);
-            }
+            showErrorDialog(param1.message + ". Contact us on Astroflux Discord for support.", true, param1);
         });
     }
 
@@ -155,6 +154,7 @@ public class JoinRoomManager extends EventDispatcher implements IJoinRoomManager
         roomStateMachine.closeCurrentRoom();
         roomType = "game";
         Console.write("Trying to join " + roomType + " room");
+        Game.printTimeStamp("Trying to join " + roomType + " room");
         dataManager = DataLocator.getService();
         solarSystemObj = dataManager.loadKey("SolarSystems", solarSystemKey);
         roomData = {};
@@ -311,6 +311,7 @@ public class JoinRoomManager extends EventDispatcher implements IJoinRoomManager
     private function handleRooms(rooms:Array):void {
         var _loc5_:* = false;
         var _loc2_:* = false;
+        Game.printTimeStamp("Handle rooms");
         var _loc3_:int = 15;
         for each(var _loc4_ in rooms) {
             if (int(_loc4_.data.version) >= 1388) {
@@ -345,14 +346,16 @@ public class JoinRoomManager extends EventDispatcher implements IJoinRoomManager
     }
 
     private function createJoin():void {
+        Game.printTimeStamp("Attempting to create/join room.");
         Console.write("Attempting to create/join room.");
         StartSetup.showProgressText("Joining game room");
         client.multiplayer.createJoinRoom(room.id, room.roomType, false, room.data, room.joinData, handleJoin, function (param1:PlayerIOError):void {
-            Console.write(param1);
+            showErrorDialog(param1.message + ". Contact us on Discord for support.", true, param1);
         });
     }
 
     private function handleJoin(connection:Connection):void {
+        Game.printTimeStamp("Joined game room");
         StartSetup.showProgressText("Joining game room");
         this.connection = connection;
         roomStateMachine.changeRoom(new Game(client, serviceConnection, connection, room));

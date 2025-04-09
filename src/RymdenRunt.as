@@ -103,10 +103,10 @@ public class RymdenRunt extends Sprite {
     }
 
     private function resize(e:ResizeEvent = null):void {
-        if (!s.context || s.context.driverInfo == "Disposed") {
+        if (!s.stage || !s.context || s.context.driverInfo == "Disposed") {
             return;
         }
-        if (stage.stageWidth === 0 || stage.stageHeight === 0) {
+        if (!stage || stage.stageWidth === 0 || stage.stageHeight === 0) {
             return;
         }
         var _loc2_:int = int(stage.stageWidth % 2 == 0 ? stage.stageWidth : stage.stageWidth - 1);

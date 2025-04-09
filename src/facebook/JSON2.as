@@ -1,7 +1,6 @@
 package facebook {
 internal class JSON2 {
-    public static function deserialize(param1:String):* {
-        var source:String = param1;
+    public static function deserialize(source:String):* {
         source = new String(source);
         var at:Number = 0;
         var ch:String = " ";
@@ -57,56 +56,56 @@ internal class JSON2 {
         };
         var _string:Function = function ():* {
             var _loc2_:* = undefined;
-            var _loc1_:* = undefined;
+            var _loc3_:* = undefined;
             var _loc5_:* = "";
-            var _loc4_:* = "";
-            var _loc3_:Boolean = false;
+            var _loc1_:* = "";
+            var _loc4_:Boolean = false;
             if (ch == "\"") {
                 while (Boolean(_next())) {
                     if (ch == "\"") {
                         _next();
-                        return _loc4_;
+                        return _loc1_;
                     }
                     if (ch == "\\") {
                         switch (_next()) {
                             case "b":
-                                _loc4_ += "\b";
+                                _loc1_ += "\b";
                                 break;
                             case "f":
-                                _loc4_ += "\f";
+                                _loc1_ += "\f";
                                 break;
                             case "n":
-                                _loc4_ += "\n";
+                                _loc1_ += "\n";
                                 break;
                             case "r":
-                                _loc4_ += "\r";
+                                _loc1_ += "\r";
                                 break;
                             case "t":
-                                _loc4_ += "\t";
+                                _loc1_ += "\t";
                                 break;
                             case "u":
-                                _loc1_ = 0;
+                                _loc3_ = 0;
                                 _loc5_ = 0;
                                 while (_loc5_ < 4) {
                                     _loc2_ = parseInt(_next(), 16);
                                     if (!isFinite(_loc2_)) {
-                                        _loc3_ = true;
+                                        _loc4_ = true;
                                         break;
                                     }
-                                    _loc1_ = _loc1_ * 16 + _loc2_;
+                                    _loc3_ = _loc3_ * 16 + _loc2_;
                                     _loc5_ += 1;
                                 }
-                                if (_loc3_) {
-                                    _loc3_ = false;
+                                if (_loc4_) {
+                                    _loc4_ = false;
                                     break;
                                 }
-                                _loc4_ += String.fromCharCode(_loc1_);
+                                _loc1_ += String.fromCharCode(_loc3_);
                                 break;
                             default:
-                                _loc4_ += ch;
+                                _loc1_ += ch;
                         }
                     } else {
-                        _loc4_ += ch;
+                        _loc1_ += ch;
                     }
                 }
             }
@@ -140,27 +139,27 @@ internal class JSON2 {
             return null;
         };
         var _object:Function = function ():* {
-            var _loc2_:* = {};
             var _loc1_:* = {};
+            var _loc2_:* = {};
             if (ch == "{") {
                 _next();
                 _white();
                 if (ch == "}") {
                     _next();
-                    return _loc1_;
+                    return _loc2_;
                 }
                 while (ch) {
-                    _loc2_ = _string();
+                    _loc1_ = _string();
                     _white();
                     if (ch != ":") {
                         break;
                     }
                     _next();
-                    _loc1_[_loc2_] = _value();
+                    _loc2_[_loc1_] = _value();
                     _white();
                     if (ch == "}") {
                         _next();
-                        return _loc1_;
+                        return _loc2_;
                     }
                     if (ch != ",") {
                         break;
@@ -172,12 +171,12 @@ internal class JSON2 {
             _error("Bad Object");
         };
         var _number:Function = function ():* {
-            var _loc2_:* = undefined;
+            var _loc1_:* = undefined;
             var _loc4_:* = "";
             var _loc3_:String = "";
-            var _loc1_:String = "";
+            var _loc2_:String = "";
             if (ch == "-") {
-                _loc1_ = _loc4_ = "-";
+                _loc2_ = _loc4_ = "-";
                 _next();
             }
             if (ch == "0") {
@@ -189,7 +188,7 @@ internal class JSON2 {
                         _next();
                     }
                     if (_loc3_ != "") {
-                        return Number(_loc1_ + "0x" + _loc3_);
+                        return Number(_loc2_ + "0x" + _loc3_);
                     }
                     _error("mal formed Hexadecimal");
                 } else {
@@ -206,12 +205,12 @@ internal class JSON2 {
                     _loc4_ += ch;
                 }
             }
-            _loc2_ = 1 * _loc4_;
-            if (!isFinite(_loc2_)) {
+            _loc1_ = 1 * _loc4_;
+            if (!isFinite(_loc1_)) {
                 _error("Bad Number");
                 return NaN;
             }
-            return _loc2_;
+            return _loc1_;
         };
         var _word:Function = function ():* {
             switch (ch) {
@@ -255,38 +254,38 @@ internal class JSON2 {
         return _value();
     }
 
-    public static function serialize(param1:*):String {
-        var _loc4_:String = null;
-        var _loc8_:Number = NaN;
-        var _loc6_:Number = NaN;
-        var _loc2_:* = undefined;
+    public static function serialize(o:*):String {
+        var _loc2_:String = null;
         var _loc7_:Number = NaN;
+        var _loc8_:Number = NaN;
+        var _loc5_:* = undefined;
+        var _loc4_:Number = NaN;
         var _loc3_:String = "";
-        switch (typeof param1) {
+        switch (typeof o) {
             case "object":
-                if (param1) {
-                    if (param1 is Array) {
-                        _loc6_ = Number(param1.length);
-                        _loc8_ = 0;
-                        while (_loc8_ < _loc6_) {
-                            _loc2_ = serialize(param1[_loc8_]);
+                if (o) {
+                    if (o is Array) {
+                        _loc8_ = Number(o.length);
+                        _loc7_ = 0;
+                        while (_loc7_ < _loc8_) {
+                            _loc5_ = serialize(o[_loc7_]);
                             if (_loc3_) {
                                 _loc3_ += ",";
                             }
-                            _loc3_ += _loc2_;
-                            _loc8_++;
+                            _loc3_ += _loc5_;
+                            _loc7_++;
                         }
                         return "[" + _loc3_ + "]";
                     }
-                    if (typeof param1.toString != "undefined") {
-                        for (var _loc5_:* in param1) {
-                            _loc2_ = param1[_loc5_];
-                            if (typeof _loc2_ != "undefined" && typeof _loc2_ != "function") {
-                                _loc2_ = serialize(_loc2_);
+                    if (typeof o.toString != "undefined") {
+                        for (var _loc6_ in o) {
+                            _loc5_ = o[_loc6_];
+                            if (typeof _loc5_ != "undefined" && typeof _loc5_ != "function") {
+                                _loc5_ = serialize(_loc5_);
                                 if (_loc3_) {
                                     _loc3_ += ",";
                                 }
-                                _loc3_ += serialize(_loc5_) + ":" + _loc2_;
+                                _loc3_ += serialize(_loc6_) + ":" + _loc5_;
                             }
                         }
                         return "{" + _loc3_ + "}";
@@ -294,20 +293,20 @@ internal class JSON2 {
                 }
                 return "null";
             case "number":
-                return isFinite(param1) ? param1 : "null";
+                return isFinite(o) ? o : "null";
             case "string":
-                _loc6_ = Number(param1.length);
+                _loc8_ = Number(o.length);
                 _loc3_ = "\"";
-                _loc8_ = 0;
-                while (_loc8_ < _loc6_) {
-                    _loc4_ = param1.charAt(_loc8_);
-                    if (_loc4_ >= " ") {
-                        if (_loc4_ == "\\" || _loc4_ == "\"") {
+                _loc7_ = 0;
+                while (_loc7_ < _loc8_) {
+                    _loc2_ = o.charAt(_loc7_);
+                    if (_loc2_ >= " ") {
+                        if (_loc2_ == "\\" || _loc2_ == "\"") {
                             _loc3_ += "\\";
                         }
-                        _loc3_ += _loc4_;
+                        _loc3_ += _loc2_;
                     } else {
-                        switch (_loc4_) {
+                        switch (_loc2_) {
                             case "\b":
                                 _loc3_ += "\\b";
                                 break;
@@ -324,15 +323,15 @@ internal class JSON2 {
                                 _loc3_ += "\\t";
                                 break;
                             default:
-                                _loc7_ = Number(_loc4_.charCodeAt());
-                                _loc3_ += "\\u00" + Math.floor(_loc7_ / 16).toString(16) + (_loc7_ % 16).toString(16);
+                                _loc4_ = Number(_loc2_.charCodeAt());
+                                _loc3_ += "\\u00" + Math.floor(_loc4_ / 16).toString(16) + (_loc4_ % 16).toString(16);
                         }
                     }
-                    _loc8_ += 1;
+                    _loc7_ += 1;
                 }
                 return _loc3_ + "\"";
             case "boolean":
-                return param1;
+                return o;
             default:
                 return "null";
         }
@@ -343,3 +342,4 @@ internal class JSON2 {
     }
 }
 }
+

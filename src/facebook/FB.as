@@ -25,9 +25,6 @@ public class FB {
         "users_getinfo": 1
     };
     private static var data:FBData = new FBData();
-    private static var _formatRE:RegExp = /(\{[^\}^\{]+\})/g;
-    private static var _trimRE:RegExp = /^\s*|\s*$/g;
-    private static var _quoteRE:RegExp = /["\\\x00-\x1f\x7f-\x9f]/g;
 
     public static function get Data():FBData {
         return data;
@@ -37,13 +34,13 @@ public class FB {
         return initUI() == null;
     }
 
-    public static function init(param1:*):void {
-        debug = !!param1.debug;
-        app_id = param1.app_id;
-        if ((param1.access_token + "").length < 3) {
+    public static function init(params:*):void {
+        debug = !!params.debug;
+        app_id = params.app_id;
+        if ((params.access_token + "").length < 3) {
             error("You must supply the init method with an not-null access_token string.");
         } else {
-            access_token = param1.access_token;
+            access_token = params.access_token;
             log("Initializing with access_token: " + access_token);
         }
     }
@@ -57,10 +54,8 @@ public class FB {
         }
     }
 
-    public static function ui(param1:*, param2:Function):void {
+    public static function ui(params:*, cb:Function):void {
         var callbackId:String;
-        var params:* = param1;
-        var cb:Function = param2;
         var err:String = initUI();
         if (err != null) {
             error(err);
@@ -76,43 +71,44 @@ public class FB {
         ExternalInterface.call("__doFBUICall", uiFlashId, params, callbackId);
     }
 
-    public static function toString(param1:*):String {
-        var _loc3_:String = null;
+    public static function toString(obj:*):String {
         var _loc4_:String = null;
-        var _loc6_:Boolean = false;
+        var _loc6_:String = null;
+        var _loc3_:Boolean = false;
         var _loc2_:Boolean = false;
-        if (param1 == null) {
+        if (obj == null) {
             return "[null]";
         }
-        switch (typeof param1) {
+        switch (typeof obj) {
             case "object":
-                _loc3_ = "{";
-                _loc4_ = "[";
-                _loc6_ = true;
+                _loc4_ = "{";
+                _loc6_ = "[";
+                _loc3_ = true;
                 _loc2_ = false;
-                for (var _loc5_:* in param1) {
-                    _loc3_ += (_loc3_ == "{" ? "" : ", ") + _loc5_ + "=" + toString(param1[_loc5_]);
-                    _loc4_ += (_loc4_ == "[" ? "" : ", ") + toString(param1[_loc5_]);
+                for (var _loc5_ in obj) {
+                    _loc4_ += (_loc4_ == "{" ? "" : ", ") + _loc5_ + "=" + toString(obj[_loc5_]);
+                    _loc6_ += (_loc6_ == "[" ? "" : ", ") + toString(obj[_loc5_]);
                     if (typeof _loc5_ != "number") {
-                        _loc6_ = false;
+                        _loc3_ = false;
                     }
                     _loc2_ = true;
                 }
-                return _loc6_ && _loc2_ ? _loc4_ + "]" : _loc3_ + "}";
+                return _loc3_ && _loc2_ ? _loc6_ + "]" : _loc4_ + "}";
             case "string":
-                return "\"" + param1.replace("\n", "\\n").replace("\r", "\\r") + "\"";
+                return "\"" + obj.replace("\n", "\\n").replace("\r", "\\r") + "\"";
             default:
-                return param1 + "";
+                return obj + "";
         }
     }
 
-    internal static function stringTrim(param1:String):String {
-        return param1.replace(_trimRE, "");
+    internal static function stringTrim(s:String):String {
+        var _trimRE:RegExp = /^\s*|\s*$/g;
+        return s.replace(_trimRE, "");
     }
 
-    internal static function stringFormat(param1:String, ...rest):String {
-        var format:String = param1;
+    internal static function stringFormat(format:String, ...rest):String {
         var args:Array = rest;
+        var _formatRE:RegExp = /(\{[^\}^\{]+\})/g;
         return format.replace(_formatRE, function (param1:String, param2:String, param3:int, param4:String):String {
             var _loc5_:int = parseInt(param2.substr(1), 10);
             var _loc6_:* = args[_loc5_];
@@ -123,8 +119,7 @@ public class FB {
         });
     }
 
-    internal static function stringQuote(param1:String):String {
-        var value:String = param1;
+    internal static function stringQuote(value:String):String {
         var subst:Object = {
             "\b": "\\b",
             "\t": "\\t",
@@ -134,6 +129,7 @@ public class FB {
             "\"": "\\\"",
             "\\": "\\\\"
         };
+        var _quoteRE:RegExp = /["\\\x00-\x1f\x7f-\x9f]/g;
         return !!_quoteRE.test(value) ? "\"" + value.replace(_quoteRE, function (param1:String):String {
             var _loc2_:String = subst[param1];
             if (_loc2_) {
@@ -144,80 +140,80 @@ public class FB {
         }) + "\"" : "\"" + value + "\"";
     }
 
-    internal static function arrayIndexOf(param1:Array, param2:*):int {
-        var _loc3_:int = 0;
-        var _loc4_:uint = param1.length;
-        if (_loc4_) {
-            _loc3_ = 0;
-            while (_loc3_ < _loc4_) {
-                if (param1[_loc3_] === param2) {
-                    return _loc3_;
+    internal static function arrayIndexOf(arr:Array, item:*):int {
+        var _loc4_:int = 0;
+        var _loc3_:uint = arr.length;
+        if (_loc3_) {
+            _loc4_ = 0;
+            while (_loc4_ < _loc3_) {
+                if (arr[_loc4_] === item) {
+                    return _loc4_;
                 }
-                _loc3_++;
+                _loc4_++;
             }
         }
         return -1;
     }
 
-    internal static function arrayMerge(param1:Array, param2:Array):Array {
+    internal static function arrayMerge(target:Array, source:Array):Array {
         var _loc3_:int = 0;
         _loc3_ = 0;
-        while (_loc3_ < param2.length) {
-            if (arrayIndexOf(param1, param2[_loc3_]) < 0) {
-                param1.push(param2[_loc3_]);
+        while (_loc3_ < source.length) {
+            if (arrayIndexOf(target, source[_loc3_]) < 0) {
+                target.push(source[_loc3_]);
             }
             _loc3_++;
         }
-        return param1;
+        return target;
     }
 
-    internal static function arrayMap(param1:Array, param2:Function):Array {
+    internal static function arrayMap(arr:Array, transform:Function):Array {
         var _loc4_:int = 0;
         var _loc3_:Array = [];
         _loc4_ = 0;
-        while (_loc4_ < param1.length) {
-            _loc3_.push(param2(param1[_loc4_]));
+        while (_loc4_ < arr.length) {
+            _loc3_.push(transform(arr[_loc4_]));
             _loc4_++;
         }
         return _loc3_;
     }
 
-    internal static function arrayFilter(param1:Array, param2:Function):Array {
+    internal static function arrayFilter(arr:Array, fn:Function):Array {
         var _loc4_:int = 0;
         var _loc3_:Array = [];
         _loc4_ = 0;
-        while (_loc4_ < param1.length) {
-            if (param2(param1[_loc4_])) {
-                _loc3_.push(param1[_loc4_]);
+        while (_loc4_ < arr.length) {
+            if (fn(arr[_loc4_])) {
+                _loc3_.push(arr[_loc4_]);
             }
             _loc4_++;
         }
         return _loc3_;
     }
 
-    internal static function objCopy(param1:Object, param2:Object, param3:Boolean, param4:Function):Object {
-        for (var _loc5_:* in param2) {
-            if (param3 || typeof param1[_loc5_] == "undefined") {
-                param1[_loc5_] = param4 != null ? param4(param2[_loc5_]) : param2[_loc5_];
+    internal static function objCopy(target:Object, source:Object, overwrite:Boolean, transform:Function):Object {
+        for (var _loc5_ in source) {
+            if (overwrite || typeof target[_loc5_] == "undefined") {
+                target[_loc5_] = typeof transform == "function" ? transform(source[_loc5_]) : source[_loc5_];
             }
         }
-        return param1;
+        return target;
     }
 
-    internal static function forEach(param1:*, param2:Function):void {
+    internal static function forEach(item:*, fn:Function):void {
         var _loc4_:* = 0;
-        if (!param1) {
+        if (!item) {
             return;
         }
-        if (param1 is Array) {
+        if (item is Array) {
             _loc4_ = 0;
-            while (_loc4_ != param1.length) {
-                param2(param1[_loc4_], _loc4_, param1);
+            while (_loc4_ != item.length) {
+                fn(item[_loc4_], _loc4_, item);
                 _loc4_++;
             }
-        } else if (param1 is Object) {
-            for (var _loc3_:* in param1) {
-                param2(param1[_loc3_], _loc3_, param1);
+        } else if (item is Object) {
+            for (var _loc3_ in item) {
+                fn(item[_loc3_], _loc3_, item);
             }
         }
     }
@@ -234,9 +230,9 @@ public class FB {
             } catch (e:*) {
             }
             if (!allowsExternalInterface) {
-                return "The flash element must not have allowNetworking = 'none' in the containing page in order to call the FB.ui() method.";
+                return "The flash element must not have allowNetworking = \'none\' in the containing page in order to call the FB.ui() method.";
             }
-            hasJavascript = ExternalInterface.call("eval", "typeof(FB)!='undefined' && typeof(FB.ui)!='undefined'");
+            hasJavascript = ExternalInterface.call("eval", "typeof(FB)!=\'undefined\' && typeof(FB.ui)!=\'undefined\'");
             if (!hasJavascript) {
                 return "The FB.ui() method can only be used when the containing page includes the Facebook Javascript SDK. Read more here: http://developers.facebook.com/docs/reference/javascript/FB.init";
             }
@@ -260,52 +256,48 @@ public class FB {
     }
 
     private static function graphCall(...rest):void {
-        var _loc8_:String = null;
         var _loc6_:String = null;
+        var _loc7_:String = null;
+        var _loc4_:* = null;
         var _loc5_:* = null;
-        var _loc7_:* = null;
-        var _loc2_:Function = null;
-        var _loc4_:String = rest.shift();
-        var _loc3_:* = rest.shift();
-        while (_loc3_) {
-            _loc8_ = typeof _loc3_;
-            if (_loc8_ === "string" && _loc5_ == null) {
-                _loc6_ = _loc3_.toUpperCase();
-                if (allowedMethods[_loc6_]) {
-                    _loc5_ = _loc6_;
+        var _loc8_:Function = null;
+        var _loc3_:String = rest.shift();
+        var _loc2_:* = rest.shift();
+        while (_loc2_) {
+            _loc6_ = typeof _loc2_;
+            if (_loc6_ === "string" && _loc4_ == null) {
+                _loc7_ = _loc2_.toUpperCase();
+                if (allowedMethods[_loc7_]) {
+                    _loc4_ = _loc7_;
                 } else {
-                    error("Invalid method passed to FB.api(" + _loc4_ + "): " + _loc3_);
+                    error("Invalid method passed to FB.api(" + _loc3_ + "): " + _loc2_);
                 }
-            } else if (_loc8_ === "function" && _loc2_ == null) {
-                _loc2_ = _loc3_;
-            } else if (_loc8_ === "object" && _loc7_ == null) {
-                _loc7_ = _loc3_;
+            } else if (_loc6_ === "function" && _loc8_ == null) {
+                _loc8_ = _loc2_;
+            } else if (_loc6_ === "object" && _loc5_ == null) {
+                _loc5_ = _loc2_;
             } else {
-                error("Invalid argument passed to FB.api(" + _loc4_ + "): " + _loc3_);
+                error("Invalid argument passed to FB.api(" + _loc3_ + "): " + _loc2_);
             }
-            _loc3_ = rest.shift();
+            _loc2_ = rest.shift();
         }
-        _loc5_ ||= "GET";
-        _loc7_ ||= {};
-        log("Graph call: path=" + _loc4_ + ", method=" + _loc5_ + ", params=" + toString(_loc7_));
-        oauthRequest("https://graph.facebook.com" + _loc4_, _loc5_, _loc7_, _loc2_);
+        _loc4_ ||= "GET";
+        _loc5_ ||= {};
+        log("Graph call: path=" + _loc3_ + ", method=" + _loc4_ + ", params=" + toString(_loc5_));
+        oauthRequest("https://graph.facebook.com" + _loc3_, _loc4_, _loc5_, _loc8_);
     }
 
-    private static function restCall(param1:*, param2:Function):void {
-        var _loc3_:String = (param1.method + "").toLowerCase().replace(".", "_");
-        param1.format = "json-strings";
-        param1.api_key = app_id;
-        log("REST call: method=" + _loc3_ + ", params=" + toString(param1));
-        oauthRequest("https://" + (!!readOnlyCalls[_loc3_] ? "api-read" : "api") + ".facebook.com/restserver.php", "get", param1, param2);
+    private static function restCall(params:*, cb:Function):void {
+        var _loc3_:String = (params.method + "").toLowerCase().replace(".", "_");
+        params.format = "json-strings";
+        params.api_key = app_id;
+        log("REST call: method=" + _loc3_ + ", params=" + toString(params));
+        oauthRequest("https://" + (!!readOnlyCalls[_loc3_] ? "api-read" : "api") + ".facebook.com/restserver.php", "get", params, cb);
     }
 
-    private static function oauthRequest(param1:String, param2:String, param3:*, param4:Function):void {
+    private static function oauthRequest(url:String, method:String, params:*, cb:Function):void {
         var x:*;
         var loader:URLLoader;
-        var url:String = param1;
-        var method:String = param2;
-        var params:* = param3;
-        var cb:Function = param4;
         var request:URLRequest = new URLRequest(url);
         request.method = method;
         request.data = new URLVariables();
@@ -316,19 +308,19 @@ public class FB {
         request.data.callback = "c";
         loader = new URLLoader();
         loader.addEventListener("complete", function (param1:Event):void {
-            var _loc2_:String = loader.data;
-            if (_loc2_.length > 2 && _loc2_.substring(0, 12) == "/**/ /**/ c(") {
-                _loc2_ = loader.data.substring(loader.data.indexOf("(") + 1, loader.data.lastIndexOf(")"));
-            } else if (_loc2_.length > 2 && _loc2_.substring(0, 7) == "/**/ c(") {
-                _loc2_ = loader.data.substring(loader.data.indexOf("(") + 1, loader.data.lastIndexOf(")"));
+            var _loc3_:String = loader.data;
+            if (_loc3_.length > 2 && _loc3_.substring(0, 12) == "/**/ /**/ c(") {
+                _loc3_ = loader.data.substring(loader.data.indexOf("(") + 1, loader.data.lastIndexOf(")"));
+            } else if (_loc3_.length > 2 && _loc3_.substring(0, 7) == "/**/ c(") {
+                _loc3_ = loader.data.substring(loader.data.indexOf("(") + 1, loader.data.lastIndexOf(")"));
             }
-            var _loc3_:* = JSON2.deserialize(_loc2_);
+            var _loc2_:* = JSON2.deserialize(_loc3_);
             if (url.substring(0, 11) == "https://api") {
-                log("REST call result, method=" + params.method + " => " + toString(_loc3_));
+                log("REST call result, method=" + params.method + " => " + toString(_loc2_));
             } else {
-                log("Graph call result, path=" + url + " => " + toString(_loc3_));
+                log("Graph call result, path=" + url + " => " + toString(_loc2_));
             }
-            cb(_loc3_);
+            cb(_loc2_);
         });
         loader.addEventListener("ioError", function (param1:IOErrorEvent):void {
             error("Error in response from Facebook api servers, most likely cause is expired or invalid access_token. Error message: " + param1.text);
@@ -336,19 +328,19 @@ public class FB {
         loader.load(request);
     }
 
-    private static function requireAccessToken(param1:String):void {
+    private static function requireAccessToken(callerName:String):void {
         if (access_token == null) {
-            error("You must call FB.init({access_token:\"...\") before attempting to call FB." + param1 + "()");
+            error("You must call FB.init({access_token:\"...\") before attempting to call FB." + callerName + "()");
         }
     }
 
-    private static function error(param1:String):void {
+    private static function error(msg:String):void {
         if (debug) {
         }
-        throw new Error(param1);
+        throw new Error(msg);
     }
 
-    private static function log(param1:String):void {
+    private static function log(msg:String):void {
         if (debug) {
         }
     }
@@ -358,3 +350,4 @@ public class FB {
     }
 }
 }
+

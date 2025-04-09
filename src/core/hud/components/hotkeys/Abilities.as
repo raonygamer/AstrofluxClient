@@ -29,7 +29,6 @@ public class Abilities extends Sprite {
     private var g:Game;
     private var dataManager:IDataManager;
     private var textureManager:ITextureManager;
-    private var keyBinds:KeyBinds;
 
     public function load():void {
         var _loc3_:Object = null;
@@ -40,7 +39,7 @@ public class Abilities extends Sprite {
         var _loc10_:int = 0;
         var _loc5_:Object = null;
         var _loc6_:AbilityHotkey = null;
-        keyBinds = SceneBase.settings.keybinds;
+        var keyBinds:data.KeyBinds = SceneBase.settings.keybinds;
         var _loc7_:PlayerShip = g.me.ship;
         if (_loc7_ == null) {
             Console.write("No ship for weapon hotkeys.");

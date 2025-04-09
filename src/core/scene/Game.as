@@ -154,6 +154,10 @@ public class Game extends SceneBase {
         lastActive = new Date().time;
     }
 
+    public static function printTimeStamp(message:String):void {
+        trace(message);
+    }
+
     public function Game(client:Client, serviceConnection:Connection, connection:Connection, room:Room) {
         super(client, serviceConnection, connection, room);
         addMessageHandler("sdf", m_sdf);
@@ -226,6 +230,9 @@ public class Game extends SceneBase {
     private var loadingFadeTween:TweenMax;
 
     public function get me():Player {
+        if (playerManager == null) {
+            return null;
+        }
         return playerManager.me;
     }
 
@@ -242,6 +249,9 @@ public class Game extends SceneBase {
     }
 
     override protected function userLeft(m:Message):void {
+        if (playerManager == null) {
+            return;
+        }
         playerManager.removePlayer(m);
     }
 
@@ -662,6 +672,7 @@ public class Game extends SceneBase {
     }
 
     private function onInitSolarSystem(m:Message):void {
+        Game.printTimeStamp("onInitSolarSystem");
         if (settings == null) {
             settings = new Settings();
         }
@@ -675,6 +686,7 @@ public class Game extends SceneBase {
     }
 
     private function onInitPlayer(m:Message):void {
+        Game.printTimeStamp("onInitPlayer");
         try {
             rpcServiceRoom("requestRating", (function ():* {
                 var rpcHandler:Function;
@@ -696,6 +708,7 @@ public class Game extends SceneBase {
     }
 
     private function onInitEnemyPlayers(m:Message, startIndex:int = 0):void {
+        Game.printTimeStamp("onInitEnemyPlayers");
         if (m.length == 0) {
             completeOnInitEnemyPlayers();
             return;
@@ -715,6 +728,7 @@ public class Game extends SceneBase {
     }
 
     private function onInitEnemies(m:Message):void {
+        Game.printTimeStamp("onInitEnemies");
         Console.write("Init enemies received");
         shipManager.addEarlyMessageHandlers();
         shipManager.initEnemies(m);
@@ -724,11 +738,13 @@ public class Game extends SceneBase {
     }
 
     private function onInitDrops(m:Message):void {
+        Game.printTimeStamp("onInitDrops");
         initDropsComplete = true;
         tryRunGameLoop();
     }
 
     private function onInitServerComplete(m:Message):void {
+        Game.printTimeStamp("onInitServerComplete");
         Console.write("Init server complete");
         initServerComplete = true;
         tryRunGameLoop();
@@ -931,6 +947,7 @@ public class Game extends SceneBase {
     private function reload():void {
         var roomId:String;
         var joinRoomManager:JoinRoomManager;
+        var localMe:Player;
         var solarsystem:String;
         Login.fadeScreen.show();
         roomId = this.roomId;
@@ -939,16 +956,17 @@ public class Game extends SceneBase {
             joinRoomManager.joinCurrentSolarSystem();
             return;
         }
+        localMe = me;
         solarsystem = this.solarSystem.key;
         if (serviceConnection && serviceConnection.connected) {
             joinRoomManager.desiredRoomId = roomId;
-            joinRoomManager.joinGame(solarsystem, {"level": me.level});
+            joinRoomManager.joinGame(solarsystem, {"level": localMe.level});
         } else {
             joinRoomManager.joinServiceRoom(this.serviceRoomId);
             joinRoomManager.addEventListener("joinedServiceRoom", function (param1:starling.events.Event):void {
                 joinRoomManager.removeEventListeners("joinedServiceRoom");
                 joinRoomManager.desiredRoomId = roomId;
-                joinRoomManager.joinGame(solarsystem, {"level": me.level});
+                joinRoomManager.joinGame(solarsystem, {"level": localMe.level});
             });
         }
     }
@@ -1071,6 +1089,7 @@ public class Game extends SceneBase {
     override protected function onJoinAndClockSynched(e:starling.events.Event = null):void {
         this.canvas.visible = false;
         Console.write("onJoinAndClockSynched ");
+        Game.printTimeStamp("onJoinAndClockSynched");
         super.onJoinAndClockSynched(e);
         try {
             ExternalInterface.addCallback("fbLike", onFBLike);

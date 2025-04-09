@@ -27,11 +27,12 @@ public class Minilogo extends MovieClip {
         this.addEventListener("mouseDown", handleClick);
         Minilogo.showLogo = false;
     }
+
     private var align:String;
     private var rect:Rectangle;
 
     private function doRemove():void {
-        var t:fl.transitions.Tween = new Tween(this, "alpha", Strong.easeIn, 1, 0, 0.5, true);
+        var t:Tween = new Tween(this, "alpha", Strong.easeIn, 1, 0, 0.5, true);
         t.addEventListener("motionChange", handleTick);
         t.addEventListener("motionFinish", kill);
         removeEventListener("enterFrame", handleEnterFrame);
@@ -118,7 +119,7 @@ public class Minilogo extends MovieClip {
         }
         stage.addEventListener("resize", handleResize);
         handleResize();
-        var t:fl.transitions.Tween = new Tween(this, "alpha", Strong.easeIn, 0, 1, 0.5, true);
+        var t:Tween = new Tween(this, "alpha", Strong.easeIn, 0, 1, 0.5, true);
         t.addEventListener("motionFinish", handleCreated);
         t.addEventListener("motionChange", handleTick);
         addEventListener("enterFrame", handleEnterFrame);

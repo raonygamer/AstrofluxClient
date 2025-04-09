@@ -4,11 +4,10 @@ import core.player.Player;
 import core.scene.Game;
 import core.scene.SceneBase;
 
-import mx.utils.StringUtil;
-
 import starling.display.DisplayObjectContainer;
 import starling.events.Event;
 import starling.textures.Texture;
+import starling.utils.StringUtil;
 
 import textures.ITextureManager;
 import textures.TextureLocator;

@@ -21,6 +21,7 @@ public class Radar extends Sprite {
         touchable = false;
     }
     public var radius:Number = 60;
+    private var scale:Number = 10;
     private var textureManager:ITextureManager;
     private var g:Game;
     private var blips:Vector.<Blip> = new Vector.<Blip>();

@@ -220,7 +220,7 @@ public class ArtifactOverview extends Sprite {
         crewContainer.y = 100;
         crewContainer.visible = false;
         addChild(crewContainer);
-        var labelSelectCrew:TextBitmap = new TextBitmap();
+        var labelSelectCrew:core.hud.components.TextBitmap = new TextBitmap();
         labelSelectCrew.text = Localize.t("Select artifact and crew");
         labelSelectCrew.size = 18;
         crewContainer.addChild(labelSelectCrew);

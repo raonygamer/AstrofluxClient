@@ -33,12 +33,10 @@ import feathers.core.FocusManager;
 
 import flash.display.Loader;
 import flash.events.Event;
-import flash.events.MouseEvent;
 import flash.external.ExternalInterface;
 import flash.net.SharedObject;
 import flash.net.URLLoader;
 import flash.net.URLRequest;
-import flash.net.navigateToURL;
 import flash.system.Security;
 import flash.utils.ByteArray;
 
@@ -160,7 +158,8 @@ public class Login extends Sprite {
         Starling.current.stage.color = 0;
         Starling.current.nativeStage.color = 0;
     }
-
+    public var bar2:String = "Verdana_ttf$767177d9989c7323c60db8a483bd906b-639850078";
+    public var ba3:String = "Russo_One_ttf$106c15525f996d3d73a9291202e5dc2e1347241993";
     private var textureManager:TextureManager;
     private var soundManager:SoundManager;
     private var isLoggedIn:Boolean;
@@ -231,7 +230,7 @@ public class Login extends Sprite {
         }
         effectTweens.length = 0;
         effects.length = 0;
-        TweenMax.killAll();
+        TweenMax.killAll(true);
     }
 
     private function init():void {
@@ -274,7 +273,7 @@ public class Login extends Sprite {
         infoText.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
         infoText.format.horizontalAlign = Align.LEFT;
         infoText.text =
-                "Astroflux Client - v" + CLIENT_VERSION + "\n" +
+                "Astroflux Client - v1717\n" +
                 "Repository: https://github.com/raonygamer/AstrofluxClient";
         addChild(infoText);
         /*** END MODIFIED ***/
@@ -780,6 +779,7 @@ public class Login extends Sprite {
     }
 
     private function joinServiceRoom():void {
+        updateStatus("Looking for game rooms...");
         setDevServer(client);
         joinRoomManager = new JoinRoomManager(client, stage, joinData, this);
         JoinRoomLocator.register(joinRoomManager);
@@ -918,9 +918,6 @@ public class Login extends Sprite {
         var _loc4_:Array = [15907921, 6210749, 14305875];
         _loc2_ = 0;
         while (_loc2_ < 100) {
-            if (logoContainer == null)
-                return;
-
             _loc3_ = new Image(_loc1_);
             _loc3_.blendMode = "add";
             _loc3_.x = 0;
@@ -1059,6 +1056,7 @@ public class Login extends Sprite {
     private function preloadComplete(e:starling.events.Event):void {
         var mouseDialog:GuestName;
         preload.removeEventListener("preloadComplete", preloadComplete);
+        trace("Preload: load textures complate");
         if (currentState == "steam") {
             joinData["name"] = Util.trimUsername(RymdenRunt.info.name);
             joinServiceRoom();

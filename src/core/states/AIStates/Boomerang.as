@@ -18,6 +18,9 @@ public class Boomerang extends ProjectileBullet implements IState {
         super(g, p);
     }
     private var g:Game;
+    private var p:Projectile;
+    private var sm:StateMachine;
+    private var isEnemy:Boolean;
     private var globalInterval:Number = 1000;
     private var localTargetList:Vector.<Unit>;
     private var nextGlobalUpdate:Number;

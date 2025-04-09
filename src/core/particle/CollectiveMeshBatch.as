@@ -38,11 +38,16 @@ public class CollectiveMeshBatch extends MeshBatch {
     }
 
     public static function dispose():void {
+        if (effectsBatch == null || meshBatches == null) {
+            return;
+        }
         effectsBatch.dispose();
         effectsBatch = null;
         for each(var _loc1_ in meshBatches) {
-            _loc1_.emitters.length = 0;
-            _loc1_.dispose();
+            if (_loc1_ != null) {
+                _loc1_.emitters.length = 0;
+                _loc1_.dispose();
+            }
         }
         meshBatches.length = 0;
     }

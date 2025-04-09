@@ -1,15 +1,12 @@
 package {
 import com.greensock.TweenMax;
 
+import core.scene.Game;
+
 import data.DataLocator;
 import data.IDataManager;
 
 import generics.Localize;
-
-import starling.animation.Transitions;
-
-import starling.animation.Tween;
-import starling.core.Starling;
 
 import starling.display.Sprite;
 import starling.events.Event;
@@ -32,6 +29,7 @@ public class Preload extends EventDispatcher {
     public function loadData():void {
         var _loc1_:IDataManager = DataLocator.getService();
         _loc1_.cacheCommonData();
+        Game.printTimeStamp("Loading data");
         textureManager.loadTextures(["texture_gui1_test.xml", "texture_gui1_test.png", "texture_gui2.xml", "texture_gui2.png", "texture_main_NEW.xml", "texture_main_NEW.png", "texture_body.xml", "texture_body.png"]);
         textureManager.addEventListener("preloadProgress", onImagePreloadProgress);
         textureManager.addEventListener("preloadComplete", onImagePreloadComplete);
@@ -39,13 +37,12 @@ public class Preload extends EventDispatcher {
 
     private function preloadComplete():void {
         loadingBar.update(Localize.t("Done!"), 100);
-        var tween:Tween = new Tween(loadingBar, 0.3, Transitions.LINEAR);
-        tween.onComplete = function ():void {
-            dispatchEventWith("preloadComplete");
-            Starling.juggler.remove(tween);
-        };
-        tween.animate("alpha", 0);
-        Starling.juggler.add(tween);
+        TweenMax.to(loadingBar, 0.3, {
+            "alpha": 0,
+            "onComplete": function ():void {
+                dispatchEventWith("preloadComplete");
+            }
+        });
     }
 
     private function onImagePreloadProgress(e:Event):void {
@@ -56,6 +53,7 @@ public class Preload extends EventDispatcher {
     }
 
     private function onImagePreloadComplete(e:Event):void {
+        Game.printTimeStamp("Images loaded");
         loadingBar.update(Localize.t("Loading images complete"), 100);
         textureManager.removeEventListener("preloadComplete", onImagePreloadComplete);
         textureManager.removeEventListener("preloadProgress", onImagePreloadProgress);

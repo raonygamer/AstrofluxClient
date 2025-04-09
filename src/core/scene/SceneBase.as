@@ -50,6 +50,7 @@ public class SceneBase extends DisplayObjectContainer implements ISceneState {
     public static var settings:Settings;
 
     public function SceneBase(client:Client, serviceConnection:Connection, connection:Connection, room:Room) {
+        Game.printTimeStamp("Scenbase constructor");
         this.client = client;
         this.serviceConnection = serviceConnection;
         this.serviceRoomId = serviceConnection.roomId;
@@ -242,8 +243,10 @@ public class SceneBase extends DisplayObjectContainer implements ISceneState {
 
     public function enter():void {
         if (stage) {
+            Game.printTimeStamp("Scenebase enter: not connected, stage is ready");
             init();
         } else {
+            Game.printTimeStamp("Scenebase enter: adding init event listener");
             addEventListener("addedToStage", init);
         }
     }
@@ -252,22 +255,27 @@ public class SceneBase extends DisplayObjectContainer implements ISceneState {
     }
 
     public function exit():void {
+        if (_leaving) {
+            return;
+        }
         _leaving = true;
         camera = null;
         settings = null;
         myCargo.dispose();
         myCargo = null;
-        canvas.removeChild(canvasBackground, true);
-        canvas.removeChild(canvasBodies, true);
-        canvas.removeChild(canvasBosses, true);
-        canvas.removeChild(canvasDrops, true);
-        canvas.removeChild(canvasEffects, true);
-        canvas.removeChild(canvasEnemyShips, true);
-        canvas.removeChild(canvasPlayerShips, true);
-        canvas.removeChild(canvasProjectiles, true);
-        canvas.removeChild(canvasSpawners, true);
-        canvas.removeChild(canvasTexts, true);
-        canvas.removeChild(canvasTurrets, true);
+        if (canvas != null) {
+            canvas.removeChild(canvasBackground, true);
+            canvas.removeChild(canvasBodies, true);
+            canvas.removeChild(canvasBosses, true);
+            canvas.removeChild(canvasDrops, true);
+            canvas.removeChild(canvasEffects, true);
+            canvas.removeChild(canvasEnemyShips, true);
+            canvas.removeChild(canvasPlayerShips, true);
+            canvas.removeChild(canvasProjectiles, true);
+            canvas.removeChild(canvasSpawners, true);
+            canvas.removeChild(canvasTexts, true);
+            canvas.removeChild(canvasTurrets, true);
+        }
         canvasBackground = null;
         canvasBodies = null;
         canvasBosses = null;
@@ -303,9 +311,11 @@ public class SceneBase extends DisplayObjectContainer implements ISceneState {
         TweenMax.killAll();
         ToolTip.disposeAll();
         Starling.juggler.purge();
-        stage.removeEventListener("resize", resize);
-        for each(var _loc1_ in resizeCallbacks) {
-            stage.removeEventListener("resize", _loc1_);
+        if (stage != null) {
+            stage.removeEventListener("resize", resize);
+            for each(var _loc1_ in resizeCallbacks) {
+                stage.removeEventListener("resize", _loc1_);
+            }
         }
         removeEventListeners();
         removeChildren(0, -1, true);
@@ -703,6 +713,7 @@ public class SceneBase extends DisplayObjectContainer implements ISceneState {
     }
 
     private function initConnection(connection:Connection):void {
+        Game.printTimeStamp("Joined game room");
         this.connection = connection;
         addMessageHandler("joined", joined);
         addMessageHandler("userJoined", userJoined);
@@ -716,6 +727,7 @@ public class SceneBase extends DisplayObjectContainer implements ISceneState {
     }
 
     private function joined(m:Message):void {
+        Game.printTimeStamp("Joined message arrived");
         Console.write("joined ...");
         roomId = m.getString(0);
         userJoinedComplete = true;
@@ -723,10 +735,12 @@ public class SceneBase extends DisplayObjectContainer implements ISceneState {
     }
 
     private function handleError(error:PlayerIOError):void {
+        Game.printTimeStamp("Error: " + error);
         Console.write(error);
     }
 
     private function initClock():void {
+        Game.printTimeStamp("Init clock");
         StartSetup.showProgressText("Synchronizing");
         Console.write("Synchronising ...");
         clock = new Clock(connection, client);
@@ -736,6 +750,7 @@ public class SceneBase extends DisplayObjectContainer implements ISceneState {
 
     private function joinReady():void {
         Console.write("joinReady");
+        Game.printTimeStamp("Ready to join");
         if (clockInitComplete && userJoinedComplete) {
             Console.write("clockinit and userjoined");
             onJoinAndClockSynched();
@@ -753,7 +768,6 @@ public class SceneBase extends DisplayObjectContainer implements ISceneState {
     }
 
     private function anyMessage(m:Message):void {
-        Console.write(m);
     }
 
     private function duplicateLogin(m:Message):void {
@@ -787,6 +801,7 @@ public class SceneBase extends DisplayObjectContainer implements ISceneState {
     }
 
     protected function init(e:Event = null):void {
+        Game.printTimeStamp("Init game room");
         StartSetup.showProgressText("Init game room");
         removeEventListener("addedToStage", init);
         _leaving = false;
@@ -794,6 +809,7 @@ public class SceneBase extends DisplayObjectContainer implements ISceneState {
         camera = new StarlingCameraFocus(stage, canvas, new Sprite(), layersInfo, false);
         camera.start();
         camera.update();
+        Game.printTimeStamp("Initialized");
         stage.addEventListener("resize", resize);
     }
 

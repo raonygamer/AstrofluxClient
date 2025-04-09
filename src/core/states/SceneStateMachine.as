@@ -1,4 +1,6 @@
 package core.states {
+import core.scene.Game;
+
 import flash.utils.getQualifiedClassName;
 
 import starling.display.DisplayObjectContainer;
@@ -15,6 +17,7 @@ public class SceneStateMachine {
     private var stage:Stage;
 
     public function changeRoom(s:ISceneState):void {
+        Game.printTimeStamp("Change room");
         if (currentRoom != null) {
             currentRoom.exit();
             stage.removeChild(currentRoom as DisplayObjectContainer, true);
